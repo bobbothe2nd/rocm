@@ -1,0 +1,22 @@
+[package]
+name = "rocm-sys"
+description = "ROCm system bindings configured by release version"
+version = "0.0.1"
+edition = "2024"
+license = "MIT"
+readme = "README.md"
+
+[dependencies]
+libloading = { version = "0.9", optional = true }
+
+[features]
+default = ["hip", "amd_comgr", "hiprtc", "rocblas"]
+
+hip = []
+rocblas = ["hip"]
+hiprtc = ["hip"]
+amd_comgr = []
+dynamic-loading = ["dep:libloading"]
+
+[build-dependencies]
+libloading = "0.9"

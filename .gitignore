@@ -1,0 +1,5 @@
+/target
+/copy.ps1
+/list.sh
+/bindgen.rs
+/Cargo.lock

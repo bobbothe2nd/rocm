@@ -1,0 +1,19 @@
+[package]
+name = "rocm"
+version = "0.0.0-reserved"
+description = "Safe ROCm wrappers"
+license = "MIT"
+
+[dependencies]
+# bindgen = "0.73.1"
+# walkdir = "2.5.0"
+rocm-sys = { version = "0.0.1", path = "../rocm-sys", default-features = false }
+
+[features]
+default = ["dynamic-loading", "hip", "amd_comgr", "hiprtc", "rocblas"]
+
+hip = ["rocm-sys/hip"]
+rocblas = ["hip", "rocm-sys/rocblas"]
+hiprtc = ["hip", "rocm-sys/hiprtc"]
+amd_comgr = ["rocm-sys/amd_comgr"]
+dynamic-loading = ["rocm-sys/dynamic-loading"]
