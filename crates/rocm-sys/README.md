@@ -1,6 +1,6 @@
 # `rocm-sys`
 
-FFI bindings to C for ROCm *gated by version*. Explicitly checks for correct ROCm versions and function calls are guarnateed to be safe provided their prerequisites defined by AMDs documentation.
+FFI bindings to C for ROCm, explicitly checks for correct ROCm versions and function calls are guarnateed to be safe provided their prerequisites defined by AMDs documentation.
 
 ## Usage
 
@@ -33,6 +33,10 @@ To enable dynamic loading, enable the cargo feature `dynamic-loading`.
 
 When using static linking, all functions are just `extern "C"` functions wrapped in `extern "Rust"` functions with some compile-time ROCm version checks when applicable.
 
+### Linker Errors
+
+When using static linking, a linker error may occur when a function is linked which is not available in the installed ROCm version. Most likely, this is a result of a function being removed in a recent ROCm release or an incorrect feature check.
+
 ## Assumptions
 
 This crate tries to assume as little about the target as possible.
@@ -43,7 +47,7 @@ This crate tries to assume as little about the target as possible.
 
 Try to avoid these. Device properties may get patched in the future.
 
-## Contribution
+## Maintenance
 
 All functions are hand-written (albeit using a macro) and types are auto-generated using bindgen.
 

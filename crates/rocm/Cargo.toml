@@ -1,8 +1,10 @@
 [package]
 name = "rocm"
 version = "0.0.0-reserved"
+edition = "2024"
 description = "Safe ROCm wrappers"
 license = "MIT"
+repository = "github.com/bobbothe2nd/rocm"
 
 [dependencies]
 # bindgen = "0.73.1"
@@ -10,10 +12,9 @@ license = "MIT"
 rocm-sys = { version = "0.0.1", path = "../rocm-sys", default-features = false }
 
 [features]
-default = ["dynamic-loading", "hip", "amd_comgr", "hiprtc", "rocblas"]
+default = ["dynamic-loading", "hip", "hiprtc", "rocblas"]
 
 hip = ["rocm-sys/hip"]
 rocblas = ["hip", "rocm-sys/rocblas"]
 hiprtc = ["hip", "rocm-sys/hiprtc"]
-amd_comgr = ["rocm-sys/amd_comgr"]
 dynamic-loading = ["rocm-sys/dynamic-loading"]

@@ -47,11 +47,7 @@ where
             index % 8
         };
         let mask = 1 << bit_index;
-        if val {
-            byte | mask
-        } else {
-            byte & !mask
-        }
+        if val { byte | mask } else { byte & !mask }
     }
     #[inline]
     pub fn set_bit(&mut self, index: usize, val: bool) {
@@ -493,7 +489,7 @@ impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
         }
     }
 }
-pub type wchar_t = ::std::os::raw::c_int;
+pub type wchar_t = ::core::ffi::c_int;
 pub type _Float32 = f32;
 pub type _Float64 = f64;
 pub type _Float32x = f64;
@@ -501,33 +497,33 @@ pub type _Float64x = u128;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct div_t {
-    pub quot: ::std::os::raw::c_int,
-    pub rem: ::std::os::raw::c_int,
+    pub quot: ::core::ffi::c_int,
+    pub rem: ::core::ffi::c_int,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct ldiv_t {
-    pub quot: ::std::os::raw::c_long,
-    pub rem: ::std::os::raw::c_long,
+    pub quot: ::core::ffi::c_long,
+    pub rem: ::core::ffi::c_long,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct lldiv_t {
-    pub quot: ::std::os::raw::c_longlong,
-    pub rem: ::std::os::raw::c_longlong,
+    pub quot: ::core::ffi::c_longlong,
+    pub rem: ::core::ffi::c_longlong,
 }
-pub type __u_char = ::std::os::raw::c_uchar;
-pub type __u_short = ::std::os::raw::c_ushort;
-pub type __u_int = ::std::os::raw::c_uint;
-pub type __u_long = ::std::os::raw::c_ulong;
-pub type __int8_t = ::std::os::raw::c_schar;
-pub type __uint8_t = ::std::os::raw::c_uchar;
-pub type __int16_t = ::std::os::raw::c_short;
-pub type __uint16_t = ::std::os::raw::c_ushort;
-pub type __int32_t = ::std::os::raw::c_int;
-pub type __uint32_t = ::std::os::raw::c_uint;
-pub type __int64_t = ::std::os::raw::c_long;
-pub type __uint64_t = ::std::os::raw::c_ulong;
+pub type __u_char = ::core::ffi::c_uchar;
+pub type __u_short = ::core::ffi::c_ushort;
+pub type __u_int = ::core::ffi::c_uint;
+pub type __u_long = ::core::ffi::c_ulong;
+pub type __int8_t = ::core::ffi::c_schar;
+pub type __uint8_t = ::core::ffi::c_uchar;
+pub type __int16_t = ::core::ffi::c_short;
+pub type __uint16_t = ::core::ffi::c_ushort;
+pub type __int32_t = ::core::ffi::c_int;
+pub type __uint32_t = ::core::ffi::c_uint;
+pub type __int64_t = ::core::ffi::c_long;
+pub type __uint64_t = ::core::ffi::c_ulong;
 pub type __int_least8_t = __int8_t;
 pub type __uint_least8_t = __uint8_t;
 pub type __int_least16_t = __int16_t;
@@ -536,53 +532,53 @@ pub type __int_least32_t = __int32_t;
 pub type __uint_least32_t = __uint32_t;
 pub type __int_least64_t = __int64_t;
 pub type __uint_least64_t = __uint64_t;
-pub type __quad_t = ::std::os::raw::c_long;
-pub type __u_quad_t = ::std::os::raw::c_ulong;
-pub type __intmax_t = ::std::os::raw::c_long;
-pub type __uintmax_t = ::std::os::raw::c_ulong;
-pub type __dev_t = ::std::os::raw::c_ulong;
-pub type __uid_t = ::std::os::raw::c_uint;
-pub type __gid_t = ::std::os::raw::c_uint;
-pub type __ino_t = ::std::os::raw::c_ulong;
-pub type __ino64_t = ::std::os::raw::c_ulong;
-pub type __mode_t = ::std::os::raw::c_uint;
-pub type __nlink_t = ::std::os::raw::c_ulong;
-pub type __off_t = ::std::os::raw::c_long;
-pub type __off64_t = ::std::os::raw::c_long;
-pub type __pid_t = ::std::os::raw::c_int;
+pub type __quad_t = ::core::ffi::c_long;
+pub type __u_quad_t = ::core::ffi::c_ulong;
+pub type __intmax_t = ::core::ffi::c_long;
+pub type __uintmax_t = ::core::ffi::c_ulong;
+pub type __dev_t = ::core::ffi::c_ulong;
+pub type __uid_t = ::core::ffi::c_uint;
+pub type __gid_t = ::core::ffi::c_uint;
+pub type __ino_t = ::core::ffi::c_ulong;
+pub type __ino64_t = ::core::ffi::c_ulong;
+pub type __mode_t = ::core::ffi::c_uint;
+pub type __nlink_t = ::core::ffi::c_ulong;
+pub type __off_t = ::core::ffi::c_long;
+pub type __off64_t = ::core::ffi::c_long;
+pub type __pid_t = ::core::ffi::c_int;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __fsid_t {
-    pub __val: [::std::os::raw::c_int; 2usize],
+    pub __val: [::core::ffi::c_int; 2usize],
 }
-pub type __clock_t = ::std::os::raw::c_long;
-pub type __rlim_t = ::std::os::raw::c_ulong;
-pub type __rlim64_t = ::std::os::raw::c_ulong;
-pub type __id_t = ::std::os::raw::c_uint;
-pub type __time_t = ::std::os::raw::c_long;
-pub type __useconds_t = ::std::os::raw::c_uint;
-pub type __suseconds_t = ::std::os::raw::c_long;
-pub type __suseconds64_t = ::std::os::raw::c_long;
-pub type __daddr_t = ::std::os::raw::c_int;
-pub type __key_t = ::std::os::raw::c_int;
-pub type __clockid_t = ::std::os::raw::c_int;
-pub type __timer_t = *mut ::std::os::raw::c_void;
-pub type __blksize_t = ::std::os::raw::c_long;
-pub type __blkcnt_t = ::std::os::raw::c_long;
-pub type __blkcnt64_t = ::std::os::raw::c_long;
-pub type __fsblkcnt_t = ::std::os::raw::c_ulong;
-pub type __fsblkcnt64_t = ::std::os::raw::c_ulong;
-pub type __fsfilcnt_t = ::std::os::raw::c_ulong;
-pub type __fsfilcnt64_t = ::std::os::raw::c_ulong;
-pub type __fsword_t = ::std::os::raw::c_long;
-pub type __ssize_t = ::std::os::raw::c_long;
-pub type __syscall_slong_t = ::std::os::raw::c_long;
-pub type __syscall_ulong_t = ::std::os::raw::c_ulong;
+pub type __clock_t = ::core::ffi::c_long;
+pub type __rlim_t = ::core::ffi::c_ulong;
+pub type __rlim64_t = ::core::ffi::c_ulong;
+pub type __id_t = ::core::ffi::c_uint;
+pub type __time_t = ::core::ffi::c_long;
+pub type __useconds_t = ::core::ffi::c_uint;
+pub type __suseconds_t = ::core::ffi::c_long;
+pub type __suseconds64_t = ::core::ffi::c_long;
+pub type __daddr_t = ::core::ffi::c_int;
+pub type __key_t = ::core::ffi::c_int;
+pub type __clockid_t = ::core::ffi::c_int;
+pub type __timer_t = *mut ::core::ffi::c_void;
+pub type __blksize_t = ::core::ffi::c_long;
+pub type __blkcnt_t = ::core::ffi::c_long;
+pub type __blkcnt64_t = ::core::ffi::c_long;
+pub type __fsblkcnt_t = ::core::ffi::c_ulong;
+pub type __fsblkcnt64_t = ::core::ffi::c_ulong;
+pub type __fsfilcnt_t = ::core::ffi::c_ulong;
+pub type __fsfilcnt64_t = ::core::ffi::c_ulong;
+pub type __fsword_t = ::core::ffi::c_long;
+pub type __ssize_t = ::core::ffi::c_long;
+pub type __syscall_slong_t = ::core::ffi::c_long;
+pub type __syscall_ulong_t = ::core::ffi::c_ulong;
 pub type __loff_t = __off64_t;
-pub type __caddr_t = *mut ::std::os::raw::c_char;
-pub type __intptr_t = ::std::os::raw::c_long;
-pub type __socklen_t = ::std::os::raw::c_uint;
-pub type __sig_atomic_t = ::std::os::raw::c_int;
+pub type __caddr_t = *mut ::core::ffi::c_char;
+pub type __intptr_t = ::core::ffi::c_long;
+pub type __socklen_t = ::core::ffi::c_uint;
+pub type __sig_atomic_t = ::core::ffi::c_int;
 pub type u_char = __u_char;
 pub type u_short = __u_short;
 pub type u_int = __u_int;
@@ -607,18 +603,18 @@ pub type clock_t = __clock_t;
 pub type clockid_t = __clockid_t;
 pub type time_t = __time_t;
 pub type timer_t = __timer_t;
-pub type ulong = ::std::os::raw::c_ulong;
-pub type ushort = ::std::os::raw::c_ushort;
-pub type uint = ::std::os::raw::c_uint;
+pub type ulong = ::core::ffi::c_ulong;
+pub type ushort = ::core::ffi::c_ushort;
+pub type uint = ::core::ffi::c_uint;
 pub type u_int8_t = __uint8_t;
 pub type u_int16_t = __uint16_t;
 pub type u_int32_t = __uint32_t;
 pub type u_int64_t = __uint64_t;
-pub type register_t = ::std::os::raw::c_long;
+pub type register_t = ::core::ffi::c_long;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __sigset_t {
-    pub __val: [::std::os::raw::c_ulong; 16usize],
+    pub __val: [::core::ffi::c_ulong; 16usize],
 }
 pub type sigset_t = __sigset_t;
 #[repr(C)]
@@ -634,7 +630,7 @@ pub struct timespec {
     pub tv_nsec: __syscall_slong_t,
 }
 pub type suseconds_t = __suseconds_t;
-pub type __fd_mask = ::std::os::raw::c_long;
+pub type __fd_mask = ::core::ffi::c_long;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct fd_set {
@@ -648,14 +644,14 @@ pub type fsfilcnt_t = __fsfilcnt_t;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union __atomic_wide_counter {
-    pub __value64: ::std::os::raw::c_ulonglong,
+    pub __value64: ::core::ffi::c_ulonglong,
     pub __value32: __atomic_wide_counter__bindgen_ty_1,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __atomic_wide_counter__bindgen_ty_1 {
-    pub __low: ::std::os::raw::c_uint,
-    pub __high: ::std::os::raw::c_uint,
+    pub __low: ::core::ffi::c_uint,
+    pub __high: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -673,109 +669,109 @@ pub type __pthread_slist_t = __pthread_internal_slist;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __pthread_mutex_s {
-    pub __lock: ::std::os::raw::c_int,
-    pub __count: ::std::os::raw::c_uint,
-    pub __owner: ::std::os::raw::c_int,
-    pub __nusers: ::std::os::raw::c_uint,
-    pub __kind: ::std::os::raw::c_int,
-    pub __spins: ::std::os::raw::c_short,
-    pub __elision: ::std::os::raw::c_short,
+    pub __lock: ::core::ffi::c_int,
+    pub __count: ::core::ffi::c_uint,
+    pub __owner: ::core::ffi::c_int,
+    pub __nusers: ::core::ffi::c_uint,
+    pub __kind: ::core::ffi::c_int,
+    pub __spins: ::core::ffi::c_short,
+    pub __elision: ::core::ffi::c_short,
     pub __list: __pthread_list_t,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __pthread_rwlock_arch_t {
-    pub __readers: ::std::os::raw::c_uint,
-    pub __writers: ::std::os::raw::c_uint,
-    pub __wrphase_futex: ::std::os::raw::c_uint,
-    pub __writers_futex: ::std::os::raw::c_uint,
-    pub __pad3: ::std::os::raw::c_uint,
-    pub __pad4: ::std::os::raw::c_uint,
-    pub __cur_writer: ::std::os::raw::c_int,
-    pub __shared: ::std::os::raw::c_int,
-    pub __rwelision: ::std::os::raw::c_schar,
-    pub __pad1: [::std::os::raw::c_uchar; 7usize],
-    pub __pad2: ::std::os::raw::c_ulong,
-    pub __flags: ::std::os::raw::c_uint,
+    pub __readers: ::core::ffi::c_uint,
+    pub __writers: ::core::ffi::c_uint,
+    pub __wrphase_futex: ::core::ffi::c_uint,
+    pub __writers_futex: ::core::ffi::c_uint,
+    pub __pad3: ::core::ffi::c_uint,
+    pub __pad4: ::core::ffi::c_uint,
+    pub __cur_writer: ::core::ffi::c_int,
+    pub __shared: ::core::ffi::c_int,
+    pub __rwelision: ::core::ffi::c_schar,
+    pub __pad1: [::core::ffi::c_uchar; 7usize],
+    pub __pad2: ::core::ffi::c_ulong,
+    pub __flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct __pthread_cond_s {
     pub __wseq: __atomic_wide_counter,
     pub __g1_start: __atomic_wide_counter,
-    pub __g_refs: [::std::os::raw::c_uint; 2usize],
-    pub __g_size: [::std::os::raw::c_uint; 2usize],
-    pub __g1_orig_size: ::std::os::raw::c_uint,
-    pub __wrefs: ::std::os::raw::c_uint,
-    pub __g_signals: [::std::os::raw::c_uint; 2usize],
+    pub __g_refs: [::core::ffi::c_uint; 2usize],
+    pub __g_size: [::core::ffi::c_uint; 2usize],
+    pub __g1_orig_size: ::core::ffi::c_uint,
+    pub __wrefs: ::core::ffi::c_uint,
+    pub __g_signals: [::core::ffi::c_uint; 2usize],
 }
-pub type __tss_t = ::std::os::raw::c_uint;
-pub type __thrd_t = ::std::os::raw::c_ulong;
+pub type __tss_t = ::core::ffi::c_uint;
+pub type __thrd_t = ::core::ffi::c_ulong;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __once_flag {
-    pub __data: ::std::os::raw::c_int,
+    pub __data: ::core::ffi::c_int,
 }
-pub type pthread_t = ::std::os::raw::c_ulong;
+pub type pthread_t = ::core::ffi::c_ulong;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_mutexattr_t {
-    pub __size: [::std::os::raw::c_char; 4usize],
-    pub __align: ::std::os::raw::c_int,
+    pub __size: [::core::ffi::c_char; 4usize],
+    pub __align: ::core::ffi::c_int,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_condattr_t {
-    pub __size: [::std::os::raw::c_char; 4usize],
-    pub __align: ::std::os::raw::c_int,
+    pub __size: [::core::ffi::c_char; 4usize],
+    pub __align: ::core::ffi::c_int,
 }
-pub type pthread_key_t = ::std::os::raw::c_uint;
-pub type pthread_once_t = ::std::os::raw::c_int;
+pub type pthread_key_t = ::core::ffi::c_uint;
+pub type pthread_once_t = ::core::ffi::c_int;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_attr_t {
-    pub __size: [::std::os::raw::c_char; 56usize],
-    pub __align: ::std::os::raw::c_long,
+    pub __size: [::core::ffi::c_char; 56usize],
+    pub __align: ::core::ffi::c_long,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_mutex_t {
     pub __data: __pthread_mutex_s,
-    pub __size: [::std::os::raw::c_char; 40usize],
-    pub __align: ::std::os::raw::c_long,
+    pub __size: [::core::ffi::c_char; 40usize],
+    pub __align: ::core::ffi::c_long,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_cond_t {
     pub __data: __pthread_cond_s,
-    pub __size: [::std::os::raw::c_char; 48usize],
-    pub __align: ::std::os::raw::c_longlong,
+    pub __size: [::core::ffi::c_char; 48usize],
+    pub __align: ::core::ffi::c_longlong,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_rwlock_t {
     pub __data: __pthread_rwlock_arch_t,
-    pub __size: [::std::os::raw::c_char; 56usize],
-    pub __align: ::std::os::raw::c_long,
+    pub __size: [::core::ffi::c_char; 56usize],
+    pub __align: ::core::ffi::c_long,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_rwlockattr_t {
-    pub __size: [::std::os::raw::c_char; 8usize],
-    pub __align: ::std::os::raw::c_long,
+    pub __size: [::core::ffi::c_char; 8usize],
+    pub __align: ::core::ffi::c_long,
 }
-pub type pthread_spinlock_t = ::std::os::raw::c_int;
+pub type pthread_spinlock_t = ::core::ffi::c_int;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_barrier_t {
-    pub __size: [::std::os::raw::c_char; 32usize],
-    pub __align: ::std::os::raw::c_long,
+    pub __size: [::core::ffi::c_char; 32usize],
+    pub __align: ::core::ffi::c_long,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union pthread_barrierattr_t {
-    pub __size: [::std::os::raw::c_char; 4usize],
-    pub __align: ::std::os::raw::c_int,
+    pub __size: [::core::ffi::c_char; 4usize],
+    pub __align: ::core::ffi::c_int,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -783,28 +779,28 @@ pub struct random_data {
     pub fptr: *mut i32,
     pub rptr: *mut i32,
     pub state: *mut i32,
-    pub rand_type: ::std::os::raw::c_int,
-    pub rand_deg: ::std::os::raw::c_int,
-    pub rand_sep: ::std::os::raw::c_int,
+    pub rand_type: ::core::ffi::c_int,
+    pub rand_deg: ::core::ffi::c_int,
+    pub rand_sep: ::core::ffi::c_int,
     pub end_ptr: *mut i32,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct drand48_data {
-    pub __x: [::std::os::raw::c_ushort; 3usize],
-    pub __old_x: [::std::os::raw::c_ushort; 3usize],
-    pub __c: ::std::os::raw::c_ushort,
-    pub __init: ::std::os::raw::c_ushort,
-    pub __a: ::std::os::raw::c_ulonglong,
+    pub __x: [::core::ffi::c_ushort; 3usize],
+    pub __old_x: [::core::ffi::c_ushort; 3usize],
+    pub __c: ::core::ffi::c_ushort,
+    pub __init: ::core::ffi::c_ushort,
+    pub __a: ::core::ffi::c_ulonglong,
 }
-pub type __compar_fn_t = ::std::option::Option<
+pub type __compar_fn_t = ::core::option::Option<
     unsafe extern "C" fn(
-        arg1: *const ::std::os::raw::c_void,
-        arg2: *const ::std::os::raw::c_void,
-    ) -> ::std::os::raw::c_int,
+        arg1: *const ::core::ffi::c_void,
+        arg2: *const ::core::ffi::c_void,
+    ) -> ::core::ffi::c_int,
 >;
 #[doc = "  @defgroup DriverTypes Driver Types\n  @{\n  This section describes the driver data types.\n"]
-pub type hipDeviceptr_t = *mut ::std::os::raw::c_void;
+pub type hipDeviceptr_t = *mut ::core::ffi::c_void;
 #[repr(u32)]
 #[doc = " HIP channel format kinds"]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -822,10 +818,10 @@ pub enum hipChannelFormatKind {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipChannelFormatDesc {
-    pub x: ::std::os::raw::c_int,
-    pub y: ::std::os::raw::c_int,
-    pub z: ::std::os::raw::c_int,
-    pub w: ::std::os::raw::c_int,
+    pub x: ::core::ffi::c_int,
+    pub y: ::core::ffi::c_int,
+    pub z: ::core::ffi::c_int,
+    pub w: ::core::ffi::c_int,
     #[doc = "< Channel format kind"]
     pub f: hipChannelFormatKind,
 }
@@ -868,7 +864,7 @@ pub struct HIP_ARRAY_DESCRIPTOR {
     #[doc = "< Format of the array"]
     pub Format: hipArray_Format,
     #[doc = "< Number of channels of the array"]
-    pub NumChannels: ::std::os::raw::c_uint,
+    pub NumChannels: ::core::ffi::c_uint,
 }
 #[doc = " HIP 3D array descriptor"]
 #[repr(C)]
@@ -883,9 +879,9 @@ pub struct HIP_ARRAY3D_DESCRIPTOR {
     #[doc = "< Format of the array"]
     pub Format: hipArray_Format,
     #[doc = "< Number of channels of the array"]
-    pub NumChannels: ::std::os::raw::c_uint,
+    pub NumChannels: ::core::ffi::c_uint,
     #[doc = "< Flags of the array"]
-    pub Flags: ::std::os::raw::c_uint,
+    pub Flags: ::core::ffi::c_uint,
 }
 #[repr(u32)]
 #[doc = " hipMemoryType (for pointer attributes)\n\n @note hipMemoryType enum values are combination of cudaMemoryType and cuMemoryType and AMD\n specific enum values.\n"]
@@ -915,7 +911,7 @@ pub struct hip_Memcpy2D {
     #[doc = "< Source memory type"]
     pub srcMemoryType: hipMemoryType,
     #[doc = "< Source pointer"]
-    pub srcHost: *const ::std::os::raw::c_void,
+    pub srcHost: *const ::core::ffi::c_void,
     #[doc = "< Source device"]
     pub srcDevice: hipDeviceptr_t,
     #[doc = "< Source array"]
@@ -929,7 +925,7 @@ pub struct hip_Memcpy2D {
     #[doc = "< Destination memory type"]
     pub dstMemoryType: hipMemoryType,
     #[doc = "< Destination pointer"]
-    pub dstHost: *mut ::std::os::raw::c_void,
+    pub dstHost: *mut ::core::ffi::c_void,
     #[doc = "< Destination device"]
     pub dstDevice: hipDeviceptr_t,
     #[doc = "< Destination array"]
@@ -946,27 +942,27 @@ pub struct hip_Memcpy2D {
 #[derive(Debug, Copy, Clone)]
 pub struct hipMipmappedArray {
     #[doc = "< Data pointer of the mipmapped array"]
-    pub data: *mut ::std::os::raw::c_void,
+    pub data: *mut ::core::ffi::c_void,
     #[doc = "< Description of the mipmapped array"]
     pub desc: hipChannelFormatDesc,
     #[doc = "< Type of the mipmapped array"]
-    pub type_: ::std::os::raw::c_uint,
+    pub type_: ::core::ffi::c_uint,
     #[doc = "< Width of the mipmapped array"]
-    pub width: ::std::os::raw::c_uint,
+    pub width: ::core::ffi::c_uint,
     #[doc = "< Height of the mipmapped array"]
-    pub height: ::std::os::raw::c_uint,
+    pub height: ::core::ffi::c_uint,
     #[doc = "< Depth of the mipmapped array"]
-    pub depth: ::std::os::raw::c_uint,
+    pub depth: ::core::ffi::c_uint,
     #[doc = "< Minimum level of the mipmapped array"]
-    pub min_mipmap_level: ::std::os::raw::c_uint,
+    pub min_mipmap_level: ::core::ffi::c_uint,
     #[doc = "< Maximum level of the mipmapped array"]
-    pub max_mipmap_level: ::std::os::raw::c_uint,
+    pub max_mipmap_level: ::core::ffi::c_uint,
     #[doc = "< Flags of the mipmapped array"]
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
     #[doc = "< Format of the mipmapped array"]
     pub format: hipArray_Format,
     #[doc = "< Number of channels of the mipmapped array"]
-    pub num_channels: ::std::os::raw::c_uint,
+    pub num_channels: ::core::ffi::c_uint,
 }
 #[doc = " HIP mipmapped array pointer"]
 pub type hipMipmappedArray_t = *mut hipMipmappedArray;
@@ -1034,9 +1030,9 @@ pub struct HIP_TEXTURE_DESC_st {
     #[doc = "< Filter mode"]
     pub filterMode: HIPfilter_mode,
     #[doc = "< Flags"]
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
     #[doc = "< Maximum anisotropy ratio"]
-    pub maxAnisotropy: ::std::os::raw::c_uint,
+    pub maxAnisotropy: ::core::ffi::c_uint,
     #[doc = "< Mipmap filter mode"]
     pub mipmapFilterMode: HIPfilter_mode,
     #[doc = "< Mipmap level bias"]
@@ -1047,7 +1043,7 @@ pub struct HIP_TEXTURE_DESC_st {
     pub maxMipmapLevelClamp: f32,
     #[doc = "< Border Color"]
     pub borderColor: [f32; 4usize],
-    pub reserved: [::std::os::raw::c_int; 12usize],
+    pub reserved: [::core::ffi::c_int; 12usize],
 }
 #[doc = " HIP texture descriptor"]
 pub type HIP_TEXTURE_DESC = HIP_TEXTURE_DESC_st;
@@ -1235,7 +1231,7 @@ pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_2 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_3 {
     #[doc = "< Device pointer"]
-    pub devPtr: *mut ::std::os::raw::c_void,
+    pub devPtr: *mut ::core::ffi::c_void,
     #[doc = "< Channel format description"]
     pub desc: hipChannelFormatDesc,
     #[doc = "< Size in bytes"]
@@ -1245,7 +1241,7 @@ pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_3 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_4 {
     #[doc = "< Device pointer"]
-    pub devPtr: *mut ::std::os::raw::c_void,
+    pub devPtr: *mut ::core::ffi::c_void,
     #[doc = "< Channel format description"]
     pub desc: hipChannelFormatDesc,
     #[doc = "< Width of the array in elements"]
@@ -1263,7 +1259,7 @@ pub struct HIP_RESOURCE_DESC_st {
     pub resType: HIPresourcetype,
     pub res: HIP_RESOURCE_DESC_st__bindgen_ty_1,
     #[doc = "< Flags (must be zero)"]
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -1294,7 +1290,7 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_3 {
     #[doc = "< Array format"]
     pub format: hipArray_Format,
     #[doc = "< Channels per array element"]
-    pub numChannels: ::std::os::raw::c_uint,
+    pub numChannels: ::core::ffi::c_uint,
     #[doc = "< Size in bytes"]
     pub sizeInBytes: usize,
 }
@@ -1306,7 +1302,7 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_4 {
     #[doc = "< Array format"]
     pub format: hipArray_Format,
     #[doc = "< Channels per array element"]
-    pub numChannels: ::std::os::raw::c_uint,
+    pub numChannels: ::core::ffi::c_uint,
     #[doc = "< Width of the array in elements"]
     pub width: usize,
     #[doc = "< Height of the array in elements"]
@@ -1317,7 +1313,7 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_4 {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_5 {
-    pub reserved: [::std::os::raw::c_int; 32usize],
+    pub reserved: [::core::ffi::c_int; 32usize],
 }
 #[doc = " HIP resource view descriptor struct"]
 pub type HIP_RESOURCE_DESC = HIP_RESOURCE_DESC_st;
@@ -1334,13 +1330,13 @@ pub struct hipResourceViewDesc {
     #[doc = "< Depth of the resource view"]
     pub depth: usize,
     #[doc = "< First defined mipmap level"]
-    pub firstMipmapLevel: ::std::os::raw::c_uint,
+    pub firstMipmapLevel: ::core::ffi::c_uint,
     #[doc = "< Last defined mipmap level"]
-    pub lastMipmapLevel: ::std::os::raw::c_uint,
+    pub lastMipmapLevel: ::core::ffi::c_uint,
     #[doc = "< First layer index"]
-    pub firstLayer: ::std::os::raw::c_uint,
+    pub firstLayer: ::core::ffi::c_uint,
     #[doc = "< Last layer index"]
-    pub lastLayer: ::std::os::raw::c_uint,
+    pub lastLayer: ::core::ffi::c_uint,
 }
 #[doc = " Resource view descriptor"]
 #[repr(C)]
@@ -1355,14 +1351,14 @@ pub struct HIP_RESOURCE_VIEW_DESC_st {
     #[doc = "< Depth of the resource view"]
     pub depth: usize,
     #[doc = "< First defined mipmap level"]
-    pub firstMipmapLevel: ::std::os::raw::c_uint,
+    pub firstMipmapLevel: ::core::ffi::c_uint,
     #[doc = "< Last defined mipmap level"]
-    pub lastMipmapLevel: ::std::os::raw::c_uint,
+    pub lastMipmapLevel: ::core::ffi::c_uint,
     #[doc = "< First layer index"]
-    pub firstLayer: ::std::os::raw::c_uint,
+    pub firstLayer: ::core::ffi::c_uint,
     #[doc = "< Last layer index"]
-    pub lastLayer: ::std::os::raw::c_uint,
-    pub reserved: [::std::os::raw::c_uint; 16usize],
+    pub lastLayer: ::core::ffi::c_uint,
+    pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[doc = " Resource view descriptor"]
 pub type HIP_RESOURCE_VIEW_DESC = HIP_RESOURCE_VIEW_DESC_st;
@@ -1387,7 +1383,7 @@ pub enum hipMemcpyKind {
 #[derive(Debug, Copy, Clone)]
 pub struct hipPitchedPtr {
     #[doc = "< Pointer to the allocated memory"]
-    pub ptr: *mut ::std::os::raw::c_void,
+    pub ptr: *mut ::core::ffi::c_void,
     #[doc = "< Pitch in bytes"]
     pub pitch: usize,
     #[doc = "< Logical size of the first dimension of allocation in elements"]
@@ -1450,7 +1446,7 @@ pub struct HIP_MEMCPY3D {
     #[doc = "< Source memory type"]
     pub srcMemoryType: hipMemoryType,
     #[doc = "< Source host pointer"]
-    pub srcHost: *const ::std::os::raw::c_void,
+    pub srcHost: *const ::core::ffi::c_void,
     #[doc = "< Source device"]
     pub srcDevice: hipDeviceptr_t,
     #[doc = "< Source array"]
@@ -1470,7 +1466,7 @@ pub struct HIP_MEMCPY3D {
     #[doc = "< Destination memory type"]
     pub dstMemoryType: hipMemoryType,
     #[doc = "< Destination host pointer"]
-    pub dstHost: *mut ::std::os::raw::c_void,
+    pub dstHost: *mut ::core::ffi::c_void,
     #[doc = "< Destination device"]
     pub dstDevice: hipDeviceptr_t,
     #[doc = "< Destination array"]
@@ -1510,7 +1506,7 @@ pub struct hipMemLocation {
     #[doc = "< Specifies the location type, which describes the meaning of id"]
     pub type_: hipMemLocationType,
     #[doc = "< Identifier for the provided location type @p hipMemLocationType"]
-    pub id: ::std::os::raw::c_int,
+    pub id: ::core::ffi::c_int,
 }
 #[repr(u32)]
 #[doc = " Flags to specify for copies within a batch. Used with hipMemcpyBatchAsync"]
@@ -1548,7 +1544,7 @@ pub struct hipMemcpyAttributes {
     #[doc = "< Location hint for destination operand."]
     pub dstLocHint: hipMemLocation,
     #[doc = "< Additional Flags for copies. See hipMemcpyFlags."]
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
 }
 #[repr(u32)]
 #[doc = " Operand types for individual copies within a batch"]
@@ -1584,7 +1580,7 @@ pub union hipMemcpy3DOperand__bindgen_ty_1 {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_1 {
-    pub ptr: *mut ::std::os::raw::c_void,
+    pub ptr: *mut ::core::ffi::c_void,
     #[doc = "< Length of each row in elements."]
     pub rowLength: usize,
     #[doc = "< Height of each layer in elements."]
@@ -1608,7 +1604,7 @@ pub struct hipMemcpy3DBatchOp {
     pub dst: hipMemcpy3DOperand,
     pub extent: hipExtent,
     pub srcAccessOrder: hipMemcpySrcAccessOrder,
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -1620,7 +1616,7 @@ pub struct hipMemcpy3DPeerParms {
     #[doc = "< Pitched source memory address"]
     pub srcPtr: hipPitchedPtr,
     #[doc = "< Source device"]
-    pub srcDevice: ::std::os::raw::c_int,
+    pub srcDevice: ::core::ffi::c_int,
     #[doc = "< Destination memory address"]
     pub dstArray: hipArray_t,
     #[doc = "< Destination position offset"]
@@ -1628,7 +1624,7 @@ pub struct hipMemcpy3DPeerParms {
     #[doc = "< Pitched destination memory address"]
     pub dstPtr: hipPitchedPtr,
     #[doc = "< Destination device"]
-    pub dstDevice: ::std::os::raw::c_int,
+    pub dstDevice: ::core::ffi::c_int,
     #[doc = "< Requested memory copy size"]
     pub extent: hipExtent,
 }
@@ -1778,6 +1774,7 @@ pub enum hipJitInputType {
     hipJitInputObject = 3,
     #[doc = "< Cuda Only Archive of Host Objects with embedded\n< device code"]
     hipJitInputLibrary = 4,
+    #[deprecated = "Cuda only High Level intermediate"]
     #[doc = "< @deprecated Cuda only High Level intermediate\n< code for LTO"]
     hipJitInputNvvm = 5,
     #[doc = "< Count of Legacy Input Types"]
@@ -1868,14 +1865,14 @@ pub type uint_least8_t = __uint_least8_t;
 pub type uint_least16_t = __uint_least16_t;
 pub type uint_least32_t = __uint_least32_t;
 pub type uint_least64_t = __uint_least64_t;
-pub type int_fast8_t = ::std::os::raw::c_schar;
-pub type int_fast16_t = ::std::os::raw::c_long;
-pub type int_fast32_t = ::std::os::raw::c_long;
-pub type int_fast64_t = ::std::os::raw::c_long;
-pub type uint_fast8_t = ::std::os::raw::c_uchar;
-pub type uint_fast16_t = ::std::os::raw::c_ulong;
-pub type uint_fast32_t = ::std::os::raw::c_ulong;
-pub type uint_fast64_t = ::std::os::raw::c_ulong;
+pub type int_fast8_t = ::core::ffi::c_schar;
+pub type int_fast16_t = ::core::ffi::c_long;
+pub type int_fast32_t = ::core::ffi::c_long;
+pub type int_fast64_t = ::core::ffi::c_long;
+pub type uint_fast8_t = ::core::ffi::c_uchar;
+pub type uint_fast16_t = ::core::ffi::c_ulong;
+pub type uint_fast32_t = ::core::ffi::c_ulong;
+pub type uint_fast64_t = ::core::ffi::c_ulong;
 pub type intmax_t = __intmax_t;
 pub type uintmax_t = __uintmax_t;
 pub const HIP_SUCCESS: _bindgen_ty_1 = _bindgen_ty_1::HIP_SUCCESS;
@@ -1901,483 +1898,483 @@ pub struct hipDeviceArch_t {
 }
 impl hipDeviceArch_t {
     #[inline]
-    pub fn hasGlobalInt32Atomics(&self) -> ::std::os::raw::c_uint {
+    pub fn hasGlobalInt32Atomics(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<0usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasGlobalInt32Atomics(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasGlobalInt32Atomics(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<0usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasGlobalInt32Atomics_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasGlobalInt32Atomics_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<0usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasGlobalInt32Atomics_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasGlobalInt32Atomics_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<0usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasGlobalFloatAtomicExch(&self) -> ::std::os::raw::c_uint {
+    pub fn hasGlobalFloatAtomicExch(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<1usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasGlobalFloatAtomicExch(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasGlobalFloatAtomicExch(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<1usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasGlobalFloatAtomicExch_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasGlobalFloatAtomicExch_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<1usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasGlobalFloatAtomicExch_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasGlobalFloatAtomicExch_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<1usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasSharedInt32Atomics(&self) -> ::std::os::raw::c_uint {
+    pub fn hasSharedInt32Atomics(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<2usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasSharedInt32Atomics(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasSharedInt32Atomics(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<2usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasSharedInt32Atomics_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasSharedInt32Atomics_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<2usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasSharedInt32Atomics_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasSharedInt32Atomics_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<2usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasSharedFloatAtomicExch(&self) -> ::std::os::raw::c_uint {
+    pub fn hasSharedFloatAtomicExch(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<3usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasSharedFloatAtomicExch(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasSharedFloatAtomicExch(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<3usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasSharedFloatAtomicExch_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasSharedFloatAtomicExch_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<3usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasSharedFloatAtomicExch_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasSharedFloatAtomicExch_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<3usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasFloatAtomicAdd(&self) -> ::std::os::raw::c_uint {
+    pub fn hasFloatAtomicAdd(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<4usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasFloatAtomicAdd(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasFloatAtomicAdd(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<4usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasFloatAtomicAdd_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasFloatAtomicAdd_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<4usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasFloatAtomicAdd_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasFloatAtomicAdd_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<4usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasGlobalInt64Atomics(&self) -> ::std::os::raw::c_uint {
+    pub fn hasGlobalInt64Atomics(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<5usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasGlobalInt64Atomics(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasGlobalInt64Atomics(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<5usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasGlobalInt64Atomics_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasGlobalInt64Atomics_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<5usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasGlobalInt64Atomics_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasGlobalInt64Atomics_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<5usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasSharedInt64Atomics(&self) -> ::std::os::raw::c_uint {
+    pub fn hasSharedInt64Atomics(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<6usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasSharedInt64Atomics(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasSharedInt64Atomics(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<6usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasSharedInt64Atomics_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasSharedInt64Atomics_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<6usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasSharedInt64Atomics_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasSharedInt64Atomics_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<6usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasDoubles(&self) -> ::std::os::raw::c_uint {
+    pub fn hasDoubles(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<7usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasDoubles(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasDoubles(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<7usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasDoubles_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasDoubles_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<7usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasDoubles_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasDoubles_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<7usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasWarpVote(&self) -> ::std::os::raw::c_uint {
+    pub fn hasWarpVote(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<8usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasWarpVote(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasWarpVote(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<8usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasWarpVote_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasWarpVote_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<8usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasWarpVote_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasWarpVote_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<8usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasWarpBallot(&self) -> ::std::os::raw::c_uint {
+    pub fn hasWarpBallot(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<9usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasWarpBallot(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasWarpBallot(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<9usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasWarpBallot_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasWarpBallot_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<9usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasWarpBallot_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasWarpBallot_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<9usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasWarpShuffle(&self) -> ::std::os::raw::c_uint {
+    pub fn hasWarpShuffle(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<10usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasWarpShuffle(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasWarpShuffle(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<10usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasWarpShuffle_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasWarpShuffle_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<10usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasWarpShuffle_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasWarpShuffle_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<10usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasFunnelShift(&self) -> ::std::os::raw::c_uint {
+    pub fn hasFunnelShift(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<11usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasFunnelShift(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasFunnelShift(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<11usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasFunnelShift_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasFunnelShift_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<11usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasFunnelShift_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasFunnelShift_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<11usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasThreadFenceSystem(&self) -> ::std::os::raw::c_uint {
+    pub fn hasThreadFenceSystem(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<12usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasThreadFenceSystem(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasThreadFenceSystem(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<12usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasThreadFenceSystem_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasThreadFenceSystem_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<12usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasThreadFenceSystem_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasThreadFenceSystem_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<12usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasSyncThreadsExt(&self) -> ::std::os::raw::c_uint {
+    pub fn hasSyncThreadsExt(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<13usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasSyncThreadsExt(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasSyncThreadsExt(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<13usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasSyncThreadsExt_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasSyncThreadsExt_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<13usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasSyncThreadsExt_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasSyncThreadsExt_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<13usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasSurfaceFuncs(&self) -> ::std::os::raw::c_uint {
+    pub fn hasSurfaceFuncs(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<14usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasSurfaceFuncs(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasSurfaceFuncs(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<14usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasSurfaceFuncs_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasSurfaceFuncs_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<14usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasSurfaceFuncs_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasSurfaceFuncs_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<14usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn has3dGrid(&self) -> ::std::os::raw::c_uint {
+    pub fn has3dGrid(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<15usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_has3dGrid(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_has3dGrid(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<15usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn has3dGrid_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn has3dGrid_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<15usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_has3dGrid_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_has3dGrid_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<15usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
-    pub fn hasDynamicParallelism(&self) -> ::std::os::raw::c_uint {
+    pub fn hasDynamicParallelism(&self) -> ::core::ffi::c_uint {
         self._bitfield_1.get_const::<16usize, 1u8>() as u32 as _
     }
     #[inline]
-    pub fn set_hasDynamicParallelism(&mut self, val: ::std::os::raw::c_uint) {
+    pub fn set_hasDynamicParallelism(&mut self, val: ::core::ffi::c_uint) {
         let val: u32 = val as _;
         self._bitfield_1.set_const::<16usize, 1u8>(val as u64)
     }
     #[inline]
-    pub unsafe fn hasDynamicParallelism_raw(this: *const Self) -> ::std::os::raw::c_uint {
+    pub unsafe fn hasDynamicParallelism_raw(this: *const Self) -> ::core::ffi::c_uint {
         unsafe {
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_get_const::<16usize, 1u8>(
-                ::std::ptr::addr_of!((*this)._bitfield_1),
+                ::core::ptr::addr_of!((*this)._bitfield_1),
             ) as u32 as _
         }
     }
     #[inline]
-    pub unsafe fn set_hasDynamicParallelism_raw(this: *mut Self, val: ::std::os::raw::c_uint) {
+    pub unsafe fn set_hasDynamicParallelism_raw(this: *mut Self, val: ::core::ffi::c_uint) {
         unsafe {
             let val: u32 = val as _;
             <__BindgenBitfieldUnit<[u8; 3usize]>>::raw_set_const::<16usize, 1u8>(
-                ::std::ptr::addr_of_mut!((*this)._bitfield_1),
+                ::core::ptr::addr_of_mut!((*this)._bitfield_1),
                 val as u64,
             )
         }
     }
     #[inline]
     pub fn new_bitfield_1(
-        hasGlobalInt32Atomics: ::std::os::raw::c_uint,
-        hasGlobalFloatAtomicExch: ::std::os::raw::c_uint,
-        hasSharedInt32Atomics: ::std::os::raw::c_uint,
-        hasSharedFloatAtomicExch: ::std::os::raw::c_uint,
-        hasFloatAtomicAdd: ::std::os::raw::c_uint,
-        hasGlobalInt64Atomics: ::std::os::raw::c_uint,
-        hasSharedInt64Atomics: ::std::os::raw::c_uint,
-        hasDoubles: ::std::os::raw::c_uint,
-        hasWarpVote: ::std::os::raw::c_uint,
-        hasWarpBallot: ::std::os::raw::c_uint,
-        hasWarpShuffle: ::std::os::raw::c_uint,
-        hasFunnelShift: ::std::os::raw::c_uint,
-        hasThreadFenceSystem: ::std::os::raw::c_uint,
-        hasSyncThreadsExt: ::std::os::raw::c_uint,
-        hasSurfaceFuncs: ::std::os::raw::c_uint,
-        has3dGrid: ::std::os::raw::c_uint,
-        hasDynamicParallelism: ::std::os::raw::c_uint,
+        hasGlobalInt32Atomics: ::core::ffi::c_uint,
+        hasGlobalFloatAtomicExch: ::core::ffi::c_uint,
+        hasSharedInt32Atomics: ::core::ffi::c_uint,
+        hasSharedFloatAtomicExch: ::core::ffi::c_uint,
+        hasFloatAtomicAdd: ::core::ffi::c_uint,
+        hasGlobalInt64Atomics: ::core::ffi::c_uint,
+        hasSharedInt64Atomics: ::core::ffi::c_uint,
+        hasDoubles: ::core::ffi::c_uint,
+        hasWarpVote: ::core::ffi::c_uint,
+        hasWarpBallot: ::core::ffi::c_uint,
+        hasWarpShuffle: ::core::ffi::c_uint,
+        hasFunnelShift: ::core::ffi::c_uint,
+        hasThreadFenceSystem: ::core::ffi::c_uint,
+        hasSyncThreadsExt: ::core::ffi::c_uint,
+        hasSurfaceFuncs: ::core::ffi::c_uint,
+        has3dGrid: ::core::ffi::c_uint,
+        hasDynamicParallelism: ::core::ffi::c_uint,
     ) -> __BindgenBitfieldUnit<[u8; 3usize]> {
         let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 3usize]> = Default::default();
         __bindgen_bitfield_unit.set_const::<0usize, 1u8>({
@@ -2454,7 +2451,7 @@ impl hipDeviceArch_t {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipUUID_t {
-    pub bytes: [::std::os::raw::c_char; 16usize],
+    pub bytes: [::core::ffi::c_char; 16usize],
 }
 pub type hipUUID = hipUUID_t;
 #[doc = " hipDeviceProp\n"]
@@ -2462,230 +2459,230 @@ pub type hipUUID = hipUUID_t;
 #[derive(Debug, Copy, Clone)]
 pub struct hipDeviceProp_tR0600 {
     #[doc = "< Device name."]
-    pub name: [::std::os::raw::c_char; 256usize],
+    pub name: [::core::ffi::c_char; 256usize],
     #[doc = "< UUID of a device"]
     pub uuid: hipUUID,
     #[doc = "< 8-byte unique identifier. Only valid on windows"]
-    pub luid: [::std::os::raw::c_char; 8usize],
+    pub luid: [::core::ffi::c_char; 8usize],
     #[doc = "< LUID node mask"]
-    pub luidDeviceNodeMask: ::std::os::raw::c_uint,
+    pub luidDeviceNodeMask: ::core::ffi::c_uint,
     #[doc = "< Size of global memory region (in bytes)."]
     pub totalGlobalMem: usize,
     #[doc = "< Size of shared memory per block (in bytes)."]
     pub sharedMemPerBlock: usize,
     #[doc = "< Registers per block."]
-    pub regsPerBlock: ::std::os::raw::c_int,
+    pub regsPerBlock: ::core::ffi::c_int,
     #[doc = "< Warp size."]
-    pub warpSize: ::std::os::raw::c_int,
+    pub warpSize: ::core::ffi::c_int,
     #[doc = "< Maximum pitch in bytes allowed by memory copies\n< pitched memory"]
     pub memPitch: usize,
     #[doc = "< Max work items per work group or workgroup max size."]
-    pub maxThreadsPerBlock: ::std::os::raw::c_int,
+    pub maxThreadsPerBlock: ::core::ffi::c_int,
     #[doc = "< Max number of threads in each dimension (XYZ) of a block."]
-    pub maxThreadsDim: [::std::os::raw::c_int; 3usize],
+    pub maxThreadsDim: [::core::ffi::c_int; 3usize],
     #[doc = "< Max grid dimensions (XYZ)."]
-    pub maxGridSize: [::std::os::raw::c_int; 3usize],
+    pub maxGridSize: [::core::ffi::c_int; 3usize],
     #[doc = "< Max clock frequency of the multiProcessors in khz."]
-    pub clockRate: ::std::os::raw::c_int,
+    pub clockRate: ::core::ffi::c_int,
     #[doc = "< Size of shared constant memory region on the device\n< (in bytes)."]
     pub totalConstMem: usize,
     #[doc = "< Major compute capability version.  This indicates the core instruction set\n< of the GPU architecture.  For example, a value of 11 would correspond to\n< Navi III (RDNA3).  See the arch feature flags for portable ways to query\n< feature caps."]
-    pub major: ::std::os::raw::c_int,
+    pub major: ::core::ffi::c_int,
     #[doc = "< Minor compute capability version.  This indicates a particular configuration,\n< feature set, or variation within the group represented by the major compute\n< capability version.  For example, different models within the same major version\n< might have varying levels of support for certain features or optimizations.\n< See the arch feature flags for portable ways to query feature caps."]
-    pub minor: ::std::os::raw::c_int,
+    pub minor: ::core::ffi::c_int,
     #[doc = "< Alignment requirement for textures"]
     pub textureAlignment: usize,
     #[doc = "< Pitch alignment requirement for texture references bound to"]
     pub texturePitchAlignment: usize,
     #[doc = "< Deprecated. Use asyncEngineCount instead"]
-    pub deviceOverlap: ::std::os::raw::c_int,
+    pub deviceOverlap: ::core::ffi::c_int,
     #[doc = "< Number of multi-processors. When the GPU works in Compute\n< Unit (CU) mode, this value equals the number of CUs;\n< when in Workgroup Processor (WGP) mode, this value equels\n< half of CUs, because a single WGP contains two CUs."]
-    pub multiProcessorCount: ::std::os::raw::c_int,
+    pub multiProcessorCount: ::core::ffi::c_int,
     #[doc = "< Run time limit for kernels executed on the device"]
-    pub kernelExecTimeoutEnabled: ::std::os::raw::c_int,
+    pub kernelExecTimeoutEnabled: ::core::ffi::c_int,
     #[doc = "< APU vs dGPU"]
-    pub integrated: ::std::os::raw::c_int,
+    pub integrated: ::core::ffi::c_int,
     #[doc = "< Check whether HIP can map host memory"]
-    pub canMapHostMemory: ::std::os::raw::c_int,
+    pub canMapHostMemory: ::core::ffi::c_int,
     #[doc = "< Compute mode."]
-    pub computeMode: ::std::os::raw::c_int,
+    pub computeMode: ::core::ffi::c_int,
     #[doc = "< Maximum number of elements in 1D images"]
-    pub maxTexture1D: ::std::os::raw::c_int,
+    pub maxTexture1D: ::core::ffi::c_int,
     #[doc = "< Maximum 1D mipmap texture size"]
-    pub maxTexture1DMipmap: ::std::os::raw::c_int,
+    pub maxTexture1DMipmap: ::core::ffi::c_int,
     #[doc = "< Maximum size for 1D textures bound to linear memory"]
-    pub maxTexture1DLinear: ::std::os::raw::c_int,
+    pub maxTexture1DLinear: ::core::ffi::c_int,
     #[doc = "< Maximum dimensions (width, height) of 2D images, in image elements"]
-    pub maxTexture2D: [::std::os::raw::c_int; 2usize],
+    pub maxTexture2D: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum number of elements in 2D array mipmap of images"]
-    pub maxTexture2DMipmap: [::std::os::raw::c_int; 2usize],
+    pub maxTexture2DMipmap: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum 2D tex dimensions if tex are bound to pitched memory"]
-    pub maxTexture2DLinear: [::std::os::raw::c_int; 3usize],
+    pub maxTexture2DLinear: [::core::ffi::c_int; 3usize],
     #[doc = "< Maximum 2D tex dimensions if gather has to be performed"]
-    pub maxTexture2DGather: [::std::os::raw::c_int; 2usize],
+    pub maxTexture2DGather: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum dimensions (width, height, depth) of 3D images, in image\n< elements"]
-    pub maxTexture3D: [::std::os::raw::c_int; 3usize],
+    pub maxTexture3D: [::core::ffi::c_int; 3usize],
     #[doc = "< Maximum alternate 3D texture dims"]
-    pub maxTexture3DAlt: [::std::os::raw::c_int; 3usize],
+    pub maxTexture3DAlt: [::core::ffi::c_int; 3usize],
     #[doc = "< Maximum cubemap texture dims"]
-    pub maxTextureCubemap: ::std::os::raw::c_int,
+    pub maxTextureCubemap: ::core::ffi::c_int,
     #[doc = "< Maximum number of elements in 1D array images"]
-    pub maxTexture1DLayered: [::std::os::raw::c_int; 2usize],
+    pub maxTexture1DLayered: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum number of elements in 2D array images"]
-    pub maxTexture2DLayered: [::std::os::raw::c_int; 3usize],
+    pub maxTexture2DLayered: [::core::ffi::c_int; 3usize],
     #[doc = "< Maximum cubemaps layered texture dims"]
-    pub maxTextureCubemapLayered: [::std::os::raw::c_int; 2usize],
+    pub maxTextureCubemapLayered: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum 1D surface size"]
-    pub maxSurface1D: ::std::os::raw::c_int,
+    pub maxSurface1D: ::core::ffi::c_int,
     #[doc = "< Maximum 2D surface size"]
-    pub maxSurface2D: [::std::os::raw::c_int; 2usize],
+    pub maxSurface2D: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum 3D surface size"]
-    pub maxSurface3D: [::std::os::raw::c_int; 3usize],
+    pub maxSurface3D: [::core::ffi::c_int; 3usize],
     #[doc = "< Maximum 1D layered surface size"]
-    pub maxSurface1DLayered: [::std::os::raw::c_int; 2usize],
+    pub maxSurface1DLayered: [::core::ffi::c_int; 2usize],
     #[doc = "< Maximum 2D layared surface size"]
-    pub maxSurface2DLayered: [::std::os::raw::c_int; 3usize],
+    pub maxSurface2DLayered: [::core::ffi::c_int; 3usize],
     #[doc = "< Maximum cubemap surface size"]
-    pub maxSurfaceCubemap: ::std::os::raw::c_int,
+    pub maxSurfaceCubemap: ::core::ffi::c_int,
     #[doc = "< Maximum cubemap layered surface size"]
-    pub maxSurfaceCubemapLayered: [::std::os::raw::c_int; 2usize],
+    pub maxSurfaceCubemapLayered: [::core::ffi::c_int; 2usize],
     #[doc = "< Alignment requirement for surface"]
     pub surfaceAlignment: usize,
     #[doc = "< Device can possibly execute multiple kernels concurrently."]
-    pub concurrentKernels: ::std::os::raw::c_int,
+    pub concurrentKernels: ::core::ffi::c_int,
     #[doc = "< Device has ECC support enabled"]
-    pub ECCEnabled: ::std::os::raw::c_int,
+    pub ECCEnabled: ::core::ffi::c_int,
     #[doc = "< PCI Bus ID."]
-    pub pciBusID: ::std::os::raw::c_int,
+    pub pciBusID: ::core::ffi::c_int,
     #[doc = "< PCI Device ID"]
-    pub pciDeviceID: ::std::os::raw::c_int,
+    pub pciDeviceID: ::core::ffi::c_int,
     #[doc = "< PCI Domain ID"]
-    pub pciDomainID: ::std::os::raw::c_int,
+    pub pciDomainID: ::core::ffi::c_int,
     #[doc = "< 1:If device is Tesla device using TCC driver, else 0"]
-    pub tccDriver: ::std::os::raw::c_int,
+    pub tccDriver: ::core::ffi::c_int,
     #[doc = "< Number of async engines"]
-    pub asyncEngineCount: ::std::os::raw::c_int,
+    pub asyncEngineCount: ::core::ffi::c_int,
     #[doc = "< Does device and host share unified address space"]
-    pub unifiedAddressing: ::std::os::raw::c_int,
+    pub unifiedAddressing: ::core::ffi::c_int,
     #[doc = "< Max global memory clock frequency in khz."]
-    pub memoryClockRate: ::std::os::raw::c_int,
+    pub memoryClockRate: ::core::ffi::c_int,
     #[doc = "< Global memory bus width in bits."]
-    pub memoryBusWidth: ::std::os::raw::c_int,
+    pub memoryBusWidth: ::core::ffi::c_int,
     #[doc = "< L2 cache size."]
-    pub l2CacheSize: ::std::os::raw::c_int,
+    pub l2CacheSize: ::core::ffi::c_int,
     #[doc = "< Device's max L2 persisting lines in bytes"]
-    pub persistingL2CacheMaxSize: ::std::os::raw::c_int,
+    pub persistingL2CacheMaxSize: ::core::ffi::c_int,
     #[doc = "< Maximum resident threads per multi-processor."]
-    pub maxThreadsPerMultiProcessor: ::std::os::raw::c_int,
+    pub maxThreadsPerMultiProcessor: ::core::ffi::c_int,
     #[doc = "< Device supports stream priority"]
-    pub streamPrioritiesSupported: ::std::os::raw::c_int,
+    pub streamPrioritiesSupported: ::core::ffi::c_int,
     #[doc = "< Indicates globals are cached in L1"]
-    pub globalL1CacheSupported: ::std::os::raw::c_int,
+    pub globalL1CacheSupported: ::core::ffi::c_int,
     #[doc = "< Locals are cahced in L1"]
-    pub localL1CacheSupported: ::std::os::raw::c_int,
+    pub localL1CacheSupported: ::core::ffi::c_int,
     #[doc = "< Amount of shared memory available per multiprocessor."]
     pub sharedMemPerMultiprocessor: usize,
     #[doc = "< registers available per multiprocessor"]
-    pub regsPerMultiprocessor: ::std::os::raw::c_int,
+    pub regsPerMultiprocessor: ::core::ffi::c_int,
     #[doc = "< Device supports allocating managed memory on this system"]
-    pub managedMemory: ::std::os::raw::c_int,
+    pub managedMemory: ::core::ffi::c_int,
     #[doc = "< 1 if device is on a multi-GPU board, 0 if not."]
-    pub isMultiGpuBoard: ::std::os::raw::c_int,
+    pub isMultiGpuBoard: ::core::ffi::c_int,
     #[doc = "< Unique identifier for a group of devices on same multiboard GPU"]
-    pub multiGpuBoardGroupID: ::std::os::raw::c_int,
+    pub multiGpuBoardGroupID: ::core::ffi::c_int,
     #[doc = "< Link between host and device supports native atomics"]
-    pub hostNativeAtomicSupported: ::std::os::raw::c_int,
+    pub hostNativeAtomicSupported: ::core::ffi::c_int,
     #[doc = "< Deprecated. CUDA only."]
-    pub singleToDoublePrecisionPerfRatio: ::std::os::raw::c_int,
+    pub singleToDoublePrecisionPerfRatio: ::core::ffi::c_int,
     #[doc = "< Device supports coherently accessing pageable memory\n< without calling hipHostRegister on it"]
-    pub pageableMemoryAccess: ::std::os::raw::c_int,
+    pub pageableMemoryAccess: ::core::ffi::c_int,
     #[doc = "< Device can coherently access managed memory concurrently with\n< the CPU"]
-    pub concurrentManagedAccess: ::std::os::raw::c_int,
+    pub concurrentManagedAccess: ::core::ffi::c_int,
     #[doc = "< Is compute preemption supported on the device"]
-    pub computePreemptionSupported: ::std::os::raw::c_int,
+    pub computePreemptionSupported: ::core::ffi::c_int,
     #[doc = "< Device can access host registered memory with same\n< address as the host"]
-    pub canUseHostPointerForRegisteredMem: ::std::os::raw::c_int,
+    pub canUseHostPointerForRegisteredMem: ::core::ffi::c_int,
     #[doc = "< HIP device supports cooperative launch"]
-    pub cooperativeLaunch: ::std::os::raw::c_int,
+    pub cooperativeLaunch: ::core::ffi::c_int,
     #[doc = "< HIP device supports cooperative launch on multiple\n< devices"]
-    pub cooperativeMultiDeviceLaunch: ::std::os::raw::c_int,
+    pub cooperativeMultiDeviceLaunch: ::core::ffi::c_int,
     #[doc = "< Per device m ax shared mem per block usable by special opt in"]
     pub sharedMemPerBlockOptin: usize,
     #[doc = "< Device accesses pageable memory via the host's\n< page tables"]
-    pub pageableMemoryAccessUsesHostPageTables: ::std::os::raw::c_int,
+    pub pageableMemoryAccessUsesHostPageTables: ::core::ffi::c_int,
     #[doc = "< Host can directly access managed memory on the device\n< without migration"]
-    pub directManagedMemAccessFromHost: ::std::os::raw::c_int,
+    pub directManagedMemAccessFromHost: ::core::ffi::c_int,
     #[doc = "< Max number of blocks on CU"]
-    pub maxBlocksPerMultiProcessor: ::std::os::raw::c_int,
+    pub maxBlocksPerMultiProcessor: ::core::ffi::c_int,
     #[doc = "< Max value of access policy window"]
-    pub accessPolicyMaxWindowSize: ::std::os::raw::c_int,
+    pub accessPolicyMaxWindowSize: ::core::ffi::c_int,
     #[doc = "< Shared memory reserved by driver per block"]
     pub reservedSharedMemPerBlock: usize,
     #[doc = "< Device supports hipHostRegister"]
-    pub hostRegisterSupported: ::std::os::raw::c_int,
+    pub hostRegisterSupported: ::core::ffi::c_int,
     #[doc = "< Indicates if device supports sparse hip arrays"]
-    pub sparseHipArraySupported: ::std::os::raw::c_int,
+    pub sparseHipArraySupported: ::core::ffi::c_int,
     #[doc = "< Device supports using the hipHostRegisterReadOnly flag\n< with hipHostRegistger"]
-    pub hostRegisterReadOnlySupported: ::std::os::raw::c_int,
+    pub hostRegisterReadOnlySupported: ::core::ffi::c_int,
     #[doc = "< Indicates external timeline semaphore support"]
-    pub timelineSemaphoreInteropSupported: ::std::os::raw::c_int,
+    pub timelineSemaphoreInteropSupported: ::core::ffi::c_int,
     #[doc = "< Indicates if device supports hipMallocAsync and hipMemPool APIs"]
-    pub memoryPoolsSupported: ::std::os::raw::c_int,
+    pub memoryPoolsSupported: ::core::ffi::c_int,
     #[doc = "< Indicates device support of RDMA APIs"]
-    pub gpuDirectRDMASupported: ::std::os::raw::c_int,
+    pub gpuDirectRDMASupported: ::core::ffi::c_int,
     #[doc = "< Bitmask to be interpreted according to\n< hipFlushGPUDirectRDMAWritesOptions"]
-    pub gpuDirectRDMAFlushWritesOptions: ::std::os::raw::c_uint,
+    pub gpuDirectRDMAFlushWritesOptions: ::core::ffi::c_uint,
     #[doc = "< value of hipGPUDirectRDMAWritesOrdering"]
-    pub gpuDirectRDMAWritesOrdering: ::std::os::raw::c_int,
+    pub gpuDirectRDMAWritesOrdering: ::core::ffi::c_int,
     #[doc = "< Bitmask of handle types support with mempool based IPC"]
-    pub memoryPoolSupportedHandleTypes: ::std::os::raw::c_uint,
+    pub memoryPoolSupportedHandleTypes: ::core::ffi::c_uint,
     #[doc = "< Device supports deferred mapping HIP arrays and HIP\n< mipmapped arrays"]
-    pub deferredMappingHipArraySupported: ::std::os::raw::c_int,
+    pub deferredMappingHipArraySupported: ::core::ffi::c_int,
     #[doc = "< Device supports IPC events"]
-    pub ipcEventSupported: ::std::os::raw::c_int,
+    pub ipcEventSupported: ::core::ffi::c_int,
     #[doc = "< Device supports cluster launch"]
-    pub clusterLaunch: ::std::os::raw::c_int,
+    pub clusterLaunch: ::core::ffi::c_int,
     #[doc = "< Indicates device supports unified function pointers"]
-    pub unifiedFunctionPointers: ::std::os::raw::c_int,
+    pub unifiedFunctionPointers: ::core::ffi::c_int,
     #[doc = "< CUDA Reserved."]
-    pub reserved: [::std::os::raw::c_int; 63usize],
+    pub reserved: [::core::ffi::c_int; 63usize],
     #[doc = "< Reserved for adding new entries for HIP/CUDA."]
-    pub hipReserved: [::std::os::raw::c_int; 32usize],
+    pub hipReserved: [::core::ffi::c_int; 32usize],
     #[doc = "< AMD GCN Arch Name. HIP Only."]
-    pub gcnArchName: [::std::os::raw::c_char; 256usize],
+    pub gcnArchName: [::core::ffi::c_char; 256usize],
     #[doc = "< Maximum Shared Memory Per CU. HIP Only."]
     pub maxSharedMemoryPerMultiProcessor: usize,
     #[doc = "< Frequency in khz of the timer used by the device-side \"clock*\"\n< instructions.  New for HIP."]
-    pub clockInstructionRate: ::std::os::raw::c_int,
+    pub clockInstructionRate: ::core::ffi::c_int,
     #[doc = "< Architectural feature flags.  New for HIP."]
     pub arch: hipDeviceArch_t,
     #[doc = "< Addres of HDP_MEM_COHERENCY_FLUSH_CNTL register"]
-    pub hdpMemFlushCntl: *mut ::std::os::raw::c_uint,
+    pub hdpMemFlushCntl: *mut ::core::ffi::c_uint,
     #[doc = "< Addres of HDP_REG_COHERENCY_FLUSH_CNTL register"]
-    pub hdpRegFlushCntl: *mut ::std::os::raw::c_uint,
+    pub hdpRegFlushCntl: *mut ::core::ffi::c_uint,
     #[doc = "< HIP device supports cooperative launch on\n< multiple"]
-    pub cooperativeMultiDeviceUnmatchedFunc: ::std::os::raw::c_int,
+    pub cooperativeMultiDeviceUnmatchedFunc: ::core::ffi::c_int,
     #[doc = "< HIP device supports cooperative launch on\n< multiple"]
-    pub cooperativeMultiDeviceUnmatchedGridDim: ::std::os::raw::c_int,
+    pub cooperativeMultiDeviceUnmatchedGridDim: ::core::ffi::c_int,
     #[doc = "< HIP device supports cooperative launch on\n< multiple"]
-    pub cooperativeMultiDeviceUnmatchedBlockDim: ::std::os::raw::c_int,
+    pub cooperativeMultiDeviceUnmatchedBlockDim: ::core::ffi::c_int,
     #[doc = "< HIP device supports cooperative launch on\n< multiple"]
-    pub cooperativeMultiDeviceUnmatchedSharedMem: ::std::os::raw::c_int,
+    pub cooperativeMultiDeviceUnmatchedSharedMem: ::core::ffi::c_int,
     #[doc = "< 1: if it is a large PCI bar device, else 0"]
-    pub isLargeBar: ::std::os::raw::c_int,
+    pub isLargeBar: ::core::ffi::c_int,
     #[doc = "< Revision of the GPU in this device"]
-    pub asicRevision: ::std::os::raw::c_int,
+    pub asicRevision: ::core::ffi::c_int,
 }
 #[doc = " Pointer attributes"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipPointerAttribute_t {
     pub type_: hipMemoryType,
-    pub device: ::std::os::raw::c_int,
-    pub devicePointer: *mut ::std::os::raw::c_void,
-    pub hostPointer: *mut ::std::os::raw::c_void,
-    pub isManaged: ::std::os::raw::c_int,
-    pub allocationFlags: ::std::os::raw::c_uint,
+    pub device: ::core::ffi::c_int,
+    pub devicePointer: *mut ::core::ffi::c_void,
+    pub hostPointer: *mut ::core::ffi::c_void,
+    pub isManaged: ::core::ffi::c_int,
+    pub allocationFlags: ::core::ffi::c_uint,
 }
 impl hipError_t {
     pub const hipErrorMemoryAllocation: hipError_t = hipError_t::hipErrorOutOfMemory;
@@ -3150,19 +3147,19 @@ pub enum hipTextureReadMode {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct textureReference {
-    pub normalized: ::std::os::raw::c_int,
+    pub normalized: ::core::ffi::c_int,
     pub readMode: hipTextureReadMode,
     pub filterMode: hipTextureFilterMode,
     pub addressMode: [hipTextureAddressMode; 3usize],
     pub channelDesc: hipChannelFormatDesc,
-    pub sRGB: ::std::os::raw::c_int,
-    pub maxAnisotropy: ::std::os::raw::c_uint,
+    pub sRGB: ::core::ffi::c_int,
+    pub maxAnisotropy: ::core::ffi::c_uint,
     pub mipmapFilterMode: hipTextureFilterMode,
     pub mipmapLevelBias: f32,
     pub minMipmapLevelClamp: f32,
     pub maxMipmapLevelClamp: f32,
     pub textureObject: hipTextureObject_t,
-    pub numChannels: ::std::os::raw::c_int,
+    pub numChannels: ::core::ffi::c_int,
     pub format: hipArray_Format,
 }
 #[doc = " hip texture descriptor"]
@@ -3172,10 +3169,10 @@ pub struct hipTextureDesc {
     pub addressMode: [hipTextureAddressMode; 3usize],
     pub filterMode: hipTextureFilterMode,
     pub readMode: hipTextureReadMode,
-    pub sRGB: ::std::os::raw::c_int,
+    pub sRGB: ::core::ffi::c_int,
     pub borderColor: [f32; 4usize],
-    pub normalizedCoords: ::std::os::raw::c_int,
-    pub maxAnisotropy: ::std::os::raw::c_uint,
+    pub normalizedCoords: ::core::ffi::c_int,
+    pub maxAnisotropy: ::core::ffi::c_uint,
     pub mipmapFilterMode: hipTextureFilterMode,
     pub mipmapLevelBias: f32,
     pub minMipmapLevelClamp: f32,
@@ -3208,7 +3205,7 @@ pub struct ihipCtx_t {
     _unused: [u8; 0],
 }
 pub type hipCtx_t = *mut ihipCtx_t;
-pub type hipDevice_t = ::std::os::raw::c_int;
+pub type hipDevice_t = ::core::ffi::c_int;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDeviceP2PAttr {
@@ -3233,19 +3230,19 @@ pub type hipStream_t = *mut ihipStream_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipIpcMemHandle_st {
-    pub reserved: [::std::os::raw::c_char; 64usize],
+    pub reserved: [::core::ffi::c_char; 64usize],
 }
 pub type hipIpcMemHandle_t = hipIpcMemHandle_st;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipIpcEventHandle_st {
-    pub reserved: [::std::os::raw::c_char; 64usize],
+    pub reserved: [::core::ffi::c_char; 64usize],
 }
 pub type hipIpcEventHandle_t = hipIpcEventHandle_st;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemFabricHandle_st {
-    pub data: [::std::os::raw::c_uchar; 64usize],
+    pub data: [::core::ffi::c_uchar; 64usize],
 }
 pub type hipMemFabricHandle_t = hipMemFabricHandle_st;
 #[repr(C)]
@@ -3288,15 +3285,15 @@ pub type hipMemPool_t = *mut ihipMemPoolHandle_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipFuncAttributes {
-    pub binaryVersion: ::std::os::raw::c_int,
-    pub cacheModeCA: ::std::os::raw::c_int,
+    pub binaryVersion: ::core::ffi::c_int,
+    pub cacheModeCA: ::core::ffi::c_int,
     pub constSizeBytes: usize,
     pub localSizeBytes: usize,
-    pub maxDynamicSharedSizeBytes: ::std::os::raw::c_int,
-    pub maxThreadsPerBlock: ::std::os::raw::c_int,
-    pub numRegs: ::std::os::raw::c_int,
-    pub preferredShmemCarveout: ::std::os::raw::c_int,
-    pub ptxVersion: ::std::os::raw::c_int,
+    pub maxDynamicSharedSizeBytes: ::core::ffi::c_int,
+    pub maxThreadsPerBlock: ::core::ffi::c_int,
+    pub numRegs: ::core::ffi::c_int,
+    pub preferredShmemCarveout: ::core::ffi::c_int,
+    pub ptxVersion: ::core::ffi::c_int,
     pub sharedSizeBytes: usize,
 }
 #[repr(C)]
@@ -3357,7 +3354,7 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t {
     pub address: hipDeviceptr_t,
     pub __bindgen_anon_1:
         hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
     #[doc = "< Not valid for AMD backend. Initial value is unimportant"]
     pub alias: hipDeviceptr_t,
 }
@@ -3374,7 +3371,7 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t {
     pub address: hipDeviceptr_t,
     pub __bindgen_anon_1:
         hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
     #[doc = "< Not valid for AMD backend. Initial value is unimportant"]
     pub alias: hipDeviceptr_t,
 }
@@ -3388,13 +3385,13 @@ pub union hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t__bind
 #[derive(Debug, Copy, Clone)]
 pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpFlushRemoteWritesParams_t {
     pub operation: hipStreamBatchMemOpType,
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
     pub operation: hipStreamBatchMemOpType,
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
 }
 #[doc = " @brief Union representing batch memory operation parameters for HIP streams.\n\n hipStreamBatchMemOpParams is used to specify the parameters for batch memory\n operations in a HIP stream. This union supports various operations including\n waiting for a specific value, writing a value, and different flags for wait conditions.\n\n @details\n The union includes fields for different types of operations defined in the\n enum hipStreamBatchMemOpType:\n - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.\n - hipStreamMemOpWriteValue32: Write a 32-bit value.\n - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.\n - hipStreamMemOpWriteValue64: Write a 64-bit value.\n\n Each operation type includes an address, the value to wait for or write, flags, and an\n optional alias that is not relevant on AMD GPUs. Flags can be used to specify different\n wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.\n\n Example usage:\n @code\n hipStreamBatchMemOpParams myArray[2];\n myArray[0].operation = hipStreamMemOpWaitValue32;\n myArray[0].waitValue.address = waitAddr1;\n myArray[0].waitValue.value = 0x1;\n myArray[0].waitValue.flags = CU_STREAM_WAIT_VALUE_EQ;\n\n myArray[1].operation = hipStreamMemOpWriteValue32;\n myArray[1].writeValue.address = writeAddr1;\n myArray[1].writeValue.value = 0x1;\n myArray[1].writeValue.flags = 0x0;\n\n result = hipStreamBatchMemOp(stream, 2, myArray, 0);\n @endcode"]
 pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
@@ -3403,9 +3400,9 @@ pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
 #[derive(Debug, Copy, Clone)]
 pub struct hipBatchMemOpNodeParams {
     pub ctx: hipCtx_t,
-    pub count: ::std::os::raw::c_uint,
+    pub count: ::core::ffi::c_uint,
     pub paramArray: *mut hipStreamBatchMemOpParams,
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
 }
 #[repr(u32)]
 #[doc = " HIP Memory Advise values\n\n @note This memory advise enumeration is used on Linux, not Windows."]
@@ -3534,17 +3531,17 @@ pub struct hipMemPoolProps {
     #[doc = "< Location where allocations should reside"]
     pub location: hipMemLocation,
     #[doc = " Windows-specific LPSECURITYATTRIBUTES required when @p hipMemHandleTypeWin32 is specified"]
-    pub win32SecurityAttributes: *mut ::std::os::raw::c_void,
+    pub win32SecurityAttributes: *mut ::core::ffi::c_void,
     #[doc = "< Maximum pool size. When set to 0, defaults to a system dependent value"]
     pub maxSize: usize,
     #[doc = "< Reserved for future use, must be 0"]
-    pub reserved: [::std::os::raw::c_uchar; 56usize],
+    pub reserved: [::core::ffi::c_uchar; 56usize],
 }
 #[doc = " Opaque data structure for exporting a pool allocation"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemPoolPtrExportData {
-    pub reserved: [::std::os::raw::c_uchar; 64usize],
+    pub reserved: [::core::ffi::c_uchar; 64usize],
 }
 #[repr(u32)]
 #[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
@@ -3594,13 +3591,13 @@ pub struct dim3 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchParams_t {
     #[doc = "< Device function symbol"]
-    pub func: *mut ::std::os::raw::c_void,
+    pub func: *mut ::core::ffi::c_void,
     #[doc = "< Grid dimensions"]
     pub gridDim: dim3,
     #[doc = "< Block dimensions"]
     pub blockDim: dim3,
     #[doc = "< Arguments"]
-    pub args: *mut *mut ::std::os::raw::c_void,
+    pub args: *mut *mut ::core::ffi::c_void,
     #[doc = "< Shared memory"]
     pub sharedMem: usize,
     #[doc = "< Stream identifier"]
@@ -3615,23 +3612,23 @@ pub struct hipFunctionLaunchParams_t {
     #[doc = "< Kernel to launch"]
     pub function: hipFunction_t,
     #[doc = "< Width(X) of grid in blocks"]
-    pub gridDimX: ::std::os::raw::c_uint,
+    pub gridDimX: ::core::ffi::c_uint,
     #[doc = "< Height(Y) of grid in blocks"]
-    pub gridDimY: ::std::os::raw::c_uint,
+    pub gridDimY: ::core::ffi::c_uint,
     #[doc = "< Depth(Z) of grid in blocks"]
-    pub gridDimZ: ::std::os::raw::c_uint,
+    pub gridDimZ: ::core::ffi::c_uint,
     #[doc = "< X dimension of each thread block"]
-    pub blockDimX: ::std::os::raw::c_uint,
+    pub blockDimX: ::core::ffi::c_uint,
     #[doc = "< Y dimension of each thread block"]
-    pub blockDimY: ::std::os::raw::c_uint,
+    pub blockDimY: ::core::ffi::c_uint,
     #[doc = "< Z dimension of each thread block"]
-    pub blockDimZ: ::std::os::raw::c_uint,
+    pub blockDimZ: ::core::ffi::c_uint,
     #[doc = "< Shared memory"]
-    pub sharedMemBytes: ::std::os::raw::c_uint,
+    pub sharedMemBytes: ::core::ffi::c_uint,
     #[doc = "< Stream identifier"]
     pub hStream: hipStream_t,
     #[doc = "< Kernel parameters"]
-    pub kernelParams: *mut *mut ::std::os::raw::c_void,
+    pub kernelParams: *mut *mut ::core::ffi::c_void,
 }
 #[doc = " struct hipFunctionLaunchParams_t"]
 pub type hipFunctionLaunchParams = hipFunctionLaunchParams_t;
@@ -3653,44 +3650,44 @@ pub use self::hipExternalMemoryHandleType_enum as hipExternalMemoryHandleType;
 pub struct hipExternalMemoryHandleDesc_st {
     pub type_: hipExternalMemoryHandleType,
     pub handle: hipExternalMemoryHandleDesc_st__bindgen_ty_1,
-    pub size: ::std::os::raw::c_ulonglong,
-    pub flags: ::std::os::raw::c_uint,
-    pub reserved: [::std::os::raw::c_uint; 16usize],
+    pub size: ::core::ffi::c_ulonglong,
+    pub flags: ::core::ffi::c_uint,
+    pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union hipExternalMemoryHandleDesc_st__bindgen_ty_1 {
-    pub fd: ::std::os::raw::c_int,
+    pub fd: ::core::ffi::c_int,
     pub win32: hipExternalMemoryHandleDesc_st__bindgen_ty_1__bindgen_ty_1,
-    pub nvSciBufObject: *const ::std::os::raw::c_void,
+    pub nvSciBufObject: *const ::core::ffi::c_void,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalMemoryHandleDesc_st__bindgen_ty_1__bindgen_ty_1 {
-    pub handle: *mut ::std::os::raw::c_void,
-    pub name: *const ::std::os::raw::c_void,
+    pub handle: *mut ::core::ffi::c_void,
+    pub name: *const ::core::ffi::c_void,
 }
 pub type hipExternalMemoryHandleDesc = hipExternalMemoryHandleDesc_st;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalMemoryBufferDesc_st {
-    pub offset: ::std::os::raw::c_ulonglong,
-    pub size: ::std::os::raw::c_ulonglong,
-    pub flags: ::std::os::raw::c_uint,
-    pub reserved: [::std::os::raw::c_uint; 16usize],
+    pub offset: ::core::ffi::c_ulonglong,
+    pub size: ::core::ffi::c_ulonglong,
+    pub flags: ::core::ffi::c_uint,
+    pub reserved: [::core::ffi::c_uint; 16usize],
 }
 pub type hipExternalMemoryBufferDesc = hipExternalMemoryBufferDesc_st;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalMemoryMipmappedArrayDesc_st {
-    pub offset: ::std::os::raw::c_ulonglong,
+    pub offset: ::core::ffi::c_ulonglong,
     pub formatDesc: hipChannelFormatDesc,
     pub extent: hipExtent,
-    pub flags: ::std::os::raw::c_uint,
-    pub numLevels: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
+    pub numLevels: ::core::ffi::c_uint,
 }
 pub type hipExternalMemoryMipmappedArrayDesc = hipExternalMemoryMipmappedArrayDesc_st;
-pub type hipExternalMemory_t = *mut ::std::os::raw::c_void;
+pub type hipExternalMemory_t = *mut ::core::ffi::c_void;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExternalSemaphoreHandleType_enum {
@@ -3711,30 +3708,30 @@ pub use self::hipExternalSemaphoreHandleType_enum as hipExternalSemaphoreHandleT
 pub struct hipExternalSemaphoreHandleDesc_st {
     pub type_: hipExternalSemaphoreHandleType,
     pub handle: hipExternalSemaphoreHandleDesc_st__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
-    pub reserved: [::std::os::raw::c_uint; 16usize],
+    pub flags: ::core::ffi::c_uint,
+    pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union hipExternalSemaphoreHandleDesc_st__bindgen_ty_1 {
-    pub fd: ::std::os::raw::c_int,
+    pub fd: ::core::ffi::c_int,
     pub win32: hipExternalSemaphoreHandleDesc_st__bindgen_ty_1__bindgen_ty_1,
-    pub NvSciSyncObj: *const ::std::os::raw::c_void,
+    pub NvSciSyncObj: *const ::core::ffi::c_void,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreHandleDesc_st__bindgen_ty_1__bindgen_ty_1 {
-    pub handle: *mut ::std::os::raw::c_void,
-    pub name: *const ::std::os::raw::c_void,
+    pub handle: *mut ::core::ffi::c_void,
+    pub name: *const ::core::ffi::c_void,
 }
 pub type hipExternalSemaphoreHandleDesc = hipExternalSemaphoreHandleDesc_st;
-pub type hipExternalSemaphore_t = *mut ::std::os::raw::c_void;
+pub type hipExternalSemaphore_t = *mut ::core::ffi::c_void;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st {
     pub params: hipExternalSemaphoreSignalParams_st__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
-    pub reserved: [::std::os::raw::c_uint; 16usize],
+    pub flags: ::core::ffi::c_uint,
+    pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -3742,23 +3739,23 @@ pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1 {
     pub fence: hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_1,
     pub nvSciSync: hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_2,
     pub keyedMutex: hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_3,
-    pub reserved: [::std::os::raw::c_uint; 12usize],
+    pub reserved: [::core::ffi::c_uint; 12usize],
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_1 {
-    pub value: ::std::os::raw::c_ulonglong,
+    pub value: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_2 {
-    pub fence: *mut ::std::os::raw::c_void,
-    pub reserved: ::std::os::raw::c_ulonglong,
+    pub fence: *mut ::core::ffi::c_void,
+    pub reserved: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_3 {
-    pub key: ::std::os::raw::c_ulonglong,
+    pub key: ::core::ffi::c_ulonglong,
 }
 pub type hipExternalSemaphoreSignalParams = hipExternalSemaphoreSignalParams_st;
 #[doc = " External semaphore wait parameters, compatible with driver type"]
@@ -3766,8 +3763,8 @@ pub type hipExternalSemaphoreSignalParams = hipExternalSemaphoreSignalParams_st;
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st {
     pub params: hipExternalSemaphoreWaitParams_st__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
-    pub reserved: [::std::os::raw::c_uint; 16usize],
+    pub flags: ::core::ffi::c_uint,
+    pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -3775,24 +3772,24 @@ pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1 {
     pub fence: hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_1,
     pub nvSciSync: hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_2,
     pub keyedMutex: hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_3,
-    pub reserved: [::std::os::raw::c_uint; 10usize],
+    pub reserved: [::core::ffi::c_uint; 10usize],
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_1 {
-    pub value: ::std::os::raw::c_ulonglong,
+    pub value: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_2 {
-    pub fence: *mut ::std::os::raw::c_void,
-    pub reserved: ::std::os::raw::c_ulonglong,
+    pub fence: *mut ::core::ffi::c_void,
+    pub reserved: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_3 {
-    pub key: ::std::os::raw::c_ulonglong,
-    pub timeoutMs: ::std::os::raw::c_uint,
+    pub key: ::core::ffi::c_ulonglong,
+    pub timeoutMs: ::core::ffi::c_uint,
 }
 #[doc = " External semaphore wait parameters, compatible with driver type"]
 pub type hipExternalSemaphoreWaitParams = hipExternalSemaphoreWaitParams_st;
@@ -3880,31 +3877,31 @@ pub enum hipGraphNodeType {
     hipGraphNodeTypeCount = 15,
 }
 pub type hipHostFn_t =
-    ::std::option::Option<unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void)>;
+    ::core::option::Option<unsafe extern "C" fn(userData: *mut ::core::ffi::c_void)>;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipHostNodeParams {
     pub fn_: hipHostFn_t,
-    pub userData: *mut ::std::os::raw::c_void,
+    pub userData: *mut ::core::ffi::c_void,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipKernelNodeParams {
     pub blockDim: dim3,
-    pub extra: *mut *mut ::std::os::raw::c_void,
-    pub func: *mut ::std::os::raw::c_void,
+    pub extra: *mut *mut ::core::ffi::c_void,
+    pub func: *mut ::core::ffi::c_void,
     pub gridDim: dim3,
-    pub kernelParams: *mut *mut ::std::os::raw::c_void,
-    pub sharedMemBytes: ::std::os::raw::c_uint,
+    pub kernelParams: *mut *mut ::core::ffi::c_void,
+    pub sharedMemBytes: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemsetParams {
-    pub dst: *mut ::std::os::raw::c_void,
-    pub elementSize: ::std::os::raw::c_uint,
+    pub dst: *mut ::core::ffi::c_void,
+    pub elementSize: ::core::ffi::c_uint,
     pub height: usize,
     pub pitch: usize,
-    pub value: ::std::os::raw::c_uint,
+    pub value: ::core::ffi::c_uint,
     pub width: usize,
 }
 #[repr(C)]
@@ -3919,7 +3916,7 @@ pub struct hipMemAllocNodeParams {
     #[doc = "< The size of the requested allocation in bytes"]
     pub bytesize: usize,
     #[doc = "< Returned device address of the allocation"]
-    pub dptr: *mut ::std::os::raw::c_void,
+    pub dptr: *mut ::core::ffi::c_void,
 }
 #[repr(u32)]
 #[doc = " Specifies performance hint with hipAccessPolicyWindow"]
@@ -3937,7 +3934,7 @@ pub enum hipAccessProperty {
 #[derive(Debug, Copy, Clone)]
 pub struct hipAccessPolicyWindow {
     #[doc = "< Starting address of the access policy window"]
-    pub base_ptr: *mut ::std::os::raw::c_void,
+    pub base_ptr: *mut ::core::ffi::c_void,
     #[doc = "< hipAccessProperty set for hit"]
     pub hitProp: hipAccessProperty,
     #[doc = "< hitRatio specifies percentage of lines assigned hitProp"]
@@ -3952,9 +3949,9 @@ pub struct hipAccessPolicyWindow {
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchMemSyncDomainMap {
     #[doc = "< The default domain ID to use for designated kernels"]
-    pub default_: ::std::os::raw::c_uchar,
+    pub default_: ::core::ffi::c_uchar,
     #[doc = "< The remote domain ID to use for designated kernels"]
-    pub remote: ::std::os::raw::c_uchar,
+    pub remote: ::core::ffi::c_uchar,
 }
 #[repr(u32)]
 #[doc = " Memory Synchronization Domain"]
@@ -4001,13 +3998,13 @@ pub enum hipLaunchAttributeID {
 #[derive(Copy, Clone)]
 pub union hipLaunchAttributeValue {
     #[doc = "< 64 byte padding"]
-    pub pad: [::std::os::raw::c_char; 64usize],
+    pub pad: [::core::ffi::c_char; 64usize],
     #[doc = "< Value of launch attribute ::hipLaunchAttributeAccessPolicyWindow."]
     pub accessPolicyWindow: hipAccessPolicyWindow,
     #[doc = "< Value of launch attribute ::hipLaunchAttributeCooperative. Indicates\n< whether the kernel is cooperative."]
-    pub cooperative: ::std::os::raw::c_int,
+    pub cooperative: ::core::ffi::c_int,
     #[doc = "< Value of launch attribute :: hipLaunchAttributePriority. Execution priority of\n< kernel"]
-    pub priority: ::std::os::raw::c_int,
+    pub priority: ::core::ffi::c_int,
     #[doc = "< Value of launch attribute :: hipLaunchAttributeSynchronizationPolicy. Used\n< to work queued up in stream"]
     pub syncPolicy: hipSynchronizationPolicy,
     #[doc = "< Value of launch attribute hipLaunchAttributeMemSyncDomainMap"]
@@ -4129,7 +4126,7 @@ pub struct hipGraphInstantiateParams {
     #[doc = "< The node which caused instantiation to fail, if any"]
     pub errNode_out: hipGraphNode_t,
     #[doc = "< Instantiation flags"]
-    pub flags: ::std::os::raw::c_ulonglong,
+    pub flags: ::core::ffi::c_ulonglong,
     #[doc = "< Whether instantiation was successful.\nIf it failed, the reason why"]
     pub result_out: hipGraphInstantiateResult,
     #[doc = "< Upload stream"]
@@ -4145,7 +4142,7 @@ pub struct hipMemAllocationProp {
     #[doc = "< Memory location"]
     pub location: hipMemLocation,
     #[doc = "< Metadata for Win32 handles"]
-    pub win32HandleMetaData: *mut ::std::os::raw::c_void,
+    pub win32HandleMetaData: *mut ::core::ffi::c_void,
     pub allocFlags: hipMemAllocationProp__bindgen_ty_2,
 }
 #[repr(C)]
@@ -4160,11 +4157,11 @@ pub union hipMemAllocationProp__bindgen_ty_1 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAllocationProp__bindgen_ty_2 {
     #[doc = "< Compression type"]
-    pub compressionType: ::std::os::raw::c_uchar,
+    pub compressionType: ::core::ffi::c_uchar,
     #[doc = "< RDMA capable"]
-    pub gpuDirectRDMACapable: ::std::os::raw::c_uchar,
+    pub gpuDirectRDMACapable: ::core::ffi::c_uchar,
     #[doc = "< Usage"]
-    pub usage: ::std::os::raw::c_ushort,
+    pub usage: ::core::ffi::c_ushort,
 }
 #[doc = " External semaphore signal node parameters"]
 #[repr(C)]
@@ -4172,7 +4169,7 @@ pub struct hipMemAllocationProp__bindgen_ty_2 {
 pub struct hipExternalSemaphoreSignalNodeParams {
     pub extSemArray: *mut hipExternalSemaphore_t,
     pub paramsArray: *const hipExternalSemaphoreSignalParams,
-    pub numExtSems: ::std::os::raw::c_uint,
+    pub numExtSems: ::core::ffi::c_uint,
 }
 #[doc = " External semaphore wait node parameters"]
 #[repr(C)]
@@ -4180,7 +4177,7 @@ pub struct hipExternalSemaphoreSignalNodeParams {
 pub struct hipExternalSemaphoreWaitNodeParams {
     pub extSemArray: *mut hipExternalSemaphore_t,
     pub paramsArray: *const hipExternalSemaphoreWaitParams,
-    pub numExtSems: ::std::os::raw::c_uint,
+    pub numExtSems: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Debug)]
@@ -4239,13 +4236,13 @@ pub struct hipArrayMapInfo {
     pub memHandleType: hipMemHandleType,
     pub memHandle: hipArrayMapInfo__bindgen_ty_3,
     #[doc = "< Offset within the memory"]
-    pub offset: ::std::os::raw::c_ulonglong,
+    pub offset: ::core::ffi::c_ulonglong,
     #[doc = "< Device ordinal bit mask"]
-    pub deviceBitMask: ::std::os::raw::c_uint,
+    pub deviceBitMask: ::core::ffi::c_uint,
     #[doc = "< flags for future use, must be zero now."]
-    pub flags: ::std::os::raw::c_uint,
+    pub flags: ::core::ffi::c_uint,
     #[doc = "< Reserved for future use, must be zero now."]
-    pub reserved: [::std::os::raw::c_uint; 2usize],
+    pub reserved: [::core::ffi::c_uint; 2usize],
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -4263,31 +4260,31 @@ pub union hipArrayMapInfo__bindgen_ty_2 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_1 {
     #[doc = "< For mipmapped arrays must be a valid mipmap level. For arrays must be zero"]
-    pub level: ::std::os::raw::c_uint,
+    pub level: ::core::ffi::c_uint,
     #[doc = "< For layered arrays must be a valid layer index. Otherwise, must be zero"]
-    pub layer: ::std::os::raw::c_uint,
+    pub layer: ::core::ffi::c_uint,
     #[doc = "< X offset in elements"]
-    pub offsetX: ::std::os::raw::c_uint,
+    pub offsetX: ::core::ffi::c_uint,
     #[doc = "< Y offset in elements"]
-    pub offsetY: ::std::os::raw::c_uint,
+    pub offsetY: ::core::ffi::c_uint,
     #[doc = "< Z offset in elements"]
-    pub offsetZ: ::std::os::raw::c_uint,
+    pub offsetZ: ::core::ffi::c_uint,
     #[doc = "< Width in elements"]
-    pub extentWidth: ::std::os::raw::c_uint,
+    pub extentWidth: ::core::ffi::c_uint,
     #[doc = "< Height in elements"]
-    pub extentHeight: ::std::os::raw::c_uint,
+    pub extentHeight: ::core::ffi::c_uint,
     #[doc = "< Depth in elements"]
-    pub extentDepth: ::std::os::raw::c_uint,
+    pub extentDepth: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_2 {
     #[doc = "< For layered arrays must be a valid layer index. Otherwise, must be zero"]
-    pub layer: ::std::os::raw::c_uint,
+    pub layer: ::core::ffi::c_uint,
     #[doc = "< Offset within mip tail"]
-    pub offset: ::std::os::raw::c_ulonglong,
+    pub offset: ::core::ffi::c_ulonglong,
     #[doc = "< Extent in bytes"]
-    pub size: ::std::os::raw::c_ulonglong,
+    pub size: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -4299,9 +4296,9 @@ pub union hipArrayMapInfo__bindgen_ty_3 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpyNodeParams {
     #[doc = "< Must be zero."]
-    pub flags: ::std::os::raw::c_int,
+    pub flags: ::core::ffi::c_int,
     #[doc = "< Must be zero."]
-    pub reserved: [::std::os::raw::c_int; 3usize],
+    pub reserved: [::core::ffi::c_int; 3usize],
     #[doc = "< Params set for the memory copy."]
     pub copyParams: hipMemcpy3DParms,
 }
@@ -4331,21 +4328,21 @@ pub struct hipEventRecordNodeParams {
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemFreeNodeParams {
     #[doc = "< the pointer to be freed"]
-    pub dptr: *mut ::std::os::raw::c_void,
+    pub dptr: *mut ::core::ffi::c_void,
 }
 #[doc = " Params for different graph nodes"]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct hipGraphNodeParams {
     pub type_: hipGraphNodeType,
-    pub reserved0: [::std::os::raw::c_int; 3usize],
+    pub reserved0: [::core::ffi::c_int; 3usize],
     pub __bindgen_anon_1: hipGraphNodeParams__bindgen_ty_1,
-    pub reserved2: ::std::os::raw::c_longlong,
+    pub reserved2: ::core::ffi::c_longlong,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union hipGraphNodeParams__bindgen_ty_1 {
-    pub reserved1: [::std::os::raw::c_longlong; 29usize],
+    pub reserved1: [::core::ffi::c_longlong; 29usize],
     pub kernel: hipKernelNodeParams,
     pub memcpy: hipMemcpyNodeParams,
     pub memset: hipMemsetParams,
@@ -4368,13 +4365,13 @@ pub enum hipGraphDependencyType {
 #[derive(Debug, Copy, Clone)]
 pub struct hipGraphEdgeData {
     #[doc = "< This indicates when the dependency is triggered from the upstream node on the\n< edge. The meaning is specfic to the node type. A value of 0 in all cases\n< means full completion of the upstream node, with memory visibility to the\n< downstream node or portion thereof (indicated by to_port). Only kernel nodes\n< define non-zero ports. A kernel node can use the following output port types:\n< hipGraphKernelNodePortDefault, hipGraphKernelNodePortProgrammatic, or\n< hipGraphKernelNodePortLaunchCompletion."]
-    pub from_port: ::std::os::raw::c_uchar,
+    pub from_port: ::core::ffi::c_uchar,
     #[doc = "< These bytes are unused and must be zeroed"]
-    pub reserved: [::std::os::raw::c_uchar; 5usize],
+    pub reserved: [::core::ffi::c_uchar; 5usize],
     #[doc = "< Currently no node types define non-zero ports. This field must be set to zero."]
-    pub to_port: ::std::os::raw::c_uchar,
+    pub to_port: ::core::ffi::c_uchar,
     #[doc = "< This should be populated with a value from hipGraphDependencyType"]
-    pub type_: ::std::os::raw::c_uchar,
+    pub type_: ::core::ffi::c_uchar,
 }
 #[doc = " Used to specify custom attributes for launching kernels"]
 #[repr(C)]
@@ -4383,7 +4380,7 @@ pub struct hipLaunchAttribute_st {
     #[doc = "< Identifier of the launch attribute"]
     pub id: hipLaunchAttributeID,
     #[doc = "< Padding to align the structure to 8 bytes"]
-    pub pad: [::std::os::raw::c_char; 4usize],
+    pub pad: [::core::ffi::c_char; 4usize],
     pub __bindgen_anon_1: hipLaunchAttribute_st__bindgen_ty_1,
 }
 #[repr(C)]
@@ -4411,7 +4408,7 @@ pub struct hipLaunchConfig_st {
     #[doc = "< Attributes list"]
     pub attrs: *mut hipLaunchAttribute,
     #[doc = "< Number of attributes"]
-    pub numAttrs: ::std::os::raw::c_uint,
+    pub numAttrs: ::core::ffi::c_uint,
 }
 #[doc = " HIP extensible launch configuration"]
 pub type hipLaunchConfig_t = hipLaunchConfig_st;
@@ -4420,25 +4417,25 @@ pub type hipLaunchConfig_t = hipLaunchConfig_st;
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_LAUNCH_CONFIG_st {
     #[doc = "< Grid width in blocks"]
-    pub gridDimX: ::std::os::raw::c_uint,
+    pub gridDimX: ::core::ffi::c_uint,
     #[doc = "< Grid height in blocks"]
-    pub gridDimY: ::std::os::raw::c_uint,
+    pub gridDimY: ::core::ffi::c_uint,
     #[doc = "< Grid depth in blocks"]
-    pub gridDimZ: ::std::os::raw::c_uint,
+    pub gridDimZ: ::core::ffi::c_uint,
     #[doc = "< Thread block dimension in X"]
-    pub blockDimX: ::std::os::raw::c_uint,
+    pub blockDimX: ::core::ffi::c_uint,
     #[doc = "< Thread block dimension in Y"]
-    pub blockDimY: ::std::os::raw::c_uint,
+    pub blockDimY: ::core::ffi::c_uint,
     #[doc = "< Thread block dimension in Z"]
-    pub blockDimZ: ::std::os::raw::c_uint,
+    pub blockDimZ: ::core::ffi::c_uint,
     #[doc = "< Dynamic shared-memory size in bytes per block"]
-    pub sharedMemBytes: ::std::os::raw::c_uint,
+    pub sharedMemBytes: ::core::ffi::c_uint,
     #[doc = "< HIP stream identifier"]
     pub hStream: hipStream_t,
     #[doc = "< Attribute list"]
     pub attrs: *mut hipLaunchAttribute,
     #[doc = "< Number of attributes"]
-    pub numAttrs: ::std::os::raw::c_uint,
+    pub numAttrs: ::core::ffi::c_uint,
 }
 #[doc = " HIP driver extensible launch configuration"]
 pub type HIP_LAUNCH_CONFIG = HIP_LAUNCH_CONFIG_st;
@@ -4464,11 +4461,11 @@ pub enum hipMemRangeFlags {
     hipMemRangeFlagsMax = 2147483647,
 }
 #[doc = " Stream CallBack struct"]
-pub type hipStreamCallback_t = ::std::option::Option<
+pub type hipStreamCallback_t = ::core::option::Option<
     unsafe extern "C" fn(
         stream: hipStream_t,
         status: hipError_t,
-        userData: *mut ::std::os::raw::c_void,
+        userData: *mut ::core::ffi::c_void,
     ),
 >;
 #[repr(u32)]

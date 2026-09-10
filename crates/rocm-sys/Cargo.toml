@@ -5,18 +5,22 @@ version = "0.0.1"
 edition = "2024"
 license = "MIT"
 readme = "README.md"
+repository = "github.com/bobbothe2nd/rocm"
 
 [dependencies]
 libloading = { version = "0.9", optional = true }
 
 [features]
-default = ["hip", "amd_comgr", "hiprtc", "rocblas"]
+default = ["dynamic-loading"]
 
 hip = []
-rocblas = ["hip"]
 hiprtc = ["hip"]
-amd_comgr = []
+hipblas = ["hip"]
+hipblaslt = ["hipblas"]
+rocblas = []
+rocfft = []
 dynamic-loading = ["dep:libloading"]
+deprecated = []
 
 [build-dependencies]
 libloading = "0.9"

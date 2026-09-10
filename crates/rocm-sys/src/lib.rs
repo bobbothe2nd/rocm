@@ -1,16 +1,27 @@
-#![allow(non_upper_case_globals, non_snake_case, non_camel_case_types, unused_comparisons)]
+#![allow(
+    non_upper_case_globals,
+    non_snake_case,
+    non_camel_case_types,
+    unused_comparisons,
+    clippy::too_many_arguments,
+    clippy::missing_safety_doc,
+    clippy::ptr_offset_with_cast,
+    clippy::manual_div_ceil
+)]
 #![cfg_attr(not(feature = "dynamic-loading"), no_std)]
 
 #[allow(unused_macros)]
 macro_rules! link {
     (
-        $lib:ident: [$($version:literal),*$(,)?];
+        $lib:ident : [$($version:literal),*$(,)?] : $cfg_ver:ident;
 
         $(
             $(
                 #[doc = $docs:literal]
             )*
-            $(#[since = $major_version:literal.$minor_version:literal])?
+            $(#[deprecated = $note:literal$(, $cfg_strong:ident)?])?
+            $(#[since = $major_version:literal.$minor_version:literal,
+                $version_string:literal])?
             $vis:vis fn $name:ident($($arg:ident: $arg_ty:ty),*$(,)?) $(-> $ret:ty)?;
         )*
     ) => {
@@ -73,7 +84,10 @@ If the shared library is present on the system under a different name than one o
             $(
                 #[doc = $docs]
             )*
-            #[inline]
+            $(
+                $(#[$cfg_strong(feature = "deprecated")])?
+                #[deprecated = $note]
+            )?
             #[cfg(feature = "dynamic-loading")]
             $vis unsafe fn $name(
                 $($arg: $arg_ty),*
@@ -100,34 +114,33 @@ If the shared library is present on the system under a different name than one o
                 }
             }
 
+            $(
+                #[doc = $docs]
+            )*
+            $(
+                $(#[$cfg_strong(feature = "deprecated")])?
+                #[deprecated = $note]
+            )?
             #[inline]
-            #[cfg(not(feature = "dynamic-loading"))]
+            #[cfg(all(
+                not(feature = "dynamic-loading"),
+                $(
+                    $cfg_ver = $version_string
+                )?
+            ))]
             $vis unsafe fn $name(
                 $($arg: $arg_ty),*
             ) $(-> $ret)? {
-                extern "C" {
-                    $(
-                        #[doc = $docs]
-                    )*
+                unsafe extern "C" {
                     #[link_name = stringify!($name)]
                     unsafe fn inner(
                         $($arg: $arg_ty),*
                     ) $(-> $ret)?;
                 }
 
-                $(
-                    const {
-                        assert!(MAJOR >= $major_version && MINOR >= $minor_version, concat!(
-                            stringify!($name),
-                            " requires ROCm version ^",
-                            stringify!(MAJOR),
-                            ".",
-                            stringify!(MINOR)
-                        ));
-                    }
-                )?
-
-                inner($($arg),*)
+                unsafe {
+                    inner($($arg),*)
+                }
             }
         )*
     };
@@ -141,5 +154,8 @@ pub mod hiprtc;
 
 #[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
 pub mod rocblas;
+
+#[cfg(all(feature = "rocfft", any(feature = "dynamic-loading", rocfft)))]
+pub mod rocfft;
 
 mod version;

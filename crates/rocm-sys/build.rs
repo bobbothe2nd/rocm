@@ -4,30 +4,31 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const KNOWN_ROCM_MAJOR: &[u32] = &[5, 6, 7, 10];
-const KNOWN_ROCM_MINOR: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 14, 15];
-
-const KNOWN_ROCBLAS_MAJOR: &[u32] = &[3, 4, 5];
-const KNOWN_ROCBLAS_MINOR: &[u32] = &[
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+const KNOWN_ROCM_VERSIONS: &[&str] = &[
+    "10.0", "7.15", "7.14", "7.13", "7.12", "7.11", "7.10", "7.2", "7.1", "7.9", "6.5", "6.4",
+    "6.3", "6.2", "6.1", "6.0", "5.7", "5.6", "5.5", "5.4", "5.3", "5.2", "5.1", "5.0", "4.5",
+    "4.4", "4.3", "4.1", "4.0", "3.10", "3.9", "3.8", "3.7", "3.5", "3.1", "3.0", "2.10", "2.8",
+    "2.7", "1.0",
 ];
 
-const KNOWN_HIPBLAS_MAJOR: &[u32] = &[0, 1, 2, 3];
-const KNOWN_HIPBLAS_MINOR: &[u32] = &[
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-    50, 51, 52, 53, 54,
+const KNOWN_ROCBLAS_VERSIONS: &[&str] = &[
+    "7.2", "5.2", "5.1", "5.0", "4.4", "4.3", "4.2", "4.1", "4.0", "3.1", "2.47", "2.46", "2.45",
+    "2.44", "2.43", "2.42", "2.41", "2.39", "2.38", "2.36", "2.32", "2.32", "2.30", "2.28", "2.26",
+    "2.22", "2.24", "2.2", "2.1", "2.0", "14.3", "14.1", "14.0", "12.3", "12.2", "0.12", "0.10",
+    "0.4",
 ];
 
-const KNOWN_HIPBLASLT_MAJOR: &[u32] = &[0, 1];
-const KNOWN_HIPBLASLT_MINOR: &[u32] = &[0, 1, 2, 3, 4];
-
-const KNOWN_ROCFFT_MAJOR: &[u32] = &[1];
-const KNOWN_ROCFFT_MINOR: &[u32] = &[
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+const KNOWN_HIPBLAS_VERSONS: &[&str] = &[
+    "3.2", "3.1", "3.0", "2.4", "2.3", "2.2", "2.1", "2.0", "1.1", "1.0", "0.54", "0.53", "0.52",
+    "0.51", "0.50", "0.49", "0.48", "0.47", "0.46", "0.45", "0.44", "0.43", "0.42", "0.38", "0.36",
+    "0.34", "0.32", "0.30", "0.28", "12.2", "12.1", "12.0", "10.3", "10.1", "10.0", "0.10", "0.4",
 ];
+
+const KNOWN_HIPBLASLT_VERSIONS: &[&str] = &[
+    "1.2", "1.1", "1.0", "0.12", "0.10", "0.8", "0.7", "0.6", "0.3", "0.2", "0.1",
+];
+
+const KNOWN_ROCFFT_VERSIONS: &[&str] = &["1.0", "0.9", "0.8", "0.7"];
 
 fn main() {
     check_cfg();
@@ -37,8 +38,10 @@ fn main() {
 
     if let Some(version) = find_rocm_version(&roots) {
         found_rocm_ver = true;
-        println!("cargo:rustc-cfg=rocm_major=\"{}\"", version.major);
-        println!("cargo:rustc-cfg=rocm_major=\"{}\"", version.minor);
+        println!(
+            "cargo:rustc-cfg=rocm_ver=\"{}.{}\"",
+            version.major, version.minor
+        );
     }
 
     if let Some(component) = find_component(
@@ -52,8 +55,10 @@ fn main() {
                     .expect("failed to determine HIP runtime version")
             };
 
-            println!("cargo:rustc-cfg=rocm_major=\"{}\"", version.major);
-            println!("cargo:rustc-cfg=rocm_major=\"{}\"", version.minor);
+            println!(
+                "cargo:rustc-cfg=rocm_ver=\"{}.{}\"",
+                version.major, version.minor
+            );
         }
 
         link_component(&component);
@@ -66,8 +71,10 @@ fn main() {
                 .expect("failed to determine HIP runtime version")
         };
 
-        println!("cargo:rustc-cfg=rocblas_major=\"{}\"", version.major);
-        println!("cargo:rustc-cfg=rocblas_major=\"{}\"", version.minor);
+        println!(
+            "cargo:rustc-cfg=rocblas_ver=\"{}.{}\"",
+            version.major, version.minor
+        );
 
         link_component(&component);
         println!("cargo:rustc-cfg=rocblas");
@@ -227,8 +234,9 @@ fn find_file(root: &Path, names: &[&str]) -> Option<PathBuf> {
                 continue;
             }
 
-            if let Some(name) = path.file_name().and_then(|x| x.to_str()) 
-                && names.contains(&name) {
+            if let Some(name) = path.file_name().and_then(|x| x.to_str())
+                && names.contains(&name)
+            {
                 return Some(path);
             }
         }
@@ -281,76 +289,44 @@ fn link_component(component: &Component) {
 
 fn check_cfg() {
     println!("cargo:rustc-check-cfg=cfg(hip)");
-    println!("cargo:rustc-check-cfg=cfg(rocblas)");
     println!("cargo:rustc-check-cfg=cfg(hiprtc)");
+    println!("cargo:rustc-check-cfg=cfg(hipblas)");
+    println!("cargo:rustc-check-cfg=cfg(hipblaslt)");
+    println!("cargo:rustc-check-cfg=cfg(rocblas)");
+    println!("cargo:rustc-check-cfg=cfg(rocfft)");
 
-    let rocm_major = KNOWN_ROCM_MAJOR
+    let rocm_ver = KNOWN_ROCM_VERSIONS
         .iter()
-        .map(|major| format!("\"{major}\""))
+        .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocm_major, values({rocm_major}))");
+    println!("cargo:rustc-check-cfg=cfg(rocm_ver, values({rocm_ver}))");
 
-    let rocm_minor = KNOWN_ROCM_MINOR
+    let rocblas_ver = KNOWN_ROCBLAS_VERSIONS
         .iter()
-        .map(|major| format!("\"{major}\""))
+        .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocm_minor, values({rocm_minor}))");
+    println!("cargo:rustc-check-cfg=cfg(rocblas_ver, values({rocblas_ver}))");
 
-    let rocblas_major = KNOWN_ROCBLAS_MAJOR
+    let rocfft_ver = KNOWN_ROCFFT_VERSIONS
         .iter()
-        .map(|major| format!("\"{major}\""))
+        .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocblas_major, values({rocblas_major}))");
+    println!("cargo:rustc-check-cfg=cfg(rocfft_ver, values({rocfft_ver}))");
 
-    let rocblas_minor = KNOWN_ROCBLAS_MINOR
+    let hipblas_ver = KNOWN_HIPBLAS_VERSONS
         .iter()
-        .map(|minor| format!("\"{minor}\""))
+        .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocblas_minor, values({rocblas_minor}))");
+    println!("cargo:rustc-check-cfg=cfg(hipblas_ver, values({hipblas_ver}))");
 
-    let rocfft_major = KNOWN_ROCFFT_MAJOR
+    let hipblaslt_ver = KNOWN_HIPBLASLT_VERSIONS
         .iter()
-        .map(|major| format!("\"{major}\""))
+        .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocfft_major, values({rocfft_major}))");
-
-    let rocfft_minor = KNOWN_ROCFFT_MINOR
-        .iter()
-        .map(|minor| format!("\"{minor}\""))
-        .collect::<Vec<_>>()
-        .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocfft_minor, values({rocfft_minor}))");
-
-    let hipblas_major = KNOWN_HIPBLAS_MAJOR
-        .iter()
-        .map(|major| format!("\"{major}\""))
-        .collect::<Vec<_>>()
-        .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(hipblas_major, values({hipblas_major}))");
-
-    let hipblas_minor = KNOWN_HIPBLAS_MINOR
-        .iter()
-        .map(|minor| format!("\"{minor}\""))
-        .collect::<Vec<_>>()
-        .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(hipblas_minor, values({hipblas_minor}))");
-
-    let hipblaslt_major = KNOWN_HIPBLASLT_MAJOR
-        .iter()
-        .map(|major| format!("\"{major}\""))
-        .collect::<Vec<_>>()
-        .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(hipblaslt_major, values({hipblaslt_major}))");
-
-    let hipblaslt_minor = KNOWN_HIPBLASLT_MINOR
-        .iter()
-        .map(|minor| format!("\"{minor}\""))
-        .collect::<Vec<_>>()
-        .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(hipblaslt_minor, values({hipblaslt_minor}))");
+    println!("cargo:rustc-check-cfg=cfg(hipblaslt_ver, values({hipblaslt_ver}))");
 }
