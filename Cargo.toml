@@ -1,3 +1,3 @@
 [workspace]
-members = ["crates/rocm-sys", "crates/rocm"]
+members = ["crates/rocm-rt", "crates/rocm-build", "crates/rocm-sys"]
 resolver = "3"

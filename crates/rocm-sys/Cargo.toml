@@ -1,17 +1,22 @@
 [package]
 name = "rocm-sys"
 description = "ROCm system bindings configured by release version"
-version = "0.0.1"
+version = "0.1.0"
 edition = "2024"
 license = "MIT"
 readme = "README.md"
-repository = "github.com/bobbothe2nd/rocm"
+repository = "https://github.com/bobbothe2nd/rocm"
+keywords = ["gpu", "hip", "rocm", "bindings", "system"]
+categories = ["hardware-support", "external-ffi-bindings"]
 
 [dependencies]
 libloading = { version = "0.9", optional = true }
 
+[build-dependencies]
+rocm-build = { path = "../rocm-build", version = "0.1.0" }
+
 [features]
-default = ["dynamic-loading"]
+default = ["dynamic-loading", "hip"]
 
 hip = []
 hiprtc = ["hip"]
@@ -22,5 +27,6 @@ rocfft = []
 dynamic-loading = ["dep:libloading"]
 deprecated = []
 
-[build-dependencies]
-libloading = "0.9"
+[[example]]
+name = "get_device_count"
+required-features = ["hip"]

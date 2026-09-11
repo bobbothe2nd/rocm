@@ -513,7 +513,7 @@ link! {
     pub fn hipEventSynchronize(event: hipEvent_t) -> hipError_t;
 
     pub fn hipEventElapsedTime(
-        ms: *mut f32,
+        ms: *mut c_float,
         start: hipEvent_t,
         stop: hipEvent_t,
     ) -> hipError_t;
@@ -1366,7 +1366,7 @@ This API is marked as Beta. While this feature is complete, it can change and mi
     #[since = 7 .2, "7.2"]
     pub fn hipMemSetMemPool(
         location: *mut hipMemLocation,
-        r#type: hipMemAllocationType,
+        ty: hipMemAllocationType,
         pool: hipMemPool_t,
     ) -> hipError_t;
 
@@ -1374,14 +1374,14 @@ This API is marked as Beta. While this feature is complete, it can change and mi
     pub fn hipMemGetMemPool(
         pool: *mut hipMemPool_t,
         location: *mut hipMemLocation,
-        r#type: hipMemAllocationType,
+        ty: hipMemAllocationType,
     ) -> hipError_t;
 
     #[since = 7 .15, "7.15"]
     pub fn hipMemGetDefaultMemPool(
         memPool: *mut hipMemPool_t,
         location: *mut hipMemLocation,
-        r#type: hipMemAllocationType,
+        ty: hipMemAllocationType,
     ) -> hipError_t;
 
     #[doc = "It is recommend to do the capability check before call this API."]
@@ -1740,7 +1740,7 @@ Reading from a discarded range without first writing or prefetching to it will r
 
     #[deprecated = "This API is deprecated.", cfg]
     pub fn hipTexRefGetBorderColor(
-        pBorderColor: *mut f32,
+        pBorderColor: *mut c_float,
         texRef: *const textureReference,
     ) -> hipError_t;
 
@@ -1838,6 +1838,157 @@ Reading from a discarded range without first writing or prefetching to it will r
         texRef: *const textureReference,
     ) -> hipError_t;
 
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetFlags(
+        pFlags: *mut c_uint,
+        texRef: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetFormat(
+        pFormat: *mut hipArray_Format,
+        pNumChannels: *mut c_int,
+        texBuf: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetMaxAnisotropy(
+        pmaxAnsio: *mut c_int,
+        texRef: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetMipmapFilterMode(
+        pfm: *mut hipTextureFilterMode,
+        texRef: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetMipmapLevelBias(
+        pbias: *mut c_float,
+        texRef: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetMipmapLevelClamp(
+        pminMipmapLevelClamp: *mut c_float,
+        pmaxMipmapLevelClamp: *mut c_float,
+        texRef: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefGetMipMappedArray(
+        pArray: *mut hipMipmappedArray_t,
+        texRef: *const textureReference,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetAddress(
+        ByteOffset: *mut usize,
+        texRef: *mut textureReference,
+        dptr: hipDeviceptr_t,
+        bytes: usize,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetAddress2D(
+        texRef: textureReference,
+        desc: *const HIP_ARRAY_DESCRIPTOR,
+        dptr: hipDeviceptr_t,
+        Pitch: usize,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetMaxAnisotropy(
+        texRef: *mut textureReference,
+        maxAniso: c_uint,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetBorderColor(
+        texRef: *mut textureReference,
+        pBorderColor: *mut c_float,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetMipmapFilterMode(
+        texRef: *mut textureReference,
+        fm: hipTextureFilterMode,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetMipmapLevelBias(
+        texRef: *mut textureReference,
+        bias: c_float,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetMipmapLevelClamp(
+        texRef: *mut textureReference,
+        minMipMapLevelClamp: c_float,
+        maxMipMapLevelClamp: c_float,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated.", cfg]
+    pub fn hipTexRefSetMipmappedArray(
+        texRef: *mut textureReference,
+        mipmappedArray: *mut hipMipmappedArray,
+        Flags: c_uint,
+    ) -> hipError_t;
+
+    pub fn hipCreateSurfaceObject(
+        pSurfObject: *mut hipSurfaceObject_t,
+        pResDesc: *const hipResourceDesc,
+    ) -> hipError_t;
+
+    pub fn hipDestroySurfaceObject(surfaceObject: hipSurfaceObject_t) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipExtEnableLogging() -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipExtDisableLogging() -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipExtSetLoggingParams(
+        log_level: usize,
+        log_size: usize,
+        log_mask: usize,
+    ) -> hipError_t;
+
+    pub fn hipDeviceCanAccessPeer(
+        canAccessPeer: *mut c_int,
+        deviceId: c_int,
+        peerDeviceId: c_int,
+    ) -> hipError_t;
+
+    pub fn hipDeviceEnablePeerAccess(
+        peerDeviceId: c_int,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    pub fn hipDeviceDisablePeerAccess(peerDeviceId: c_int) -> hipError_t;
+
+    pub fn hipMemcpyPeer(
+        dst: *mut c_void,
+        dstDeviceId: c_int,
+        src: *const c_void,
+        srcDeviceId: c_int,
+        sizeBytes: usize,
+    ) -> hipError_t;
+
+    pub fn hipMemcpyPeerAsync(
+        dst: *mut c_void,
+        dstDeviceId: c_int,
+        src: *const c_void,
+        srcDevice: c_int,
+        sizeBytes: usize,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
     #[since = 4 .3, "4.3"]
     pub fn hipGraphicsUnregisterResource(resource: hipGraphicsResource_t) -> hipError_t;
 }
+
+#[cfg(all(feature = "hiprtc", any(hiprtc, feature = "dynamic-loading")))]
+unsafe extern "C" {}

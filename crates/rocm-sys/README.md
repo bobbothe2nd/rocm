@@ -2,9 +2,15 @@
 
 FFI bindings to C for ROCm, explicitly checks for correct ROCm versions and function calls are guarnateed to be safe provided their prerequisites defined by AMDs documentation.
 
+## Disclaimer
+
+This project is not affiliated with, endorsed by, or sponsored by Advanced Micro Devices, Inc. (AMD).
+
+ROCm and AMD are trademarks of Advanced Micro Devices, Inc.
+
 ## Usage
 
-This is a very unsafe and low-level API. For a safer API, use `rocm`.
+This is a very unsafe and low-level API. For a safer API, use `rocmarc`.
 
 ```rust
 let mut count = -1;
@@ -53,4 +59,4 @@ All functions are hand-written (albeit using a macro) and types are auto-generat
 
 Functions must be hand-written because they have version checks which bindgen doesnt make automatically. The API is as close to the C API as possible (template functions make this hard).
 
-This is maintained separately from `rocm` because functions are all hand-written.
+This is maintained separately from `rocmarc` because functions are all hand-written.
