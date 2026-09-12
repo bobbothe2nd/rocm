@@ -3,4 +3,5 @@
 /list.sh
 /Cargo.lock
 /hip
+/rocm-systems
 /bindgen.sh

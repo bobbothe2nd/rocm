@@ -1443,7 +1443,7 @@ Concurrent reads, writes, or prefetches to discarded ranges result in undefined 
     ) -> hipError_t;
 
     #[doc = "
-This is the driver API variant that uses hipDeviceptr_t instead of void*. Both hipMemDiscardBatchAsync and hipDrvMemDiscardBatchAsync use the same internal implementation.
+This is the driver API variant that uses hipDeviceptr_t instead of c_void*. Both hipMemDiscardBatchAsync and hipDrvMemDiscardBatchAsync use the same internal implementation.
 
 Reading from a discarded range without first writing or prefetching to it will return an indeterminate value.
 "]
@@ -1477,7 +1477,7 @@ Reading from a discarded range without first writing or prefetching to it will r
         stream: hipStream_t,
     ) -> hipError_t;
 
-    #[doc = "This is the driver API variant that uses hipDeviceptr_t instead of void*."]
+    #[doc = "This is the driver API variant that uses hipDeviceptr_t instead of c_void*."]
     #[since = 7 .2, "7.2"]
     pub fn hipDrvMemDiscardAndPrefetchBatchAsync(
         dptrs: *mut hipDeviceptr_t,
@@ -1956,6 +1956,13 @@ Reading from a discarded range without first writing or prefetching to it will r
         log_mask: usize,
     ) -> hipError_t;
 
+    #[private(cfg)]
+    pub fn __hipGetPixelAddr(
+        x: c_int,
+        format: c_int,
+        order: c_int,
+    ) -> c_int;
+
     pub fn hipDeviceCanAccessPeer(
         canAccessPeer: *mut c_int,
         deviceId: c_int,
@@ -1986,8 +1993,1239 @@ Reading from a discarded range without first writing or prefetching to it will r
         stream: hipStream_t,
     ) -> hipError_t;
 
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxCreate(
+        ctx: *mut hipCtx_t,
+        flags: c_uint,
+        device: hipDevice_t,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxDestroy(ctx: hipCtx_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxPopCurrent(ctx: *mut hipCtx_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxPushCurrent(ctx: hipCtx_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxSetCurrent(ctx: hipCtx_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxGetCurrent(ctx: hipCtx_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxGetDevice(device: *mut hipDevice_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxGetApiVersion(
+        ctx: hipCtx_t,
+        apiVersion: *mut c_uint,
+    ) -> hipError_t;
+
+    #[doc = "AMD devices and some Nvidia GPUs do not support reconfigurable cache. This hint is ignored on those architectures."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxGetCacheConfig(cacheConfig: *mut hipFuncCache_t) -> hipError_t;
+
+    #[doc = "AMD devices and some Nvidia GPUs do not support reconfigurable cache. This hint is ignored on those architectures."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxSetCacheConfig(cacheConfig: hipFuncCache_t) -> hipError_t;
+
+    #[doc = "AMD devices and some Nvidia GPUs do not support shared cache banking, and the hint is ignored on those architectures."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxSetSharedMemConfig(config: hipSharedMemConfig) -> hipError_t;
+
+    #[doc = "AMD devices and some Nvidia GPUs do not support shared cache banking, and the hint is ignored on those architectures."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxGetSharedMemConfig(pConfig: *mut hipSharedMemConfig) -> hipError_t;
+
+    #[doc = "This function waits for all streams on the default context to complete execution, and then returns."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxSynchronize() -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxGetFlags(flags: *mut c_uint) -> hipError_t;
+
+    #[doc = "PeerToPeer support is experimental."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxEnablePeerAccess(
+        peerCtx: hipCtx_t,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[doc = "PeerToPeer support is experimental."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipCtxDisablePeerAccess(peerCtx: hipCtx_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipDevicePrimaryCtxGetState(
+        dev: hipDevice_t,
+        flags: *mut c_uint,
+        active: *mut c_int,
+    ) -> hipError_t;
+
+    #[doc = "This function return hipSuccess though doesn’t release the primaryCtx by design on HIP/HIP-CLANG path."]
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipDevicePrimaryCtxRelease(dev: hipDevice_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipDevicePrimaryCtxRetain(
+        pctx: *mut hipCtx_t,
+        dev: hipDevice_t,
+    ) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipDevicePrimaryCtxReset(dev: hipDevice_t) -> hipError_t;
+
+    #[deprecated = "This API is deprecated on the AMD platform, only for equivalent cuCtx driver API on the NVIDIA platform."]
+    pub fn hipDevicePrimaryCtxSetFlags(
+        dev: hipDevice_t,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    pub fn hipModuleGetGlobal(
+        dptr: *mut hipDeviceptr_t,
+        bytes: *mut usize,
+        hmod: hipModule_t,
+        name: *const c_char,
+    ) -> hipError_t;
+
+    #[since = 7 .1, "7.1"]
+    pub fn hipModuleLoadFatBinary(
+        module: *mut hipModule_t,
+        fatbin: *const c_void,
+    ) -> hipError_t;
+
+    pub fn hipModuleLoad(
+        module: *mut hipModule_t,
+        fname: *const c_char,
+    ) -> hipError_t;
+
+    pub fn hipModuleUnload(module: hipModule_t) -> hipError_t;
+
+    pub fn hipModuleGetFunction(
+        function: *mut hipFunction_t,
+        module: hipModule_t,
+        kname: *const c_char,
+    ) -> hipError_t;
+
+    pub fn hipModuleGetFunctionCount(
+        count: *mut c_int,
+        module: hipModule_t,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipKernelGetAttribute(
+        pi: *mut c_int,
+        attrib: hipFunction_attribute,
+        kernel: hipKernel_t,
+        dev: hipDevice_t,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryLoadData(
+        library: *mut hipLibrary_t,
+        code: *const c_void,
+        jitOptions: *mut hipJitOption,
+        jitOptionsValues: *mut *mut c_void,
+        numJitOptions: c_uint,
+        libraryOptions: *mut hipLibraryOption,
+        libraryOptionValues: *mut *mut c_void,
+        numLibraryOptions: c_uint,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryLoadFromFile(
+        library: *mut hipLibrary_t,
+        fileName: *const c_char,
+        jitOptions: *mut hipJitOption,
+        jitOptionsValues: *mut *mut c_void,
+        numJitOptions: c_uint,
+        libraryOptions: *mut hipLibraryOption,
+        libraryOptionValues: *mut *mut c_void,
+        numLibraryOptions: c_uint,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryUnload(library: hipLibrary_t) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryGetKernel(
+        pKernel: *mut hipKernel_t,
+        library: hipLibrary_t,
+        name: *const c_char,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryGetKernelCount(
+        count: *mut c_uint,
+        library: hipLibrary_t,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryGetGlobal(
+        dptr: *mut *mut c_void,
+        bytes: *mut usize,
+        library: hipLibrary_t,
+        name: *const c_char,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryGetManaged(
+        dptr: *mut *mut c_void,
+        bytes: *mut usize,
+        library: hipLibrary_t,
+        name: *const c_char,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipLibraryEnumerateKernels(
+        kernels: *mut hipKernel_t,
+        numKernels: c_uint,
+        library: hipLibrary_t,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipKernelGetLibrary(
+        library: *mut hipLibrary_t,
+        kernel: hipKernel_t,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipKernelGetName(
+        name: *const c_char,
+        kernel: hipKernel_t,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipKernelGetParamInfo(
+        kernel: hipKernel_t,
+        paramIndex: usize,
+        paramOffset: *mut usize,
+        paramSize: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipGetFuncBySymbol(
+        functionPtr: *mut hipFunction_t,
+        symbolPtr: *const c_void,
+    ) -> hipError_t;
+
+    #[since = 6 .1, "6.1"]
+    pub fn hipGetDriverEntryPoint(
+        symbol: *const c_char,
+        funcPtr: *mut *mut c_void,
+        flags: c_ulonglong,
+        driverStatus: *mut hipDriverEntryPointQueryResult,
+    ) -> hipError_t;
+
+    pub fn hipModuleGetTexRef(
+        texRef: *mut *mut textureReference,
+        hmod: hipModule_t,
+        name: *const c_char,
+    ) -> hipError_t;
+
+    pub fn hipModuleLoadData(
+        module: *mut hipModule_t,
+        image: *const c_void,
+    ) -> hipError_t;
+
+    pub fn hipModuleLoadDataEx(
+        module: *mut hipModule_t,
+        image: *const c_void,
+        numOptions: c_uint,
+        options: *mut hipJitOption,
+        optionValues: *mut *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 6 .4, "6.4"]
+    pub fn hipLinkAddData(
+        state: hipLinkState_t,
+        ty: hipJitInputType,
+        data: *mut c_void,
+        size: usize,
+        name: *const c_char,
+        numOptions: c_uint,
+        options: *mut hipJitOption,
+        optionValues: *mut *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 6 .4, "6.4"]
+    pub fn hipLinkComplete(
+        state: hipLinkState_t,
+        hipBinOut: *mut *mut c_void,
+        sizeOut: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 6 .4, "6.4"]
+    pub fn hipLinkCreate(
+        numOptions: c_uint,
+        options: *mut hipJitOption,
+        optionValues: *mut *mut c_void,
+        stateOut: *mut hipLinkState_t,
+    ) -> hipError_t;
+
+    #[since = 6 .4, "6.4"]
+    pub fn hipLinkDestroy(state: hipLinkState_t) -> hipError_t;
+
+    pub fn hipModuleOccupancyMaxPotentialBlockSize(
+        gridSize: *mut c_int,
+        blockSize: *mut c_int,
+        f: hipFunction_t,
+        dynSharedMemPerBlk: usize,
+        blockSizeLimit: c_int,
+    ) -> hipError_t;
+
+    pub fn hipModuleOccupancyMaxPotentialBlockSizeWithFlags(
+        gridSize: *mut c_int,
+        blockSize: *mut c_int,
+        f: hipFunction_t,
+        dynSharedMemPerBlk: usize,
+        blockSizeLimit: c_int,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    pub fn hipModuleOccupancyMaxActiveBlocksPerMultiprocessor(
+        numBlocks: *mut c_int,
+        f: hipFunction_t,
+        blockSize: c_int,
+        dynSharedMemPerBlk: usize,
+    ) -> hipError_t;
+
+    pub fn hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(
+        numBlocks: *mut c_int,
+        f: hipFunction_t,
+        blockSize: c_int,
+        dynSharedMemPerBlk: usize,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    pub fn hipOccupancyMaxActiveBlocksPerMultiprocessor(
+        numBlocks: *mut c_int,
+        f: *const c_void,
+        blockSize: c_int,
+        dynSharedMemPerBlk: usize,
+    ) -> hipError_t;
+
+    pub fn hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(
+        numBlocks: *mut c_int,
+        f: *const c_void,
+        blockSize: c_int,
+        dynSharedMemPerBlk: usize,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    pub fn hipOccupancyMaxPotentialBlockSize(
+        gridSize: *mut c_int,
+        blockSize: *mut c_int,
+        f: *const c_void,
+        dynSharedMemPerBlk: usize,
+        blockSizeLimit: c_int,
+    ) -> hipError_t;
+
+    #[since = 7 .2, "7.2"]
+    pub fn hipOccupancyAvailableDynamicSMemPerBlock(
+        dynamicSmemSize: *mut usize,
+        f: *const c_void,
+        numBlocks: c_int,
+        blockSize: c_int,
+    ) -> hipError_t;
+
+    #[since = 6 .5, "6.5"]
+    pub fn hipOccupancyMaxActiveClusters(
+        numClusters: *mut c_int,
+        f: *const c_void,
+        config: *const hipLaunchConfig_t,
+    ) -> hipError_t;
+
+    #[since = 6 .5, "6.5"]
+    pub fn hipOccupancyMaxPotentialClusterSize(
+        clusterSize: *mut c_int,
+        f: *const c_void,
+        config: *const hipLaunchConfig_t,
+    ) -> hipError_t;
+
+    #[deprecated = "hipProfilerStart API is deprecated, use roctracer/rocTX instead."]
+    pub fn hipProfilerStart() -> hipError_t;
+
+    #[deprecated = "hipProfilerStop API is deprecated, use roctracer/rocTX instead."]
+    pub fn hipProfilerStop() -> hipError_t;
+
+    pub fn hipConfigureCall(
+        gridDim: dim3,
+        blockDim: dim3,
+        sharedMem: usize,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    pub fn hipSetupArgument(
+        arg: *const c_void,
+        size: usize,
+        offset: usize,
+    ) -> hipError_t;
+
+    pub fn hipLaunchByPtr(func: *const c_void) -> hipError_t;
+
+    #[private(cfg)]
+    pub fn __hipPushCallConfiguration(
+        gridDim: dim3,
+        blockDim: dim3,
+        sharedMem: usize,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    #[private(cfg)]
+    pub fn __hipPopCallConfiguration(
+        gridDim: *mut dim3,
+        blockDim: *mut dim3,
+        sharedMem: *mut usize,
+        stream: *mut hipStream_t,
+    ) -> hipError_t;
+
+    pub fn hipLaunchKernel(
+        function_address: *const c_void,
+        numBlocks: dim3,
+        dimBlocks: dim3,
+        args: *mut *mut c_void,
+        sharedMemBytes: usize,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipLaunchHostFunc(
+        stream: hipStream_t,
+        func: hipHostFn_t,
+        userData: *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipDrvMemcpy2DUnaligned(pCopy: *const hip_Memcpy2D) -> hipError_t;
+
+    pub fn hipExtLaunchKernel(
+        function_address: *const c_void,
+        numBlocks: dim3,
+        dimBlocks: dim3,
+        args: *mut *mut c_void,
+        sharedMemBytes: usize,
+        stream: hipStream_t,
+        startEvent: hipEvent_t,
+        stopEvent: hipEvent_t,
+        flags: c_int,
+    ) -> hipError_t;
+
+    pub fn hipApiName(id: u32) -> *const c_char;
+
+    pub fn hipKernelNameRef(f: hipFunction_t) -> *const c_char;
+
+    pub fn hipKernelNameRefByPtr(
+        hostFunction: *const c_void,
+        stream: hipStream_t,
+    ) -> *const c_char;
+
+    pub fn hipGetStreamDeviceId(stream: hipStream_t) -> c_int;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipStreamBeginCapture(
+        stream: hipStream_t,
+        mode: hipStreamCaptureMode,
+    ) -> hipError_t;
+
+    #[doc = "
+param “const hipGraphEdgeData* dependencyData” is currently not supported and
+has to be passed as nullptr. This API is marked as beta, meaning, while this is
+feature complete, it is still open to changes and may have outstanding issues.
+"]
+    #[since = 6 .1, "6.1"]
+    pub fn hipStreamBeginCaptureToGraph(
+        stream: hipStream_t,
+        graph: hipGraph_t,
+        dependencies: *const hipGraphNode_t,
+        dependenciesData: *const hipGraphEdgeData,
+        numDependencies: usize,
+        mode: hipStreamCaptureMode,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipStreamEndCapture(
+        stream: hipStream_t,
+        pGraph: *mut hipGraph_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipStreamGetCaptureInfo(
+        stream: hipStream_t,
+        pCaptureStatus: *mut hipStreamCaptureStatus,
+        pId: *mut c_ulonglong,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipStreamGetCaptureInfo_v2(
+        stream: hipStream_t,
+        captureStatus_out: *mut hipStreamCaptureStatus,
+        id_out: *mut c_ulonglong,
+        graph_out: *mut hipGraph_t,
+        dependencies_out: *mut *const hipGraphNode_t,
+        numDependencies_out: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipStreamIsCapturing(
+        stream: hipStream_t,
+        pCaptureStatus: *mut hipStreamCaptureStatus,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipStreamUpdateCaptureDependencies(
+        stream: hipStream_t,
+        dependencies: *mut hipGraphNode_t,
+        numDependencies: usize,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .0, "5.0"]
+    pub fn hipThreadExchangeStreamCaptureMode(mode: *mut hipStreamCaptureMode) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphCreate(
+        pGraph: *mut hipGraph_t,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphDestroy(graph: hipGraph_t) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphAddDependencies(
+        graph: hipGraph_t,
+        from: *const hipGraphNode_t,
+        to: *const hipGraphNode_t,
+        numDependencies: usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphRemoveDependencies(
+        graph: hipGraph_t,
+        from: *const hipGraphNode_t,
+        to: *const hipGraphNode_t,
+        numDependencies: usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphGetEdges(
+        graph: hipGraph_t,
+        from: *mut hipGraphNode_t,
+        to: *mut hipGraphNode_t,
+        numEdges: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphGetNodes(
+        graph: hipGraph_t,
+        nodes: *mut hipGraphNode_t,
+        numNodes: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphGetRootNodes(
+        graph: hipGraph_t,
+        pRootNodes: *mut hipGraphNode_t,
+        pNumRootNodes: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphNodeGetDependencies(
+        node: hipGraphNode_t,
+        pDependencies: *mut hipGraphNode_t,
+        pNumDependencies: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphNodeGetDependentNodes(
+        node: hipGraphNode_t,
+        pDependentNodes: *mut hipGraphNode_t,
+        pNumDependentNodes: *mut usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphNodeGetType(
+        node: hipGraphNode_t,
+        pType: *mut hipGraphNodeType,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphDestroyNode(node: hipGraphNode_t) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphClone(
+        pGraphClone: *mut hipGraph_t,
+        originalGraph: hipGraph_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphNodeFindInClone(
+        pNode: *mut hipGraphNode_t,
+        originalNode: hipGraphNode_t,
+        clonedGraph: hipGraph_t,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphInstantiate(
+        pGraphExec: *mut hipGraphExec_t,
+        graph: hipGraph_t,
+        pErrorNode: *mut hipGraphNode_t,
+        pLogBuffer: *mut c_char,
+        bufferSize: usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphInstantiateWithFlags(
+        pGraphExec: *mut hipGraphExec_t,
+        graph: hipGraph_t,
+        flags: c_ulonglong,
+    ) -> hipError_t;
+
+    #[since = 6 .1, "6.1"]
+    pub fn hipGraphInstantiateWithParams(
+        pGraphExec: *mut hipGraphExec_t,
+        graph: hipGraph_t,
+        instantiateParams: *mut hipGraphInstantiateParams,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphLaunch(
+        graphExec: hipGraphExec_t,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphUpload(
+        graphExec: hipGraphExec_t,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipGraphAddNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        nodeParams: *mut hipGraphNodeParams,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipGraphExecGetFlags(
+        graphExec: hipGraphExec_t,
+        flags: *mut c_ulonglong,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipGraphNodeSetParams(
+        node: hipGraphNode_t,
+        nodeParams: *mut hipGraphNodeParams,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipGraphExecNodeSetParams(
+        graphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        nodeParams: *mut hipGraphNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphExecDestroy(graphExec: hipGraphExec_t) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecUpdate(
+        hGraphExec: hipGraphExec_t,
+        hGraph: hipGraph_t,
+        hErrorNode_out: *mut hipGraphNode_t,
+        updateResult_out: *mut hipGraphExecUpdateResult,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphAddKernelNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        pNodeParams: *const hipKernelNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphKernelNodeGetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *mut hipKernelNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphKernelNodeSetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *const hipKernelNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .6, "5.6"]
+    pub fn hipDrvGraphAddMemcpyNode(
+        phGraphNode: *mut hipGraphNode_t,
+        hGraph: hipGraph_t,
+        dependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        copyParams: *const HIP_MEMCPY3D,
+        ctx: hipCtx_t,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphAddMemcpyNode(
+        pGraphNode_t: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        pCopyParams: *const hipMemcpy3DParms,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphMemcpyNodeGetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *mut hipMemcpy3DParms,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphMemcpyNodeSetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *const hipMemcpy3DParms,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecMemcpyNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        pNodeParams: *mut hipMemcpy3DParms,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphAddMemcpyNode1D(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        dst: *mut c_void,
+        src: *const c_void,
+        count: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphMemcpyNodeSetParams1D(
+        node: hipGraphNode_t,
+        dst: *mut c_void,
+        src: *const c_void,
+        count: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecMemcpyNodeSetParams1D(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        dst: *mut c_void,
+        src: *const c_void,
+        count: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphAddMemcpyNodeFromSymbol(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        dst: *mut c_void,
+        symbol: *const c_void,
+        count: usize,
+        offset: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphMemcpyNodeSetParamsFromSymbol(
+        node: hipGraphNode_t,
+        dst: *mut c_void,
+        symbol: *const c_void,
+        count: usize,
+        offset: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecMemcpyNodeSetParamsFromSymbol(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        dst: *mut c_void,
+        symbol: *const c_void,
+        count: usize,
+        offset: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphAddMemcpyNodeToSymbol(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        symbol: *const c_void,
+        src: *const c_void,
+        count: usize,
+        offset: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphMemcpyNodeSetParamsToSymbol(
+        node: hipGraphNode_t,
+        symbol: *const c_void,
+        src: *const c_void,
+        count: usize,
+        offset: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecMemcpyNodeSetParamsToSymbol(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        symbol: *const c_void,
+        src: *const c_void,
+        count: usize,
+        offset: usize,
+        kind: hipMemcpyKind,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphAddMemsetNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        pMemsetParams: *const hipMemsetParams,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphMemsetNodeGetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *mut hipMemsetParams,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphMemsetNodeSetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *const hipMemsetParams,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecMemsetNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        pNodeParams: *const hipMemsetParams,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphAddHostNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        pNodeParams: *const hipHostNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphHostNodeGetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *mut hipHostNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphHostNodeSetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *const hipHostNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecHostNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        pNodeParams: *const hipHostNodeParams,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphAddChildGraphNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        childGraph: hipGraph_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphChildGraphNodeGetGraph(
+        node: hipGraphNode_t,
+        pGraph: *mut hipGraph_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecChildGraphNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        node: hipGraphNode_t,
+        childGraph: hipGraph_t,
+    ) -> hipError_t;
+
+    #[since = 4 .4, "4.4"]
+    pub fn hipGraphAddEmptyNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphAddEventRecordNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        event: hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphEventRecordNodeGetEvent(
+        node: hipGraphNode_t,
+        event_out: *mut hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphEventRecordNodeSetEvent(
+        node: hipGraphNode_t,
+        event: hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecEventRecordNodeSetEvent(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        event: hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphAddEventWaitNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        event: hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphEventWaitNodeGetEvent(
+        node: hipGraphNode_t,
+        event_out: *mut hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphEventWaitNodeSetEvent(
+        node: hipGraphNode_t,
+        event: hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphExecEventWaitNodeSetEvent(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        event: hipEvent_t,
+    ) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipGraphAddMemAllocNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        pNodeParams: *mut hipMemAllocNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipGraphMemAllocNodeGetParams(
+        node: hipGraphNode_t,
+        pNodeParams: *mut hipMemAllocNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipGraphAddMemFreeNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        dev_ptr: *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipGraphMemFreeNodeGetParams(
+        node: hipGraphNode_t,
+        dev_ptr: *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipDeviceGetGraphMemAttribute(
+        device: c_int,
+        attr: hipGraphMemAttributeType,
+        value: *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipDeviceGraphMemTrim(device: c_int) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipUserObjectCreate(
+        object_out: *mut hipUserObject_t,
+        ptr: *mut c_void,
+        destroy: hipHostFn_t,
+        initialRefcount: c_uint,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipUserObjectRelease(
+        object: hipUserObject_t,
+        count: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipUserObjectRetain(
+        object: hipUserObject_t,
+        count: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphRetainUserObject(
+        graph: hipGraph_t,
+        object: hipUserObject_t,
+        count: c_uint,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphReleaseUserObject(
+        graph: hipGraph_t,
+        object: hipUserObject_t,
+        count: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphDebugDotPrint(
+        graph: hipGraph_t,
+        path: *const c_char,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphKernelNodeCopyAttributes(
+        hSrc: hipGraphNode_t,
+        hDst: hipGraphNode_t,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphNodeSetEnabled(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        isEnabled: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphNodeGetEnabled(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        isEnabled: *mut c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphAddExternalSemaphoresWaitNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        nodeParams: *const hipExternalSemaphoreWaitNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphAddExternalSemaphoresSignalNode(
+        pGraphNode: *mut hipGraphNode_t,
+        graph: hipGraph_t,
+        pDependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        nodeParams: *const hipExternalSemaphoreSignalNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphExternalSemaphoresSignalNodeSetParams(
+        hNode: hipGraphNode_t,
+        nodeParams: *const hipExternalSemaphoreSignalNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphExternalSemaphoresWaitNodeSetParams(
+        hNode: hipGraphNode_t,
+        nodeParams: *const hipExternalSemaphoreWaitNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphExternalSemaphoresSignalNodeGetParams(
+        hNode: hipGraphNode_t,
+        params_out: *mut hipExternalSemaphoreSignalNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphExternalSemaphoresWaitNodeGetParams(
+        hNode: hipGraphNode_t,
+        params_out: *mut hipExternalSemaphoreWaitNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphExecExternalSemaphoresSignalNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        nodeParams: *const hipExternalSemaphoreSignalNodeParams,
+    ) -> hipError_t;
+
+    #[since = 5 .3, "5.3"]
+    pub fn hipGraphExecExternalSemaphoresWaitNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        nodeParams: *const hipExternalSemaphoreWaitNodeParams,
+    ) -> hipError_t;
+
+    #[since = 6 .0, "6.0"]
+    pub fn hipDrvGraphMemcpyNodeGetParams(
+        hNode: hipGraphNode_t,
+        nodeParams: *mut HIP_MEMCPY3D,
+    ) -> hipError_t;
+
+    #[since = 6 .0, "6.0"]
+    pub fn hipDrvGraphMemcpyNodeSetParams(
+        hNode: hipGraphNode_t,
+        nodeParams: *const HIP_MEMCPY3D,
+    ) -> hipError_t;
+
+    #[since = 5 .6, "5.6"]
+    pub fn hipDrvGraphAddMemsetNode(
+        phGraphNode: *mut hipGraphNode_t,
+        hGraph: hipGraph_t,
+        dependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        memsetParams: *const hipMemsetParams,
+        ctx: hipCtx_t,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipDrvGraphAddMemFreeNode(
+        phGraphNode: *mut hipGraphNode_t,
+        hGraph: hipGraph_t,
+        dependencies: *const hipGraphNode_t,
+        numDependencies: usize,
+        dptr: hipDeviceptr_t,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipDrvGraphExecMemcpyNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        copyParams: *const HIP_MEMCPY3D,
+        ctx: hipCtx_t,
+    ) -> hipError_t;
+
+    #[since = 6 .2, "6.2"]
+    pub fn hipDrvGraphExecMemsetNodeSetParams(
+        hGraphExec: hipGraphExec_t,
+        hNode: hipGraphNode_t,
+        memsetParams: *const hipMemsetParams,
+        ctx: hipCtx_t,
+    ) -> hipError_t;
+
+    #[since = 6 .5, "6.5"]
+    pub fn hipMemGetHandleForAddressRange(
+        handle: *mut c_void,
+        dptr: hipDeviceptr_t,
+        size: usize,
+        handleType: hipMemRangeHandleType,
+        flags: c_ulonglong,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphicsMapResources(
+        count: c_int,
+        resources: *mut hipGraphicsResource_t,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    #[since = 4 .5, "4.5"]
+    pub fn hipGraphicsSubResourceGetMappedArray(
+        array: *mut hipArray_t,
+        resource: hipGraphicsResource_t,
+        arrayIndex: c_uint,
+        mipLevel: c_uint,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphicsResourceGetMappedPointer(
+        devPtr: *mut *mut c_void,
+        size: *mut usize,
+        resource: hipGraphicsResource_t,
+    ) -> hipError_t;
+
+    #[since = 4 .3, "4.3"]
+    pub fn hipGraphicsUnmapResources(
+        count: c_int,
+        resrources: *mut hipGraphicsResource_t,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
     #[since = 4 .3, "4.3"]
     pub fn hipGraphicsUnregisterResource(resource: hipGraphicsResource_t) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipModuleLaunchCooperativeKernel(
+        f: hipFunction_t,
+        gridDimX: c_uint,
+        gridDimY: c_uint,
+        gridDimZ: c_uint,
+        blockDimX: c_uint,
+        blockDimY: c_uint,
+        blockDimZ: c_uint,
+        sharedMemBytes: c_uint,
+        stream: hipStream_t,
+        kernelParams: *mut *mut c_void,
+    ) -> hipError_t;
+
+    #[since = 5 .5, "5.5"]
+    pub fn hipModuleLaunchCooperativeKernelMultiDevice(
+        launchParamsList: *mut hipFunctionLaunchParams,
+        numDevices: c_uint,
+        flags: c_uint,
+    ) -> hipError_t;
+
+    #[since = 5 .2, "5.2"]
+    pub fn hipLaunchCooperativeKernel(
+        f: *const c_void,
+        gridDim: dim3,
+        blockDim: dim3,
+        kernelParams: *mut *mut c_void,
+        sharedMemBytes: c_uint,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
+    pub fn hipLaunchCooperativeKernelMultiDevice(
+        launchParamsList: hipLaunchParams,
+        numDevices: c_int,
+        flags: c_uint,
+    ) -> hipError_t;
 }
 
 #[cfg(all(feature = "hiprtc", any(hiprtc, feature = "dynamic-loading")))]
