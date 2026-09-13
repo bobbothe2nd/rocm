@@ -21,8 +21,8 @@ pub fn rocm_roots() -> Vec<PathBuf> {
 
     roots.extend([
         PathBuf::from("/opt/rocm"),
+        PathBuf::from("/usr/rocm"),
         PathBuf::from("/usr/local/rocm"),
-        PathBuf::from("/usr"),
     ]);
 
     roots
@@ -55,7 +55,9 @@ pub fn find_file(root: &Path, names: &[&str]) -> Option<PathBuf> {
     let mut stack = vec![root.to_path_buf()];
 
     while let Some(dir) = stack.pop() {
-        let entries = fs::read_dir(&dir).ok()?;
+        let Ok(entries) = fs::read_dir(&dir) else {
+            continue;
+        };
 
         for entry in entries.flatten() {
             let path = entry.path();
