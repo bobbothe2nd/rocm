@@ -51,7 +51,7 @@ This crate tries to assume as little about the target as possible.
 - The size of a Rust `usize` should be equal to the size of a C `size_t`
 - `hipGetDeviceProperties` and `hipChooseDevice` are only correct profided `hipDeviceProp_tR0600` = `hipDeviceProp_t`
 
-Try to avoid these. Device properties may get patched in the future.
+These should always be true.
 
 ## Maintenance
 

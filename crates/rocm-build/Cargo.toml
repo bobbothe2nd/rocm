@@ -1,11 +1,12 @@
 [package]
 name = "rocm-build"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Discovery of ROCm libraries for build scripts"
-readme = "README.md"
 license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
+documentation = "https://docs.rs/crate/rocm-build/latest"
+categories = ["development-tools::build-utils"]
 
 [dependencies]
 libloading = "0.9"

@@ -6,7 +6,8 @@
     clippy::too_many_arguments,
     clippy::missing_safety_doc,
     clippy::ptr_offset_with_cast,
-    clippy::manual_div_ceil
+    clippy::manual_div_ceil,
+    clippy::useless_transmute
 )]
 #![cfg_attr(not(feature = "dynamic-loading"), no_std)]
 

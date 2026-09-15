@@ -2,6 +2,4 @@
 /copy.ps1
 /list.sh
 /Cargo.lock
-/hip
-/rocm-systems
 /bindgen.sh
