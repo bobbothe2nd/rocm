@@ -1,5 +1,5 @@
-pub mod ver;
 pub mod link;
+pub mod ver;
 
 macro_rules! build {
     ($($link:ident)?) => {

@@ -1,5 +1,8 @@
 use libloading::Library;
-use std::{fs, path::{Path, PathBuf}};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 pub const KNOWN_ROCM_VERSIONS: &[&str] = &[
     "10.0", "7.15", "7.14", "7.13", "7.12", "7.11", "7.10", "7.2", "7.1", "7.9", "6.5", "6.4",
@@ -34,7 +37,10 @@ pub struct Version {
 
 pub fn cfg_version(cfg: &str, version: Version, known: &[&str]) {
     let formatted = format!("{}.{}", version.major, version.minor);
-    let index = known.iter().position(|x| *x == formatted.as_str()).unwrap_or(known.len() - 1);
+    let index = known
+        .iter()
+        .position(|x| *x == formatted.as_str())
+        .unwrap_or(known.len() - 1);
 
     for version in &known[..index] {
         println!("cargo:rustc-cfg={cfg}=\"{}\"", version);
@@ -57,6 +63,11 @@ pub fn find_rocm_version(roots: &[PathBuf]) -> Option<Version> {
     None
 }
 
+/// Queries the HIP runtime API version.
+///
+/// # Safety
+///
+/// The library must be a valid `amdhip64` path.
 pub unsafe fn hip_runtime_version(library: &Path) -> Option<Version> {
     type HipRuntimeGetVersion = unsafe extern "C" fn(*mut i32) -> i32;
 
@@ -83,6 +94,11 @@ pub unsafe fn hip_runtime_version(library: &Path) -> Option<Version> {
     })
 }
 
+/// Queries the rocBLAS API version.
+///
+/// # Safety
+///
+/// The library must be a valid rocBLAS path.
 pub unsafe fn rocblas_version(library: &Path) -> Option<Version> {
     let lib = unsafe { Library::new(library).ok()? };
 

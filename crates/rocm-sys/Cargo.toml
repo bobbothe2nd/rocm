@@ -1,11 +1,11 @@
 [package]
 name = "rocm-sys"
 description = "ROCm system bindings configured by release version"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 license = "MIT"
-readme = "README.md"
 repository = "https://github.com/bobbothe2nd/rocm"
+documentation = "https://docs.rs/crate/rocm-sys/latest"
 keywords = ["gpu", "hip", "rocm", "bindings", "system"]
 categories = ["hardware-support", "external-ffi-bindings"]
 
@@ -13,16 +13,34 @@ categories = ["hardware-support", "external-ffi-bindings"]
 libloading = { version = "0.9", optional = true }
 
 [build-dependencies]
-rocm-build = { path = "../rocm-build", version = "0.1.0" }
+rocm-build = { path = "../rocm-build", version = "0.1.1" }
 
 [features]
+default = ["dynamic-loading", "hiprtc"]
+
 # configure included libraries
 hip = []
-hiprtc = ["hip"]
-hipblas = ["hip"]
-hipblaslt = ["hipblas"]
+hiprtc = []
+hipblas = []
+hipblaslt = []
+hipcub = []
+hipdnn = []
+hipfft = []
+hiprand = []
+hipsolver = []
+hipsparse = []
+hipsparselt = []
+hiptensor = []
+hipthreads = []
+rocalution = []
 rocblas = []
 rocfft = []
+rocprim = []
+rocrand = []
+rocsolver = []
+rocsparse = []
+rocthrust = []
+rocwmma = []
 
 # link options
 dynamic-loading = ["dep:libloading"]

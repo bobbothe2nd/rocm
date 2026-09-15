@@ -13,19 +13,15 @@ ROCm and AMD are trademarks of Advanced Micro Devices, Inc.
 Create a `build.rs` for your crate and enter:
 
 ```rust
-use rocm_build::build_version_cfg;
-
 fn main() {
-    build_version_cfg();
+    rocm_build::build_version_cfg();
 }
 ```
 
 Or if you want to link the libraries:
 
 ```rust
-use rocm_build::build_version_cfg_link;
-
 fn main() {
-    build_version_cfg_link();
+    rocm_build::build_version_cfg_link();
 }
 ```

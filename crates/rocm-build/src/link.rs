@@ -1,8 +1,11 @@
+use crate::ver::{
+    KNOWN_HIPBLAS_VERSONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
+    KNOWN_ROCM_VERSIONS,
+};
 use std::{
     env, fs,
     path::{Path, PathBuf},
 };
-use crate::ver::{KNOWN_HIPBLAS_VERSONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS, KNOWN_ROCM_VERSIONS};
 
 pub struct Component {
     pub include_dir: PathBuf,
@@ -28,7 +31,11 @@ pub fn rocm_roots() -> Vec<PathBuf> {
     roots
 }
 
-pub fn find_component(roots: &[PathBuf], headers: &[&str], libraries: &[&str]) -> Option<Component> {
+pub fn find_component(
+    roots: &[PathBuf],
+    headers: &[&str],
+    libraries: &[&str],
+) -> Option<Component> {
     for root in roots {
         let Some(header) = find_file(root, headers) else {
             continue;
@@ -125,8 +132,24 @@ pub fn check_cfg() {
     println!("cargo:rustc-check-cfg=cfg(hiprtc)");
     println!("cargo:rustc-check-cfg=cfg(hipblas)");
     println!("cargo:rustc-check-cfg=cfg(hipblaslt)");
+    println!("cargo:rustc-check-cfg=cfg(hipcub)");
+    println!("cargo:rustc-check-cfg=cfg(hipdnn)");
+    println!("cargo:rustc-check-cfg=cfg(hipfft)");
+    println!("cargo:rustc-check-cfg=cfg(hiprand)");
+    println!("cargo:rustc-check-cfg=cfg(hipsolver)");
+    println!("cargo:rustc-check-cfg=cfg(hipsparse)");
+    println!("cargo:rustc-check-cfg=cfg(hipsparselt)");
+    println!("cargo:rustc-check-cfg=cfg(hiptensor)");
+    println!("cargo:rustc-check-cfg=cfg(hipthreads)");
+    println!("cargo:rustc-check-cfg=cfg(rocalution)");
     println!("cargo:rustc-check-cfg=cfg(rocblas)");
     println!("cargo:rustc-check-cfg=cfg(rocfft)");
+    println!("cargo:rustc-check-cfg=cfg(rocprim)");
+    println!("cargo:rustc-check-cfg=cfg(rocrand)");
+    println!("cargo:rustc-check-cfg=cfg(rocsolver)");
+    println!("cargo:rustc-check-cfg=cfg(rocsparse)");
+    println!("cargo:rustc-check-cfg=cfg(rocthrust)");
+    println!("cargo:rustc-check-cfg=cfg(rocwmma)");
 
     let rocm_ver = KNOWN_ROCM_VERSIONS
         .iter()

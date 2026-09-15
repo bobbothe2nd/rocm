@@ -1,3 +1,5 @@
+libamdhip64.so
+
 hipArrayGetInfo@@hip_5.6
 hipBindTextureToArray@@hip_4.2
 hipChooseDeviceR0000@@hip_4.2
@@ -8,7 +10,6 @@ hipDeviceGetCacheConfig@@hip_4.2
 hipDeviceGetDefaultMemPool@@hip_5.1
 hipDeviceGetDevResource@@hip_7.14
 hipDeviceGetExecutionCtx@@hip_7.14
-hipDeviceGetTexture1DLinearMaxWidth@@hip_4.2
 hipDeviceSetGraphMemAttribute@@hip_4.5
 hipDevResourceGenerateDesc@@hip_7.14
 hipDevSmResourceSplit@@hip_7.14
