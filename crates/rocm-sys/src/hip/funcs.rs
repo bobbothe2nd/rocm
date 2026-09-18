@@ -112,6 +112,12 @@ link! {
         deviceId: c_int,
     ) -> hipError_t;
 
+    #[since = 5 .0, "5.0"]
+    pub fn hipGetDevicePropertiesR0600(
+        prop: *mut hipDeviceProp_tR0600,
+        deviceId: c_int,
+    ) -> hipError_t;
+
     pub fn hipDeviceGetTexture1DLinearMaxWidth(
         max_width: *mut usize,
         dex: *const hipChannelFormatDesc,
@@ -1958,7 +1964,7 @@ Reading from a discarded range without first writing or prefetching to it will r
         log_mask: usize,
     ) -> hipError_t;
 
-    #[private(cfg)]
+    #[internal(cfg)]
     pub fn __hipGetPixelAddr(
         x: c_int,
         format: c_int,
@@ -2369,7 +2375,7 @@ Reading from a discarded range without first writing or prefetching to it will r
 
     pub fn hipLaunchByPtr(func: *const c_void) -> hipError_t;
 
-    #[private(cfg)]
+    #[internal(cfg)]
     pub fn __hipPushCallConfiguration(
         gridDim: dim3,
         blockDim: dim3,
@@ -2377,7 +2383,7 @@ Reading from a discarded range without first writing or prefetching to it will r
         stream: hipStream_t,
     ) -> hipError_t;
 
-    #[private(cfg)]
+    #[internal(cfg)]
     pub fn __hipPopCallConfiguration(
         gridDim: *mut dim3,
         blockDim: *mut dim3,

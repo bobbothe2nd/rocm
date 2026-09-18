@@ -18,7 +18,7 @@ macro_rules! link {
 
         $(
             $(
-                #[private($cfg_priv:ident)]
+                #[internal($cfg_priv:ident)]
             )?
             $(
                 #[doc = $docs:literal]
@@ -86,7 +86,7 @@ If the shared library is present on the system under a different name than one o
 
         $(
             $(
-                #[$cfg_priv(feature = "private")]
+                #[$cfg_priv(feature = "internal")]
             )?
             $(
                 #[doc = $docs]
@@ -122,7 +122,7 @@ If the shared library is present on the system under a different name than one o
             }
 
             $(
-                #[$cfg_priv(feature = "private")]
+                #[$cfg_priv(feature = "internal")]
             )?
             $(
                 #[doc = $docs]

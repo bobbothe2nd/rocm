@@ -1,7 +1,7 @@
 [package]
 name = "rocm-rt"
 description = "ROCm abstraction runtime core"
-version = "0.1.0-alpha.1"
+version = "0.1.0-alpha.2"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
@@ -10,14 +10,12 @@ keywords = ["gpu", "hip", "rocm", "rocfft", "rocblas"]
 categories = ["hardware-support"]
 
 [dependencies]
-rocm-sys = { path = "../rocm-sys", version = "0.2.0" }
+rocm-sys = { path = "../rocm-sys", version = "0.3.0" }
 
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.1.2" }
 
 [features]
-default = ["hip", "hiprtc", "dynamic-loading"]
-
 hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]
 hipblas = ["rocm-sys/hipblas"]
@@ -42,3 +40,14 @@ rocthrust = ["rocm-sys/rocthrust"]
 rocwmma = ["rocm-sys/rocwmma"]
 
 dynamic-loading = ["rocm-sys/dynamic-loading"]
+
+alloc = []
+std = ["alloc"]
+
+[[example]]
+name = "dev_stream"
+required-features = [
+    "alloc",
+    "hip",
+    "hiprtc",
+]

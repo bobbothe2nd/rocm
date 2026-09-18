@@ -1,7 +1,7 @@
 [package]
 name = "rocm-sys"
 description = "ROCm system bindings configured by release version"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
@@ -16,8 +16,6 @@ libloading = { version = "0.9", optional = true }
 rocm-build = { path = "../rocm-build", version = "0.1.2" }
 
 [features]
-default = ["dynamic-loading", "hiprtc"]
-
 # configure included libraries
 hip = []
 hiprtc = []
@@ -47,7 +45,7 @@ dynamic-loading = ["dep:libloading"]
 
 # include symbols that might not be in shared library
 deprecated = []
-private = []
+internal = []
 
 [[example]]
 name = "get_device_count"

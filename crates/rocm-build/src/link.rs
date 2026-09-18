@@ -22,11 +22,7 @@ pub fn rocm_roots() -> Vec<PathBuf> {
         }
     }
 
-    roots.extend([
-        PathBuf::from("/opt/rocm"),
-        PathBuf::from("/usr/rocm"),
-        PathBuf::from("/usr/local/rocm"),
-    ]);
+    roots.push(PathBuf::from("/opt/rocm"));
 
     roots
 }
