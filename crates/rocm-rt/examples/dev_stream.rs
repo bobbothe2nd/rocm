@@ -82,7 +82,7 @@ fn main() {
     };
 
     unsafe {
-        stream.launch(func, &mut args, conf).unwrap();
+        stream.launch(&func, &mut args, conf).unwrap();
     }
 
     let out_host = DevMapped::alloc(BYTES).unwrap();

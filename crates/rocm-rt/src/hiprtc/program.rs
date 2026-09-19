@@ -33,8 +33,7 @@ impl Hsaco {
             }
         }
 
-        let src = CString::new(src.as_ref().as_bytes())
-            .expect("program code cannot contain null terminators");
+        let src = CString::new(src.as_ref().as_bytes()).map_err(|_| HiprtcError::InvalidProgram)?;
 
         let prog: Result<HiprtcProgram, HiprtcError> = unsafe {
             wrap_sys_res!(|prog| hiprtcCreateProgram(

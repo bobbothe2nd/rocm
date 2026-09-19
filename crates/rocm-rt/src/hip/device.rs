@@ -115,52 +115,82 @@ impl Device {
         arch.parse().map_err(|_| HipError::InvalidValue )
     }
 
-    /// Synchronizes the current default device
-    ///
-    /// To set the current default device, use [`Device::set_default`].
-    pub fn sync() -> Result<(), HipError> {
-        unsafe { try_err!(hipDeviceSynchronize(), Ok(())) }
-    }
-
-    /// Resets the current default device
-    ///
-    /// To set the current default device, use [`Device::set_default`].
-    pub fn reset() -> Result<(), HipError> {
-        unsafe { try_err!(hipDeviceReset(), Ok(())) }
-    }
-
     /// Gets a count of available ROCm devices.
     pub fn get_dev_count() -> Result<i32, HipError> {
         unsafe { wrap_sys_res!(|count| hipGetDeviceCount((&raw mut count).cast())) }
             .map(|count: c_int| count as i32)
     }
 
-    /// Queries the specified limit of the current device as an unsigned integer
-    pub fn get_limit(limit: DeviceLimit) -> Result<usize, HipError> {
-        unsafe {
-            let limit = transmute::<DeviceLimit, hipLimit_t>(limit);
-            wrap_sys_res!(|val| hipDeviceGetLimit((&raw mut val).cast(), limit))
-        }
+    pub fn sync(self) -> Result<(), HipError> {
+        self.set_default()?;
+        sync()
     }
 
-    /// Sets the specified limit of the current device to a new value
-    pub fn set_limit(limit: DeviceLimit, val: usize) -> Result<(), HipError> {
-        unsafe {
-            let limit = transmute::<DeviceLimit, hipLimit_t>(limit);
-            try_err!(hipDeviceSetLimit(limit, val), Ok(()))
-        }
+    pub fn reset(self) -> Result<(), HipError> {
+        self.set_default()?;
+        reset()
     }
 
-    /// Gets flags set for current device
-    pub fn get_flags() -> Result<u32, HipError> {
-        unsafe { wrap_sys_res!(|flags| hipGetDeviceFlags((&raw mut flags).cast())) }
-            .map(|flags: c_uint| flags as u32)
+    pub fn get_limit(self, limit: DeviceLimit) -> Result<usize, HipError> {
+        self.set_default()?;
+        get_limit(limit)
     }
 
-    /// Sets flags set for current device
-    pub fn set_flags(flags: u32) -> Result<(), HipError> {
-        unsafe { try_err!(hipSetDeviceFlags(flags as c_uint), Ok(())) }
+    pub fn set_limit(self, limit: DeviceLimit, val: usize) -> Result<(), HipError> {
+        self.set_default()?;
+        set_limit(limit, val)
     }
+
+    pub fn get_flags(self) -> Result<u32, HipError> {
+        self.set_default()?;
+        get_flags()
+    }
+
+    pub fn set_flags(self, val: u32) -> Result<(), HipError> {
+        self.set_default()?;
+        set_flags(val)
+    }
+}
+
+/// Synchronizes the current default device
+///
+/// To set the current default device, use [`Device::set_default`].
+pub fn sync() -> Result<(), HipError> {
+    unsafe { try_err!(hipDeviceSynchronize(), Ok(())) }
+}
+
+/// Resets the current default device
+///
+/// To set the current default device, use [`Device::set_default`].
+pub fn reset() -> Result<(), HipError> {
+    unsafe { try_err!(hipDeviceReset(), Ok(())) }
+}
+
+/// Queries the specified limit of the current device as an unsigned integer
+pub fn get_limit(limit: DeviceLimit) -> Result<usize, HipError> {
+    unsafe {
+        let limit = transmute::<DeviceLimit, hipLimit_t>(limit);
+        wrap_sys_res!(|val| hipDeviceGetLimit((&raw mut val).cast(), limit))
+    }
+}
+
+/// Sets the specified limit of the current device to a new value
+pub fn set_limit(limit: DeviceLimit, val: usize) -> Result<(), HipError> {
+    unsafe {
+        let limit = transmute::<DeviceLimit, hipLimit_t>(limit);
+        try_err!(hipDeviceSetLimit(limit, val), Ok(()))
+    }
+}
+
+/// Gets flags set for current device
+pub fn get_flags() -> Result<u32, HipError> {
+    unsafe { wrap_sys_res!(|flags| hipGetDeviceFlags((&raw mut flags).cast())) }
+        .map(|flags: c_uint| flags as u32)
+}
+
+/// Sets flags set for current device
+pub fn set_flags(flags: u32) -> Result<(), HipError> {
+    unsafe { try_err!(hipSetDeviceFlags(flags as c_uint), Ok(())) }
 }
 
 pub type DeviceProp = hipDeviceProp_tR0600;
