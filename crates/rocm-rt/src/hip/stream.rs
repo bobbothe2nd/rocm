@@ -42,7 +42,7 @@ impl Stream {
         len: usize,
     ) -> Result<(), HipError> {
         if src_off.checked_add(len).is_none_or(|end| end > src.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
+            || dst_off.checked_add(len).is_none_or(|end| end > dst.size as usize)
         {
             return Err(HipError::InvalidValue);
         }
@@ -81,7 +81,7 @@ impl Stream {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size)
+        if src_off.checked_add(len).is_none_or(|end| end > src.size as usize)
             || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
         {
             return Err(HipError::InvalidValue);
@@ -121,9 +121,10 @@ impl Stream {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
+        if src_off.checked_add(len).is_none_or(|end| end > src.size as usize)
+            || dst_off.checked_add(len).is_none_or(|end| end > dst.size as usize)
             || src.ptr == dst.ptr
+            || src.dev != dst.dev
         {
             return Err(HipError::InvalidValue);
         }

@@ -1,9 +1,9 @@
-use std::mem::transmute;
+use core::mem::transmute;
 
 use rocm_rt::{
     hip::{
         device::Device,
-        memory::{Buffer, DevMapped},
+        memory::DevMapped,
         module::LaunchConfig,
         stream::Stream,
     },
@@ -25,15 +25,15 @@ const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
 
 fn main() {
-    let device = Device::create(0).unwrap();
-    device.set_default().unwrap();
+    let dev = Device::create(0).unwrap();
+    dev.set_default().unwrap();
 
-    let arch = device.gfx_version().unwrap();
+    let arch = dev.gfx_version().unwrap();
 
     let opts = CompileOptions {
         opt_level: Some(3),
         fast_math: Some(true),
-        name: Some(c"kernel"),
+        name: Some(c"vec_add"),
         defines: &[],
         include_paths: &[],
         arch,
@@ -42,15 +42,13 @@ fn main() {
 
     let hsaco = Hsaco::compile(SRC, &opts).unwrap();
 
-    let module = hsaco.load().unwrap();
-
-    let func = module.get_func_c(c"vec_add").unwrap();
+    let func = hsaco.load().unwrap().get_func_c(c"vec_add").unwrap();
 
     let stream = Stream::create().unwrap();
 
-    let out = Buffer::new(BYTES).unwrap();
-    let a = Buffer::new(BYTES).unwrap();
-    let b = Buffer::new(BYTES).unwrap();
+    let out = dev.alloc(BYTES as u32).unwrap();
+    let a = dev.alloc(BYTES as u32).unwrap();
+    let b = dev.alloc(BYTES as u32).unwrap();
 
     let a_host = {
         let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };

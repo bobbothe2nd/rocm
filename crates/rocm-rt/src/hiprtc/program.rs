@@ -3,7 +3,7 @@ use core::{
     ptr::null,
 };
 
-use alloc::{boxed::Box, ffi::CString, format, string::ToString, vec, vec::Vec};
+use alloc::{boxed::Box, ffi::CString, format, vec::Vec};
 
 use rocm_sys::hiprtc::{
     hiprtcCompileProgram, hiprtcCreateProgram, hiprtcDestroyProgram, hiprtcGetCode,
@@ -20,6 +20,7 @@ pub struct Hsaco {
 impl Hsaco {
     /// Compiles HIP into a binary.
     pub fn compile<S: AsRef<str>>(src: S, opts: &CompileOptions<'_>) -> Result<Self, HiprtcError> {
+        #[repr(transparent)]
         struct HiprtcProgram {
             raw: hiprtcProgram,
         }
@@ -35,20 +36,17 @@ impl Hsaco {
         let src = CString::new(src.as_ref().as_bytes())
             .expect("program code cannot contain null terminators");
 
-        let prog: HiprtcProgram = {
-            let prog: Result<hiprtcProgram, HiprtcError> = unsafe {
-                wrap_sys_res!(|prog| hiprtcCreateProgram(
-                    (&raw mut prog).cast(),
-                    src.as_ptr(),
-                    opts.name.map(|n| n.as_ptr()).unwrap_or(null()),
-                    0,
-                    null(),
-                    null(),
-                ))
-            };
-
-            HiprtcProgram { raw: prog? }
+        let prog: Result<HiprtcProgram, HiprtcError> = unsafe {
+            wrap_sys_res!(|prog| hiprtcCreateProgram(
+                (&raw mut prog).cast(),
+                src.as_ptr(),
+                opts.name.map(|n| n.as_ptr()).unwrap_or(null()),
+                0,
+                null(),
+                null(),
+            ))
         };
+        let prog = prog?;
 
         {
             let c_strs = opts.build();
@@ -73,13 +71,13 @@ impl Hsaco {
             };
             let code_size = code_size?;
 
-            let mut code = vec![0u8; code_size];
+            let mut code = Box::new_uninit_slice(code_size);
 
             unsafe {
                 try_err!(hiprtcGetCode(prog.raw, code.as_mut_ptr().cast(),));
-            }
 
-            code.into_boxed_slice()
+                code.assume_init()
+            }
         };
 
         Ok(Self { code })

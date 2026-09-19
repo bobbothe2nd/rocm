@@ -5,7 +5,7 @@ use rocm_sys::hip::{
     hipMemcpyHtoD,
 };
 
-use crate::hip::HipError;
+use crate::hip::{HipError, device::Device};
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[derive(Debug)]
@@ -95,7 +95,7 @@ impl DevMapped {
         len: usize,
     ) -> Result<(), HipError> {
         if src_off.checked_add(len).is_none_or(|end| end > self.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > other.size)
+            || dst_off.checked_add(len).is_none_or(|end| end > other.size as usize)
         {
             return Err(HipError::InvalidValue);
         }
@@ -123,6 +123,43 @@ impl DevMapped {
             )
         }
     }
+
+    pub fn copy_from_dev(
+        &self,
+        other: &Buffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError> {
+        if src_off.checked_add(len).is_none_or(|end| end > self.size)
+            || dst_off.checked_add(len).is_none_or(|end| end > other.size as usize)
+        {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            self.copy_from_dev_unchecked(other, src_off, dst_off, len)
+        }
+    }
+
+    pub unsafe fn copy_from_dev_unchecked(
+        &self,
+        other: &Buffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError> {
+        unsafe {
+            try_err!(
+                hipMemcpyDtoH(
+                    self.ptr.add(src_off).cast(),
+                    other.ptr.add(dst_off).cast(),
+                    len
+                ),
+                Ok(())
+            )
+        }
+    }
 }
 
 impl Drop for DevMapped {
@@ -138,33 +175,38 @@ impl Drop for DevMapped {
 #[derive(Debug)]
 pub struct Buffer {
     pub(crate) ptr: *mut u8,
-    pub(crate) size: usize,
+    pub(crate) size: u32,
+    pub(crate) dev: Device, // check ptr and dev on use
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-impl Buffer {
+impl Device {
     /// Allocates `size` bytes on the default device
-    pub fn new(size: usize) -> Result<Self, HipError> {
+    pub fn alloc(self, size: u32) -> Result<Buffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
-            unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size)) };
+            unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
         let ptr = ptr?;
 
         if ptr.is_null() {
             return Err(HipError::InvalidValue);
         }
 
-        Ok(Self {
+        Ok(Buffer {
             ptr,
             size,
+            dev: self,
             _marker: PhantomData,
         })
     }
+}
 
+impl Buffer {
     /// Constructs a GPU buffer from a raw pointer and size
-    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: usize) -> Self {
+    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: u32, dev: Device) -> Self {
         Self {
             ptr,
             size,
+            dev,
             _marker: PhantomData,
         }
     }
@@ -175,7 +217,7 @@ impl Buffer {
     }
 
     /// Gets the size of the allocation
-    pub const fn size(&self) -> usize {
+    pub const fn size(&self) -> u32 {
         self.size
     }
 
@@ -208,7 +250,7 @@ impl Buffer {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size)
+        if src_off.checked_add(len).is_none_or(|end| end > self.size as usize)
             || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
         {
             return Err(HipError::InvalidValue);
@@ -238,6 +280,43 @@ impl Buffer {
         }
     }
 
+    pub fn copy_from_host(
+        &self,
+        src: &DevMapped,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError> {
+        if src_off.checked_add(len).is_none_or(|end| end > src.size)
+            || dst_off.checked_add(len).is_none_or(|end| end > self.size as usize)
+        {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            self.copy_from_host_unchecked(src, src_off, dst_off, len)
+        }
+    }
+    
+    pub unsafe fn copy_from_host_unchecked(
+        &self,
+        src: &DevMapped,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError> {
+        unsafe {
+            try_err!(
+                hipMemcpyHtoD(
+                    self.ptr.add(dst_off).cast(),
+                    src.ptr.add(src_off).cast(),
+                    len
+                ),
+                Ok(())
+            )
+        }
+    }
+
     pub fn copy_from(
         &self,
         src: &Self,
@@ -245,15 +324,36 @@ impl Buffer {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > src.size)
+        if src_off.checked_add(len).is_none_or(|end| end > src.size as usize)
+            || dst_off.checked_add(len).is_none_or(|end| end > self.size as usize)
             || self.ptr == src.ptr
+            || self.dev != src.dev
         {
             return Err(HipError::InvalidValue);
         }
 
         unsafe {
             self.copy_from_unchecked(src, src_off, dst_off, len)
+        }
+    }
+
+    pub fn copy_to(
+        &self,
+        dst: &Self,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError> {
+        if src_off.checked_add(len).is_none_or(|end| end > self.size as usize)
+            || dst_off.checked_add(len).is_none_or(|end| end > dst.size as usize)
+            || self.ptr == dst.ptr
+            || self.dev != dst.dev
+        {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            dst.copy_from_unchecked(self, src_off, dst_off, len)
         }
     }
 

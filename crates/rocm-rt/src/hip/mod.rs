@@ -11,7 +11,7 @@ pub mod device;
 pub mod memory;
 pub mod stream;
 
-#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
+#[cfg(all(feature = "alloc", feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
 pub mod module;
 
 use core::{

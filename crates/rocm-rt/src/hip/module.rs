@@ -34,6 +34,7 @@ impl<'a> Module<'a> {
     }
 }
 
+#[repr(transparent)]
 pub struct Module<'a> {
     raw: hipModule_t,
     _code: PhantomData<&'a Hsaco>,
@@ -41,12 +42,12 @@ pub struct Module<'a> {
 
 impl<'a> Module<'a> {
     #[cfg(feature = "alloc")]
-    pub fn get_func(&'a self, name: &str) -> Result<Func<'a>, HipError> {
+    pub fn get_func(&self, name: &str) -> Result<Func<'a>, HipError> {
         let name = CString::new(name).map_err(|_| HipError::InvalidValue)?;
         self.get_func_c(&name)
     }
 
-    pub fn get_func_c(&'a self, name: &CStr) -> Result<Func<'a>, HipError> {
+    pub fn get_func_c(&self, name: &CStr) -> Result<Func<'a>, HipError> {
         unsafe {
             wrap_sys_res!(|func| hipModuleGetFunction(
                 (&raw mut func).cast(),
@@ -57,10 +58,11 @@ impl<'a> Module<'a> {
     }
 }
 
+#[repr(transparent)]
 #[derive(Debug, Clone, Copy, Hash)]
 pub struct Func<'a> {
     raw: hipFunction_t,
-    _module: PhantomData<&'a Module<'a>>,
+    _module: PhantomData<&'a Hsaco>,
 }
 
 impl Stream {
