@@ -117,6 +117,8 @@ impl CompileOptions<'_> {
                 let root = {
                     #[cfg(feature = "std")]
                     {
+                        use alloc::string::ToString;
+
                         std::env::var("ROCM_PATH").unwrap_or_else(|_| "/opt/rocm".to_string())
                     }
 

@@ -106,13 +106,21 @@ impl Device {
     }
 
     /// Gets the GFX/GCN architecture version.
-    #[cfg(feature = "alloc")]
     pub fn gfx_version(&self) -> Result<GfxVersion, HipError> {
         let props = self.properties()?;
         let cstr = unsafe { CStr::from_ptr(props.gcnArchName.as_ptr()) };
-        let raw = cstr.to_string_lossy();
-        let arch = raw.split(':').next().unwrap_or(&raw);
-        arch.parse().map_err(|_| HipError::InvalidValue )
+        let arch = {
+            #[cfg(feature = "alloc")]
+            {
+                cstr.to_string_lossy()
+            }
+
+            #[cfg(not(feature = "alloc"))]
+            {
+                cstr.to_str().map_err(|_| HipError::InvalidValue)?
+            }
+        };
+        arch.parse().map_err(|_| HipError::InvalidValue)
     }
 
     /// Gets a count of available ROCm devices.

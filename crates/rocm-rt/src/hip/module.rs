@@ -1,9 +1,10 @@
-use core::{ffi::CStr, marker::PhantomData, ptr::null_mut};
+use core::{ffi::CStr, ptr::null_mut};
 
-use alloc::{rc::Rc, ffi::CString};
+use alloc::{ffi::CString, sync::Arc};
 
 use rocm_sys::hip::{
-    hipFunction_t, hipModule_t, hipModuleGetFunction, hipModuleLaunchKernel, hipModuleLoadData, hipModuleUnload,
+    hipFunction_t, hipModule_t, hipModuleGetFunction, hipModuleLaunchKernel, hipModuleLoadData,
+    hipModuleUnload,
 };
 
 use crate::{
@@ -12,13 +13,13 @@ use crate::{
 };
 
 impl Hsaco {
-    pub fn load<'a>(&'a self) -> Result<Module<'a>, HipError> {
+    pub fn load(&self) -> Result<Module, HipError> {
         Module::load(self)
     }
 }
 
-impl<'a> Module<'a> {
-    pub fn load(code: &'a Hsaco) -> Result<Self, HipError> {
+impl Module {
+    pub fn load(code: &Hsaco) -> Result<Self, HipError> {
         let module: Result<hipModule_t, HipError> = unsafe {
             wrap_sys_res!(|module| hipModuleLoadData(
                 (&raw mut module).cast(),
@@ -26,33 +27,26 @@ impl<'a> Module<'a> {
             ))
         };
 
-        let inner = Rc::new(ModuleInner {
-            raw: module?,
-            _code: PhantomData,
-        });
+        let inner = Arc::new(ModuleInner { raw: module? });
 
-        Ok(Module {
-            inner,
-            _code: PhantomData,
-        })
+        Ok(Module { inner })
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 #[repr(transparent)]
-pub struct Module<'a> {
-    inner: Rc<ModuleInner<'a>>,
-    _code: PhantomData<&'a Hsaco>,
+pub struct Module {
+    inner: Arc<ModuleInner>,
 }
 
-impl<'a> Module<'a> {
+impl Module {
     #[cfg(feature = "alloc")]
-    pub fn get_func(&self, name: &str) -> Result<Func<'a>, HipError> {
+    pub fn get_func(&self, name: &str) -> Result<Func, HipError> {
         let name = CString::new(name).map_err(|_| HipError::InvalidValue)?;
         self.get_func_c(&name)
     }
 
-    pub fn get_func_c(&self, name: &CStr) -> Result<Func<'a>, HipError> {
+    pub fn get_func_c(&self, name: &CStr) -> Result<Func, HipError> {
         let func: Result<hipFunction_t, HipError> = unsafe {
             wrap_sys_res!(|func| hipModuleGetFunction(
                 (&raw mut func).cast(),
@@ -68,14 +62,11 @@ impl<'a> Module<'a> {
     }
 }
 
-#[derive(Debug)]
-#[repr(transparent)]
-struct ModuleInner<'a> {
+struct ModuleInner {
     raw: hipModule_t,
-    _code: PhantomData<&'a Hsaco>,
 }
 
-impl Drop for ModuleInner<'_> {
+impl Drop for ModuleInner {
     fn drop(&mut self) {
         unsafe {
             hipModuleUnload(self.raw);
@@ -83,16 +74,24 @@ impl Drop for ModuleInner<'_> {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Func<'a> {
+#[derive(Clone)]
+pub struct Func {
     raw: hipFunction_t,
-    _module: Module<'a>,
+    _module: Module,
 }
 
 impl Stream {
+    /// Launches a kernel/function on this stream
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure that `func` refers to a valid kernel and that
+    /// `args` contains correctly typed and correctly laid-out kernel arguments
+    /// for that kernel. All referenced memory must remain valid for the duration
+    /// required by the launched kernel.
     pub unsafe fn launch(
         &self,
-        func: &Func<'_>,
+        func: &Func,
         args: &mut [*mut u8],
         conf: LaunchConfig,
     ) -> Result<(), HipError> {

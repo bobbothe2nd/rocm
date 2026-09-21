@@ -1,3 +1,4 @@
+#![allow(clippy::unnecessary_cast)]
 #![no_std]
 
 #[cfg(feature = "alloc")]

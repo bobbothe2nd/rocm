@@ -63,46 +63,54 @@ impl Display for GfxVersion {
     }
 }
 
-impl AsRef<str> for GfxVersion {
-    fn as_ref(&self) -> &str {
-        self.as_str()
-    }
-}
-
 impl FromStr for GfxVersion {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        #[cfg(not(feature = "alloc"))]
-        {
-            let head = s.trim().split(':').next().ok_or(())?;
-
-            match head {
-                "gfx942" => Ok(Self::Gfx942),
-                "gfx950" => Ok(Self::Gfx950),
-                "gfx1100" => Ok(Self::Gfx1100),
-                "gfx1101" => Ok(Self::Gfx1101),
-                "gfx1102" => Ok(Self::Gfx1102),
-                "gfx1200" => Ok(Self::Gfx1200),
-                "gfx1201" => Ok(Self::Gfx1201),
-                _ => Err(()),
+        let head = s.trim().split(':').next().ok_or(())?;
+        let head = {
+            #[cfg(not(feature = "alloc"))]
+            {
+                head
             }
-        }
 
-        #[cfg(feature = "alloc")]
-        {
-            let head = s.trim().split(':').next().ok_or(())?;
-
-            match head.to_lowercase().as_str() {
-                "gfx942" => Ok(Self::Gfx942),
-                "gfx950" => Ok(Self::Gfx950),
-                "gfx1100" => Ok(Self::Gfx1100),
-                "gfx1101" => Ok(Self::Gfx1101),
-                "gfx1102" => Ok(Self::Gfx1102),
-                "gfx1200" => Ok(Self::Gfx1200),
-                "gfx1201" => Ok(Self::Gfx1201),
-                _ => Err(()),
+            #[cfg(feature = "alloc")]
+            {
+                head.to_lowercase()
             }
-        }
+        };
+        let head = {
+            #[cfg(not(feature = "alloc"))]
+            {
+                head
+            }
+
+            #[cfg(feature = "alloc")]
+            {
+                head.as_str()
+            }
+        };
+
+        let str = match head {
+            "gfx1030" => Self::Gfx1030,
+            "gfx1103" => Self::Gfx1103,
+            "gfx1150" => Self::Gfx1150,
+            "gfx1151" => Self::Gfx1151,
+            "gfx1152" => Self::Gfx1152,
+            "gfx1153" => Self::Gfx1153,
+            "gfx908" => Self::Gfx908,
+            "gfx90a" => Self::Gfx90a,
+            "gfx90c" => Self::Gfx90c,
+            "gfx942" => Self::Gfx942,
+            "gfx950" => Self::Gfx950,
+            "gfx1100" => Self::Gfx1100,
+            "gfx1101" => Self::Gfx1101,
+            "gfx1102" => Self::Gfx1102,
+            "gfx1200" => Self::Gfx1200,
+            "gfx1201" => Self::Gfx1201,
+            _ => return Err(()),
+        };
+
+        Ok(str)
     }
 }

@@ -33,7 +33,7 @@ impl Stream {
         Self { raw }
     }
 
-    pub fn copy_htod(
+    pub unsafe fn copy_htod(
         &self,
         src: &DevMapped,
         dst: &Buffer,
@@ -41,15 +41,15 @@ impl Stream {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size as usize)
+        if src_off.checked_add(len).is_none_or(|end| end > src.size())
+            || dst_off
+                .checked_add(len)
+                .is_none_or(|end| end > dst.size as usize)
         {
             return Err(HipError::InvalidValue);
         }
 
-        unsafe {
-            self.copy_htod_unchecked(src, dst, src_off, dst_off, len)
-        }
+        unsafe { self.copy_htod_unchecked(src, dst, src_off, dst_off, len) }
     }
 
     pub unsafe fn copy_htod_unchecked(
@@ -64,7 +64,7 @@ impl Stream {
             try_err!(
                 hipMemcpyHtoDAsync(
                     dst.ptr.add(dst_off).cast(),
-                    src.ptr.add(src_off).cast(),
+                    src.data.as_ptr().add(src_off).cast(),
                     len,
                     self.raw,
                 ),
@@ -73,7 +73,7 @@ impl Stream {
         }
     }
 
-    pub fn copy_dtoh(
+    pub unsafe fn copy_dtoh(
         &self,
         src: &Buffer,
         dst: &DevMapped,
@@ -81,15 +81,15 @@ impl Stream {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size as usize)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
+        if src_off
+            .checked_add(len)
+            .is_none_or(|end| end > src.size as usize)
+            || dst_off.checked_add(len).is_none_or(|end| end > dst.size())
         {
             return Err(HipError::InvalidValue);
         }
 
-        unsafe {
-            self.copy_dtoh_unchecked(src, dst, src_off, dst_off, len)
-        }
+        unsafe { self.copy_dtoh_unchecked(src, dst, src_off, dst_off, len) }
     }
 
     pub unsafe fn copy_dtoh_unchecked(
@@ -103,7 +103,7 @@ impl Stream {
         unsafe {
             try_err!(
                 hipMemcpyDtoHAsync(
-                    dst.ptr.add(dst_off).cast(),
+                    dst.data.as_ptr().add(dst_off) as *mut _,
                     src.ptr.add(src_off).cast(),
                     len,
                     self.raw,
@@ -113,7 +113,7 @@ impl Stream {
         }
     }
 
-    pub fn copy_dtod(
+    pub unsafe fn copy_dtod(
         &self,
         src: &Buffer,
         dst: &Buffer,
@@ -121,17 +121,19 @@ impl Stream {
         dst_off: usize,
         len: usize,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size as usize)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size as usize)
+        if src_off
+            .checked_add(len)
+            .is_none_or(|end| end > src.size as usize)
+            || dst_off
+                .checked_add(len)
+                .is_none_or(|end| end > dst.size as usize)
             || src.ptr == dst.ptr
             || src.dev != dst.dev
         {
             return Err(HipError::InvalidValue);
         }
 
-        unsafe {
-            self.copy_dtod_unchecked(src, dst, src_off, dst_off, len)
-        }
+        unsafe { self.copy_dtod_unchecked(src, dst, src_off, dst_off, len) }
     }
 
     pub unsafe fn copy_dtod_unchecked(
