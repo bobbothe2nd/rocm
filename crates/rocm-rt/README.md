@@ -18,12 +18,7 @@ The example shown below compiles and launches a simple program:
 use core::mem::transmute;
 
 use rocm_rt::{
-    hip::{
-        device::Device,
-        memory::{Buffer, DevMapped},
-        module::LaunchConfig,
-        stream::Stream,
-    },
+    hip::{device::Device, memory::DevMappedAlloc, module::LaunchConfig, stream::Stream},
     hiprtc::program::{CompileOptions, Hsaco},
 };
 
@@ -56,9 +51,11 @@ let opts = CompileOptions {
     options: &[],
 };
 
-let hsaco = Hsaco::compile(SRC, &opts).unwrap();
-
-let func = hsaco.load().unwrap().get_func_c(c"vec_add").unwrap();
+let func = {
+    let hsaco = Hsaco::compile(SRC, &opts).unwrap();
+    let module = hsaco.load().unwrap();
+    module.get_func_c(c"vec_add").unwrap()
+};
 
 let stream = Stream::create().unwrap();
 
@@ -66,19 +63,21 @@ let out = dev.alloc(BYTES as u32).unwrap();
 let a = dev.alloc(BYTES as u32).unwrap();
 let b = dev.alloc(BYTES as u32).unwrap();
 
-let a_host = {
+let mut a_host = {
     let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };
 
-    DevMapped::new(&buf).unwrap()
+    DevMappedAlloc::new(&buf).unwrap()
 };
-let b_host = {
+let mut b_host = {
     let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([B_VAL; LEN]) };
 
-    DevMapped::new(&buf).unwrap()
+    DevMappedAlloc::new(&buf).unwrap()
 };
 
-stream.copy_htod(&a_host, &a, 0, 0, BYTES).unwrap();
-stream.copy_htod(&b_host, &b, 0, 0, BYTES).unwrap();
+unsafe {
+    stream.copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES).unwrap();
+    stream.copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES).unwrap();
+}
 
 let mut out_ptr = out.as_ptr();
 let mut a_ptr = a.as_ptr();
@@ -98,14 +97,14 @@ let conf = LaunchConfig {
 };
 
 unsafe {
-    stream.launch(func, &mut args, conf).unwrap();
+    stream.launch(&func, &mut args, conf).unwrap();
 }
 
-let out_host = DevMapped::alloc(BYTES).unwrap();
+let mut out_host = DevMappedAlloc::alloc(BYTES).unwrap();
 
 stream.sync().unwrap();
 
-out.copy_to_host(&out_host, 0, 0, BYTES).unwrap();
+out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
 
 for chunk in out_host.as_slice().chunks(size_of::<f32>()) {
     let u8x4: [u8; size_of::<f32>()] = chunk.try_into().unwrap();

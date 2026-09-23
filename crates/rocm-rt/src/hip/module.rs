@@ -12,27 +12,6 @@ use crate::{
     hiprtc::program::Hsaco,
 };
 
-impl Hsaco {
-    pub fn load(&self) -> Result<Module, HipError> {
-        Module::load(self)
-    }
-}
-
-impl Module {
-    pub fn load(code: &Hsaco) -> Result<Self, HipError> {
-        let module: Result<hipModule_t, HipError> = unsafe {
-            wrap_sys_res!(|module| hipModuleLoadData(
-                (&raw mut module).cast(),
-                code.code.as_ptr().cast()
-            ))
-        };
-
-        let inner = Arc::new(ModuleInner { raw: module? });
-
-        Ok(Module { inner })
-    }
-}
-
 #[derive(Clone)]
 #[repr(transparent)]
 pub struct Module {
@@ -62,6 +41,36 @@ impl Module {
     }
 }
 
+#[cfg(all(
+    feature = "hiprtc",
+    any(hiprtc, feature = "dynamic-loading")
+))]
+mod hiprtc {
+    use super::*;
+
+    impl Hsaco {
+        pub fn load(&self) -> Result<Module, HipError> {
+            Module::load(self)
+        }
+    }
+
+    impl Module {
+        pub fn load(code: &Hsaco) -> Result<Self, HipError> {
+            let module: Result<hipModule_t, HipError> = unsafe {
+                wrap_sys_res!(|module| hipModuleLoadData
+                    (
+                    (&raw mut module).cast(),
+                    code.code.as_ptr().cast()
+                ))
+            };
+
+            let inner = Arc::new(ModuleInner { raw: module? });
+
+            Ok(Module { inner })
+        }
+    }
+}
+
 struct ModuleInner {
     raw: hipModule_t,
 }
@@ -76,7 +85,7 @@ impl Drop for ModuleInner {
 
 #[derive(Clone)]
 pub struct Func {
-    raw: hipFunction_t,
+    pub(crate) raw: hipFunction_t,
     _module: Module,
 }
 

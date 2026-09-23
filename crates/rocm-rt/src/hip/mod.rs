@@ -10,6 +10,7 @@ macro_rules! try_err {
 pub mod device;
 pub mod memory;
 pub mod stream;
+pub mod graph;
 
 #[cfg(all(
     feature = "alloc",

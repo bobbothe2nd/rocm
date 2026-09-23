@@ -45,6 +45,7 @@ impl Stream {
             || dst_off
                 .checked_add(len)
                 .is_none_or(|end| end > dst.size as usize)
+            || dst.dev != self.get_dev()?
         {
             return Err(HipError::InvalidValue);
         }
@@ -85,6 +86,7 @@ impl Stream {
             .checked_add(len)
             .is_none_or(|end| end > src.size as usize)
             || dst_off.checked_add(len).is_none_or(|end| end > dst.size())
+            || src.dev != self.get_dev()?
         {
             return Err(HipError::InvalidValue);
         }
@@ -129,6 +131,7 @@ impl Stream {
                 .is_none_or(|end| end > dst.size as usize)
             || src.ptr == dst.ptr
             || src.dev != dst.dev
+            || src.dev != self.get_dev()?
         {
             return Err(HipError::InvalidValue);
         }
@@ -178,7 +181,7 @@ impl Stream {
     }
 
     /// Returns `true` if the stream has finished all queued tasks
-    pub fn query(&self) -> Result<bool, HipError> {
+    pub fn is_ready(&self) -> Result<bool, HipError> {
         let res = unsafe { hipStreamQuery(self.raw) };
         match res {
             hipError_t::hipSuccess => Ok(true),
