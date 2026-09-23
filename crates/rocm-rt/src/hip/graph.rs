@@ -115,7 +115,7 @@ impl Stream {
         }
     }
 
-    pub fn launch_graph(&self, graph: &Graph) -> Result<(), HipError> {
+    pub unsafe fn launch_graph(&self, graph: &Graph) -> Result<(), HipError> {
         unsafe {
             try_err!(hipGraphLaunch(graph.exec, self.raw), Ok(()))
         }
