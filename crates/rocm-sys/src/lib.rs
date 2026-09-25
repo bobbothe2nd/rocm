@@ -18,7 +18,7 @@ macro_rules! link {
 
         $(
             $(
-                #[internal($cfg_priv:ident)]
+                #[internal($cfg_internal:ident)]
             )?
             $(
                 #[doc = $docs:literal]
@@ -29,10 +29,9 @@ macro_rules! link {
             $vis:vis fn $name:ident($($arg:ident: $arg_ty:ty),*$(,)?) $(-> $ret:ty)?;
         )*
     ) => {
-        #[cfg(feature = "dynamic-loading")]
-        static $lib: ::std::sync::LazyLock<libloading::Library> = {
-            const LIBRARIES: &[&str] = {
-                #[cfg(target_os = "linux")]
+        pub(crate) mod $lib {
+            pub(crate) const LIBRARIES: &[&str] = {
+                #[cfg(unix)]
                 {
                     &[
                         concat!("lib", stringify!($lib), ".so"),
@@ -42,7 +41,7 @@ macro_rules! link {
                     ]
                 }
 
-                #[cfg(target_os = "windows")]
+                #[cfg(windows)]
                 {
                     &[
                         concat!(stringify!($lib), ".dll"),
@@ -52,13 +51,13 @@ macro_rules! link {
                     ]
                 }
 
-                #[cfg(not(any(target_os = "windows", target_os = "linux")))]
+                #[cfg(not(any(windows, unix)))]
                 {
                     &[]
                 }
             };
 
-            ::std::sync::LazyLock::new(|| {
+            pub(crate) fn is_rocm_lib_present() -> bool {
                 let roots = [
                     std::env::var_os("ROCM_PATH"),
                     Some("/opt/rocm".into()),
@@ -71,6 +70,31 @@ macro_rules! link {
                     for choice in LIBRARIES {
                         let path = lib_dir.join(choice);
 
+                        if path.exists() {
+                            return true;
+                        }
+                    }
+                }
+
+                false
+            }
+        }
+
+        #[cfg(feature = "dynamic-loading")]
+        static $lib: ::std::sync::LazyLock<libloading::Library> = {
+            ::std::sync::LazyLock::new(|| {
+                let roots = [
+                    std::env::var_os("ROCM_PATH"),
+                    Some("/opt/rocm".into()),
+                    Some("/usr/local/rocm".into()),
+                ];
+
+                for root in roots.into_iter().flatten() {
+                    let lib_dir = std::path::Path::new(&root).join("lib");
+
+                    for choice in $lib::LIBRARIES {
+                        let path = lib_dir.join(choice);
+
                         if let Ok(lib) = unsafe {
                             libloading::Library::new(&path)
                         } {
@@ -80,13 +104,13 @@ macro_rules! link {
                 }
 
                 panic!("Unable to dynamically load the {:?} shared library - searched for library names: {:?}. \
-If the shared library is present on the system under a different name than one of those listed above, please open a GitHub issue.", stringify!($lib), LIBRARIES);
+If the shared library is present on the system under a different name than one of those listed above, please open a GitHub issue.", stringify!($lib), $lib::LIBRARIES);
             })
         };
 
         $(
             $(
-                #[$cfg_priv(feature = "internal")]
+                #[$cfg_internal(feature = "internal")]
             )?
             $(
                 #[doc = $docs]
@@ -122,7 +146,7 @@ If the shared library is present on the system under a different name than one o
             }
 
             $(
-                #[$cfg_priv(feature = "internal")]
+                #[$cfg_internal(feature = "internal")]
             )?
             $(
                 #[doc = $docs]
@@ -175,3 +199,13 @@ pub mod rocblas;
 pub mod rocfft;
 
 mod version;
+
+#[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
+pub fn is_amdhip64_present() -> bool {
+    hip::amdhip64::is_rocm_lib_present()
+}
+
+#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
+pub fn is_hiprtc_present() -> bool {
+    hiprtc::hiprtc::is_rocm_lib_present()
+}

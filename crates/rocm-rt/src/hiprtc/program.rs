@@ -6,8 +6,7 @@ use core::{
 use alloc::{boxed::Box, ffi::CString, format, vec::Vec};
 
 use rocm_sys::hiprtc::{
-    hiprtcCompileProgram, hiprtcCreateProgram, hiprtcDestroyProgram, hiprtcGetCode,
-    hiprtcGetCodeSize, hiprtcProgram,
+    hiprtcCompileProgram, hiprtcCreateProgram, hiprtcDestroyProgram, hiprtcGetCode, hiprtcGetCodeSize, hiprtcProgram,
 };
 
 use crate::{hiprtc::HiprtcError, shared::GfxVersion};
@@ -55,12 +54,50 @@ impl Hsaco {
                 .map(CStr::as_ptr)
                 .collect::<Vec<_>>();
 
-            unsafe {
-                try_err!(hiprtcCompileProgram(
+            let res = unsafe {
+                hiprtcCompileProgram(
                     prog.raw,
                     opts.len() as c_int,
                     opts.as_ptr().cast(),
-                ));
+                )
+            };
+
+            #[cfg(feature = "log")]
+            if res != rocm_sys::hiprtc::hiprtcResult::HIPRTC_SUCCESS {
+                use log::error;
+
+                use rocm_sys::hiprtc::{hiprtcGetProgramLog, hiprtcGetProgramLogSize};
+
+                use alloc::{string::String, vec};
+
+                let mut log_size = 0usize;
+
+                unsafe {
+                    try_err!(hiprtcGetProgramLogSize(prog.raw, &raw mut log_size));
+                }
+
+                if log_size != 0 {
+                    let mut log = vec![0u8; log_size];
+
+                    unsafe {
+                        try_err!(hiprtcGetProgramLog(
+                            prog.raw,
+                            log.as_mut_ptr().cast(),
+                        ));
+                    }
+
+                    let log = String::from_utf8_lossy(&log);
+                    error!("HIPRTC program log:\n{log}");
+                } else {
+                    error!("no HIPRTC program logs");
+                }
+
+                return Err(res.into());
+            }
+
+            #[cfg(not(feature = "log"))]
+            {
+                try_err!(res);
             }
         }
 
@@ -73,8 +110,10 @@ impl Hsaco {
             let mut code = Box::new_uninit_slice(code_size);
 
             unsafe {
-                try_err!(hiprtcGetCode(prog.raw, code.as_mut_ptr().cast(),));
+                try_err!(hiprtcGetCode(prog.raw, code.as_mut_ptr().cast()));
+            }
 
+            unsafe {
                 code.assume_init()
             }
         };

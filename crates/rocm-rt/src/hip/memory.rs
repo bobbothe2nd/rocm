@@ -45,13 +45,6 @@ impl<'a> DevMapped<'a> {
     ///
     /// This allows you to safely handle errors which would normally panic when dropped.
     pub unsafe fn map(&self) -> Result<(), HipError> {
-        unsafe { try_err!(hipHostUnregister(self.data.as_ptr() as *mut _), Ok(())) }
-    }
-
-    /// Deallocates the GPU-accessible buffer and synchronizes
-    ///
-    /// This allows you to safely handle errors which would normally panic when dropped.
-    pub fn unmap(self) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipHostRegister(self.data.as_ptr() as *mut _, self.data.len(), 0),
@@ -65,7 +58,7 @@ impl<'a> DevMapped<'a> {
     /// # Safety
     ///
     /// The buffer must never be deallocated again or dropped.
-    pub unsafe fn unmap_unchecked(&self) -> Result<(), HipError> {
+    pub unsafe fn unmap(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipHostUnregister(self.data.as_ptr() as *mut _), Ok(())) }
     }
 
@@ -144,14 +137,6 @@ impl<'a> DevMapped<'a> {
     }
 }
 
-impl Drop for DevMapped<'_> {
-    fn drop(&mut self) {
-        unsafe {
-            let _ = self.unmap_unchecked();
-        }
-    }
-}
-
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[derive(Debug)]
 pub struct DevMappedAlloc {
@@ -173,7 +158,7 @@ impl DevMappedAlloc {
         Ok(buf)
     }
 
-    /// Allocates `size` bytes and makes it accessible from all HIP device
+    /// Allocates `size` bytes and makes it accessible from all HIP devices
     pub fn alloc(size: usize) -> Result<Self, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size, 0)) };

@@ -35,7 +35,63 @@ impl GfxVersion {
         !self.is_cdna()
     }
 
-    pub fn as_str(&self) -> &'static str {
+    pub const fn matrix_capabilities(self) -> MatrixCapabilities {
+        match self {
+            Self::Gfx908 => MatrixCapabilities {
+                kind: MatrixKind::Mfma,
+                wave_size: 64,
+                operations: MatrixOperations::F16 .union(MatrixOperations::F32),
+            },
+
+            Self::Gfx90a => MatrixCapabilities {
+                kind: MatrixKind::Mfma,
+                wave_size: 64,
+                operations: MatrixOperations::F16
+                    .union(MatrixOperations::BF16)
+                    .union(MatrixOperations::F32)
+                    .union(MatrixOperations::F64),
+            },
+
+            Self::Gfx942 | Self::Gfx950 => MatrixCapabilities {
+                kind: MatrixKind::Mfma,
+                wave_size: 64,
+                operations: MatrixOperations::F16
+                    .union(MatrixOperations::BF16)
+                    .union(MatrixOperations::F32)
+                    .union(MatrixOperations::F64)
+                    .union(MatrixOperations::F8)
+                    .union(MatrixOperations::BF8),
+            },
+
+            Self::Gfx1100
+            | Self::Gfx1101
+            | Self::Gfx1102 => MatrixCapabilities {
+                kind: MatrixKind::Wmma,
+                wave_size: 32,
+                operations: MatrixOperations::F16
+                    .union(MatrixOperations::BF16)
+                    .union(MatrixOperations::F32),
+            },
+
+            Self::Gfx1200 | Self::Gfx1201 => MatrixCapabilities {
+                kind: MatrixKind::Wmma,
+                wave_size: 32,
+                operations: MatrixOperations::F16
+                    .union(MatrixOperations::BF16)
+                    .union(MatrixOperations::F32)
+                    .union(MatrixOperations::F8)
+                    .union(MatrixOperations::BF8),
+            },
+
+            _ => MatrixCapabilities {
+                kind: MatrixKind::None,
+                wave_size: 0,
+                operations: MatrixOperations::empty(),
+            },
+        }
+    }
+
+    pub const fn as_str(&self) -> &'static str {
         match self {
             Self::Gfx1030 => "gfx1030",
             Self::Gfx1103 => "gfx1103",
@@ -112,5 +168,31 @@ impl FromStr for GfxVersion {
         };
 
         Ok(str)
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct MatrixCapabilities {
+    pub kind: MatrixKind,
+    pub wave_size: u32,
+    pub operations: MatrixOperations,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum MatrixKind {
+    None,
+    Mfma,
+    Wmma,
+}
+
+bitflags::bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub struct MatrixOperations: u32 {
+        const F16  = 1 << 0;
+        const BF16 = 1 << 1;
+        const F32  = 1 << 2;
+        const F64  = 1 << 3;
+        const F8   = 1 << 4;
+        const BF8  = 1 << 5;
     }
 }

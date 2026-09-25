@@ -16,6 +16,8 @@ libloading = { version = "0.9", optional = true }
 rocm-build = { path = "../rocm-build", version = "0.1.2" }
 
 [features]
+default = ["hip", "hiprtc", "dynamic-loading"]
+
 # configure included libraries
 hip = []
 hiprtc = []

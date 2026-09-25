@@ -102,7 +102,7 @@ link! {
     pub fn hiprtcLinkDestroy(hip_link_state: hiprtcLinkState) -> hiprtcResult;
 
     pub fn hiprtcGetProgramLogSize(
-        proog: hiprtcProgram,
+        prog: hiprtcProgram,
         logSizeRet: *mut usize,
     ) -> hiprtcResult;
 }
