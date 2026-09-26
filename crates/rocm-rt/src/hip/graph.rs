@@ -4,27 +4,20 @@ use rocm_sys::hip::{dim3, hipChildGraphNodeParams, hipEventRecordNodeParams, hip
 
 use crate::hip::{HipError, module::{Func, LaunchConfig}, stream::Stream};
 
-#[repr(C)]
+#[repr(transparent)]
 pub struct Graph {
     raw: hipGraph_t,
-    exec: hipGraphExec_t,
 }
 
 impl Graph {
     pub fn new(flags: GraphInstantiateFlags) -> Result<Self, HipError> {
         let raw: Result<hipGraph_t, HipError> = unsafe {
-            wrap_sys_res!(|graph| hipGraphCreate((&raw mut graph).cast(), flags as c_uint))
+            wrap_sys_res!(|graph| hipGraphCreate((&raw mut graph).cast(), flags.bits() as c_uint))
         };
         let raw = raw?;
 
-        let exec: Result<hipGraphExec_t, HipError> = unsafe {
-            wrap_sys_res!(|graph_exec| hipGraphInstantiateWithFlags((&raw mut graph_exec).cast(), raw, flags as c_ulonglong))
-        };
-        let exec = exec?;
-
         Ok(Self {
             raw,
-            exec,
         })
     }
 
@@ -40,10 +33,6 @@ impl Graph {
 
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe {
-            try_err!(hipGraphExecDestroy(self.exec));
-        }
-
-        unsafe {
             try_err!(hipGraphDestroy(self.raw), Ok(()))
         }
     }
@@ -53,15 +42,19 @@ impl Graph {
         self.raw
     }
 
-    /// Raw `hipGraphExec_t`. Do not destroy.
-    pub fn hip_graph_exec(&self) -> hipGraphExec_t {
-        self.exec
-    }
-
     pub fn add_kernel_node(&mut self, dep: &[Node], params: &KernelParams) -> Result<Node, HipError> {
         unsafe {
             wrap_sys_res!(|node| hipGraphAddKernelNode((&raw mut node).cast(), self.raw, dep.as_ptr().cast(), dep.len(), from_ref(params).cast()))
         }
+    }
+
+    pub fn init(self, flags: GraphInstantiateFlags) -> Result<ExecGraph, HipError> {
+        let exec: Result<hipGraphExec_t, HipError> = unsafe {
+            wrap_sys_res!(|graph_exec| hipGraphInstantiateWithFlags((&raw mut graph_exec).cast(), self.raw, flags.bits() as c_ulonglong))
+        };
+        let exec = exec?;
+
+        Ok(ExecGraph { exec })
     }
 }
 
@@ -73,11 +66,47 @@ impl Drop for Graph {
     }
 }
 
+#[repr(transparent)]
+pub struct ExecGraph {
+    exec: hipGraphExec_t,
+}
+
+impl ExecGraph {
+    pub fn destroy(self) -> Result<(), HipError> {
+        let handle = ManuallyDrop::new(self);
+
+        unsafe {
+            handle.destroy_unchecked()?;
+        }
+
+        Ok(())
+    }
+
+    pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
+        unsafe {
+            try_err!(hipGraphExecDestroy(self.exec), Ok(()))
+        }
+    }
+
+    /// Raw `hipGraphExec_t`. Do not destroy.
+    pub fn hip_graph_exec(&self) -> hipGraphExec_t {
+        self.exec
+    }
+}
+
+impl Drop for ExecGraph {
+    fn drop(&mut self) {
+        unsafe {
+            let _ = self.destroy_unchecked();
+        }
+    }
+}
+
 impl Stream {
-    pub fn capture<F: FnOnce(&Self) -> Result<(), HipError>>(&self, mode: StreamCaptureMode, flags: GraphInstantiateFlags, f: F) -> Result<Graph, HipError> {
+    pub fn capture<F: FnOnce(&Self) -> Result<(), HipError>>(&self, mode: StreamCaptureMode, f: F) -> Result<Graph, HipError> {
         self.start_capture(mode)?;
         f(self)?;
-        self.end_capture(flags)
+        self.end_capture()
     }
 
     pub fn start_capture(&self, mode: StreamCaptureMode) -> Result<(), HipError> {
@@ -86,20 +115,14 @@ impl Stream {
         }
     }
 
-    pub fn end_capture(&self, flags: GraphInstantiateFlags) -> Result<Graph, HipError> {
+    pub fn end_capture(&self) -> Result<Graph, HipError> {
         let raw: Result<hipGraph_t, HipError> = unsafe {
             wrap_sys_res!(|graph| hipStreamEndCapture(self.raw, (&raw mut graph).cast()))
         };
         let raw = raw?;
 
-        let exec: Result<hipGraphExec_t, HipError> = unsafe {
-            wrap_sys_res!(|graph_exec| hipGraphInstantiateWithFlags((&raw mut graph_exec).cast(), raw, flags as c_ulonglong))
-        };
-        let exec = exec?;
-
         Ok(Graph {
             raw,
-            exec,
         })
     }
 
@@ -115,7 +138,7 @@ impl Stream {
         }
     }
 
-    pub unsafe fn launch_graph(&self, graph: &Graph) -> Result<(), HipError> {
+    pub unsafe fn launch_graph(&self, graph: &ExecGraph) -> Result<(), HipError> {
         unsafe {
             try_err!(hipGraphLaunch(graph.exec, self.raw), Ok(()))
         }
@@ -151,7 +174,7 @@ impl KernelParams {
         Self {
             raw: hipKernelNodeParams {
                 blockDim: unsafe {
-                    transmute::<[u32; 3], dim3>(conf.grid)
+                    transmute::<[u32; 3], dim3>(conf.block)
                 },
                 gridDim: unsafe {
                     transmute::<[u32; 3], dim3>(conf.grid)
@@ -238,12 +261,17 @@ pub enum NodeType {
     Count = 15,
 }
 
-#[repr(u32)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum GraphInstantiateFlags {
-    AutoFreeOnLaunch = 1,
-    /// Automatically upload the graph after instantiation.
-    Upload = 2,
-    DeviceLaunch = 4,
-    UseNodePriority = 8,
+bitflags::bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub struct GraphInstantiateFlags: u32 {
+        /// This makes two graph launches unsafe.
+        const AUTO_FREE_ON_LAUNCH = 1 << 0;
+
+        /// Automatically upload the graph after instantiation.
+        const UPLOAD = 1 << 1;
+
+        const DEV_LAUNCH = 1 << 2;
+
+        const USE_NODE_PRIO = 1 << 3;
+    }
 }
