@@ -21,7 +21,11 @@ pub mod shared;
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
 pub mod hip;
 
+#[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
+pub use rocm_sys::is_amdhip64_present;
+
 #[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
 pub mod hiprtc;
 
-pub use rocm_sys::{is_amdhip64_present, is_hiprtc_present};
+#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
+pub use rocm_sys::is_hiprtc_present;

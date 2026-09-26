@@ -17,7 +17,7 @@ pub struct DevMapped<'a> {
 impl<'a> DevMapped<'a> {
     pub fn new(data: &'a mut [u8]) -> Result<Self, HipError> {
         unsafe {
-            try_err!(hipHostRegister(data.as_ptr() as *mut _, data.len(), 0));
+            try_err!(hipHostRegister(data.as_mut_ptr().cast(), data.len(), 0));
         }
 
         Ok(Self {

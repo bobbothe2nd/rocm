@@ -59,8 +59,12 @@ fn main() {
     };
 
     unsafe {
-        stream.copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES).unwrap();
-        stream.copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES).unwrap();
+        stream
+            .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
+            .unwrap();
+        stream
+            .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
+            .unwrap();
     }
 
     let mut out_ptr = out.as_ptr();

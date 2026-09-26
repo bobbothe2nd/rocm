@@ -6,7 +6,8 @@ use core::{
 use alloc::{boxed::Box, ffi::CString, format, vec::Vec};
 
 use rocm_sys::hiprtc::{
-    hiprtcCompileProgram, hiprtcCreateProgram, hiprtcDestroyProgram, hiprtcGetCode, hiprtcGetCodeSize, hiprtcProgram,
+    hiprtcCompileProgram, hiprtcCreateProgram, hiprtcDestroyProgram, hiprtcGetCode,
+    hiprtcGetCodeSize, hiprtcProgram,
 };
 
 use crate::{hiprtc::HiprtcError, shared::GfxVersion};
@@ -55,11 +56,7 @@ impl Hsaco {
                 .collect::<Vec<_>>();
 
             let res = unsafe {
-                hiprtcCompileProgram(
-                    prog.raw,
-                    opts.len() as c_int,
-                    opts.as_ptr().cast(),
-                )
+                hiprtcCompileProgram(prog.raw, opts.len() as c_int, opts.as_ptr().cast())
             };
 
             #[cfg(feature = "log")]
@@ -80,10 +77,7 @@ impl Hsaco {
                     let mut log = vec![0u8; log_size];
 
                     unsafe {
-                        try_err!(hiprtcGetProgramLog(
-                            prog.raw,
-                            log.as_mut_ptr().cast(),
-                        ));
+                        try_err!(hiprtcGetProgramLog(prog.raw, log.as_mut_ptr().cast(),));
                     }
 
                     let log = String::from_utf8_lossy(&log);
@@ -113,9 +107,7 @@ impl Hsaco {
                 try_err!(hiprtcGetCode(prog.raw, code.as_mut_ptr().cast()));
             }
 
-            unsafe {
-                code.assume_init()
-            }
+            unsafe { code.assume_init() }
         };
 
         Ok(Self { code })

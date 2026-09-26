@@ -41,10 +41,7 @@ impl Module {
     }
 }
 
-#[cfg(all(
-    feature = "hiprtc",
-    any(hiprtc, feature = "dynamic-loading")
-))]
+#[cfg(all(feature = "hiprtc", any(hiprtc, feature = "dynamic-loading")))]
 mod hiprtc {
     use super::*;
 
@@ -57,8 +54,7 @@ mod hiprtc {
     impl Module {
         pub fn load(code: &Hsaco) -> Result<Self, HipError> {
             let module: Result<hipModule_t, HipError> = unsafe {
-                wrap_sys_res!(|module| hipModuleLoadData
-                    (
+                wrap_sys_res!(|module| hipModuleLoadData(
                     (&raw mut module).cast(),
                     code.code.as_ptr().cast()
                 ))

@@ -40,7 +40,7 @@ impl GfxVersion {
             Self::Gfx908 => MatrixCapabilities {
                 kind: MatrixKind::Mfma,
                 wave_size: 64,
-                operations: MatrixOperations::F16 .union(MatrixOperations::F32),
+                operations: MatrixOperations::F16.union(MatrixOperations::F32),
             },
 
             Self::Gfx90a => MatrixCapabilities {
@@ -63,9 +63,7 @@ impl GfxVersion {
                     .union(MatrixOperations::BF8),
             },
 
-            Self::Gfx1100
-            | Self::Gfx1101
-            | Self::Gfx1102 => MatrixCapabilities {
+            Self::Gfx1100 | Self::Gfx1101 | Self::Gfx1102 => MatrixCapabilities {
                 kind: MatrixKind::Wmma,
                 wave_size: 32,
                 operations: MatrixOperations::F16
