@@ -243,6 +243,8 @@ pub struct Buffer {
 impl Device {
     /// Allocates `size` bytes on the default device
     pub fn alloc(self, size: u32) -> Result<Buffer, HipError> {
+        self.set_default()?;
+
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
         let ptr = ptr?;
