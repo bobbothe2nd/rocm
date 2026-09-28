@@ -73,6 +73,7 @@ link! {
 
     pub fn hipSetDevice(deviceId: c_int) -> hipError_t;
 
+    #[since = 6 .0, "6.0"]
     pub fn hipSetValidDevices(
         device_arr: *mut c_int,
         len: c_int,
@@ -333,7 +334,6 @@ link! {
         errorString: *mut *const c_char,
     ) -> hipError_t;
 
-    #[since = 7 .14, "7.14"]
     pub fn hipStreamCreate(
         stream: *mut hipStream_t,
     ) -> hipError_t;
@@ -534,6 +534,7 @@ link! {
         ptr: hipDeviceptr_t,
     ) -> hipError_t;
 
+    #[since = 5 .0, "5.0"]
     pub fn hipPointerGetAttributes(
         attributes: *mut hipPointerAttribute_t,
         ptr: *const c_void,
@@ -1166,12 +1167,14 @@ link! {
     ) -> hipError_t;
 
     #[doc = "This API is currently not supported on Linux."]
+    #[since = 4 .3, "4.3"]
     pub fn hipImportExternalSemaphore(
         extSem_out: *mut hipExternalSemaphore_t,
         semHandleDesc: *const hipExternalSemaphoreHandleDesc,
     ) -> hipError_t;
 
     #[doc = "This API is currently not supported on Linux."]
+    #[since = 4 .3, "4.3"]
     pub fn hipSignalExternalSemaphoresAsync(
         extSemArray: *const hipExternalSemaphore_t,
         paramsArray: *const hipExternalSemaphoreSignalParams,
@@ -1197,12 +1200,14 @@ link! {
         memHandleDesc: *const hipExternalMemoryHandleDesc,
     ) -> hipError_t;
 
+    #[since = 4 .3, "4.3"]
     pub fn hipExternalMemoryGetMappedBuffer(
         devPtr: *mut *mut c_void,
         extMem: hipExternalMemory_t,
         bufferDesc: *const hipExternalMemoryBufferDesc,
     ) -> hipError_t;
 
+    #[since = 4 .3, "4.3"]
     pub fn hipDestroyExternalMemory(extMem: hipExternalMemory_t) -> hipError_t;
 
     pub fn hipExternalMemoryGetMappedMipmappedArray(
@@ -2118,6 +2123,7 @@ Reading from a discarded range without first writing or prefetching to it will r
         kname: *const c_char,
     ) -> hipError_t;
 
+    #[since = 7 .1, "7.1"]
     pub fn hipModuleGetFunctionCount(
         count: *mut c_int,
         module: hipModule_t,
@@ -3219,7 +3225,6 @@ feature complete, it is still open to changes and may have outstanding issues.
         flags: c_uint,
     ) -> hipError_t;
 
-    #[since = 5 .2, "5.2"]
     pub fn hipLaunchCooperativeKernel(
         f: *const c_void,
         gridDim: dim3,
@@ -3229,6 +3234,7 @@ feature complete, it is still open to changes and may have outstanding issues.
         stream: hipStream_t,
     ) -> hipError_t;
 
+    #[since = 5 .2, "5.2"]
     pub fn hipLaunchCooperativeKernelMultiDevice(
         launchParamsList: hipLaunchParams,
         numDevices: c_int,

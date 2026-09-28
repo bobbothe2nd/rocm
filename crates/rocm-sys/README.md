@@ -49,7 +49,7 @@ This crate tries to assume as little about the target as possible.
 
 - If `dynamic-loading` feature is disabled, the target is assumed to be the build machine
 - The size of a Rust `usize` should be equal to the size of a C `size_t`
-- `hipGetDeviceProperties` and `hipChooseDevice` are only correct profided `hipDeviceProp_tR0600` = `hipDeviceProp_t`
+- `hipGetDeviceProperties` and `hipChooseDevice` are only correct where `hipDeviceProp_tR0600` = `hipDeviceProp_t` (not `hipDeviceProp_tR0000)
 
 These should always be true.
 
