@@ -41,9 +41,8 @@ impl<'a> DevMapped<'a> {
         self.data.len()
     }
 
-    /// Deallocates the GPU-accessible buffer and synchronizes
-    ///
-    /// This allows you to safely handle errors which would normally panic when dropped.
+    /// Maps the buffer such that is is accessible
+    // TODO: remove `unsafe`
     pub unsafe fn map(&self) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -138,6 +137,7 @@ impl<'a> DevMapped<'a> {
 }
 
 /// Handle to CPU memory, mapped to all GPUs on the device
+#[repr(C)]
 #[derive(Debug)]
 pub struct DevMappedAlloc {
     pub(crate) ptr: *mut u8,

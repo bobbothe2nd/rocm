@@ -20,9 +20,7 @@ const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
 
 fn main() {
-    let dev = Device::create(0).unwrap();
-    dev.set_default().unwrap();
-
+    let dev = Device::current().unwrap();
     let arch = dev.gfx_version().unwrap();
 
     let opts = CompileOptions {

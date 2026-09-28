@@ -1,11 +1,11 @@
 use core::{
     ffi::{c_uint, c_ulonglong},
     mem::{ManuallyDrop, transmute},
-    ptr::{from_ref, null_mut},
+    ptr::from_ref,
 };
 
 use rocm_sys::hip::{
-    dim3, hipChildGraphNodeParams, hipEventRecordNodeParams, hipEventWaitNodeParams,
+    hipChildGraphNodeParams, hipEventRecordNodeParams, hipEventWaitNodeParams,
     hipExternalSemaphoreSignalNodeParams, hipExternalSemaphoreWaitNodeParams, hipGraph_t,
     hipGraphAddKernelNode, hipGraphCreate, hipGraphDestroy, hipGraphExec_t, hipGraphExecDestroy,
     hipGraphInstantiateWithFlags, hipGraphLaunch, hipGraphNode_t, hipGraphNodeParams,
@@ -17,7 +17,6 @@ use rocm_sys::hip::{
 
 use crate::hip::{
     HipError,
-    module::{Func, LaunchConfig},
     stream::Stream,
 };
 
@@ -198,8 +197,15 @@ pub struct KernelParams {
     raw: hipKernelNodeParams,
 }
 
+#[cfg(all(
+    feature = "alloc",
+    feature = "hiprtc",
+    any(feature = "dynamic-loading", hiprtc)
+))]
 impl KernelParams {
-    pub const fn new(func: &Func, args: &mut [*mut u8], conf: LaunchConfig) -> Self {
+    pub const fn new(func: &crate::hip::module::Func, args: &mut [*mut u8], conf: crate::hip::module::LaunchConfig) -> Self {
+        use rocm_sys::hip::dim3;
+
         Self {
             raw: hipKernelNodeParams {
                 blockDim: unsafe { transmute::<[u32; 3], dim3>(conf.block) },
@@ -207,7 +213,7 @@ impl KernelParams {
                 func: func.raw.cast(),
                 kernelParams: args.as_mut_ptr().cast(),
                 sharedMemBytes: 0,
-                extra: null_mut(),
+                extra: core::ptr::null_mut(),
             },
         }
     }

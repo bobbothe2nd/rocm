@@ -7,6 +7,7 @@ macro_rules! try_err {
     };
 }
 
+pub mod callback;
 pub mod device;
 pub mod graph;
 pub mod memory;
