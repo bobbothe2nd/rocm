@@ -33,11 +33,7 @@ impl Stream {
 
         unsafe {
             try_err!(
-                hipLaunchHostFunc(
-                    self.raw,
-                    Some(wrapper::<F>),
-                    data.cast(),
-                ),
+                hipLaunchHostFunc(self.raw, Some(wrapper::<F>), data.cast(),),
                 Ok(())
             )
         }
@@ -50,7 +46,10 @@ impl Stream {
     /// This function is only as safe as `func`
     pub unsafe fn launch_host(&self, func: Callback, data: *mut u8) -> Result<(), HipError> {
         unsafe {
-            try_err!(hipLaunchHostFunc(self.raw, Some(func.func), data.cast()), Ok(()))
+            try_err!(
+                hipLaunchHostFunc(self.raw, Some(func.func), data.cast()),
+                Ok(())
+            )
         }
     }
 }
@@ -64,10 +63,7 @@ pub struct Callback {
 impl Callback {
     pub const fn new(func: unsafe extern "C" fn(*mut u8)) -> Self {
         let func = unsafe {
-            transmute::<
-                unsafe extern "C" fn(*mut u8),
-                unsafe extern "C" fn(*mut c_void),
-            >(func)
+            transmute::<unsafe extern "C" fn(*mut u8), unsafe extern "C" fn(*mut c_void)>(func)
         };
 
         Self { func }

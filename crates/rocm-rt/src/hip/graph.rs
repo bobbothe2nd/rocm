@@ -15,10 +15,7 @@ use rocm_sys::hip::{
     hipStreamIsCapturing,
 };
 
-use crate::hip::{
-    HipError,
-    stream::Stream,
-};
+use crate::hip::{HipError, stream::Stream};
 
 #[repr(transparent)]
 pub struct Graph {
@@ -186,13 +183,13 @@ pub enum StreamCaptureMode {
 }
 
 #[repr(transparent)]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Node {
     raw: hipGraphNode_t,
 }
 
 #[repr(transparent)]
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 pub struct KernelParams {
     raw: hipKernelNodeParams,
 }
@@ -203,7 +200,11 @@ pub struct KernelParams {
     any(feature = "dynamic-loading", hiprtc)
 ))]
 impl KernelParams {
-    pub const fn new(func: &crate::hip::module::Func, args: &mut [*mut u8], conf: crate::hip::module::LaunchConfig) -> Self {
+    pub const fn new(
+        func: &crate::hip::module::Func,
+        args: &mut [*mut u8],
+        conf: crate::hip::module::LaunchConfig,
+    ) -> Self {
         use rocm_sys::hip::dim3;
 
         Self {
@@ -220,7 +221,7 @@ impl KernelParams {
 }
 
 #[repr(transparent)]
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 pub struct GraphParams {
     raw: hipGraphNodeParams,
 }
