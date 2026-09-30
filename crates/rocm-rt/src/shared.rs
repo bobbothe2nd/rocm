@@ -169,6 +169,12 @@ impl FromStr for GfxVersion {
     }
 }
 
+impl From<GfxVersion> for &'static str {
+    fn from(value: GfxVersion) -> Self {
+        value.as_str()
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct MatrixCapabilities {
     pub kind: MatrixKind,

@@ -1,3 +1,4 @@
+#[allow(unused_macros)]
 macro_rules! try_err {
     ($func:expr$(, $sucess:expr)?$(,)?) => {
         match $func {
