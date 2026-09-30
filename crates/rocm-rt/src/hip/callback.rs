@@ -1,5 +1,6 @@
 use core::{ffi::c_void, mem::transmute};
 
+use briny::traits::Layout;
 use rocm_sys::hip::hipLaunchHostFunc;
 
 use crate::hip::{HipError, stream::Stream};
@@ -59,6 +60,8 @@ impl Stream {
 pub struct Callback {
     func: unsafe extern "C" fn(*mut c_void),
 }
+
+unsafe impl Layout<unsafe extern "C" fn(*mut c_void)> for Stream {}
 
 impl Callback {
     pub const fn new(func: unsafe extern "C" fn(*mut u8)) -> Self {

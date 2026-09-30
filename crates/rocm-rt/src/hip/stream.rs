@@ -3,6 +3,7 @@ use core::{
     mem::{ManuallyDrop, transmute},
 };
 
+use briny::traits::Layout;
 use rocm_sys::hip::{
     hipError_t, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync, hipStream_t,
     hipStreamCreate, hipStreamDestroy, hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority,
@@ -19,6 +20,8 @@ use crate::hip::{
 pub struct Stream {
     pub(crate) raw: hipStream_t,
 }
+
+unsafe impl Layout<hipStream_t> for Stream {}
 
 impl Stream {
     pub fn create() -> Result<Self, HipError> {
