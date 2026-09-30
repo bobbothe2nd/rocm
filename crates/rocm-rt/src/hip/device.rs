@@ -48,6 +48,12 @@ impl Device {
         self.dev
     }
 
+    /// Converts the device into the raw one used by `rocm-sys`.
+    #[inline(always)]
+    pub fn as_raw(self) -> hipDevice_t {
+        self.dev
+    }
+
     /// Constructs a safe device from the raw one used by `rocm-sys`.
     #[inline(always)]
     pub unsafe fn from_raw(dev: hipDevice_t) -> Self {

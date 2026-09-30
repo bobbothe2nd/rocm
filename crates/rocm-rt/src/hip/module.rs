@@ -1,6 +1,6 @@
 use core::{ffi::CStr, ptr::null_mut};
 
-use alloc::{ffi::CString, sync::Arc};
+use alloc::{ffi::CString, rc::Rc};
 
 use rocm_sys::hip::{
     hipFunction_t, hipModule_t, hipModuleGetFunction, hipModuleLaunchKernel, hipModuleLoadData,
@@ -15,7 +15,7 @@ use crate::{
 #[derive(Clone)]
 #[repr(transparent)]
 pub struct Module {
-    inner: Arc<ModuleInner>,
+    inner: Rc<ModuleInner>,
 }
 
 impl Module {
@@ -60,7 +60,7 @@ mod hiprtc {
                 ))
             };
 
-            let inner = Arc::new(ModuleInner { raw: module? });
+            let inner = Rc::new(ModuleInner { raw: module? });
 
             Ok(Module { inner })
         }

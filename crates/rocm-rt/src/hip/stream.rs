@@ -25,10 +25,17 @@ impl Stream {
         unsafe { wrap_sys_res!(|stream| hipStreamCreate((&raw mut stream).cast())) }
     }
 
+    #[inline(always)]
+    pub fn as_raw(&self) -> hipStream_t {
+        self.raw
+    }
+
+    #[inline(always)]
     pub fn into_raw(self) -> hipStream_t {
         self.raw
     }
 
+    #[inline(always)]
     pub unsafe fn from_raw(raw: hipStream_t) -> Self {
         Self { raw }
     }

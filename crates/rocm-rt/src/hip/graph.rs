@@ -9,10 +9,10 @@ use rocm_sys::hip::{
     hipExternalSemaphoreSignalNodeParams, hipExternalSemaphoreWaitNodeParams, hipGraph_t,
     hipGraphAddKernelNode, hipGraphCreate, hipGraphDestroy, hipGraphExec_t, hipGraphExecDestroy,
     hipGraphInstantiateWithFlags, hipGraphLaunch, hipGraphNode_t, hipGraphNodeParams,
-    hipGraphNodeParams__bindgen_ty_1, hipGraphNodeType, hipHostNodeParams, hipKernelNodeParams,
-    hipMemAllocNodeParams, hipMemFreeNodeParams, hipMemcpyNodeParams, hipMemsetParams,
-    hipStreamBeginCapture, hipStreamCaptureMode, hipStreamCaptureStatus, hipStreamEndCapture,
-    hipStreamIsCapturing,
+    hipGraphNodeParams__bindgen_ty_1, hipGraphNodeType, hipGraphUpload, hipHostNodeParams,
+    hipKernelNodeParams, hipMemAllocNodeParams, hipMemFreeNodeParams, hipMemcpyNodeParams,
+    hipMemsetParams, hipStreamBeginCapture, hipStreamCaptureMode, hipStreamCaptureStatus,
+    hipStreamEndCapture, hipStreamIsCapturing,
 };
 
 use crate::hip::{HipError, stream::Stream};
@@ -47,8 +47,13 @@ impl Graph {
     }
 
     /// Raw `hipGraph_t`. Do not destroy.
-    pub fn hip_graph(&self) -> hipGraph_t {
+    pub fn as_raw(&self) -> hipGraph_t {
         self.raw
+    }
+
+    /// Raw `hipGraph_t`. Do not destroy.
+    pub fn from_raw(raw: hipGraph_t) -> Self {
+        Self { raw }
     }
 
     pub fn add_kernel_node(
@@ -75,9 +80,9 @@ impl Graph {
                 flags.bits() as c_ulonglong
             ))
         };
-        let exec = exec?;
+        let raw = exec?;
 
-        Ok(ExecGraph { exec })
+        Ok(ExecGraph { raw })
     }
 }
 
@@ -91,7 +96,7 @@ impl Drop for Graph {
 
 #[repr(transparent)]
 pub struct ExecGraph {
-    exec: hipGraphExec_t,
+    raw: hipGraphExec_t,
 }
 
 impl ExecGraph {
@@ -106,12 +111,22 @@ impl ExecGraph {
     }
 
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
-        unsafe { try_err!(hipGraphExecDestroy(self.exec), Ok(())) }
+        unsafe { try_err!(hipGraphExecDestroy(self.raw), Ok(())) }
     }
 
     /// Raw `hipGraphExec_t`. Do not destroy.
-    pub fn hip_graph_exec(&self) -> hipGraphExec_t {
-        self.exec
+    #[inline(always)]
+    pub fn as_raw(&self) -> hipGraphExec_t {
+        self.raw
+    }
+
+    #[inline(always)]
+    pub unsafe fn from_raw(raw: hipGraphExec_t) -> Self {
+        Self { raw }
+    }
+
+    pub fn upload(&self, stream: &Stream) -> Result<(), HipError> {
+        unsafe { try_err!(hipGraphUpload(self.raw, stream.raw), Ok(())) }
     }
 }
 
@@ -170,7 +185,7 @@ impl Stream {
     }
 
     pub unsafe fn launch_graph(&self, graph: &ExecGraph) -> Result<(), HipError> {
-        unsafe { try_err!(hipGraphLaunch(graph.exec, self.raw), Ok(())) }
+        unsafe { try_err!(hipGraphLaunch(graph.raw, self.raw), Ok(())) }
     }
 }
 
