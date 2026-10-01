@@ -1,0 +1,120 @@
+use core::mem::transmute;
+
+use rocm_rt::{
+    hip::{
+        device::Device,
+        graph::{Graph, GraphInstantiateFlags, KernelParams},
+        memory::DevMappedAlloc,
+        module::LaunchConfig,
+        stream::Stream,
+    },
+    hiprtc::program::{CompileOptions, Hsaco},
+};
+
+const SRC: &str = r#"
+extern "C" __global__
+void vec_add(float* out, const float* a, const float* b, int n) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < n) out[i] = a[i] + b[i];
+}
+"#;
+
+const LEN: usize = 1024;
+const BYTES: usize = LEN * size_of::<f32>();
+
+const A_VAL: f32 = 3.0;
+const B_VAL: f32 = 2.0;
+
+fn main() {
+    let dev = Device::current().unwrap();
+    let arch = dev.gfx_version().unwrap();
+
+    let opts = CompileOptions {
+        opt_level: Some(3),
+        fast_math: Some(true),
+        name: Some(c"vec_add"),
+        defines: &[],
+        include_paths: &[],
+        arch,
+        options: &[],
+    };
+
+    let func = {
+        let hsaco = Hsaco::compile(SRC, &opts).unwrap();
+        let module = hsaco.load().unwrap();
+        module.get_func_c(c"vec_add").unwrap()
+    };
+
+    let stream = Stream::create().unwrap();
+
+    let mut out = dev.alloc(BYTES as u32).unwrap();
+    let mut a = dev.alloc(BYTES as u32).unwrap();
+    let mut b = dev.alloc(BYTES as u32).unwrap();
+
+    let mut a_host = {
+        let buf =
+            unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };
+
+        DevMappedAlloc::new(&buf).unwrap()
+    };
+
+    let mut b_host = {
+        let buf =
+            unsafe { transmute::<[f32; LEN], [u8; BYTES]>([B_VAL; LEN]) };
+
+        DevMappedAlloc::new(&buf).unwrap()
+    };
+
+    unsafe {
+        stream
+            .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
+            .unwrap();
+
+        stream
+            .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
+            .unwrap();
+    }
+
+    let mut n = LEN as i32;
+
+    let mut args = [
+        (&raw mut out).cast(),
+        (&raw mut a).cast(),
+        (&raw mut b).cast(),
+        (&raw mut n).cast(),
+    ];
+
+    let conf = LaunchConfig {
+        grid: [LEN.div_ceil(128) as u32, 1, 1],
+        block: [128, 1, 1],
+    };
+
+    let params = KernelParams::new(&func, &mut args, conf);
+
+    let mut graph = Graph::new(GraphInstantiateFlags::empty()).unwrap();
+
+    graph.add_kernel_node(&[], &params).unwrap();
+
+    let exec = graph
+        .init(GraphInstantiateFlags::empty())
+        .unwrap();
+
+    unsafe {
+        exec.upload(&stream).unwrap();
+        stream.launch_graph(&exec).unwrap();
+    }
+
+    stream.sync().unwrap();
+
+    let mut out_host = DevMappedAlloc::alloc(BYTES).unwrap();
+
+    out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES)
+        .unwrap();
+
+    for chunk in out_host.as_slice().chunks(size_of::<f32>()) {
+        let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
+        let value = f32::from_ne_bytes(bytes);
+
+        assert_eq!(value, A_VAL + B_VAL);
+    }
+}

@@ -145,8 +145,14 @@ impl Stream {
         f: F,
     ) -> Result<Graph, HipError> {
         self.start_capture(mode)?;
-        f(self)?;
-        self.end_capture()
+
+        match f(self) {
+            Ok(()) => self.end_capture(),
+            Err(err) => {
+                let _ = self.end_capture();
+                Err(err)
+            }
+        }
     }
 
     pub fn start_capture(&self, mode: StreamCaptureMode) -> Result<(), HipError> {
