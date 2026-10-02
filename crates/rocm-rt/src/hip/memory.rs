@@ -1,4 +1,4 @@
-use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, slice::from_raw_parts};
+use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr::write_bytes, slice::from_raw_parts};
 
 use rocm_sys::hip::{
     hipFree, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMalloc,
@@ -251,6 +251,30 @@ impl Device {
 
         if ptr.is_null() {
             return Err(HipError::InvalidValue);
+        }
+
+        Ok(Buffer {
+            ptr,
+            size,
+            dev: self,
+            _marker: PhantomData,
+        })
+    }
+
+    /// Allocates `size` zeroed bytes on the default device
+    pub fn alloc_eroed(self, size: u32) -> Result<Buffer, HipError> {
+        self.set_default()?;
+
+        let ptr: Result<*mut u8, HipError> =
+            unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
+        let ptr = ptr?;
+
+        if ptr.is_null() {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            write_bytes(ptr, 0, size as usize);
         }
 
         Ok(Buffer {
