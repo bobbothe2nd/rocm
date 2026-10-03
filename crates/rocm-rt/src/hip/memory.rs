@@ -1,8 +1,8 @@
-use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr::write_bytes, slice::from_raw_parts};
+use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, slice::from_raw_parts};
 
 use rocm_sys::hip::{
     hipFree, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMalloc,
-    hipMemPool_t, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD,
+    hipMemPool_t, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemset,
 };
 
 use crate::hip::{HipError, device::Device};
@@ -262,7 +262,7 @@ impl Device {
     }
 
     /// Allocates `size` zeroed bytes on the default device
-    pub fn alloc_eroed(self, size: u32) -> Result<Buffer, HipError> {
+    pub fn alloc_zeroed(self, size: u32) -> Result<Buffer, HipError> {
         self.set_default()?;
 
         let ptr: Result<*mut u8, HipError> =
@@ -274,7 +274,7 @@ impl Device {
         }
 
         unsafe {
-            write_bytes(ptr, 0, size as usize);
+            try_err!(hipMemset(ptr.cast(), 0, size as usize));
         }
 
         Ok(Buffer {

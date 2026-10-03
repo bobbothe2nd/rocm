@@ -13,14 +13,14 @@ categories = ["hardware-support"]
 bitflags = "2"
 log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.4.0" }
+
+# TODO: update for v0.3.0
 briny = { version = "0.11.1", optional = true }
 
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.1.3" }
 
 [features]
-default = ["hip", "briny", "hiprtc", "dynamic-loading", "std"]
-
 hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]
 hipblas = ["rocm-sys/hipblas"]
@@ -53,6 +53,22 @@ briny = ["dep:briny"]
 
 [[example]]
 name = "kernel_launch"
+required-features = [
+    "alloc",
+    "hip",
+    "hiprtc",
+]
+
+[[example]]
+name = "graph_launch"
+required-features = [
+    "alloc",
+    "hip",
+    "hiprtc",
+]
+
+[[example]]
+name = "capture_graph"
 required-features = [
     "alloc",
     "hip",

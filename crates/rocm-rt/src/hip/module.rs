@@ -36,8 +36,18 @@ impl Module {
 
         Ok(Func {
             raw: func?,
-            _module: self.clone(),
+            module: self.clone(),
         })
+    }
+
+    #[inline(always)]
+    pub fn as_raw(&self) -> hipModule_t {
+        self.inner.raw
+    }
+
+    #[inline(always)]
+    pub fn into_raw(self) -> hipModule_t {
+        self.inner.raw
     }
 }
 
@@ -82,7 +92,18 @@ impl Drop for ModuleInner {
 #[derive(Clone)]
 pub struct Func {
     pub(crate) raw: hipFunction_t,
-    _module: Module,
+    module: Module,
+}
+
+impl Func {
+    #[inline(always)]
+    pub fn module_handle(&self) -> Module {
+        self.module.clone()
+    }
+
+    pub fn into_module_handle(self) -> Module {
+        self.module
+    }
 }
 
 impl Stream {

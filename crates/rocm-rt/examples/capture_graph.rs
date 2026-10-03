@@ -2,8 +2,13 @@ use core::mem::transmute;
 
 use rocm_rt::{
     hip::{
-        device::Device, graph::{GraphInstantiateFlags, StreamCaptureMode}, memory::DevMappedAlloc, module::LaunchConfig, stream::Stream,
-    }, hiprtc::program::{CompileOptions, Hsaco},
+        device::Device,
+        graph::{GraphInstantiateFlags, StreamCaptureMode},
+        memory::DevMappedAlloc,
+        module::LaunchConfig,
+        stream::Stream,
+    },
+    hiprtc::program::{CompileOptions, Hsaco},
 };
 
 const SRC: &str = r#"
@@ -47,15 +52,13 @@ fn main() {
     let b = dev.alloc(BYTES as u32).unwrap();
 
     let mut a_host = {
-        let buf =
-            unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };
+        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };
 
         DevMappedAlloc::new(&buf).unwrap()
     };
 
     let mut b_host = {
-        let buf =
-            unsafe { transmute::<[f32; LEN], [u8; BYTES]>([B_VAL; LEN]) };
+        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([B_VAL; LEN]) };
 
         DevMappedAlloc::new(&buf).unwrap()
     };
@@ -88,16 +91,12 @@ fn main() {
     };
 
     let graph = stream
-        .capture(StreamCaptureMode::Global, |stream| {
-            unsafe {
-                stream.launch(&func, &mut args, conf)
-            }
+        .capture(StreamCaptureMode::Global, |stream| unsafe {
+            stream.launch(&func, &mut args, conf)
         })
         .unwrap();
 
-    let exec = graph
-        .init(GraphInstantiateFlags::empty())
-        .unwrap();
+    let exec = graph.init(GraphInstantiateFlags::empty()).unwrap();
 
     unsafe {
         exec.upload(&stream).unwrap();
@@ -108,8 +107,7 @@ fn main() {
 
     let mut out_host = DevMappedAlloc::alloc(BYTES).unwrap();
 
-    out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES)
-        .unwrap();
+    out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
 
     for chunk in out_host.as_slice().chunks(size_of::<f32>()) {
         let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
