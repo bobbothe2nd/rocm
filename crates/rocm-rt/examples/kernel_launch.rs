@@ -1,7 +1,7 @@
 use core::mem::transmute;
 
 use rocm_rt::{
-    hip::{device::Device, module::LaunchConfig, stream::Stream},
+    hip::{device::Device, module::LaunchConfig, stream::HipStream},
     hiprtc::program::{CompileOptions, Hsaco},
 };
 
@@ -23,6 +23,8 @@ fn main() {
     let dev = Device::current().unwrap();
     let arch = dev.gfx_version().unwrap();
 
+    println!("compiling for architecture {}", arch);
+
     let opts = CompileOptions {
         opt_level: Some(3),
         fast_math: Some(true),
@@ -39,7 +41,9 @@ fn main() {
         module.get_func_c(c"vec_add").unwrap()
     };
 
-    let stream = Stream::create().unwrap();
+    let stream = HipStream::create().unwrap();
+
+    println!("initializing memory");
 
     let out = stream.alloc(BYTES).unwrap();
     let a = stream.alloc(BYTES).unwrap();
@@ -56,12 +60,12 @@ fn main() {
         stream.alloc_host_init(&buf).unwrap()
     };
 
-    stream
-        .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
-        .unwrap();
-    stream
-        .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
-        .unwrap();
+    a.memset_async(0).unwrap();
+
+    a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
+    b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
+
+    println!("launching kernel");
 
     let mut out_ptr = out.as_ptr();
     let mut a_ptr = a.as_ptr();
@@ -84,9 +88,13 @@ fn main() {
         stream.launch(&func, &mut args, conf).unwrap();
     }
 
+    println!("synchronizing stream");
+
     let out_host = stream.alloc_host(BYTES).unwrap();
 
     stream.sync().unwrap();
+
+    println!("validating output");
 
     out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
 

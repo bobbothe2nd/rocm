@@ -15,7 +15,7 @@ use rocm_sys::hip::{
     hipStreamCaptureMode, hipStreamCaptureStatus, hipStreamEndCapture, hipStreamIsCapturing,
 };
 
-use crate::hip::{HipError, stream::Stream};
+use crate::hip::{HipError, stream::HipStream};
 
 #[repr(transparent)]
 pub struct Graph {
@@ -129,7 +129,7 @@ impl ExecGraph {
         Self { raw }
     }
 
-    pub fn upload(&self, stream: &Stream) -> Result<(), HipError> {
+    pub fn upload(&self, stream: &HipStream) -> Result<(), HipError> {
         unsafe { try_err!(hipGraphUpload(self.raw, stream.raw.raw), Ok(())) }
     }
 }
@@ -142,7 +142,7 @@ impl Drop for ExecGraph {
     }
 }
 
-impl Stream {
+impl HipStream {
     pub fn capture<F: FnOnce(&Self) -> Result<(), HipError>>(
         &self,
         mode: StreamCaptureMode,
@@ -227,10 +227,7 @@ pub struct KernelParams {
     raw: hipKernelNodeParams,
 }
 
-#[cfg(all(
-    feature = "hiprtc",
-    any(feature = "dynamic-loading", hiprtc)
-))]
+#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
 impl KernelParams {
     pub const fn new(
         func: &crate::hip::module::Func,

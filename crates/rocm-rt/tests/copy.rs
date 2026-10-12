@@ -1,8 +1,8 @@
-use rocm_rt::hip::stream::Stream;
+use rocm_rt::hip::stream::HipStream;
 
 #[test]
 fn htod_copy_preserves_bytes_outside_requested_range() {
-    let stream = Stream::create().unwrap();
+    let stream = HipStream::create().unwrap();
 
     let src_bytes: Vec<u8> = (0..64).collect();
     let initial_dst = [0xAA_u8; 64];
@@ -11,11 +11,8 @@ fn htod_copy_preserves_bytes_outside_requested_range() {
     let dst = stream.alloc(64).unwrap();
     let dst_host = stream.alloc_host_init(&initial_dst).unwrap();
 
-    stream
-        .copy_htod(&dst_host.borrowed(), &dst, 0, 0, 64)
-        .unwrap();
-
-    stream.copy_htod(&src.borrowed(), &dst, 8, 24, 16).unwrap();
+    dst.copy_from_host_async(&dst_host, 0, 0, 64).unwrap();
+    dst.copy_from_host_async(&src, 8, 24, 16).unwrap();
 
     stream.sync().unwrap();
 

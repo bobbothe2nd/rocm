@@ -1,9 +1,9 @@
+use crate::hip::{HipError, event::HipEvent, stream::HipStream};
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, slice::from_raw_parts};
 use rocm_sys::hip::{
     hipFree, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMalloc,
-    hipMemPool_t, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemset,
+    hipMemPool_t, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemsetAsync, hipMemsetD8,
 };
-use crate::hip::{HipError, device::Device, stream::Stream};
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[derive(Debug)]
@@ -44,7 +44,7 @@ impl<'a> RefMapped<'a> {
         self.data.len() as u32
     }
 
-    /// Maps the buffer such that is is 
+    /// Maps the buffer such that is is
     pub fn map(&self) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -144,16 +144,14 @@ impl<'a> RefMapped<'a> {
 pub struct DevMapped {
     pub(crate) ptr: *mut u8,
     pub(crate) size: u32,
-    pub(crate) stream: Stream,
+    pub(crate) event: HipEvent,
+    pub(crate) stream: HipStream,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-impl Stream {
+impl HipStream {
     /// Allocates `size` bytes and makes it accessible from all HIP devices
     pub fn alloc_host(&self, size: u32) -> Result<DevMapped, HipError> {
-        let dev = self.get_dev()?;
-        dev.set_default()?;
-
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size as usize, 0)) };
         let ptr = ptr?;
@@ -166,6 +164,7 @@ impl Stream {
             ptr,
             size,
             stream: self.clone(),
+            event: HipEvent::create()?,
             _marker: PhantomData,
         })
     }
@@ -186,11 +185,17 @@ impl Stream {
 
 impl DevMapped {
     #[inline(always)]
-    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: u32, stream: Stream) -> Self {
+    pub const unsafe fn from_raw_parts(
+        ptr: *mut u8,
+        size: u32,
+        stream: HipStream,
+        event: HipEvent,
+    ) -> Self {
         Self {
             ptr,
             size,
             stream,
+            event,
             _marker: PhantomData,
         }
     }
@@ -236,7 +241,7 @@ impl DevMapped {
 
 impl Drop for DevMapped {
     fn drop(&mut self) {
-        todo!();
+        let _ = self.event.sync();
 
         unsafe {
             let _ = self.dealloc_unchecked();
@@ -250,17 +255,15 @@ impl Drop for DevMapped {
 pub struct Buffer {
     pub(crate) ptr: *mut u8,
     pub(crate) size: u32,
-    pub(crate) dev: Device,
-    pub(crate) stream: Stream,
-    // track last event
+    pub(crate) event: HipEvent,
+    pub(crate) stream: HipStream,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-impl Stream {
+impl HipStream {
     /// Allocates `size` bytes on the default device
     pub fn alloc(&self, size: u32) -> Result<Buffer, HipError> {
-        let dev = self.get_dev()?;
-        dev.set_default()?;
+        let event = HipEvent::create()?;
 
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
@@ -273,17 +276,14 @@ impl Stream {
         Ok(Buffer {
             ptr,
             size,
-            dev,
             stream: self.clone(),
+            event,
             _marker: PhantomData,
         })
     }
 
     /// Allocates `size` zeroed bytes on the default device
     pub fn alloc_zeroed(&self, size: u32) -> Result<Buffer, HipError> {
-        let dev = self.get_dev()?;
-        dev.set_default()?;
-
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
         let ptr = ptr?;
@@ -293,28 +293,33 @@ impl Stream {
         }
 
         unsafe {
-            try_err!(hipMemset(ptr.cast(), 0, size as usize));
+            try_err!(hipMemsetD8(ptr.cast(), 0, size as usize));
         }
 
         Ok(Buffer {
             ptr,
             size,
-            dev,
             stream: self.clone(),
+            event: HipEvent::create()?,
             _marker: PhantomData,
         })
     }
 }
 
 impl Buffer {
-    /// Constructs a GPU buffer from a raw pointer and size
-    /// #[inline(always)]
-    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: u32, dev: Device, stream: Stream) -> Self {
+    /// Constructs a GPU buffer from a raw pointer, size, stream, and event
+    #[inline(always)]
+    pub const unsafe fn from_raw_parts(
+        ptr: *mut u8,
+        size: u32,
+        stream: HipStream,
+        event: HipEvent,
+    ) -> Self {
         Self {
             ptr,
             size,
-            dev,
             stream,
+            event,
             _marker: PhantomData,
         }
     }
@@ -439,7 +444,6 @@ impl Buffer {
                 .checked_add(len)
                 .is_none_or(|end| end > self.size as u32)
             || self.ptr == src.ptr
-            || self.dev != src.dev
         {
             return Err(HipError::InvalidValue);
         }
@@ -461,7 +465,6 @@ impl Buffer {
                 .checked_add(len)
                 .is_none_or(|end| end > dst.size as u32)
             || self.ptr == dst.ptr
-            || self.dev != dst.dev
         {
             return Err(HipError::InvalidValue);
         }
@@ -487,11 +490,122 @@ impl Buffer {
             )
         }
     }
+
+    pub fn copy_from_async(
+        &self,
+        src: &Self,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
+    ) -> Result<(), HipError> {
+        if !self.stream.same_as(&src.stream) {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            self.stream.copy_dtod(src, self, src_off, dst_off, len)?;
+        }
+
+        self.event.record(&self.stream)?;
+        src.event.record(&self.stream)?;
+
+        Ok(())
+    }
+
+    pub fn copy_to_async(
+        &self,
+        dst: &Self,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
+    ) -> Result<(), HipError> {
+        if !self.stream.same_as(&dst.stream) {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            self.stream.copy_dtod(self, dst, src_off, dst_off, len)?;
+        }
+
+        self.event.record(&self.stream)?;
+        dst.event.record(&self.stream)?;
+
+        Ok(())
+    }
+
+    pub fn copy_from_host_async(
+        &self,
+        src: &DevMapped,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
+    ) -> Result<(), HipError> {
+        if !self.stream.same_as(&src.stream) {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            self.stream
+                .copy_htod(&src.borrowed(), self, src_off, dst_off, len)?;
+        }
+
+        self.event.record(&self.stream)?;
+
+        src.event.record(&self.stream)?;
+
+        Ok(())
+    }
+
+    pub fn copy_to_host_async(
+        &self,
+        dst: &DevMapped,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
+    ) -> Result<(), HipError> {
+        if !self.stream.same_as(&dst.stream) {
+            return Err(HipError::InvalidValue);
+        }
+
+        unsafe {
+            self.stream
+                .copy_dtoh(self, &dst.borrowed(), src_off, dst_off, len)?;
+        }
+
+        self.event.record(&self.stream)?;
+        dst.event.record(&self.stream)?;
+
+        Ok(())
+    }
+
+    pub fn memset(&self, byte: u8) -> Result<(), HipError> {
+        unsafe {
+            try_err!(
+                hipMemsetD8(self.ptr.cast(), byte, self.size as usize,),
+                Ok(())
+            )
+        }
+    }
+
+    pub fn memset_async(&self, byte: u8) -> Result<(), HipError> {
+        unsafe {
+            try_err!(hipMemsetAsync(
+                self.ptr.cast(),
+                byte as i32,
+                self.size as usize,
+                self.stream.raw.raw,
+            ),)
+        }
+
+        self.event.record(&self.stream)?;
+
+        Ok(())
+    }
 }
 
 impl Drop for Buffer {
     fn drop(&mut self) {
-        todo!();
+        let _ = self.event.sync();
 
         unsafe {
             let _ = self.dealloc_unchecked();

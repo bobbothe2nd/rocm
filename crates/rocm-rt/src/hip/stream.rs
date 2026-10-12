@@ -1,24 +1,30 @@
+use alloc::rc::Rc;
 use core::{
     ffi::{c_int, c_ulonglong},
     mem::transmute,
 };
-use alloc::rc::Rc;
 use rocm_sys::hip::{
-    hipError_t, hipFreeAsync, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync, hipStream_t, hipStreamCreate, hipStreamDestroy, hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
+    hipError_t, hipFreeAsync, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync,
+    hipStream_t, hipStreamCreate, hipStreamDestroy, hipStreamGetDevice, hipStreamGetId,
+    hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
 };
 
 use crate::hip::{
-    HipError, device::Device, memory::{Buffer, RefMapped},
+    HipError,
+    device::Device,
+    memory::{Buffer, RefMapped},
 };
 
 #[derive(Debug, Clone)]
-pub struct Stream {
+pub struct HipStream {
     pub(crate) raw: Rc<StreamInner>,
 }
 
-impl Stream {
+impl HipStream {
     pub fn create() -> Result<Self, HipError> {
-        unsafe { wrap_sys_res!(|stream| hipStreamCreate((&raw mut stream).cast())) }
+        let raw: Result<StreamInner, HipError> =
+            unsafe { wrap_sys_res!(|stream| hipStreamCreate((&raw mut stream).cast())) };
+        Ok(Self { raw: Rc::new(raw?) })
     }
 
     #[inline(always)]
@@ -33,10 +39,12 @@ impl Stream {
 
     #[inline(always)]
     pub unsafe fn from_raw(raw: hipStream_t) -> Self {
-        Self { raw: Rc::new(StreamInner { raw }) }
+        Self {
+            raw: Rc::new(StreamInner { raw }),
+        }
     }
 
-    pub fn copy_htod(
+    pub unsafe fn copy_htod(
         &self,
         src: &RefMapped<'_>,
         dst: &Buffer,
@@ -45,10 +53,7 @@ impl Stream {
         len: u32,
     ) -> Result<(), HipError> {
         if src_off.checked_add(len).is_none_or(|end| end > src.size())
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > dst.size)
-            || dst.dev != self.get_dev()?
+            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
         {
             return Err(HipError::InvalidValue);
         }
@@ -77,7 +82,7 @@ impl Stream {
         }
     }
 
-    pub fn copy_dtoh(
+    pub unsafe fn copy_dtoh(
         &self,
         src: &Buffer,
         dst: &RefMapped<'_>,
@@ -85,11 +90,8 @@ impl Stream {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off
-            .checked_add(len)
-            .is_none_or(|end| end > src.size)
+        if src_off.checked_add(len).is_none_or(|end| end > src.size)
             || dst_off.checked_add(len).is_none_or(|end| end > dst.size())
-            || src.dev != self.get_dev()?
         {
             return Err(HipError::InvalidValue);
         }
@@ -118,7 +120,7 @@ impl Stream {
         }
     }
 
-    pub fn copy_dtod(
+    pub unsafe fn copy_dtod(
         &self,
         src: &Buffer,
         dst: &Buffer,
@@ -126,15 +128,9 @@ impl Stream {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off
-            .checked_add(len)
-            .is_none_or(|end| end > src.size)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > dst.size)
+        if src_off.checked_add(len).is_none_or(|end| end > src.size)
+            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
             || src.ptr == dst.ptr
-            || src.dev != dst.dev
-            || src.dev != self.get_dev()?
         {
             return Err(HipError::InvalidValue);
         }
@@ -169,15 +165,7 @@ impl Stream {
     ///
     /// The buffer must not be dropped or freed again
     pub unsafe fn free(&self, buf: &Buffer) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipFreeAsync(
-                    buf.ptr.cast(),
-                    self.raw.raw,
-                ),
-                Ok(())
-            )
-        }
+        unsafe { try_err!(hipFreeAsync(buf.ptr.cast(), self.raw.raw,), Ok(())) }
     }
 
     /// Returns `true` if the stream has finished all queued tasks
@@ -207,6 +195,10 @@ impl Stream {
 
     pub fn get_dev(&self) -> Result<Device, HipError> {
         unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(self.raw.raw, (&raw mut dev).cast())) }
+    }
+
+    pub(crate) fn same_as(&self, other: &Self) -> bool {
+        self.raw.raw == other.raw.raw
     }
 }
 

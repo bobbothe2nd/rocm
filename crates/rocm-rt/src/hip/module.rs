@@ -8,7 +8,7 @@ use rocm_sys::hip::{
 };
 
 use crate::{
-    hip::{HipError, stream::Stream},
+    hip::{HipError, stream::HipStream},
     hiprtc::program::Hsaco,
 };
 
@@ -105,7 +105,7 @@ impl Func {
     }
 }
 
-impl Stream {
+impl HipStream {
     /// Launches a kernel/function on this stream
     ///
     /// Each element of `args` points to the value of that argument

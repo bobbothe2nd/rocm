@@ -51,7 +51,6 @@ hipMemset2DAsync_spt@@hip_5.3
 hipMemset2D_spt@@hip_5.2
 hipMemset3DAsync_spt@@hip_5.3
 hipMemset3D_spt@@hip_5.2
-hipMemsetAsync@@hip_4.2
 hipMemsetAsync_spt@@hip_5.3
 hipMemset_spt@@hip_5.2
 hipPeekAtLastError@@hip_4.2

@@ -9,14 +9,12 @@ macro_rules! try_err {
 
 pub mod callback;
 pub mod device;
+pub mod event;
 pub mod graph;
 pub mod memory;
 pub mod stream;
 
-#[cfg(all(
-    feature = "hiprtc",
-    any(feature = "dynamic-loading", hiprtc)
-))]
+#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
 pub mod module;
 
 use core::{

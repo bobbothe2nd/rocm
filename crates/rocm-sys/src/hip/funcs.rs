@@ -783,6 +783,13 @@ link! {
         sizeBytes: usize,
     ) -> hipError_t;
 
+    pub fn hipMemsetAsync(
+        dst: *mut c_void,
+        value: c_int,
+        sizeBytes: usize,
+        stream: hipStream_t,
+    ) -> hipError_t;
+
     pub fn hipMemsetD8(
         dest: hipDeviceptr_t,
         value: c_uchar,

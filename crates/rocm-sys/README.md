@@ -16,7 +16,7 @@ This is a very unsafe and low-level API. For a safer API, use `rocm-rt`.
 let mut count = -1;
 
 unsafe {
-    hipGetDeviceCount(&mut count);
+    hipGetDeviceCount(&raw mut count);
 }
 
 println!("device count = {count}");
@@ -48,7 +48,6 @@ When using static linking, a linker error may occur when a function is linked wh
 This crate tries to assume as little about the target as possible.
 
 - If `dynamic-loading` feature is disabled, the target is assumed to be the build machine
-- The size of a Rust `usize` should be equal to the size of a C `size_t`
 - `hipGetDeviceProperties` and `hipChooseDevice` are only correct where `hipDeviceProp_tR0600` = `hipDeviceProp_t` (not `hipDeviceProp_tR0000)
 
 These should always be true.

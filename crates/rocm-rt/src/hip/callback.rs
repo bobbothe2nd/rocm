@@ -1,9 +1,9 @@
 use core::{ffi::c_void, mem::transmute};
 use rocm_sys::hip::hipLaunchHostFunc;
 
-use crate::hip::{HipError, stream::Stream};
+use crate::hip::{HipError, stream::HipStream};
 
-impl Stream {
+impl HipStream {
     /// Launches a host callback to run on the stream asynchronously
     ///
     /// # Safety
