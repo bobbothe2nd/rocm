@@ -19,7 +19,6 @@ pub struct Module {
 }
 
 impl Module {
-    #[cfg(feature = "alloc")]
     pub fn get_func(&self, name: &str) -> Result<Func, HipError> {
         let name = CString::new(name).map_err(|_| HipError::InvalidValue)?;
         self.get_func_c(&name)
@@ -109,6 +108,8 @@ impl Func {
 impl Stream {
     /// Launches a kernel/function on this stream
     ///
+    /// Each element of `args` points to the value of that argument
+    ///
     /// # Safety
     ///
     /// The caller must ensure that `func` refers to a valid kernel and that
@@ -132,7 +133,7 @@ impl Stream {
                     conf.block[1],
                     conf.block[2],
                     0,
-                    self.raw,
+                    self.raw.raw,
                     args.as_mut_ptr().cast(),
                     null_mut(),
                 ),

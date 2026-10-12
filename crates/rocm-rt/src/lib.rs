@@ -1,7 +1,6 @@
 #![allow(clippy::unnecessary_cast)]
 #![no_std]
 
-#[cfg(feature = "alloc")]
 extern crate alloc;
 
 #[cfg(feature = "std")]
@@ -14,6 +13,40 @@ macro_rules! wrap_sys_res {
 
         Ok(try_err!($expr, $val.assume_init()))
     }};
+}
+
+#[allow(unused_macros)]
+macro_rules! raii {
+    ($name:ident($inner:ident)) => {
+        #[::core::derive(::core::fmt::Debug)]
+        pub struct $name {
+            pub(crate) inner: ::alloc::sync::Arc<$inner>,
+        }
+
+        impl ::core::clone::Clone for $name {
+            fn clone(&self) -> Self {
+                Self {
+                    inner: ::alloc::sync::Arc::clone(&self.inner),
+                }
+            }
+        }
+
+        impl ::core::ops::Deref for $name {
+            type Target = $inner;
+
+            fn deref(&self) -> &Self::Target {
+                &self.inner
+            }
+        }
+
+        impl $inner {
+            pub fn managed(self) -> $name {
+                $name {
+                    inner: ::alloc::sync::Arc::new(self),
+                }
+            }
+        }
+    };
 }
 
 pub mod shared;

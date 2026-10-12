@@ -122,28 +122,6 @@ impl FromStr for GfxVersion {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let head = s.trim().split(':').next().ok_or(())?;
-        let head = {
-            #[cfg(not(feature = "alloc"))]
-            {
-                head
-            }
-
-            #[cfg(feature = "alloc")]
-            {
-                head.to_lowercase()
-            }
-        };
-        let head = {
-            #[cfg(not(feature = "alloc"))]
-            {
-                head
-            }
-
-            #[cfg(feature = "alloc")]
-            {
-                head.as_str()
-            }
-        };
 
         let str = match head {
             "gfx1030" => Self::Gfx1030,

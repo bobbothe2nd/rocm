@@ -1,21 +1,24 @@
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, slice::from_raw_parts};
-
 use rocm_sys::hip::{
     hipFree, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMalloc,
     hipMemPool_t, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemset,
 };
-
-use crate::hip::{HipError, device::Device};
+use crate::hip::{HipError, device::Device, stream::Stream};
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[derive(Debug)]
-pub struct DevMapped<'a> {
+pub struct RefMapped<'a> {
     pub(crate) data: &'a [u8],
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-impl<'a> DevMapped<'a> {
-    pub fn new(data: &'a mut [u8]) -> Result<Self, HipError> {
+impl<'a> RefMapped<'a> {
+    /// Maps the data and return a handle
+    ///
+    /// # Safety
+    ///
+    /// Any asynchronous operations on this handle must be completed before it returns
+    pub unsafe fn new(data: &'a mut [u8]) -> Result<Self, HipError> {
         unsafe {
             try_err!(hipHostRegister(data.as_mut_ptr().cast(), data.len(), 0));
         }
@@ -37,13 +40,12 @@ impl<'a> DevMapped<'a> {
         self.data
     }
 
-    pub const fn size(&self) -> usize {
-        self.data.len()
+    pub const fn size(&self) -> u32 {
+        self.data.len() as u32
     }
 
-    /// Maps the buffer such that is is accessible
-    // TODO: remove `unsafe`
-    pub unsafe fn map(&self) -> Result<(), HipError> {
+    /// Maps the buffer such that is is 
+    pub fn map(&self) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipHostRegister(self.data.as_ptr() as *mut _, self.data.len(), 0),
@@ -64,14 +66,14 @@ impl<'a> DevMapped<'a> {
     pub fn copy_to_dev(
         &self,
         other: &Buffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         if src_off.checked_add(len).is_none_or(|end| end > self.size())
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > other.size as usize)
+                .is_none_or(|end| end > other.size as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -82,16 +84,16 @@ impl<'a> DevMapped<'a> {
     pub unsafe fn copy_to_dev_unchecked(
         &self,
         other: &Buffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipMemcpyHtoD(
-                    other.ptr.add(dst_off).cast(),
-                    self.data.as_ptr().add(src_off).cast(),
-                    len
+                    other.ptr.add(dst_off as usize).cast(),
+                    self.data.as_ptr().add(src_off as usize).cast(),
+                    len as usize,
                 ),
                 Ok(())
             )
@@ -101,14 +103,14 @@ impl<'a> DevMapped<'a> {
     pub fn copy_from_dev(
         &self,
         other: &Buffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         if src_off.checked_add(len).is_none_or(|end| end > self.size())
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > other.size as usize)
+                .is_none_or(|end| end > other.size as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -119,16 +121,16 @@ impl<'a> DevMapped<'a> {
     pub unsafe fn copy_from_dev_unchecked(
         &self,
         other: &Buffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipMemcpyDtoH(
-                    self.data.as_ptr().add(src_off) as *mut _,
-                    other.ptr.add(dst_off).cast(),
-                    len
+                    self.data.as_ptr().add(src_off as usize) as *mut _,
+                    other.ptr.add(dst_off as usize).cast(),
+                    len as usize,
                 ),
                 Ok(())
             )
@@ -139,17 +141,40 @@ impl<'a> DevMapped<'a> {
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
 #[derive(Debug)]
-pub struct DevMappedAlloc {
+pub struct DevMapped {
     pub(crate) ptr: *mut u8,
-    pub(crate) size: usize,
+    pub(crate) size: u32,
+    pub(crate) stream: Stream,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-impl DevMappedAlloc {
-    pub fn new(data: &[u8]) -> Result<Self, HipError> {
+impl Stream {
+    /// Allocates `size` bytes and makes it accessible from all HIP devices
+    pub fn alloc_host(&self, size: u32) -> Result<DevMapped, HipError> {
+        let dev = self.get_dev()?;
+        dev.set_default()?;
+
+        let ptr: Result<*mut u8, HipError> =
+            unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size as usize, 0)) };
+        let ptr = ptr?;
+
+        if ptr.is_null() {
+            return Err(HipError::InvalidValue);
+        }
+
+        Ok(DevMapped {
+            ptr,
+            size,
+            stream: self.clone(),
+            _marker: PhantomData,
+        })
+    }
+
+    /// Allocates `size` bytes and makes it accessible from all HIP devices
+    pub fn alloc_host_init(&self, data: &[u8]) -> Result<DevMapped, HipError> {
         let size = data.len();
 
-        let buf = Self::alloc(size)?;
+        let buf = self.alloc_host(size as u32)?;
 
         unsafe {
             buf.ptr.copy_from_nonoverlapping(data.as_ptr(), size);
@@ -157,34 +182,21 @@ impl DevMappedAlloc {
 
         Ok(buf)
     }
+}
 
-    /// Allocates `size` bytes and makes it accessible from all HIP devices
-    pub fn alloc(size: usize) -> Result<Self, HipError> {
-        let ptr: Result<*mut u8, HipError> =
-            unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size, 0)) };
-        let ptr = ptr?;
-
-        if ptr.is_null() {
-            return Err(HipError::InvalidValue);
-        }
-
-        Ok(Self {
-            ptr,
-            size,
-            _marker: PhantomData,
-        })
-    }
-
-    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: usize) -> Self {
+impl DevMapped {
+    #[inline(always)]
+    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: u32, stream: Stream) -> Self {
         Self {
             ptr,
             size,
+            stream,
             _marker: PhantomData,
         }
     }
 
-    pub fn borrowed(&mut self) -> DevMapped<'_> {
-        unsafe { DevMapped::from_slice(self.as_slice()) }
+    pub fn borrowed(&self) -> RefMapped<'_> {
+        unsafe { RefMapped::from_slice(self.as_slice()) }
     }
 
     pub const fn as_ptr(&self) -> *mut u8 {
@@ -192,10 +204,10 @@ impl DevMappedAlloc {
     }
 
     pub const fn as_slice(&self) -> &[u8] {
-        unsafe { from_raw_parts(self.ptr, self.size) }
+        unsafe { from_raw_parts(self.ptr, self.size as usize) }
     }
 
-    pub const fn size(&self) -> usize {
+    pub const fn size(&self) -> u32 {
         self.size
     }
 
@@ -222,8 +234,10 @@ impl DevMappedAlloc {
     }
 }
 
-impl Drop for DevMappedAlloc {
+impl Drop for DevMapped {
     fn drop(&mut self) {
+        todo!();
+
         unsafe {
             let _ = self.dealloc_unchecked();
         }
@@ -236,14 +250,17 @@ impl Drop for DevMappedAlloc {
 pub struct Buffer {
     pub(crate) ptr: *mut u8,
     pub(crate) size: u32,
-    pub(crate) dev: Device, // check ptr and dev on use
+    pub(crate) dev: Device,
+    pub(crate) stream: Stream,
+    // track last event
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-impl Device {
+impl Stream {
     /// Allocates `size` bytes on the default device
-    pub fn alloc(self, size: u32) -> Result<Buffer, HipError> {
-        self.set_default()?;
+    pub fn alloc(&self, size: u32) -> Result<Buffer, HipError> {
+        let dev = self.get_dev()?;
+        dev.set_default()?;
 
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
@@ -256,14 +273,16 @@ impl Device {
         Ok(Buffer {
             ptr,
             size,
-            dev: self,
+            dev,
+            stream: self.clone(),
             _marker: PhantomData,
         })
     }
 
     /// Allocates `size` zeroed bytes on the default device
-    pub fn alloc_zeroed(self, size: u32) -> Result<Buffer, HipError> {
-        self.set_default()?;
+    pub fn alloc_zeroed(&self, size: u32) -> Result<Buffer, HipError> {
+        let dev = self.get_dev()?;
+        dev.set_default()?;
 
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
@@ -280,7 +299,8 @@ impl Device {
         Ok(Buffer {
             ptr,
             size,
-            dev: self,
+            dev,
+            stream: self.clone(),
             _marker: PhantomData,
         })
     }
@@ -288,11 +308,13 @@ impl Device {
 
 impl Buffer {
     /// Constructs a GPU buffer from a raw pointer and size
-    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: u32, dev: Device) -> Self {
+    /// #[inline(always)]
+    pub const unsafe fn from_raw_parts(ptr: *mut u8, size: u32, dev: Device, stream: Stream) -> Self {
         Self {
             ptr,
             size,
             dev,
+            stream,
             _marker: PhantomData,
         }
     }
@@ -331,14 +353,14 @@ impl Buffer {
 
     pub fn copy_to_host(
         &self,
-        dst: &DevMapped,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        dst: &RefMapped,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         if src_off
             .checked_add(len)
-            .is_none_or(|end| end > self.size as usize)
+            .is_none_or(|end| end > self.size as u32)
             || dst_off.checked_add(len).is_none_or(|end| end > dst.size())
         {
             return Err(HipError::InvalidValue);
@@ -349,17 +371,17 @@ impl Buffer {
 
     pub unsafe fn copy_to_host_unchecked(
         &self,
-        dst: &DevMapped,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        dst: &RefMapped,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipMemcpyDtoH(
-                    dst.data.as_ptr().add(dst_off) as *mut _,
-                    self.ptr.add(src_off).cast(),
-                    len
+                    dst.data.as_ptr().add(dst_off as usize) as *mut _,
+                    self.ptr.add(src_off as usize).cast(),
+                    len as usize,
                 ),
                 Ok(())
             )
@@ -368,15 +390,15 @@ impl Buffer {
 
     pub fn copy_from_host(
         &self,
-        src: &DevMapped,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src: &RefMapped,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         if src_off.checked_add(len).is_none_or(|end| end > src.size())
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > self.size as usize)
+                .is_none_or(|end| end > self.size as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -386,17 +408,17 @@ impl Buffer {
 
     pub unsafe fn copy_from_host_unchecked(
         &self,
-        src: &DevMapped,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src: &RefMapped,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipMemcpyHtoD(
-                    self.ptr.add(dst_off).cast(),
-                    src.data.as_ptr().add(src_off).cast(),
-                    len
+                    self.ptr.add(dst_off as usize).cast(),
+                    src.data.as_ptr().add(src_off as usize).cast(),
+                    len as usize,
                 ),
                 Ok(())
             )
@@ -406,16 +428,16 @@ impl Buffer {
     pub fn copy_from(
         &self,
         src: &Self,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         if src_off
             .checked_add(len)
-            .is_none_or(|end| end > src.size as usize)
+            .is_none_or(|end| end > src.size as u32)
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > self.size as usize)
+                .is_none_or(|end| end > self.size as u32)
             || self.ptr == src.ptr
             || self.dev != src.dev
         {
@@ -428,16 +450,16 @@ impl Buffer {
     pub fn copy_to(
         &self,
         dst: &Self,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         if src_off
             .checked_add(len)
-            .is_none_or(|end| end > self.size as usize)
+            .is_none_or(|end| end > self.size as u32)
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > dst.size as usize)
+                .is_none_or(|end| end > dst.size as u32)
             || self.ptr == dst.ptr
             || self.dev != dst.dev
         {
@@ -450,16 +472,16 @@ impl Buffer {
     pub unsafe fn copy_from_unchecked(
         &self,
         src: &Self,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
                 hipMemcpyDtoD(
-                    self.ptr.add(dst_off).cast(),
-                    src.ptr.add(src_off).cast(),
-                    len
+                    self.ptr.add(dst_off as usize).cast(),
+                    src.ptr.add(src_off as usize).cast(),
+                    len as usize,
                 ),
                 Ok(())
             )
@@ -469,6 +491,8 @@ impl Buffer {
 
 impl Drop for Buffer {
     fn drop(&mut self) {
+        todo!();
+
         unsafe {
             let _ = self.dealloc_unchecked();
         }

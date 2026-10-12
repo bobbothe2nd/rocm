@@ -3,7 +3,6 @@ use core::{
     mem::transmute,
 };
 
-#[cfg(feature = "alloc")]
 use alloc::string::{String, ToString};
 
 use rocm_sys::hip::{
@@ -103,7 +102,6 @@ impl Device {
     }
 
     /// Gets the GFX/GCN architecture name.
-    #[cfg(feature = "alloc")]
     pub fn gfx_arch(&self) -> Result<String, HipError> {
         let props = self.properties()?;
         let cstr = unsafe { CStr::from_ptr(props.gcnArchName.as_ptr()) };
@@ -115,17 +113,7 @@ impl Device {
     pub fn gfx_version(&self) -> Result<GfxVersion, HipError> {
         let props = self.properties()?;
         let cstr = unsafe { CStr::from_ptr(props.gcnArchName.as_ptr()) };
-        let arch = {
-            #[cfg(feature = "alloc")]
-            {
-                cstr.to_string_lossy()
-            }
-
-            #[cfg(not(feature = "alloc"))]
-            {
-                cstr.to_str().map_err(|_| HipError::InvalidValue)?
-            }
-        };
+        let arch = cstr.to_string_lossy();
         arch.parse().map_err(|_| HipError::InvalidValue)
     }
 

@@ -4,7 +4,6 @@ use rocm_rt::{
     hip::{
         device::Device,
         graph::{Graph, GraphInstantiateFlags, KernelParams},
-        memory::DevMappedAlloc,
         module::LaunchConfig,
         stream::Stream,
     },
@@ -15,12 +14,12 @@ const SRC: &str = r#"
 extern "C" __global__
 void vec_add(float* out, const float* a, const float* b, int n) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < n) out[i] = a[i] + b[i];
+    if (i < n) out[i] += a[i] + b[i];
 }
 "#;
 
 const LEN: usize = 1024;
-const BYTES: usize = LEN * size_of::<f32>();
+const BYTES: u32 = (LEN * size_of::<f32>()) as u32;
 
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
@@ -47,31 +46,29 @@ fn main() {
 
     let stream = Stream::create().unwrap();
 
-    let mut out = dev.alloc(BYTES as u32).unwrap();
-    let mut a = dev.alloc(BYTES as u32).unwrap();
-    let mut b = dev.alloc(BYTES as u32).unwrap();
+    let mut out = stream.alloc_zeroed(BYTES).unwrap();
+    let mut a = stream.alloc(BYTES).unwrap();
+    let mut b = stream.alloc(BYTES).unwrap();
 
-    let mut a_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };
+    let a_host = {
+        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
 
-        DevMappedAlloc::new(&buf).unwrap()
+        stream.alloc_host_init(&buf).unwrap()
     };
 
-    let mut b_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([B_VAL; LEN]) };
+    let b_host = {
+        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
 
-        DevMappedAlloc::new(&buf).unwrap()
+        stream.alloc_host_init(&buf).unwrap()
     };
 
-    unsafe {
-        stream
-            .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
-            .unwrap();
+    stream
+        .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
+        .unwrap();
 
-        stream
-            .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
-            .unwrap();
-    }
+    stream
+        .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
+        .unwrap();
 
     let mut n = LEN as i32;
 
@@ -91,7 +88,12 @@ fn main() {
 
     let mut graph = Graph::new(GraphInstantiateFlags::empty()).unwrap();
 
-    graph.add_kernel_node(&[], &params).unwrap();
+    let mut prev_nodes = Vec::with_capacity(10);
+
+    for _ in 0..10 {
+        let node = graph.add_kernel_node(&prev_nodes, &params).unwrap();
+        prev_nodes.push(node);
+    }
 
     let exec = graph.init(GraphInstantiateFlags::empty()).unwrap();
 
@@ -102,7 +104,7 @@ fn main() {
 
     stream.sync().unwrap();
 
-    let mut out_host = DevMappedAlloc::alloc(BYTES).unwrap();
+    let out_host = stream.alloc_host(BYTES).unwrap();
 
     out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
 
@@ -110,6 +112,6 @@ fn main() {
         let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
         let value = f32::from_ne_bytes(bytes);
 
-        assert_eq!(value, A_VAL + B_VAL);
+        assert_eq!(value, 10.0 * (A_VAL + B_VAL));
     }
 }

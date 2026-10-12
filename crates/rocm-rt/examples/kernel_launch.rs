@@ -1,7 +1,7 @@
 use core::mem::transmute;
 
 use rocm_rt::{
-    hip::{device::Device, memory::DevMappedAlloc, module::LaunchConfig, stream::Stream},
+    hip::{device::Device, module::LaunchConfig, stream::Stream},
     hiprtc::program::{CompileOptions, Hsaco},
 };
 
@@ -14,7 +14,7 @@ void vec_add(float* out, const float* a, const float* b, int n) {
 "#;
 
 const LEN: usize = 1024;
-const BYTES: usize = LEN * size_of::<f32>();
+const BYTES: u32 = (LEN * size_of::<f32>()) as u32;
 
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
@@ -41,29 +41,27 @@ fn main() {
 
     let stream = Stream::create().unwrap();
 
-    let out = dev.alloc(BYTES as u32).unwrap();
-    let a = dev.alloc(BYTES as u32).unwrap();
-    let b = dev.alloc(BYTES as u32).unwrap();
+    let out = stream.alloc(BYTES).unwrap();
+    let a = stream.alloc(BYTES).unwrap();
+    let b = stream.alloc(BYTES).unwrap();
 
-    let mut a_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([A_VAL; LEN]) };
+    let a_host = {
+        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
 
-        DevMappedAlloc::new(&buf).unwrap()
+        stream.alloc_host_init(&buf).unwrap()
     };
-    let mut b_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES]>([B_VAL; LEN]) };
+    let b_host = {
+        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
 
-        DevMappedAlloc::new(&buf).unwrap()
+        stream.alloc_host_init(&buf).unwrap()
     };
 
-    unsafe {
-        stream
-            .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
-            .unwrap();
-        stream
-            .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
-            .unwrap();
-    }
+    stream
+        .copy_htod(&a_host.borrowed(), &a, 0, 0, BYTES)
+        .unwrap();
+    stream
+        .copy_htod(&b_host.borrowed(), &b, 0, 0, BYTES)
+        .unwrap();
 
     let mut out_ptr = out.as_ptr();
     let mut a_ptr = a.as_ptr();
@@ -86,7 +84,7 @@ fn main() {
         stream.launch(&func, &mut args, conf).unwrap();
     }
 
-    let mut out_host = DevMappedAlloc::alloc(BYTES).unwrap();
+    let out_host = stream.alloc_host(BYTES).unwrap();
 
     stream.sync().unwrap();
 

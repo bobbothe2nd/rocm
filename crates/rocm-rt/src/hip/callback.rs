@@ -1,6 +1,4 @@
 use core::{ffi::c_void, mem::transmute};
-
-use briny::traits::Layout;
 use rocm_sys::hip::hipLaunchHostFunc;
 
 use crate::hip::{HipError, stream::Stream};
@@ -12,8 +10,7 @@ impl Stream {
     ///
     /// This function is only as safe as `func`
     ///
-    /// Undefined behavior if capturing in a graph and replaying
-    #[cfg(feature = "alloc")]
+    /// Undefined behavior if capturing in a graph and replaying or calling HIP API functions inside the callback
     pub unsafe fn callback<F>(&self, func: F, data: *mut u8) -> Result<(), HipError>
     where
         F: FnOnce(*mut u8) + Send + 'static,
@@ -34,7 +31,7 @@ impl Stream {
 
         unsafe {
             try_err!(
-                hipLaunchHostFunc(self.raw, Some(wrapper::<F>), data.cast(),),
+                hipLaunchHostFunc(self.raw.raw, Some(wrapper::<F>), data.cast(),),
                 Ok(())
             )
         }
@@ -44,11 +41,11 @@ impl Stream {
     ///
     /// # Safety
     ///
-    /// This function is only as safe as `func`
+    /// This function is only as safe as `func` and `func` must not call HIP API functions inside the callback
     pub unsafe fn launch_host(&self, func: Callback, data: *mut u8) -> Result<(), HipError> {
         unsafe {
             try_err!(
-                hipLaunchHostFunc(self.raw, Some(func.func), data.cast()),
+                hipLaunchHostFunc(self.raw.raw, Some(func.func), data.cast()),
                 Ok(())
             )
         }
@@ -60,8 +57,6 @@ impl Stream {
 pub struct Callback {
     func: unsafe extern "C" fn(*mut c_void),
 }
-
-unsafe impl Layout<unsafe extern "C" fn(*mut c_void)> for Stream {}
 
 impl Callback {
     pub const fn new(func: unsafe extern "C" fn(*mut u8)) -> Self {

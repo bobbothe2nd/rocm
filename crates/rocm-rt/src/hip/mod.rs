@@ -14,7 +14,6 @@ pub mod memory;
 pub mod stream;
 
 #[cfg(all(
-    feature = "alloc",
     feature = "hiprtc",
     any(feature = "dynamic-loading", hiprtc)
 ))]

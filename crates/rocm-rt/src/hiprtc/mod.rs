@@ -8,7 +8,6 @@ macro_rules! try_err {
     };
 }
 
-#[cfg(feature = "alloc")]
 pub mod program;
 
 use core::{

@@ -7,12 +7,12 @@ use core::{
 use rocm_sys::hip::{
     hipChildGraphNodeParams, hipEventRecordNodeParams, hipEventWaitNodeParams,
     hipExternalSemaphoreSignalNodeParams, hipExternalSemaphoreWaitNodeParams, hipGraph_t,
-    hipGraphAddKernelNode, hipGraphCreate, hipGraphDestroy, hipGraphExec_t, hipGraphExecDestroy,
-    hipGraphInstantiateWithFlags, hipGraphLaunch, hipGraphNode_t, hipGraphNodeParams,
-    hipGraphNodeParams__bindgen_ty_1, hipGraphNodeType, hipGraphUpload, hipHostNodeParams,
-    hipKernelNodeParams, hipMemAllocNodeParams, hipMemFreeNodeParams, hipMemcpyNodeParams,
-    hipMemsetParams, hipStreamBeginCapture, hipStreamCaptureMode, hipStreamCaptureStatus,
-    hipStreamEndCapture, hipStreamIsCapturing,
+    hipGraphAddKernelNode, hipGraphClone, hipGraphCreate, hipGraphDestroy, hipGraphExec_t,
+    hipGraphExecDestroy, hipGraphInstantiateWithFlags, hipGraphKernelNodeGetParams, hipGraphLaunch,
+    hipGraphNode_t, hipGraphNodeParams, hipGraphNodeParams__bindgen_ty_1, hipGraphNodeType,
+    hipGraphUpload, hipHostNodeParams, hipKernelNodeParams, hipMemAllocNodeParams,
+    hipMemFreeNodeParams, hipMemcpyNodeParams, hipMemsetParams, hipStreamBeginCapture,
+    hipStreamCaptureMode, hipStreamCaptureStatus, hipStreamEndCapture, hipStreamIsCapturing,
 };
 
 use crate::hip::{HipError, stream::Stream};
@@ -54,6 +54,10 @@ impl Graph {
     /// Raw `hipGraph_t`. Do not destroy.
     pub fn from_raw(raw: hipGraph_t) -> Self {
         Self { raw }
+    }
+
+    pub fn try_clone(&self) -> Result<Self, HipError> {
+        unsafe { wrap_sys_res!(|clone| hipGraphClone((&raw mut clone).cast(), self.raw)) }
     }
 
     pub fn add_kernel_node(
@@ -126,7 +130,7 @@ impl ExecGraph {
     }
 
     pub fn upload(&self, stream: &Stream) -> Result<(), HipError> {
-        unsafe { try_err!(hipGraphUpload(self.raw, stream.raw), Ok(())) }
+        unsafe { try_err!(hipGraphUpload(self.raw, stream.raw.raw), Ok(())) }
     }
 }
 
@@ -159,7 +163,7 @@ impl Stream {
         unsafe {
             try_err!(
                 hipStreamBeginCapture(
-                    self.raw,
+                    self.raw.raw,
                     transmute::<StreamCaptureMode, hipStreamCaptureMode>(mode)
                 ),
                 Ok(())
@@ -169,7 +173,7 @@ impl Stream {
 
     pub fn end_capture(&self) -> Result<Graph, HipError> {
         let raw: Result<hipGraph_t, HipError> = unsafe {
-            wrap_sys_res!(|graph| hipStreamEndCapture(self.raw, (&raw mut graph).cast()))
+            wrap_sys_res!(|graph| hipStreamEndCapture(self.raw.raw, (&raw mut graph).cast()))
         };
         let raw = raw?;
 
@@ -178,7 +182,7 @@ impl Stream {
 
     pub fn is_capturing(&self) -> Result<bool, HipError> {
         let status: Result<hipStreamCaptureStatus, HipError> = unsafe {
-            wrap_sys_res!(|status| hipStreamIsCapturing(self.raw, (&raw mut status).cast()))
+            wrap_sys_res!(|status| hipStreamIsCapturing(self.raw.raw, (&raw mut status).cast()))
         };
 
         match status? {
@@ -191,7 +195,7 @@ impl Stream {
     }
 
     pub unsafe fn launch_graph(&self, graph: &ExecGraph) -> Result<(), HipError> {
-        unsafe { try_err!(hipGraphLaunch(graph.raw, self.raw), Ok(())) }
+        unsafe { try_err!(hipGraphLaunch(graph.raw, self.raw.raw), Ok(())) }
     }
 }
 
@@ -209,6 +213,14 @@ pub struct Node {
     raw: hipGraphNode_t,
 }
 
+impl Node {
+    pub unsafe fn get_kernel_params(&self) -> Result<KernelParams, HipError> {
+        unsafe {
+            wrap_sys_res!(|params| hipGraphKernelNodeGetParams(self.raw, (&raw mut params).cast()))
+        }
+    }
+}
+
 #[repr(transparent)]
 #[derive(Clone)]
 pub struct KernelParams {
@@ -216,7 +228,6 @@ pub struct KernelParams {
 }
 
 #[cfg(all(
-    feature = "alloc",
     feature = "hiprtc",
     any(feature = "dynamic-loading", hiprtc)
 ))]
