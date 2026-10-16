@@ -2,8 +2,8 @@ use super::types::*;
 
 use core::ffi::*;
 
-#[cfg(feature = "dynamic-loading")]
-use crate::version::{ROCBLAS_MAJOR as MAJOR, ROCBLAS_MINOR as MINOR};
+// #[cfg(feature = "dynamic-loading")]
+// use crate::version::{ROCBLAS_MAJOR as MAJOR, ROCBLAS_MINOR as MINOR};
 
 link! {
     rocblas : [7, 8, 9, 10] : rocblas_ver;

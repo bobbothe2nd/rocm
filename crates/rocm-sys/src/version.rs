@@ -60,7 +60,7 @@ mod dyn_ver {
             return (0, 0);
         };
 
-        parse_version(version_string).unwrap_or((0, 0))
+        super::parse_version(version_string).unwrap_or((0, 0))
     });
 
     #[cfg(feature = "rocblas")]
@@ -68,18 +68,17 @@ mod dyn_ver {
 
     #[cfg(feature = "rocblas")]
     pub static ROCBLAS_MINOR: LazyLock<u32> = LazyLock::new(|| ROCBLAS_VER.1);
-
-    #[allow(dead_code)]
-    fn parse_version(s: &str) -> Option<(u32, u32)> {
-        let mut nums = s
-            .split(|c: char| !c.is_ascii_digit())
-            .filter(|s| !s.is_empty())
-            .map(|s| s.parse::<u32>().ok());
-
-        Some((nums.next()??, nums.next()??))
-    }
 }
 
 #[allow(unused_imports)]
 #[cfg(feature = "dynamic-loading")]
 pub use dyn_ver::*;
+
+pub fn parse_version(s: &str) -> Option<(u32, u32)> {
+    let mut nums = s
+        .split(|c: char| !c.is_ascii_digit())
+        .filter(|s| !s.is_empty())
+        .map(|s| s.parse::<u32>().ok());
+
+    Some((nums.next()??, nums.next()??))
+}
