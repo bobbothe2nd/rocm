@@ -23,8 +23,6 @@ fn main() {
     let dev = Device::current().unwrap();
     let arch = dev.gfx_version().unwrap();
 
-    println!("compiling for architecture {}", arch);
-
     let opts = CompileOptions {
         opt_level: Some(3),
         fast_math: Some(true),
@@ -43,29 +41,25 @@ fn main() {
 
     let stream = HipStream::create().unwrap();
 
-    println!("initializing memory");
-
     let out = stream.alloc(BYTES).unwrap();
     let a = stream.alloc(BYTES).unwrap();
     let b = stream.alloc(BYTES).unwrap();
 
-    let a_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
+    {
+        let a_host = {
+            let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
 
-        stream.alloc_host_init(&buf).unwrap()
-    };
-    let b_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
+            stream.alloc_host_init(&buf).unwrap()
+        };
+        let b_host = {
+            let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
 
-        stream.alloc_host_init(&buf).unwrap()
-    };
+            stream.alloc_host_init(&buf).unwrap()
+        };
 
-    a.memset_async(0).unwrap();
-
-    a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
-    b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
-
-    println!("launching kernel");
+        a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
+        b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
+    }
 
     let mut out_ptr = out.as_ptr();
     let mut a_ptr = a.as_ptr();
@@ -88,13 +82,9 @@ fn main() {
         stream.launch(&func, &mut args, conf).unwrap();
     }
 
-    println!("synchronizing stream");
-
     let out_host = stream.alloc_host(BYTES).unwrap();
 
     stream.sync().unwrap();
-
-    println!("validating output");
 
     out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
 
