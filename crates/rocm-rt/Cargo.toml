@@ -18,8 +18,6 @@ rocm-sys = { path = "../rocm-sys", version = "0.4.1" }
 rocm-build = { path = "../rocm-build", version = "0.1" }
 
 [features]
-default = ["hip", "hiprtc", "dynamic-loading", "std"]
-
 hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]
 hipblas = ["rocm-sys/hipblas"]
@@ -68,3 +66,7 @@ required-features = [
     "hip",
     "hiprtc",
 ]
+
+[[test]]
+name = "copy"
+required-features = ["hip", "dynamic-loading"]

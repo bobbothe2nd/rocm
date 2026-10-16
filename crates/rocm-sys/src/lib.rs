@@ -209,3 +209,8 @@ pub fn is_amdhip64_present() -> bool {
 pub fn is_hiprtc_present() -> bool {
     hiprtc::hiprtc::is_rocm_lib_present()
 }
+
+#[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
+pub fn is_rocblas_present() -> bool {
+    rocblas::rocblas::is_rocm_lib_present()
+}

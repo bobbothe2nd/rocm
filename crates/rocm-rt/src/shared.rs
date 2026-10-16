@@ -27,7 +27,7 @@ impl GfxVersion {
     pub const fn is_cdna(self) -> bool {
         matches!(
             self,
-            Self::Gfx908 | Self::Gfx90a | Self::Gfx90c | Self::Gfx942 | Self::Gfx950
+            Self::Gfx908 | Self::Gfx90a | Self::Gfx942 | Self::Gfx950
         )
     }
 
