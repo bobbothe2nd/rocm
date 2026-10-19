@@ -9,9 +9,7 @@ mod dyn_ver {
 
         let mut version = -1;
 
-        let status = unsafe {
-            crate::hip::hipRuntimeGetVersion(&raw mut version)
-        };
+        let status = unsafe { crate::hip::hipRuntimeGetVersion(&raw mut version) };
 
         if status != hipError_t::hipSuccess {
             return (0, 0);
@@ -37,9 +35,7 @@ mod dyn_ver {
 
         let mut size = 0;
 
-        let status = unsafe {
-            crate::rocblas::rocblas_get_version_string_size(&raw mut size)
-        };
+        let status = unsafe { crate::rocblas::rocblas_get_version_string_size(&raw mut size) };
 
         if status != rocblas_status::rocblas_status_success {
             return (0, 0);
@@ -47,9 +43,8 @@ mod dyn_ver {
 
         let mut version = vec![0; size];
 
-        let status = unsafe {
-            crate::rocblas::rocblas_get_version_string(version.as_mut_ptr(), size)
-        };
+        let status =
+            unsafe { crate::rocblas::rocblas_get_version_string(version.as_mut_ptr(), size) };
 
         if status != rocblas_status::rocblas_status_success {
             return (0, 0);

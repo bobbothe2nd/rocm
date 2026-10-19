@@ -1,7 +1,7 @@
 [package]
 name = "rocm-sys"
 description = "ROCm system bindings configured by release version"
-version = "0.4.1"
+version = "0.5.0"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
@@ -16,36 +16,38 @@ libloading = { version = "0.9", optional = true }
 rocm-build = { path = "../rocm-build", version = "0.1" }
 
 [features]
+default = ["rocblas", "dynamic-loading"]
+
 # configure included libraries
 hip = []
 hiprtc = []
-hipblas = []
-hipblaslt = []
-hipcub = []
-hipdnn = []
-hipfft = []
-hiprand = []
-hipsolver = []
-hipsparse = []
-hipsparselt = []
-hiptensor = []
-hipthreads = []
-rocalution = []
-rocblas = []
-rocfft = []
-rocprim = []
-rocrand = []
-rocsolver = []
-rocsparse = []
-rocthrust = []
-rocwmma = []
+hipblas = ["hip"]
+hipblaslt = ["hipblas"]
+hipcub = ["hip"]
+hipdnn = ["hip"]
+hipfft = ["hip"]
+hiprand = ["hip"]
+hipsolver = ["hip"]
+hipsparse = ["hip"]
+hipsparselt = ["hip"]
+hiptensor = ["hip"]
+hipthreads = ["hip"]
+rocalution = ["hip"]
+rocblas = ["hip"]
+rocfft = ["hip"]
+rocprim = ["hip"]
+rocrand = ["hip"]
+rocsolver = ["hip"]
+rocsparse = ["hip"]
+rocthrust = ["hip"]
+rocwmma = ["hip"]
 
 # link options
 dynamic-loading = ["dep:libloading"]
 
 # include symbols that might not be in shared library
-deprecated = []
-internal = []
+deprecated = ["hip"]
+internal = ["hip"]
 
 [[example]]
 name = "get_device_count"

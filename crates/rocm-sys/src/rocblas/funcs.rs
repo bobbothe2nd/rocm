@@ -1,4 +1,5 @@
 use super::types::*;
+use crate::hip::*;
 
 use core::ffi::*;
 
@@ -11,6 +12,8 @@ link! {
     pub fn rocblas_create_handle(handle: *mut rocblas_handle) -> rocblas_status;
 
     pub fn rocblas_destroy_handle(handle: rocblas_handle) -> rocblas_status;
+
+    pub fn rocblas_set_stream(handle: rocblas_handle, stream: hipStream_t) -> rocblas_status;
 
 //
 
