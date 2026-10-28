@@ -5,104 +5,104 @@ use core::ffi::*;
 link! {
     hiprtc : [7, 8, 9, 10] : rocm_ver;
 
-    #[doc = "In HIP, this function returns the name of the error, if the hiprtc result is defined, it will return “Invalid HIPRTC error code”"]
-    pub fn hiprtcGetErrorString(result: hiprtcResult) -> *const c_char;
+    // In HIP, this function returns the name of the error, if the hiprtc result is defined, it will return “Invalid HIPRTC error code”
+    *const c_char hiprtcGetErrorString(hiprtcResult result);
 
-    pub fn hiprtcVersion(
-        major: *mut c_int,
-        minor: *mut c_int,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcVersion(
+        *mut c_int major,
+        *mut c_int minor,
+    );
 
-    pub fn hiprtcAddNameExpression(
-        prog: hiprtcProgram,
-        name_expression: *const c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcAddNameExpression(
+        hiprtcProgram prog,
+        *const c_char name_expression,
+    );
 
-    pub fn hiprtcCompileProgram(
-        prog: hiprtcProgram,
-        numOptions: c_int,
-        options: *const c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcCompileProgram(
+        hiprtcProgram prog,
+        c_int numOptions,
+        *const c_char options,
+    );
 
-    pub fn hiprtcCreateProgram(
-        prog: *mut hiprtcProgram,
-        src: *const c_char,
-        name: *const c_char,
-        numHeaders: c_int,
-        headers: *const *const c_char,
-        includeNames: *const *const c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcCreateProgram(
+        *mut hiprtcProgram prog,
+        *const c_char src,
+        *const c_char name,
+        c_int numHeaders,
+        *const *const c_char headers,
+        *const *const c_char includeNames,
+    );
 
-    pub fn hiprtcDestroyProgram(prog: *mut hiprtcProgram) -> hiprtcResult;
+    hiprtcResult hiprtcDestroyProgram(*mut hiprtcProgram prog);
 
-    pub fn hiprtcGetLoweredName(
-        prog: hiprtcProgram,
-        name_expression: *const c_char,
-        lowered_name: *mut *const c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetLoweredName(
+        hiprtcProgram prog,
+        *const c_char name_expression,
+        *mut *const c_char lowered_name,
+    );
 
-    pub fn hiprtcGetProgramLog(
-        prog: hiprtcProgram,
-        log: *mut c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetProgramLog(
+        hiprtcProgram prog,
+        *mut c_char log,
+    );
 
-    pub fn hiprtcGetCode(
-        prog: hiprtcProgram,
-        code: *mut c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetCode(
+        hiprtcProgram prog,
+        *mut c_char code,
+    );
 
-    pub fn hiprtcGetCodeSize(
-        prog: hiprtcProgram,
-        codeSizeRet: *mut usize,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetCodeSize(
+        hiprtcProgram prog,
+        *mut usize codeSizeRet,
+    );
 
-    pub fn hiprtcGetBitcode(
-        prog: hiprtcProgram,
-        bitcode: *mut c_char,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetBitcode(
+        hiprtcProgram prog,
+        *mut c_char bitcode,
+    );
 
-    pub fn hiprtcGetBitcodeSize(
-        prog: hiprtcProgram,
-        bitcode_size: *mut usize,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetBitcodeSize(
+        hiprtcProgram prog,
+        *mut usize bitcode_size,
+    );
 
-    pub fn hiprtcLinkCreate(
-        num_options: c_uint,
-        options_ptr: *mut hipJitOption,
-        option_vals_pptr: *mut *mut c_void,
-        hip_link_state_ptr: *mut hiprtcLinkState,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcLinkCreate(
+        c_uint num_options,
+        *mut hipJitOption options_ptr,
+        *mut *mut c_void option_vals_pptr,
+        *mut hiprtcLinkState hip_link_state_ptr,
+    );
 
-    pub fn hiprtcLinkAddFile(
-        hip_link_state: hiprtcLinkState,
-        input_type: hipJitInputType,
-        file_path: *const c_char,
-        num_options: c_uint,
-        options_ptr: *mut hipJitOption,
-        option_values: *mut *mut c_void,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcLinkAddFile(
+        hiprtcLinkState hip_link_state,
+        hipJitInputType input_type,
+        *const c_char file_path,
+        c_uint num_options,
+        *mut hipJitOption options_ptr,
+        *mut *mut c_void option_values,
+    );
 
-    pub fn hiprtcLinkAddData(
-        hip_link_state: hiprtcLinkState,
-        input_type: hipJitInputType,
-        image: *mut c_void,
-        image_size: usize,
-        name: *const c_char,
-        num_options: c_uint,
-        options_ptr: *mut hipJitOption,
-        option_values: *mut *mut c_void,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcLinkAddData(
+        hiprtcLinkState hip_link_state,
+        hipJitInputType input_type,
+        *mut c_void image,
+        usize image_size,
+        *const c_char name,
+        c_uint num_options,
+        *mut hipJitOption options_ptr,
+        *mut *mut c_void option_values,
+    );
 
-    pub fn hiprtcLinkComplete(
-        hip_link_state: hiprtcLinkState,
-        bin_out: *mut *mut c_void,
-        size_out: *mut usize,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcLinkComplete(
+        hiprtcLinkState hip_link_state,
+        *mut *mut c_void bin_out,
+        *mut usize size_out,
+    );
 
-    pub fn hiprtcLinkDestroy(hip_link_state: hiprtcLinkState) -> hiprtcResult;
+    hiprtcResult hiprtcLinkDestroy(hiprtcLinkState hip_link_state);
 
-    pub fn hiprtcGetProgramLogSize(
-        prog: hiprtcProgram,
-        logSizeRet: *mut usize,
-    ) -> hiprtcResult;
+    hiprtcResult hiprtcGetProgramLogSize(
+        hiprtcProgram prog,
+        *mut usize logSizeRet,
+    );
 }

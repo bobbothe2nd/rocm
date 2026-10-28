@@ -24,9 +24,8 @@ macro_rules! link {
                 #[doc = $docs:literal]
             )*
             $(#[deprecated = $note:literal$(, $cfg_strong:ident)?])?
-            $(#[since = $major_version:literal.$minor_version:literal,
-                $version_string:literal])?
-            $vis:vis fn $name:ident($($arg:ident: $arg_ty:ty),*$(,)?) $(-> $ret:ty)?;
+            $(#[since = $major_version:literal.$minor_version:literal,$version_string:literal])?
+            $(*$ret_mut:ident)*$ret:ident $name:ident($($(*$mut:ident)*$arg_ty:ident $arg:ident),*$(,)?);
         )*
     ) => {
         pub(crate) mod $lib {
@@ -120,12 +119,12 @@ If the shared library is present on the system under a different name than one o
                 #[deprecated = $note]
             )?
             #[cfg(feature = "dynamic-loading")]
-            $vis unsafe fn $name(
-                $($arg: $arg_ty),*
-            ) $(-> $ret)? {
+            pub unsafe extern "C" fn $name(
+                $($arg: $(*$mut)* $arg_ty),*
+            ) -> $(*$ret_mut)* $ret {
                 type F = unsafe extern "C" fn(
-                    $($arg_ty),*
-                ) $(-> $ret)?;
+                    $($(*$mut)* $arg_ty),*
+                ) -> $(*$ret_mut)* $ret;
 
                 static SYMBOL: ::std::sync::OnceLock<F> = ::std::sync::OnceLock::new();
 
@@ -145,36 +144,28 @@ If the shared library is present on the system under a different name than one o
                 }
             }
 
-            $(
-                #[$cfg_internal(feature = "internal")]
-            )?
-            $(
-                #[doc = $docs]
-            )*
-            $(
-                $(#[$cfg_strong(feature = "deprecated")])?
-                #[deprecated = $note]
-            )?
-            #[inline]
-            #[cfg(all(
-                not(feature = "dynamic-loading"),
+            unsafe extern "C" {
                 $(
-                    $cfg_ver = $version_string
+                    #[$cfg_internal(feature = "internal")]
                 )?
-            ))]
-            $vis unsafe fn $name(
-                $($arg: $arg_ty),*
-            ) $(-> $ret)? {
-                unsafe extern "C" {
-                    #[link_name = stringify!($name)]
-                    unsafe fn inner(
-                        $($arg: $arg_ty),*
-                    ) $(-> $ret)?;
-                }
-
-                unsafe {
-                    inner($($arg),*)
-                }
+                $(
+                    #[doc = $docs]
+                )*
+                $(
+                    $(#[$cfg_strong(feature = "deprecated")])?
+                    #[deprecated = $note]
+                )?
+                #[inline]
+                #[cfg(all(
+                    not(feature = "dynamic-loading"),
+                    $(
+                        $cfg_ver = $version_string
+                    )?
+                ))]
+                #[link_name = stringify!($name)]
+                unsafe fn inner(
+                    $($arg: $(*$mut)* $arg_ty),*
+                ) -> $(*$ret_mut)* $ret;
             }
         )*
     };

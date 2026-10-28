@@ -9,15 +9,23 @@ use core::ffi::*;
 link! {
     rocblas : [7, 8, 9, 10] : rocblas_ver;
 
-    pub fn rocblas_create_handle(handle: *mut rocblas_handle) -> rocblas_status;
+    rocblas_status rocblas_create_handle(*mut rocblas_handle handle);
 
-    pub fn rocblas_destroy_handle(handle: rocblas_handle) -> rocblas_status;
+    rocblas_status rocblas_destroy_handle(rocblas_handle handle);
 
-    pub fn rocblas_set_stream(handle: rocblas_handle, stream: hipStream_t) -> rocblas_status;
+    rocblas_status rocblas_set_stream(rocblas_handle handle, hipStream_t stream);
 
-//
+    rocblas_status rocblas_get_stream(rocblas_handle handle, *mut hipStream_t stream);
 
-    pub fn rocblas_get_version_string_size(len: *mut usize) -> rocblas_status;
+    rocblas_status rocblas_set_pointer_mode(rocblas_handle handle, rocblas_pointer_mode pointer_mode);
 
-    pub fn rocblas_get_version_string(buf: *mut c_char, len: usize) -> rocblas_status;
+    rocblas_status rocblas_get_pointer_mode(rocblas_handle handle, *mut rocblas_pointer_mode pointer_mode);
+
+    rocblas_status rocblas_set_atomics_mode(rocblas_handle handle, rocblas_atomics_mode atomics_mode);
+
+    //
+
+    rocblas_status rocblas_get_version_string_size(*mut usize len);
+
+    rocblas_status rocblas_get_version_string(*mut c_char buf, usize len);
 }
