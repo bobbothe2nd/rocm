@@ -163,7 +163,7 @@ If the shared library is present on the system under a different name than one o
                     )?
                 ))]
                 #[link_name = stringify!($name)]
-                unsafe fn inner(
+                unsafe fn $name(
                     $($arg: $(*$mut)* $arg_ty),*
                 ) -> $(*$ret_mut)* $ret;
             }
