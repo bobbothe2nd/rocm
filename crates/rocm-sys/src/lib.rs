@@ -162,7 +162,6 @@ If the shared library is present on the system under a different name than one o
                         $cfg_ver = $version_string
                     )?
                 ))]
-                #[link_name = stringify!($name)]
                 unsafe fn $name(
                     $($arg: $(*$mut)* $arg_ty),*
                 ) -> $(*$ret_mut)* $ret;

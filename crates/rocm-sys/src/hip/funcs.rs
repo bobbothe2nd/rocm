@@ -1281,7 +1281,7 @@ link! {
     );
 
     /// This API is implemented on Linux and is under development on Microsoft Windows.
-    /// 
+    ///
     /// This API is marked as Beta. While this feature is complete, it can change and might have outstanding issues.
     #[since = 5 .1, "5.1"]
     hipError_t hipMemPoolGetAccess(
@@ -1300,7 +1300,7 @@ link! {
     );
 
     /// This API is implemented on Linux and is under development on Microsoft Windows.
-    /// 
+    ///
     /// This API is marked as Beta. While this feature is complete, it can change and might have outstanding issues.
     #[since = 5 .1, "5.1"]
     hipError_t hipMemPoolDestroy(hipMemPool_t mem_pool);
