@@ -56,6 +56,4 @@ These should always be true.
 
 All functions are hand-written (albeit using a macro) and types are auto-generated using bindgen.
 
-Functions must be hand-written because they have version checks which bindgen doesnt make automatically. The API is as close to the C API as possible (template functions make this hard).
-
-This is maintained separately from `rocm-rt` because functions are all hand-written.
+Functions must be hand-written because they have version checks which bindgen doesnt make automatically. The API is as close to the C API as possible (template functions make this hard) but with a complete FFI-safe function for all implemented functions.

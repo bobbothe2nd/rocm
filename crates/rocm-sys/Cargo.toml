@@ -21,8 +21,9 @@ default = ["rocblas", "dynamic-loading", "hiprtc"]
 # configure included libraries
 hip = []
 hiprtc = []
+
 hipblas = ["hip"]
-hipblaslt = ["hipblas"]
+hipblaslt = ["hip"]
 hipcub = ["hip"]
 hipdnn = ["hip"]
 hipfft = ["hip"]
@@ -32,6 +33,7 @@ hipsparse = ["hip"]
 hipsparselt = ["hip"]
 hiptensor = ["hip"]
 hipthreads = ["hip"]
+
 rocalution = ["hip"]
 rocblas = ["hip"]
 rocfft = ["hip"]
@@ -46,8 +48,8 @@ rocwmma = ["hip"]
 dynamic-loading = ["dep:libloading"]
 
 # include symbols that might not be in shared library
-deprecated = ["hip"]
-internal = ["hip"]
+deprecated = []
+internal = []
 
 [[example]]
 name = "get_device_count"
