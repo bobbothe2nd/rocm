@@ -56,6 +56,7 @@ macro_rules! link {
                 }
             };
 
+            #[cfg(feature = "dynamic-loading")]
             pub(crate) fn is_rocm_lib_present() -> bool {
                 let roots = [
                     std::env::var_os("ROCM_PATH"),
