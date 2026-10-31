@@ -17,7 +17,7 @@ pub const KNOWN_ROCBLAS_VERSIONS: &[&str] = &[
     "0.4",
 ];
 
-pub const KNOWN_HIPBLAS_VERSONS: &[&str] = &[
+pub const KNOWN_HIPBLAS_VERSIONS: &[&str] = &[
     "3.2", "3.1", "3.0", "2.4", "2.3", "2.2", "2.1", "2.0", "1.1", "1.0", "0.54", "0.53", "0.52",
     "0.51", "0.50", "0.49", "0.48", "0.47", "0.46", "0.45", "0.44", "0.43", "0.42", "0.38", "0.36",
     "0.34", "0.32", "0.30", "0.28", "12.2", "12.1", "12.0", "10.3", "10.1", "10.0", "0.10", "0.4",
@@ -42,7 +42,7 @@ pub fn cfg_version(cfg: &str, version: Version, known: &[&str]) {
         .position(|x| *x == formatted.as_str())
         .unwrap_or(known.len() - 1);
 
-    for version in &known[..index] {
+    for version in &known[index..] {
         println!("cargo:rustc-cfg={cfg}=\"{}\"", version);
     }
 }

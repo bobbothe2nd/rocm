@@ -13,7 +13,7 @@ categories = ["hardware-support", "external-ffi-bindings"]
 libloading = { version = "0.9", optional = true }
 
 [build-dependencies]
-rocm-build = { path = "../rocm-build", version = "0.1" }
+rocm-build = { path = "../rocm-build", version = "0.2" }
 
 [features]
 default = ["rocblas", "dynamic-loading", "hiprtc"]
@@ -24,7 +24,6 @@ hiprtc = []
 
 hipblas = ["hip"]
 hipblaslt = ["hip"]
-hipcub = ["hip"]
 hipdnn = ["hip"]
 hipfft = ["hip"]
 hiprand = ["hip"]
@@ -32,16 +31,13 @@ hipsolver = ["hip"]
 hipsparse = ["hip"]
 hipsparselt = ["hip"]
 hiptensor = ["hip"]
-hipthreads = ["hip"]
 
 rocalution = ["hip"]
 rocblas = ["hip"]
 rocfft = ["hip"]
-rocprim = ["hip"]
 rocrand = ["hip"]
 rocsolver = ["hip"]
 rocsparse = ["hip"]
-rocthrust = ["hip"]
 
 # link options
 dynamic-loading = ["dep:libloading"]

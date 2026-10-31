@@ -34,43 +34,65 @@ macro_rules! build {
 
             println!("cargo:rustc-cfg=hip");
         }
+        build!(@component roots $([$link])? "hiprtc");
 
-        if let Some(component) = $crate::link::find_component(&roots, &["rocblas.h"], &["rocblas"]) {
+        build!(@component roots $([$link])? "hipblas" $crate::ver::KNOWN_HIPBLAS_VERSIONS);
+        build!(@component roots $([$link])? "hipblaslt" $crate::ver::KNOWN_HIPBLASLT_VERSIONS);
+        build!(@component roots $([$link])? "hipdnn");
+        build!(@component roots $([$link])? "hipfft");
+        build!(@component roots $([$link])? "hiprand");
+        build!(@component roots $([$link])? "hipsolver");
+        build!(@component roots $([$link])? "hipsparse");
+        build!(@component roots $([$link])? "hipsparselt");
+        build!(@component roots $([$link])? "hiptensor");
+
+        build!(@component roots $([$link])? "rocalution");
+        build!(@component roots $([$link])? "rocblas" $crate::ver::KNOWN_ROCBLAS_VERSIONS);
+        build!(@component roots $([$link])? "rocfft" $crate::ver::KNOWN_ROCFFT_VERSIONS);
+        build!(@component roots $([$link])? "rocrand");
+        build!(@component roots $([$link])? "rocsolver");
+        build!(@component roots $([$link])? "rocsparse");
+
+        println!("cargo:rerun-if-env-changed=ROCM_PATH");
+        println!("cargo:rerun-if-env-changed=ROCM_HOME");
+    };
+
+    (@component $roots:ident $([$link:ident])? $name:literal) => {
+        $(
+            let $link = ();
+            if let Some(component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$name]) {
+                $crate::link::link_component(&component);
+
+                println!(concat!("cargo:rustc-cfg=", $name));
+            }
+        )?
+    };
+
+    (@component $roots:ident $([$link:ident])? $name:literal $ver:path) => {
+        if let Some(component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$name]) {
             let version = unsafe {
                 $crate::ver::rocblas_version(&component.library_dir)
                     .expect("failed to determine HIP runtime version")
             };
 
-            $crate::ver::cfg_version("rocblas_ver", version, $crate::ver::KNOWN_ROCBLAS_VERSIONS);
+            $crate::ver::cfg_version(concat!($name, "_ver"), version, $ver);
 
             $(
                 let $link = ();
                 $crate::link::link_component(&component);
             )?
 
-            println!("cargo:rustc-cfg=rocblas");
+            println!(concat!("cargo:rustc-cfg=", $name));
         }
-
-        $(
-            if let Some(component) = $crate::link::find_component(&roots, &["hiprtc.h"], &["hiprtc"]) {
-                let $link = ();
-                $crate::link::link_component(&component);
-
-                println!("cargo:rustc-cfg=hiprtc");
-            }
-        )?
-
-        println!("cargo:rerun-if-env-changed=ROCM_PATH");
-        println!("cargo:rerun-if-env-changed=ROCM_HOME");
     };
 }
 
-/// Finds available ROCm versions on system and tell `rustc`.
+/// Finds available ROCm versions on system and adds cargo `#[cfg]`.
 pub fn build_version_cfg() {
     build!();
 }
 
-/// Tells `rustc` to link libraries and finds available versions.
+/// Adds cargo `#[cfg]`, links libraries, and finds available versions.
 pub fn build_version_cfg_link() {
     build!(_link);
 }

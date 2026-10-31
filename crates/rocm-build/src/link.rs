@@ -1,5 +1,5 @@
 use crate::ver::{
-    KNOWN_HIPBLAS_VERSONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
+    KNOWN_HIPBLAS_VERSIONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
     KNOWN_ROCM_VERSIONS,
 };
 use std::{
@@ -119,8 +119,6 @@ pub fn link_component(component: &Component) {
     );
 
     println!("cargo:rustc-link-lib=dylib={}", component.library);
-
-    println!("cargo:include={}", component.include_dir.display());
 }
 
 pub fn check_cfg() {
@@ -168,7 +166,7 @@ pub fn check_cfg() {
         .join(", ");
     println!("cargo:rustc-check-cfg=cfg(rocfft_ver, values({rocfft_ver}))");
 
-    let hipblas_ver = KNOWN_HIPBLAS_VERSONS
+    let hipblas_ver = KNOWN_HIPBLAS_VERSIONS
         .iter()
         .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()

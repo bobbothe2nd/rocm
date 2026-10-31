@@ -15,7 +15,7 @@ log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.5" }
 
 [build-dependencies]
-rocm-build = { path = "../rocm-build", version = "0.1" }
+rocm-build = { path = "../rocm-build", version = "0.2" }
 
 [features]
 hip = ["rocm-sys/hip"]
@@ -23,7 +23,6 @@ hiprtc = ["rocm-sys/hiprtc"]
 
 hipblas = ["rocm-sys/hipblas", "hip"]
 hipblaslt = ["rocm-sys/hipblaslt", "hip"]
-hipcub = ["rocm-sys/hipcub", "hip"]
 hipdnn = ["rocm-sys/hipdnn", "hip"]
 hipfft = ["rocm-sys/hipfft", "hip"]
 hiprand = ["rocm-sys/hiprand", "hip"]
@@ -31,16 +30,13 @@ hipsolver = ["rocm-sys/hipsolver", "hip"]
 hipsparse = ["rocm-sys/hipsparse", "hip"]
 hipsparselt = ["rocm-sys/hipsparselt", "hip"]
 hiptensor = ["rocm-sys/hiptensor", "hip"]
-hipthreads = ["rocm-sys/hipthreads", "hip"]
 
 rocalution = ["rocm-sys/rocalution", "hip"]
 rocblas = ["rocm-sys/rocblas", "hip"]
 rocfft = ["rocm-sys/rocfft", "hip"]
-rocprim = ["rocm-sys/rocprim", "hip"]
 rocrand = ["rocm-sys/rocrand", "hip"]
 rocsolver = ["rocm-sys/rocsolver", "hip"]
 rocsparse = ["rocm-sys/rocsparse", "hip"]
-rocthrust = ["rocm-sys/rocthrust", "hip"]
 
 dynamic-loading = ["rocm-sys/dynamic-loading"]
 
