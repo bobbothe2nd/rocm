@@ -102,8 +102,8 @@ macro_rules! link {
                     }
                 }
 
-                panic!("Unable to dynamically load the {:?} shared library - searched for library names: {:?}. \
-If the shared library is present on the system under a different name than one of those listed above, please open a GitHub issue.", stringify!($lib), $lib::LIBRARIES);
+                panic!(concat!("Unable to dynamically load the \"", stringify!($lib), "\" shared library - searched for library names: {:?}. \
+If the shared library is present on the system under a different name than one of those listed above, please open a GitHub issue."), $lib::LIBRARIES);
             })
         };
 
@@ -133,7 +133,7 @@ If the shared library is present on the system under a different name than one o
                         let major = *MAJOR;
                         let minor = *MINOR;
 
-                        assert!(major >= $major_version && minor >= $minor_version, "{} requires ROCm version ^{major}.{minor}", stringify!($name));
+                        assert!(major >= $major_version && minor >= $minor_version, concat!(stringify!($name), " requires ", stringify!($library), " version ^{}.{}"), major, minor);
                     )?
 
                     *$lib.get::<F>(concat!(stringify!($name), "\0")).unwrap()
