@@ -60,7 +60,6 @@ macro_rules! link {
                 let roots = [
                     std::env::var_os("ROCM_PATH"),
                     Some("/opt/rocm".into()),
-                    Some("/usr/local/rocm".into()),
                 ];
 
                 for root in roots.into_iter().flatten() {
@@ -85,7 +84,6 @@ macro_rules! link {
                 let roots = [
                     std::env::var_os("ROCM_PATH"),
                     Some("/opt/rocm".into()),
-                    Some("/usr/local/rocm".into()),
                 ];
 
                 for root in roots.into_iter().flatten() {
