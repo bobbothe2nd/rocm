@@ -42,7 +42,6 @@ rocrand = ["hip"]
 rocsolver = ["hip"]
 rocsparse = ["hip"]
 rocthrust = ["hip"]
-rocwmma = ["hip"]
 
 # link options
 dynamic-loading = ["dep:libloading"]

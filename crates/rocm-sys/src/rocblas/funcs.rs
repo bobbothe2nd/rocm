@@ -72,7 +72,6 @@ link! {
     rocblas_status rocblas_get_version_string(*mut c_char buf, usize len);
 
     // rocBLAS Level-1 functions
-
     rocblas_status rocblas_isamax(rocblas_handle handle, rocblas_int n, *const c_float x, rocblas_int incx, *mut rocblas_int result);
 
     rocblas_status rocblas_idamax(rocblas_handle handle, rocblas_int n, *const c_double x, rocblas_int incx, *mut rocblas_int result);
@@ -875,6 +874,243 @@ link! {
     rocblas_status rocblas_zhpr2_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex x, rocblas_int incx, rocblas_stride stride_x, *const rocblas_double_complex y, rocblas_int incy, rocblas_stride stride_y, *mut rocblas_double_complex AP, rocblas_stride stride_A, rocblas_int batch_count);
 
     // rocBLAS Level-3 functions
+    rocblas_status rocblas_sgemm(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, *const c_float B, rocblas_int ldb, *const c_float beta, *mut c_float C, rocblas_int ldc);
+
+    rocblas_status rocblas_dgemm(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, *const c_double B, rocblas_int ldb, *const c_double beta, *mut c_double C, rocblas_int ldc);
+
+    rocblas_status rocblas_hgemm(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_half alpha, *const rocblas_half A, rocblas_int lda, *const rocblas_half B, rocblas_int ldb, *const rocblas_half beta, *mut rocblas_half C, rocblas_int ldc);
+
+    rocblas_status rocblas_cgemm(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zgemm(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_sgemm_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const *const c_float B, rocblas_int ldb, *const c_float beta, *const *mut c_float C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_dgemm_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const *const c_double B, rocblas_int ldb, *const c_double beta, *const *mut c_double C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_hgemm_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_half alpha, *const *const rocblas_half A, rocblas_int lda, *const *const rocblas_half B, rocblas_int ldb, *const rocblas_half beta, *const *mut rocblas_half C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_cgemm_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zgemm_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_sgemm_strided_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, rocblas_stride stride_a, *const c_float B, rocblas_int ldb, rocblas_stride stride_b, *const c_float beta, *mut c_float C, rocblas_int ldc, rocblas_stride stride_c, rocblas_int batch_count);
+
+    rocblas_status rocblas_dgemm_strided_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_a, *const c_double B, rocblas_int ldb, rocblas_stride stride_b, *const c_double beta, *mut c_double C, rocblas_int ldc, rocblas_stride stride_c, rocblas_int batch_count);
+
+    rocblas_status rocblas_hgemm_strided_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_half alpha, *const rocblas_half A, rocblas_int lda, rocblas_stride stride_a, *const rocblas_half B, rocblas_int ldb, rocblas_stride stride_b, *const rocblas_half beta, *mut rocblas_half C, rocblas_int ldc, rocblas_stride stride_c, rocblas_int batch_count);
+
+    rocblas_status rocblas_cgemm_strided_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_a, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_b, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_c, rocblas_int batch_count);
+
+    rocblas_status rocblas_zgemm_strided_batched(rocblas_handle handle, rocblas_operation transA, rocblas_operation transB, rocblas_int m, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_a, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_b, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_c, rocblas_int batch_count);
+
+    rocblas_status rocblas_sgemm_grouped_batched(rocblas_handle handle, *const rocblas_operation transa_array, *const rocblas_operation transb_array, *const rocblas_int m_array, *const rocblas_int n_array, *const rocblas_int k_array, *const c_float alpha_array, *const *const c_float Aarray, *const rocblas_int lda_array, *const *const c_float Barray, *const rocblas_int ldb_array, *const c_float beta_array, *const *mut c_float Carray, *const rocblas_int ldc_array, rocblas_int group_count, *const rocblas_int group_size);
+
+    rocblas_status rocblas_dgemm_grouped_batched(rocblas_handle handle, *const rocblas_operation transa_array, *const rocblas_operation transb_array, *const rocblas_int m_array, *const rocblas_int n_array, *const rocblas_int k_array, *const c_double alpha_array, *const *const c_double Aarray, *const rocblas_int lda_array, *const *const c_double Barray, *const rocblas_int ldb_array, *const c_double beta_array, *const *mut c_double Carray, *const rocblas_int ldc_array, rocblas_int group_count, *const rocblas_int group_size);
+
+    rocblas_status rocblas_ssymm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const c_float alpha, *const c_float A, rocblas_int lda, *const c_float B, rocblas_int ldb, *const c_float beta, *mut c_float C, rocblas_int ldc);
+
+    rocblas_status rocblas_dsymm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const c_double alpha, *const c_double A, rocblas_int lda, *const c_double B, rocblas_int ldb, *const c_double beta, *mut c_double C, rocblas_int ldc);
+
+    rocblas_status rocblas_csymm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zsymm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_ssymm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const *const c_float B, rocblas_int ldb, *const c_float beta, *const *mut c_float C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsymm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const *const c_double B, rocblas_int ldb, *const c_double beta, *const *mut c_double C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_csymm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsymm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssymm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const c_float alpha, *const c_float A, rocblas_int lda, rocblas_stride stride_A, *const c_float B, rocblas_int ldb, rocblas_stride stride_B, *const c_float beta, *mut c_float C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsymm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_A, *const c_double B, rocblas_int ldb, rocblas_stride stride_B, *const c_double beta, *mut c_double C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_csymm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsymm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssyrk(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, *const c_float beta, *mut c_float C, rocblas_int ldc);
+
+    rocblas_status rocblas_dsyrk(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, *const c_double beta, *mut c_double C, rocblas_int ldc);
+
+    rocblas_status rocblas_csyrk(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zsyrk(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_ssyrk_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const c_float beta, *const *mut c_float C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsyrk_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const c_double beta, *const *mut c_double C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_csyrk_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsyrk_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssyrk_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, rocblas_stride stride_A, *const c_float beta, *mut c_float C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsyrk_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_A, *const c_double beta, *mut c_double C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_csyrk_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsyrk_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssyr2k(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, *const c_float B, rocblas_int ldb, *const c_float beta, *mut c_float C, rocblas_int ldc);
+
+    rocblas_status rocblas_dsyr2k(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, *const c_double B, rocblas_int ldb, *const c_double beta, *mut c_double C, rocblas_int ldc);
+
+    rocblas_status rocblas_csyr2k(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zsyr2k(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_ssyr2k_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const *const c_float B, rocblas_int ldb, *const c_float beta, *const *mut c_float C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsyr2k_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const *const c_double B, rocblas_int ldb, *const c_double beta, *const *mut c_double C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_csyr2k_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsyr2k_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssyr2k_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, rocblas_stride stride_A, *const c_float B, rocblas_int ldb, rocblas_stride stride_B, *const c_float beta, *mut c_float C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsyr2k_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_A, *const c_double B, rocblas_int ldb, rocblas_stride stride_B, *const c_double beta, *mut c_double C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_csyr2k_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsyr2k_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssyrkx(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_float alpha, *const c_float A, rocblas_int lda, *const c_float B, rocblas_int ldb, *const c_float beta, *mut c_float C, rocblas_int ldc);
+
+    rocblas_status rocblas_dsyrkx(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, *const c_double B, rocblas_int ldb, *const c_double beta, *mut c_double C, rocblas_int ldc);
+
+    rocblas_status rocblas_csyrkx(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zsyrkx(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_ssyrkx_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const *const c_float B, rocblas_int ldb, *const c_float beta, *const *mut c_float C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsyrkx_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const *const c_double B, rocblas_int ldb, *const c_double beta, *const *mut c_double C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_csyrkx_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsyrkx_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_ssyrkx_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_float alpha, *const *const c_float A, rocblas_int lda, rocblas_stride stride_A, *const c_float B, rocblas_int ldb, rocblas_stride stride_B, *const c_float beta, *mut c_float C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_dsyrkx_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_A, *const c_double B, rocblas_int ldb, rocblas_stride stride_B, *const c_double beta, *mut c_double C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_csyrkx_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zsyrkx_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_strmm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_float alpha, *const c_float A, rocblas_int lda, *const c_float B, rocblas_int ldb, *mut c_float C, rocblas_int ldc);
+
+    rocblas_status rocblas_dtrmm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_double alpha, *const c_double A, rocblas_int lda, *const c_double B, rocblas_int ldb, *mut c_double C, rocblas_int ldc);
+
+    rocblas_status rocblas_ctrmm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_ztrmm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_strmm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const *const c_float B, rocblas_int ldb, *const *mut c_float C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_dtrmm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const *const c_double B, rocblas_int ldb, *const *mut c_double C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_ctrmm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_ztrmm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_strmm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_float alpha, *const c_float A, rocblas_int lda, rocblas_stride stride_A, *const c_float B, rocblas_int ldb, rocblas_stride stride_B, *mut c_float C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_dtrmm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_A, *const c_double B, rocblas_int ldb, rocblas_stride stride_B, *mut c_double C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_ctrmm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_ztrmm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_strsm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_float alpha, *const c_float A, rocblas_int lda, *mut c_float B, rocblas_int ldb);
+
+    rocblas_status rocblas_dtrsm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_double alpha, *const c_double A, rocblas_int lda, *mut c_double B, rocblas_int ldb);
+
+    rocblas_status rocblas_ctrsm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *mut rocblas_float_complex B, rocblas_int ldb);
+
+    rocblas_status rocblas_ztrsm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *mut rocblas_double_complex B, rocblas_int ldb);
+
+    rocblas_status rocblas_strsm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_float alpha, *const *const c_float A, rocblas_int lda, *const *mut c_float B, rocblas_int ldb, rocblas_int batch_count);
+
+    rocblas_status rocblas_dtrsm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_double alpha, *const *const c_double A, rocblas_int lda, *const *mut c_double B, rocblas_int ldb, rocblas_int batch_count);
+
+    rocblas_status rocblas_ctrsm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *mut rocblas_float_complex B, rocblas_int ldb, rocblas_int batch_count);
+
+    rocblas_status rocblas_ztrsm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *mut rocblas_double_complex B, rocblas_int ldb, rocblas_int batch_count);
+
+    rocblas_status rocblas_strsm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_float alpha, *const c_float A, rocblas_int lda, rocblas_stride stride_a, *mut c_float B, rocblas_int ldb, rocblas_stride stride_b, rocblas_int batch_count);
+
+    rocblas_status rocblas_dtrsm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const c_double alpha, *const c_double A, rocblas_int lda, rocblas_stride stride_a, *mut c_double B, rocblas_int ldb, rocblas_stride stride_b, rocblas_int batch_count);
+
+    rocblas_status rocblas_ctrsm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_a, *mut rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_b, rocblas_int batch_count);
+
+    rocblas_status rocblas_ztrsm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_a, *mut rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_b, rocblas_int batch_count);
+
+    rocblas_status rocblas_chemm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zhemm(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_chemm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const rocblas_float_complex beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zhemm_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const rocblas_double_complex beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_chemm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_float_complex beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zhemm_strided_batched(rocblas_handle handle, rocblas_side side, rocblas_fill uplo, rocblas_int m, rocblas_int n, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *const rocblas_double_complex beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_cherk(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_float alpha, *const rocblas_float_complex A, rocblas_int lda, *const c_float beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zherk(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_double alpha, *const rocblas_double_complex A, rocblas_int lda, *const c_double beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_cherk_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_float alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const c_float beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zherk_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_double alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const c_double beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_cherk_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_float alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const c_float beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zherk_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_int n, rocblas_int k, *const c_double alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const c_double beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_cher2k(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const c_float beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zher2k(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const c_double beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_cher2k_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const c_float beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zher2k_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const c_double beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_cher2k_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *const c_float beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zher2k_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *const c_double beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_cherkx(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, *const rocblas_float_complex B, rocblas_int ldb, *const c_float beta, *mut rocblas_float_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_zherkx(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, *const rocblas_double_complex B, rocblas_int ldb, *const c_double beta, *mut rocblas_double_complex C, rocblas_int ldc);
+
+    rocblas_status rocblas_cherkx_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const *const rocblas_float_complex A, rocblas_int lda, *const *const rocblas_float_complex B, rocblas_int ldb, *const c_float beta, *const *mut rocblas_float_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_zherkx_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const *const rocblas_double_complex A, rocblas_int lda, *const *const rocblas_double_complex B, rocblas_int ldb, *const c_double beta, *const *mut rocblas_double_complex C, rocblas_int ldc, rocblas_int batch_count);
+
+    rocblas_status rocblas_cherkx_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_float_complex alpha, *const rocblas_float_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_float_complex B, rocblas_int ldb, rocblas_stride stride_B, *const c_float beta, *mut rocblas_float_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_zherkx_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation trans, rocblas_int n, rocblas_int k, *const rocblas_double_complex alpha, *const rocblas_double_complex A, rocblas_int lda, rocblas_stride stride_A, *const rocblas_double_complex B, rocblas_int ldb, rocblas_stride stride_B, *const c_double beta, *mut rocblas_double_complex C, rocblas_int ldc, rocblas_stride stride_C, rocblas_int batch_count);
+
+    rocblas_status rocblas_strtri(rocblas_handle handle, rocblas_fill uplo, rocblas_diagonal diag, rocblas_int n, *const c_float A, rocblas_int lda, *mut c_float invA, rocblas_int ldinvA);
+
+    rocblas_status rocblas_dtrtri(rocblas_handle handle, rocblas_fill uplo, rocblas_diagonal diag, rocblas_int n, *const c_double A, rocblas_int lda, *mut c_double invA, rocblas_int ldinvA);
+
+    rocblas_status rocblas_strtri_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_diagonal diag, rocblas_int n, *const *const c_float A, rocblas_int lda, *const *mut c_float invA, rocblas_int ldinvA, rocblas_int batch_count);
+
+    rocblas_status rocblas_dtrtri_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_diagonal diag, rocblas_int n, *const *const c_double A, rocblas_int lda, *const *mut c_double invA, rocblas_int ldinvA, rocblas_int batch_count);
+
+    rocblas_status rocblas_strtri_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_diagonal diag, rocblas_int n, *const c_float A, rocblas_int lda, rocblas_stride stride_a, *mut c_float invA, rocblas_int ldinvA, rocblas_stride stride_invA, rocblas_int batch_count);
+
+    rocblas_status rocblas_dtrtri_strided_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_diagonal diag, rocblas_int n, *const c_double A, rocblas_int lda, rocblas_stride stride_a, *mut c_double invA, rocblas_int ldinvA, rocblas_stride stride_invA, rocblas_int batch_count);
 
     // rocBLAS extension
 
