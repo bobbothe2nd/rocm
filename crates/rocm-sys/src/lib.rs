@@ -189,6 +189,8 @@ pub mod rocfft;
 
 pub mod version;
 
+pub mod internal;
+
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
 pub fn is_amdhip64_present() -> bool {
     hip::amdhip64::is_rocm_lib_present()
