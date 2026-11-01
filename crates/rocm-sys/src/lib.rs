@@ -159,6 +159,11 @@ pub fn is_rocblas_present() -> bool {
     rocblas::rocblas::is_rocm_lib_present()
 }
 
+#[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
+pub fn is_hipblas_present() -> bool {
+    hipblas::hipblas::is_rocm_lib_present()
+}
+
 #[cfg(feature = "dynamic-loading")]
 fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
     use std::env::consts::{DLL_PREFIX, DLL_SUFFIX};

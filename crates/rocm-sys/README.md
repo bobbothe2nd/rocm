@@ -35,9 +35,9 @@ The API is the same regardless of whether you use dynamic loading or static link
 | Portable Across Hardware | Y       | N      |
 | Compile-Time Linking     | N       | Y      |
 
-To enable dynamic loading, enable the cargo feature `dynamic-loading`.
+To enable dynamic loading, enable the cargo feature `dynamic-loading`. It has no effect on the API.
 
-When using static linking, all functions are just `extern "C"` functions wrapped in `extern "Rust"` functions with some compile-time ROCm version checks when applicable.
+When using static linking, all functions are just `extern "C"` functions with some compile-time ROCm version checks when applicable.
 
 ### Linker Errors
 
