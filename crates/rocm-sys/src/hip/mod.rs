@@ -7,3 +7,7 @@ pub use funcs::*;
 mod types;
 
 pub use types::*;
+
+mod vecty;
+
+pub use vecty::*;
