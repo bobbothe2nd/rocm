@@ -2,5 +2,5 @@
 /copy.ps1
 /list.sh
 /Cargo.lock
-/bindgen.sh
+/bindgen.ps1
 /bindings
