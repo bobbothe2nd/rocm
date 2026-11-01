@@ -1614,6 +1614,11 @@ pub enum hipError_t {
     #[doc = "< Marker that more error codes are needed."]
     hipErrorTbd = 1055,
 }
+impl hipError_t {
+    pub const fn is_err(self) -> bool {
+        matches!(self, Self::hipSuccess | Self::hipErrorNotReady)
+    }
+}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDeviceProp_tR0600 {

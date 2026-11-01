@@ -55,17 +55,17 @@ link! {
 
     rocblas_status rocblas_start_device_memory_size_query(rocblas_handle handle);
 
-    rocblas_status rocblas_stop_device_memory_size_query(rocblas_handle handle, *mut usize size);
+    rocblas_status rocblas_stop_device_memory_size_query(rocblas_handle handle, *mut size_t size);
 
-    rocblas_status rocblas_get_device_memory_size(rocblas_handle handle, *mut usize size);
+    rocblas_status rocblas_get_device_memory_size(rocblas_handle handle, *mut size_t size);
 
-    rocblas_status rocblas_set_workspace(rocblas_handle handle, *mut void addr, usize size);
+    rocblas_status rocblas_set_workspace(rocblas_handle handle, *mut void addr, size_t size);
 
     bool rocblas_is_managing_device_memory(rocblas_handle handle);
 
-    rocblas_status rocblas_get_version_string_size(*mut usize len);
+    rocblas_status rocblas_get_version_string_size(*mut size_t len);
 
-    rocblas_status rocblas_get_version_string(*mut char buf, usize len);
+    rocblas_status rocblas_get_version_string(*mut char buf, size_t len);
 
     // rocBLAS Level-1 functions
     rocblas_status rocblas_isamax(rocblas_handle handle, rocblas_int n, *const float x, rocblas_int incx, *mut rocblas_int result);

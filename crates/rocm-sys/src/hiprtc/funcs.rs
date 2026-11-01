@@ -1,108 +1,107 @@
 use super::types::*;
-
-use core::ffi::*;
+use crate::internal::*;
 
 link! {
     hiprtc : [7, 8, 9, 10] : rocm_ver;
 
     // In HIP, this function returns the name of the error, if the hiprtc result is defined, it will return “Invalid HIPRTC error code”
-    *const c_char hiprtcGetErrorString(hiprtcResult result);
+    *const char hiprtcGetErrorString(hiprtcResult result);
 
     hiprtcResult hiprtcVersion(
-        *mut c_int major,
-        *mut c_int minor,
+        *mut int major,
+        *mut int minor,
     );
 
     hiprtcResult hiprtcAddNameExpression(
         hiprtcProgram prog,
-        *const c_char name_expression,
+        *const char name_expression,
     );
 
     hiprtcResult hiprtcCompileProgram(
         hiprtcProgram prog,
-        c_int numOptions,
-        *const c_char options,
+        int numOptions,
+        *const char options,
     );
 
     hiprtcResult hiprtcCreateProgram(
         *mut hiprtcProgram prog,
-        *const c_char src,
-        *const c_char name,
-        c_int numHeaders,
-        *const *const c_char headers,
-        *const *const c_char includeNames,
+        *const char src,
+        *const char name,
+        int numHeaders,
+        *const *const char headers,
+        *const *const char includeNames,
     );
 
     hiprtcResult hiprtcDestroyProgram(*mut hiprtcProgram prog);
 
     hiprtcResult hiprtcGetLoweredName(
         hiprtcProgram prog,
-        *const c_char name_expression,
-        *mut *const c_char lowered_name,
+        *const char name_expression,
+        *mut *const char lowered_name,
     );
 
     hiprtcResult hiprtcGetProgramLog(
         hiprtcProgram prog,
-        *mut c_char log,
+        *mut char log,
     );
 
     hiprtcResult hiprtcGetCode(
         hiprtcProgram prog,
-        *mut c_char code,
+        *mut char code,
     );
 
     hiprtcResult hiprtcGetCodeSize(
         hiprtcProgram prog,
-        *mut usize codeSizeRet,
+        *mut size_t codeSizeRet,
     );
 
     hiprtcResult hiprtcGetBitcode(
         hiprtcProgram prog,
-        *mut c_char bitcode,
+        *mut char bitcode,
     );
 
     hiprtcResult hiprtcGetBitcodeSize(
         hiprtcProgram prog,
-        *mut usize bitcode_size,
+        *mut size_t bitcode_size,
     );
 
     hiprtcResult hiprtcLinkCreate(
-        c_uint num_options,
+        uint num_options,
         *mut hipJitOption options_ptr,
-        *mut *mut c_void option_vals_pptr,
+        *mut *mut void option_vals_pptr,
         *mut hiprtcLinkState hip_link_state_ptr,
     );
 
     hiprtcResult hiprtcLinkAddFile(
         hiprtcLinkState hip_link_state,
         hipJitInputType input_type,
-        *const c_char file_path,
-        c_uint num_options,
+        *const char file_path,
+        uint num_options,
         *mut hipJitOption options_ptr,
-        *mut *mut c_void option_values,
+        *mut *mut void option_values,
     );
 
     hiprtcResult hiprtcLinkAddData(
         hiprtcLinkState hip_link_state,
         hipJitInputType input_type,
-        *mut c_void image,
-        usize image_size,
-        *const c_char name,
-        c_uint num_options,
+        *mut void image,
+        size_t image_size,
+        *const char name,
+        uint num_options,
         *mut hipJitOption options_ptr,
-        *mut *mut c_void option_values,
+        *mut *mut void option_values,
     );
 
     hiprtcResult hiprtcLinkComplete(
         hiprtcLinkState hip_link_state,
-        *mut *mut c_void bin_out,
-        *mut usize size_out,
+        *mut *mut void bin_out,
+        *mut size_t size_out,
     );
 
     hiprtcResult hiprtcLinkDestroy(hiprtcLinkState hip_link_state);
 
     hiprtcResult hiprtcGetProgramLogSize(
         hiprtcProgram prog,
-        *mut usize logSizeRet,
+        *mut size_t logSizeRet,
     );
 }

@@ -62,7 +62,7 @@ link! {
     );
 
     hipError_t hipDeviceTotalMem(
-        *mut usize bytes,
+        *mut size_t bytes,
         hipDevice_t device,
     );
 
@@ -119,7 +119,7 @@ link! {
     );
 
     hipError_t hipDeviceGetTexture1DLinearMaxWidth(
-        *mut usize max_width,
+        *mut size_t max_width,
         *const hipChannelFormatDesc dex,
         int device,
     );
@@ -133,14 +133,14 @@ link! {
     );
 
     hipError_t hipDeviceGetLimit(
-        *mut usize pValue,
+        *mut size_t pValue,
         hipLimit_t limit,
     );
 
     #[since = 5 .3, "5.3"]
     hipError_t hipDeviceSetLimit(
         hipLimit_t limit,
-        usize pValue,
+        size_t pValue,
     );
 
     hipError_t hipDeviceGetSharedMemConfig(
@@ -211,7 +211,7 @@ link! {
         u32 localWorkSizeX,
         u32 localWorkSizeY,
         u32 localWorkSizeZ,
-        usize sharedMemBytes,
+        size_t sharedMemBytes,
         hipStream_t hStream,
         *mut *mut void kernelParams,
         *mut *mut void extra,
@@ -228,7 +228,7 @@ link! {
         u32 localWorkSizeX,
         u32 localWorkSizeY,
         u32 localWorkSizeZ,
-        usize sharedMemBytes,
+        size_t sharedMemBytes,
         hipStream_t hStream,
         *mut *mut void kernelParams,
         *mut *mut void extra,
@@ -473,7 +473,7 @@ link! {
         *mut hipGraphNode_t phGraphNode,
         hipGraph_t hGraph,
         *const hipGraphNode_t dependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipBatchMemOpNodeParams nodeParams,
     );
 
@@ -555,24 +555,24 @@ link! {
 
     hipError_t hipMalloc(
         *mut *mut void ptr,
-        usize size,
+        size_t size,
     );
 
     hipError_t hipExtMallocWithFlags(
         *mut *mut void ptr,
-        usize sizeBytes,
+        size_t sizeBytes,
         uint flags,
     );
 
     hipError_t hipHostMalloc(
         *mut *mut void ptr,
-        usize size,
+        size_t size,
         uint flags,
     );
 
     hipError_t hipHostAlloc(
         *mut *mut void ptr,
-        usize size,
+        size_t size,
         uint flags,
     );
 
@@ -589,7 +589,7 @@ link! {
 
     hipError_t hipHostRegister(
         *mut void hostPtr,
-        usize sizeBytes,
+        size_t sizeBytes,
         uint flags,
     );
 
@@ -597,16 +597,16 @@ link! {
 
     hipError_t hipMallocPitch(
         *mut *mut void ptr,
-        *mut usize pitch,
-        usize width,
-        usize height,
+        *mut size_t pitch,
+        size_t width,
+        size_t height,
     );
 
     hipError_t hipMemAllocPitch(
         *mut hipDeviceptr_t dptr,
-        *mut usize pitch,
-        usize widthInBytes,
-        usize height,
+        *mut size_t pitch,
+        size_t widthInBytes,
+        size_t height,
         uint elementSizeBytes,
     );
 
@@ -621,14 +621,14 @@ link! {
     hipError_t hipMemcpy(
         *mut void dst,
         *const void src,
-        usize size,
+        size_t size,
         hipMemcpyKind kind,
     );
 
     hipError_t hipMemcpyWithStream(
         *mut void dst,
         *const void src,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
@@ -636,64 +636,64 @@ link! {
     hipError_t hipMemcpyHtoD(
         hipDeviceptr_t dst,
         *const void src,
-        usize sizeBytes,
+        size_t sizeBytes,
     );
 
     hipError_t hipMemcpyDtoH(
         *mut void dst,
         hipDeviceptr_t src,
-        usize sizeBytes,
+        size_t sizeBytes,
     );
 
     hipError_t hipMemcpyDtoD(
         hipDeviceptr_t dst,
         hipDeviceptr_t src,
-        usize sizeBytes,
+        size_t sizeBytes,
     );
 
     #[since = 6 .2, "6.2"]
     hipError_t hipMemcpyAtoD(
         hipDeviceptr_t dstDevice,
         hipArray_t srcArray,
-        usize srcOffset,
-        usize ByteCount,
+        size_t srcOffset,
+        size_t ByteCount,
     );
 
     #[since = 6 .2, "6.2"]
     hipError_t hipMemcpyDtoA(
         hipArray_t dstArray,
-        usize dstOffset,
+        size_t dstOffset,
         hipDeviceptr_t srcDevice,
-        usize ByteCount,
+        size_t ByteCount,
     );
 
     #[since = 6 .2, "6.2"]
     hipError_t hipMemcpyAtoA(
         hipArray_t dstArray,
-        usize dstOffset,
+        size_t dstOffset,
         hipArray_t srcArray,
-        usize srcOffset,
-        usize ByteCount,
+        size_t srcOffset,
+        size_t ByteCount,
     );
 
     hipError_t hipMemcpyHtoDAsync(
         hipDeviceptr_t dst,
         *const void src,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipStream_t stream,
     );
 
     hipError_t hipMemcpyDtoHAsync(
         *mut void dst,
         hipDeviceptr_t src,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipStream_t stream,
     );
 
     hipError_t hipMemcpyDtoDAsync(
         hipDeviceptr_t dst,
         hipDeviceptr_t src,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipStream_t stream,
     );
 
@@ -701,17 +701,17 @@ link! {
     hipError_t hipMemcpyAtoHAsync(
         *mut void dstHost,
         hipArray_t srcArray,
-        usize srcOffset,
-        usize ByteCount,
+        size_t srcOffset,
+        size_t ByteCount,
         hipStream_t stream,
     );
 
     #[since = 6 .2, "6.2"]
     hipError_t hipMemcpyHtoAAsync(
         hipArray_t dstArray,
-        usize dstOffset,
+        size_t dstOffset,
         *const void srcHost,
-        usize ByteCount,
+        size_t ByteCount,
         hipStream_t stream,
     );
 
@@ -721,7 +721,7 @@ link! {
     );
 
     hipError_t hipGetSymbolSize(
-        *mut usize size,
+        *mut size_t size,
         *const void symbol,
     );
 
@@ -737,16 +737,16 @@ link! {
     hipError_t hipMemcpyToSymbol(
         *const void symbol,
         *const void src,
-        usize sizeBytes,
-        usize offset,
+        size_t sizeBytes,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
     hipError_t hipMemcpyToSymbolAsync(
         *const void symbol,
         *const void src,
-        usize sizeBytes,
-        usize offset,
+        size_t sizeBytes,
+        size_t offset,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
@@ -754,16 +754,16 @@ link! {
     hipError_t hipMemcpyFromSymbol(
         *mut void dst,
         *const void symbol,
-        usize sizeBytes,
-        usize offset,
+        size_t sizeBytes,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
     hipError_t hipMemcpyFromSymbolAsync(
         *mut void dst,
         *const void symbol,
-        usize sizeBytes,
-        usize offset,
+        size_t sizeBytes,
+        size_t offset,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
@@ -771,7 +771,7 @@ link! {
     hipError_t hipMemcpyAsync(
         *mut void dst,
         *const void src,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
@@ -779,68 +779,68 @@ link! {
     hipError_t hipMemset(
         *mut void dst,
         int value,
-        usize sizeBytes,
+        size_t sizeBytes,
     );
 
     hipError_t hipMemsetAsync(
         *mut void dst,
         int value,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipStream_t stream,
     );
 
     hipError_t hipMemsetD8(
         hipDeviceptr_t dest,
         uchar value,
-        usize count,
+        size_t count,
     );
 
     hipError_t hipMemsetD8Async(
         hipDeviceptr_t dest,
         uchar value,
-        usize count,
+        size_t count,
         hipStream_t stream,
     );
 
     hipError_t hipMemsetD16(
         hipDeviceptr_t dest,
         ushort value,
-        usize count,
+        size_t count,
     );
 
     hipError_t hipMemsetD16Async(
         hipDeviceptr_t dest,
         ushort value,
-        usize count,
+        size_t count,
         hipStream_t stream,
     );
 
     hipError_t hipMemsetD32(
         hipDeviceptr_t dest,
         int value,
-        usize count,
+        size_t count,
     );
 
     hipError_t hipMemsetD32Async(
         hipDeviceptr_t dest,
         int value,
-        usize count,
+        size_t count,
     );
 
     hipError_t hipMemset2D(
         *mut void dst,
-        usize pitch,
+        size_t pitch,
         int value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
     );
 
     hipError_t hipMemset2DAsync(
         *mut void dst,
-        usize pitch,
+        size_t pitch,
         int value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
         hipStream_t stream,
     );
 
@@ -860,75 +860,75 @@ link! {
     #[since = 7 .1, "7.1"]
     hipError_t hipMemsetD2D8(
         hipDeviceptr_t dst,
-        usize dstPitch,
+        size_t dstPitch,
         uchar value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipMemsetD2D8Async(
         hipDeviceptr_t dst,
-        usize dstPitch,
+        size_t dstPitch,
         uchar value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
         hipStream_t stream,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipMemsetD2D16(
         hipDeviceptr_t dst,
-        usize dstPitch,
+        size_t dstPitch,
         ushort value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipMemsetD2D16Async(
         hipDeviceptr_t dst,
-        usize dstPitch,
+        size_t dstPitch,
         ushort value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
         hipStream_t stream,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipMemsetD2D32(
         hipDeviceptr_t dst,
-        usize dstPitch,
+        size_t dstPitch,
         uint value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipMemsetD2D32Async(
         hipDeviceptr_t dst,
-        usize dstPitch,
+        size_t dstPitch,
         uint value,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
         hipStream_t stream,
     );
 
     hipError_t hipMemGetInfo(
-        *mut usize free,
-        *mut usize total,
+        *mut size_t free,
+        *mut size_t total,
     );
 
     hipError_t hipMemPtrGetInfo(
         *mut void ptr,
-        *mut usize size,
+        *mut size_t size,
     );
 
     hipError_t hipMallocArray(
         *mut hipArray_t array,
         *const hipChannelFormatDesc desc,
-        usize width,
-        usize height,
+        size_t width,
+        size_t height,
         uint flags,
     );
 
@@ -980,11 +980,11 @@ link! {
 
     hipError_t hipMemcpy2D(
         *mut void dst,
-        usize dpitch,
+        size_t dpitch,
         *const void src,
-        usize spitch,
-        usize width,
-        usize height,
+        size_t spitch,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
     );
 
@@ -997,35 +997,35 @@ link! {
 
     hipError_t hipMemcpy2DAsync(
         *mut void dst,
-        usize dpitch,
+        size_t dpitch,
         *const void src,
-        usize spitch,
-        usize width,
-        usize height,
+        size_t spitch,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
 
     hipError_t hipMemcpy2DToArray(
         hipArray_t dst,
-        usize wOffset,
-        usize hOffset,
+        size_t wOffset,
+        size_t hOffset,
         *const void src,
-        usize spitch,
-        usize width,
-        usize height,
+        size_t spitch,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
     );
 
     #[since = 4 .3, "4.3"]
     hipError_t hipMemcpy2DToArrayAsync(
         hipArray_t dst,
-        usize wOffset,
-        usize hOffset,
+        size_t wOffset,
+        size_t hOffset,
         *const void src,
-        usize spitch,
-        usize width,
-        usize height,
+        size_t spitch,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
@@ -1033,35 +1033,35 @@ link! {
     #[since = 6 .2, "6.2"]
     hipError_t hipMemcpy2DArrayToArray(
         hipArray_t dst,
-        usize wOffsetDst,
-        usize hOffsetDst,
+        size_t wOffsetDst,
+        size_t hOffsetDst,
         hipArray_const_t src,
-        usize wOffsetSrc,
-        usize hOffsetSrc,
-        usize width,
-        usize height,
+        size_t wOffsetSrc,
+        size_t hOffsetSrc,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
     );
 
     hipError_t hipMemcpy2DFromArray(
         *mut void dst,
-        usize dpitch,
+        size_t dpitch,
         hipArray_const_t src,
-        usize wOffset,
-        usize hOffset,
-        usize width,
-        usize height,
+        size_t wOffset,
+        size_t hOffset,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
     );
 
     hipError_t hipMemcpy2DFromArrayAsync(
         *mut void dst,
-        usize dpitch,
+        size_t dpitch,
         hipArray_const_t src,
-        usize wOffset,
-        usize hOffset,
-        usize width,
-        usize height,
+        size_t wOffset,
+        size_t hOffset,
+        size_t width,
+        size_t height,
         hipMemcpyKind kind,
         hipStream_t stream,
     );
@@ -1069,15 +1069,15 @@ link! {
     hipError_t hipMemcpyAtoH(
         *mut void dst,
         hipArray_t srcArray,
-        usize srcOffset,
-        usize count,
+        size_t srcOffset,
+        size_t count,
     );
 
     hipError_t hipMemcpyHtoA(
         hipArray_t dstArray,
-        usize dstOffset,
+        size_t dstOffset,
         *const void srcHost,
-        usize count,
+        size_t count,
     );
 
     hipError_t hipMemcpy3D(*const hipMemcpy3DParms p);
@@ -1096,7 +1096,7 @@ link! {
 
     hipError_t hipMemGetAddressRange(
         *mut hipDeviceptr_t pbase,
-        *mut usize psize,
+        *mut size_t psize,
         hipDeviceptr_t dptr,
     );
 
@@ -1104,20 +1104,20 @@ link! {
     hipError_t hipMemcpyBatchAsync(
         *mut *mut void dsts,
         *mut *mut void srcs,
-        *mut usize sizes,
-        usize count,
+        *mut size_t sizes,
+        size_t count,
         *mut hipMemcpyAttributes atttrs,
-        *mut usize attrsIdxs,
-        usize numAttrs,
-        *mut usize failIdx,
+        *mut size_t attrsIdxs,
+        size_t numAttrs,
+        *mut size_t failIdx,
         hipStream_t stream,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipMemcpy3DBatchAsync(
-        usize numOps,
+        size_t numOps,
         *mut hipMemcpy3DBatchOp opList,
-        *mut usize failIdx,
+        *mut size_t failIdx,
         ulonglong flags,
         hipStream_t stream,
     );
@@ -1141,13 +1141,13 @@ link! {
     #[deprecated = "This API is deprecated, use hipHostMalloc() instead", cfg]
     hipError_t hipMallocHost(
         *mut *mut void ptr,
-        usize size,
+        size_t size,
     );
 
     #[deprecated = "This API is deprecated, use hipHostMalloc() instead", cfg]
     hipError_t hipMemAllocHost(
         *mut *mut void ptr,
-        usize size,
+        size_t size,
     );
 
     hipError_t hipHostFree(*mut void ptr);
@@ -1155,10 +1155,10 @@ link! {
     #[deprecated = "This API is deprecated.", cfg]
     hipError_t hipMemcpyToArray(
         hipArray_t dst,
-        usize wOffset,
-        usize hOffset,
+        size_t wOffset,
+        size_t hOffset,
         *const void src,
-        usize count,
+        size_t count,
         hipMemcpyKind kind,
     );
 
@@ -1166,9 +1166,9 @@ link! {
     hipError_t hipMemcpyFromArray(
         *mut void dst,
         hipArray_const_t srcArray,
-        usize wOffset,
-        usize hOffset,
-        usize count,
+        size_t wOffset,
+        size_t hOffset,
+        size_t count,
         hipMemcpyKind kind,
     );
 
@@ -1226,7 +1226,7 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMallocAsync(
         *mut *mut void dev_ptr,
-        usize size,
+        size_t size,
         hipMemPool_t mem_pool,
         hipStream_t stream,
     );
@@ -1246,7 +1246,7 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMemPoolTrimTo(
         hipMemPool_t mem_pool,
-        usize min_bytes_to_hold,
+        size_t min_bytes_to_hold,
     );
 
     /// This API is implemented on Linux and is under development on Microsoft Windows.
@@ -1276,7 +1276,7 @@ link! {
     hipError_t hipMemPoolSetAccess(
         hipMemPool_t mem_pool,
         *const hipMemAccessDesc desc_list,
-        usize count,
+        size_t count,
     );
 
     /// This API is implemented on Linux and is under development on Microsoft Windows.
@@ -1310,7 +1310,7 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMallocFromPoolAsync(
         *mut *mut void dev_ptr,
-        usize size,
+        size_t size,
         hipMemPool_t mem_pool,
         hipStream_t stream,
     );
@@ -1380,14 +1380,14 @@ link! {
     /// It is recommend to do the capability check before call this API.
     hipError_t hipMallocManaged(
         *mut *mut void dev_ptr,
-        usize size,
+        size_t size,
         uint flags,
     );
 
     /// It is recommend to do the capability check before call this API.
     hipError_t hipMemPrefetchAsync(
         *const void dev_ptr,
-        usize count,
+        size_t count,
         int device,
         hipStream_t stream,
     );
@@ -1396,7 +1396,7 @@ link! {
     #[since = 7 .1, "7.1"]
     hipError_t hipMemPrefetchAsync_v2(
         *const void dev_ptr,
-        usize count,
+        size_t count,
         hipMemLocation location,
         uint flags,
         hipStream_t stream,
@@ -1406,11 +1406,11 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipMemPrefetchBatchAsync(
         *mut *mut void dev_ptrs,
-        *mut usize sizes,
-        usize count,
+        *mut size_t sizes,
+        size_t count,
         *mut hipMemLocation prefetch_locs,
-        *mut usize prefetch_loc_idxs,
-        usize num_prefetch_locs,
+        *mut size_t prefetch_loc_idxs,
+        size_t num_prefetch_locs,
         ulonglong flags,
         hipStream_t stream,
     );
@@ -1427,8 +1427,8 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipMemDiscardBatchAsync(
         *mut *mut void dev_ptrs,
-        *mut usize sizes,
-        usize count,
+        *mut size_t sizes,
+        size_t count,
         ulonglong flags,
         hipStream_t stream,
     );
@@ -1439,8 +1439,8 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipDrvMemDiscardBatchAsync(
         *mut hipDeviceptr_t dptrs,
-        *mut usize sizes,
-        usize count,
+        *mut size_t sizes,
+        size_t count,
         ulonglong flags,
         hipStream_t stream,
     );
@@ -1455,11 +1455,11 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipMemDiscardAndPrefetchBatchAsync(
         *mut *mut void dptrs,
-        *mut usize sizes,
-        usize count,
+        *mut size_t sizes,
+        size_t count,
         *mut hipMemLocation prefetchLocs,
-        *mut usize prefetchLocIdxs,
-        usize numPrefetchLocs,
+        *mut size_t prefetchLocIdxs,
+        size_t numPrefetchLocs,
         ulonglong flags,
         hipStream_t stream,
     );
@@ -1468,11 +1468,11 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipDrvMemDiscardAndPrefetchBatchAsync(
         *mut hipDeviceptr_t dptrs,
-        *mut usize sizes,
-        usize count,
+        *mut size_t sizes,
+        size_t count,
         *mut hipMemLocation prefetchLocs,
-        *mut usize prefetchLocIdxs,
-        usize numPrefetchLocs,
+        *mut size_t prefetchLocIdxs,
+        size_t numPrefetchLocs,
         ulonglong flags,
         hipStream_t stream,
     );
@@ -1480,7 +1480,7 @@ link! {
     /// This API is implemented on Linux and is under development on Microsoft Windows.
     hipError_t hipMemAdvise(
         *const void dev_ptr,
-        usize count,
+        size_t count,
         hipMemoryAdvise advice,
         int device,
     );
@@ -1489,7 +1489,7 @@ link! {
     #[since = 7 .1, "7.1"]
     hipError_t hipMemAdvise_v2(
         *const void dev_ptr,
-        usize count,
+        size_t count,
         hipMemoryAdvise advice,
         hipMemLocation location,
     );
@@ -1497,18 +1497,18 @@ link! {
     /// This API is implemented on Linux and is under development on Microsoft Windows.
     hipError_t hipMemRangeGetAttributes(
         *mut *mut void data,
-        *mut usize data_sizes,
+        *mut size_t data_sizes,
         *mut hipMemRangeAttribute attributes,
-        usize num_attributes,
+        size_t num_attributes,
         *const void dev_ptr,
-        usize count,
+        size_t count,
     );
 
     /// This API is under development. Currently it is a no-operation (NOP) function on AMD GPUs and returns hipSuccess.
     hipError_t hipStreamAttachMemAsync(
         hipStream_t stream,
         *mut void dev_ptr,
-        usize length,
+        size_t length,
         int flags,
     );
 
@@ -1516,15 +1516,15 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMemAddressFree(
         *mut void devPtr,
-        usize size,
+        size_t size,
     );
 
     /// This API is implemented on Linux and is under development on Microsoft Windows.
     #[since = 5 .1, "5.1"]
     hipError_t hipMemAddressReserve(
         *mut *mut void ptr,
-        usize size,
-        usize alignment,
+        size_t size,
+        size_t alignment,
         *mut void addr,
         ulonglong flags,
     );
@@ -1533,7 +1533,7 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMemCreate(
         *mut hipMemGenericAllocationHandle_t handle,
-        usize size,
+        size_t size,
         *const hipMemAllocationProp prop,
         ulonglong flags,
     );
@@ -1558,7 +1558,7 @@ link! {
     /// This API is implemented on Linux and is under development on Microsoft Windows.
     #[since = 5 .1, "5.1"]
     hipError_t hipMemGetAllocationGranularity(
-        *mut usize granularity,
+        *mut size_t granularity,
         *const hipMemAllocationProp prop,
         hipMemAllocationGranularity_flags option,
     );
@@ -1582,8 +1582,8 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMemMap(
         *mut void ptr,
-        usize size,
-        usize offset,
+        size_t size,
+        size_t offset,
         hipMemGenericAllocationHandle_t handle,
         ulonglong flags,
     );
@@ -1611,16 +1611,16 @@ link! {
     #[since = 5 .1, "5.1"]
     hipError_t hipMemSetAccess(
         *mut void ptr,
-        usize size,
+        size_t size,
         *const hipMemAccessDesc desc,
-        usize count,
+        size_t count,
     );
 
     /// This API is implemented on Linux and is under development on Microsoft Windows.
     #[since = 5 .1, "5.1"]
     hipError_t hipMemUnmap(
         *mut void ptr,
-        usize size,
+        size_t size,
     );
 
     /// 3D linear filter isn’t supported on GFX90A boards, on which the API hipCreateTextureObject will return hipErrorNotSupported.
@@ -1772,22 +1772,22 @@ link! {
 
     #[deprecated = "This API is deprecated.", cfg]
     hipError_t hipBindTexture(
-        *mut usize offset,
+        *mut size_t offset,
         *const textureReference tex,
         *const void devPtr,
         *const hipChannelFormatDesc desc,
-        usize size,
+        size_t size,
     );
 
     #[deprecated = "This API is deprecated.", cfg]
     hipError_t hipBindTexture2D(
-        *mut usize offset,
+        *mut size_t offset,
         *const textureReference tex,
         *const void devPtr,
         *const hipChannelFormatDesc desc,
-        usize width,
-        usize height,
-        usize pitch,
+        size_t width,
+        size_t height,
+        size_t pitch,
     );
 
     #[deprecated = "This API is deprecated.", cfg]
@@ -1799,7 +1799,7 @@ link! {
 
     #[deprecated = "This API is deprecated.", cfg]
     hipError_t hipGetTextureAlignmentOffset(
-        *mut usize offset,
+        *mut size_t offset,
         *const textureReference texref,
     );
 
@@ -1871,10 +1871,10 @@ link! {
 
     #[deprecated = "This API is deprecated.", cfg]
     hipError_t hipTexRefSetAddress(
-        *mut usize ByteOffset,
+        *mut size_t ByteOffset,
         *mut textureReference texRef,
         hipDeviceptr_t dptr,
-        usize bytes,
+        size_t bytes,
     );
 
     #[deprecated = "This API is deprecated.", cfg]
@@ -1882,7 +1882,7 @@ link! {
         textureReference texRef,
         *const HIP_ARRAY_DESCRIPTOR desc,
         hipDeviceptr_t dptr,
-        usize Pitch,
+        size_t Pitch,
     );
 
     #[deprecated = "This API is deprecated.", cfg]
@@ -1938,9 +1938,9 @@ link! {
 
     #[since = 7 .2, "7.2"]
     hipError_t hipExtSetLoggingParams(
-        usize log_level,
-        usize log_size,
-        usize log_mask,
+        size_t log_level,
+        size_t log_size,
+        size_t log_mask,
     );
 
     #[internal(cfg)]
@@ -1968,7 +1968,7 @@ link! {
         int dstDeviceId,
         *const void src,
         int srcDeviceId,
-        usize sizeBytes,
+        size_t sizeBytes,
     );
 
     hipError_t hipMemcpyPeerAsync(
@@ -1976,7 +1976,7 @@ link! {
         int dstDeviceId,
         *const void src,
         int srcDevice,
-        usize sizeBytes,
+        size_t sizeBytes,
         hipStream_t stream,
     );
 
@@ -2073,7 +2073,7 @@ link! {
 
     hipError_t hipModuleGetGlobal(
         *mut hipDeviceptr_t dptr,
-        *mut usize bytes,
+        *mut size_t bytes,
         hipModule_t hmod,
         *const char name,
     );
@@ -2154,7 +2154,7 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipLibraryGetGlobal(
         *mut *mut void dptr,
-        *mut usize bytes,
+        *mut size_t bytes,
         hipLibrary_t library,
         *const char name,
     );
@@ -2162,7 +2162,7 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipLibraryGetManaged(
         *mut *mut void dptr,
-        *mut usize bytes,
+        *mut size_t bytes,
         hipLibrary_t library,
         *const char name,
     );
@@ -2189,9 +2189,9 @@ link! {
     #[since = 7 .2, "7.2"]
     hipError_t hipKernelGetParamInfo(
         hipKernel_t kernel,
-        usize paramIndex,
-        *mut usize paramOffset,
-        *mut usize paramSize,
+        size_t paramIndex,
+        *mut size_t paramOffset,
+        *mut size_t paramSize,
     );
 
     #[since = 6 .2, "6.2"]
@@ -2232,7 +2232,7 @@ link! {
         hipLinkState_t state,
         hipJitInputType ty,
         *mut void data,
-        usize size,
+        size_t size,
         *const char name,
         uint numOptions,
         *mut hipJitOption options,
@@ -2243,7 +2243,7 @@ link! {
     hipError_t hipLinkComplete(
         hipLinkState_t state,
         *mut *mut void hipBinOut,
-        *mut usize sizeOut,
+        *mut size_t sizeOut,
     );
 
     #[since = 6 .4, "6.4"]
@@ -2261,7 +2261,7 @@ link! {
         *mut int gridSize,
         *mut int blockSize,
         hipFunction_t f,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
         int blockSizeLimit,
     );
 
@@ -2269,7 +2269,7 @@ link! {
         *mut int gridSize,
         *mut int blockSize,
         hipFunction_t f,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
         int blockSizeLimit,
         uint flags,
     );
@@ -2278,14 +2278,14 @@ link! {
         *mut int numBlocks,
         hipFunction_t f,
         int blockSize,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
     );
 
     hipError_t hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(
         *mut int numBlocks,
         hipFunction_t f,
         int blockSize,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
         uint flags,
     );
 
@@ -2293,14 +2293,14 @@ link! {
         *mut int numBlocks,
         *const void f,
         int blockSize,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
     );
 
     hipError_t hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(
         *mut int numBlocks,
         *const void f,
         int blockSize,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
         uint flags,
     );
 
@@ -2308,13 +2308,13 @@ link! {
         *mut int gridSize,
         *mut int blockSize,
         *const void f,
-        usize dynSharedMemPerBlk,
+        size_t dynSharedMemPerBlk,
         int blockSizeLimit,
     );
 
     #[since = 7 .2, "7.2"]
     hipError_t hipOccupancyAvailableDynamicSMemPerBlock(
-        *mut usize dynamicSmemSize,
+        *mut size_t dynamicSmemSize,
         *const void f,
         int numBlocks,
         int blockSize,
@@ -2343,14 +2343,14 @@ link! {
     hipError_t hipConfigureCall(
         dim3 gridDim,
         dim3 blockDim,
-        usize sharedMem,
+        size_t sharedMem,
         hipStream_t stream,
     );
 
     hipError_t hipSetupArgument(
         *const void arg,
-        usize size,
-        usize offset,
+        size_t size,
+        size_t offset,
     );
 
     hipError_t hipLaunchByPtr(*const void func);
@@ -2359,7 +2359,7 @@ link! {
     hipError_t __hipPushCallConfiguration(
         dim3 gridDim,
         dim3 blockDim,
-        usize sharedMem,
+        size_t sharedMem,
         hipStream_t stream,
     );
 
@@ -2367,7 +2367,7 @@ link! {
     hipError_t __hipPopCallConfiguration(
         *mut dim3 gridDim,
         *mut dim3 blockDim,
-        *mut usize sharedMem,
+        *mut size_t sharedMem,
         *mut hipStream_t stream,
     );
 
@@ -2376,7 +2376,7 @@ link! {
         dim3 numBlocks,
         dim3 dimBlocks,
         *mut *mut void args,
-        usize sharedMemBytes,
+        size_t sharedMemBytes,
         hipStream_t stream,
     );
 
@@ -2395,7 +2395,7 @@ link! {
         dim3 numBlocks,
         dim3 dimBlocks,
         *mut *mut void args,
-        usize sharedMemBytes,
+        size_t sharedMemBytes,
         hipStream_t stream,
         hipEvent_t startEvent,
         hipEvent_t stopEvent,
@@ -2428,7 +2428,7 @@ link! {
         hipGraph_t graph,
         *const hipGraphNode_t dependencies,
         *const hipGraphEdgeData dependenciesData,
-        usize numDependencies,
+        size_t numDependencies,
         hipStreamCaptureMode mode,
     );
 
@@ -2452,7 +2452,7 @@ link! {
         *mut ulonglong id_out,
         *mut hipGraph_t graph_out,
         *mut *const hipGraphNode_t dependencies_out ,
-        *mut usize numDependencies_out,
+        *mut size_t numDependencies_out,
     );
 
     #[since = 4 .3, "4.3"]
@@ -2465,7 +2465,7 @@ link! {
     hipError_t hipStreamUpdateCaptureDependencies(
         hipStream_t stream,
         *mut hipGraphNode_t dependencies,
-        usize numDependencies,
+        size_t numDependencies,
         uint flags,
     );
 
@@ -2486,7 +2486,7 @@ link! {
         hipGraph_t graph,
         *const hipGraphNode_t from,
         *const hipGraphNode_t to,
-        usize numDependencies,
+        size_t numDependencies,
     );
 
     #[since = 4 .5, "4.5"]
@@ -2494,7 +2494,7 @@ link! {
         hipGraph_t graph,
         *const hipGraphNode_t from,
         *const hipGraphNode_t to,
-        usize numDependencies,
+        size_t numDependencies,
     );
 
     #[since = 4 .5, "4.5"]
@@ -2502,35 +2502,35 @@ link! {
         hipGraph_t graph,
         *mut hipGraphNode_t from,
         *mut hipGraphNode_t to,
-        *mut usize numEdges,
+        *mut size_t numEdges,
     );
 
     #[since = 4 .4, "4.4"]
     hipError_t hipGraphGetNodes(
         hipGraph_t graph,
         *mut hipGraphNode_t nodes,
-        *mut usize numNodes,
+        *mut size_t numNodes,
     );
 
     #[since = 4 .4, "4.4"]
     hipError_t hipGraphGetRootNodes(
         hipGraph_t graph,
         *mut hipGraphNode_t pRootNodes,
-        *mut usize pNumRootNodes,
+        *mut size_t pNumRootNodes,
     );
 
     #[since = 4 .5, "4.5"]
     hipError_t hipGraphNodeGetDependencies(
         hipGraphNode_t node,
         *mut hipGraphNode_t pDependencies,
-        *mut usize pNumDependencies,
+        *mut size_t pNumDependencies,
     );
 
     #[since = 4 .5, "4.5"]
     hipError_t hipGraphNodeGetDependentNodes(
         hipGraphNode_t node,
         *mut hipGraphNode_t pDependentNodes,
-        *mut usize pNumDependentNodes,
+        *mut size_t pNumDependentNodes,
     );
 
     #[since = 4 .5, "4.5"]
@@ -2561,7 +2561,7 @@ link! {
         hipGraph_t graph,
         *mut hipGraphNode_t pErrorNode,
         *mut char pLogBuffer,
-        usize bufferSize,
+        size_t bufferSize,
     );
 
     #[since = 4 .5, "4.5"]
@@ -2595,7 +2595,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *mut hipGraphNodeParams nodeParams,
     );
 
@@ -2634,7 +2634,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipKernelNodeParams pNodeParams,
     );
 
@@ -2655,7 +2655,7 @@ link! {
         *mut hipGraphNode_t phGraphNode,
         hipGraph_t hGraph,
         *const hipGraphNode_t dependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const HIP_MEMCPY3D copyParams,
         hipCtx_t ctx,
     );
@@ -2665,7 +2665,7 @@ link! {
         *mut hipGraphNode_t pGraphNode_t,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipMemcpy3DParms pCopyParams,
     );
 
@@ -2693,10 +2693,10 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *mut void dst,
         *const void src,
-        usize count,
+        size_t count,
         hipMemcpyKind kind,
     );
 
@@ -2705,7 +2705,7 @@ link! {
         hipGraphNode_t node,
         *mut void dst,
         *const void src,
-        usize count,
+        size_t count,
         hipMemcpyKind kind,
     );
 
@@ -2715,7 +2715,7 @@ link! {
         hipGraphNode_t node,
         *mut void dst,
         *const void src,
-        usize count,
+        size_t count,
         hipMemcpyKind kind,
     );
 
@@ -2724,11 +2724,11 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *mut void dst,
         *const void symbol,
-        usize count,
-        usize offset,
+        size_t count,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
@@ -2737,8 +2737,8 @@ link! {
         hipGraphNode_t node,
         *mut void dst,
         *const void symbol,
-        usize count,
-        usize offset,
+        size_t count,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
@@ -2748,8 +2748,8 @@ link! {
         hipGraphNode_t node,
         *mut void dst,
         *const void symbol,
-        usize count,
-        usize offset,
+        size_t count,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
@@ -2758,11 +2758,11 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const void symbol,
         *const void src,
-        usize count,
-        usize offset,
+        size_t count,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
@@ -2771,8 +2771,8 @@ link! {
         hipGraphNode_t node,
         *const void symbol,
         *const void src,
-        usize count,
-        usize offset,
+        size_t count,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
@@ -2782,8 +2782,8 @@ link! {
         hipGraphNode_t node,
         *const void symbol,
         *const void src,
-        usize count,
-        usize offset,
+        size_t count,
+        size_t offset,
         hipMemcpyKind kind,
     );
 
@@ -2792,7 +2792,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipMemsetParams pMemsetParams,
     );
 
@@ -2820,7 +2820,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipHostNodeParams pNodeParams,
     );
 
@@ -2848,7 +2848,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         hipGraph_t childGraph,
     );
 
@@ -2870,7 +2870,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
     );
 
     #[since = 4 .5, "4.5"]
@@ -2878,7 +2878,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         hipEvent_t event,
     );
 
@@ -2906,7 +2906,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         hipEvent_t event,
     );
 
@@ -2934,7 +2934,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *mut hipMemAllocNodeParams pNodeParams,
     );
 
@@ -2949,7 +2949,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *mut void dev_ptr,
     );
 
@@ -3037,7 +3037,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipExternalSemaphoreWaitNodeParams nodeParams,
     );
 
@@ -3046,7 +3046,7 @@ link! {
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
         *const hipGraphNode_t pDependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipExternalSemaphoreSignalNodeParams nodeParams,
     );
 
@@ -3105,7 +3105,7 @@ link! {
         *mut hipGraphNode_t phGraphNode,
         hipGraph_t hGraph,
         *const hipGraphNode_t dependencies,
-        usize numDependencies,
+        size_t numDependencies,
         *const hipMemsetParams memsetParams,
         hipCtx_t ctx,
     );
@@ -3115,7 +3115,7 @@ link! {
         *mut hipGraphNode_t phGraphNode,
         hipGraph_t hGraph,
         *const hipGraphNode_t dependencies,
-        usize numDependencies,
+        size_t numDependencies,
         hipDeviceptr_t dptr,
     );
 
@@ -3139,7 +3139,7 @@ link! {
     hipError_t hipMemGetHandleForAddressRange(
         *mut void handle,
         hipDeviceptr_t dptr,
-        usize size,
+        size_t size,
         hipMemRangeHandleType handleType,
         ulonglong flags,
     );
@@ -3162,7 +3162,7 @@ link! {
     #[since = 4 .3, "4.3"]
     hipError_t hipGraphicsResourceGetMappedPointer(
         *mut *mut void devPtr,
-        *mut usize size,
+        *mut size_t size,
         hipGraphicsResource_t resource,
     );
 

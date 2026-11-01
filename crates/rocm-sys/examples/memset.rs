@@ -7,34 +7,25 @@ use rocm_sys::hip::{
 
 fn main() {
     unsafe {
-        // Current device.
-        let mut device = 0;
+        let mut device = -1;
         check(hipGetDevice(&mut device), "hipDeviceGet");
-        println!("device = {device}");
+        if device == -1 {
+            unreachable!("device unset with success");
+        }
 
         check(hipSetDevice(device), "hipSetDevice");
 
-        // Raw stream.
         let mut stream: hipStream_t = ptr::null_mut();
         check(hipStreamCreate(&mut stream), "hipStreamCreate");
-        println!("stream = {stream:p}");
 
-        // Raw device allocation.
         let mut ptr = ptr::null_mut();
         check(hipMalloc(&mut ptr, 4096), "hipMalloc");
-        println!("ptr = {ptr:p}");
-
-        // The actual test.
-        println!("hipMemsetAsync...");
 
         let err = hipMemsetAsync(ptr, 0, 4096, stream);
 
         println!("hipMemsetAsync = {err:?}");
 
-        // Don't continue if enqueue itself failed.
         check(err, "hipMemsetAsync");
-
-        println!("hipStreamSynchronize...");
 
         check(hipStreamSynchronize(stream), "hipStreamSynchronize");
 

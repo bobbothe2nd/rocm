@@ -29,49 +29,11 @@ macro_rules! link {
         )*
     ) => {
         pub(crate) mod $lib {
-            pub(crate) const LIBRARIES: &[&str] = {
-                #[cfg(unix)]
-                {
-                    &[
-                        concat!("lib", stringify!($lib), ".so"),
-                        $(
-                            concat!("lib", stringify!($lib), ".so.", stringify!($version)),
-                        )*
-                    ]
-                }
-
-                #[cfg(windows)]
-                {
-                    &[
-                        concat!(stringify!($lib), ".dll"),
-                        $(
-                            concat!(stringify!($lib), "-", stringify!($version), ".dll"),
-                        )*
-                    ]
-                }
-
-                #[cfg(not(any(windows, unix)))]
-                {
-                    &[]
-                }
-            };
-
             #[cfg(feature = "dynamic-loading")]
             pub(crate) fn is_rocm_lib_present() -> bool {
-                let roots = [
-                    std::env::var_os("ROCM_PATH"),
-                    Some("/opt/rocm".into()),
-                ];
-
-                for root in roots.into_iter().flatten() {
-                    let lib_dir = std::path::Path::new(&root).join("lib");
-
-                    for choice in LIBRARIES {
-                        let path = lib_dir.join(choice);
-
-                        if path.exists() {
-                            return true;
-                        }
+                for path in $crate::get_lib_name_candidates(stringify!($lib)) {
+                    if matches!(::std::fs::exists(path), Ok(true)) {
+                        return true;
                     }
                 }
 
@@ -82,27 +44,18 @@ macro_rules! link {
         #[cfg(feature = "dynamic-loading")]
         static $lib: ::std::sync::LazyLock<libloading::Library> = {
             ::std::sync::LazyLock::new(|| {
-                let roots = [
-                    std::env::var_os("ROCM_PATH"),
-                    Some("/opt/rocm".into()),
-                ];
+                let paths = $crate::get_lib_name_candidates(stringify!($lib));
 
-                for root in roots.into_iter().flatten() {
-                    let lib_dir = std::path::Path::new(&root).join("lib");
-
-                    for choice in $lib::LIBRARIES {
-                        let path = lib_dir.join(choice);
-
-                        if let Ok(lib) = unsafe {
-                            libloading::Library::new(&path)
-                        } {
-                            return lib;
-                        }
+                for path in &paths {
+                    if let Ok(lib) = unsafe {
+                        libloading::Library::new(path)
+                    } {
+                        return lib;
                     }
                 }
 
                 panic!(concat!("Unable to dynamically load the \"", stringify!($lib), "\" shared library - searched for library names: {:?}. \
-If the shared library is present on the system under a different name than one of those listed above, please open a GitHub issue."), $lib::LIBRARIES);
+If the shared library is present on the system under a different name than one of those listed above, please open a GitHub issue."), paths);
             })
         };
 
@@ -204,4 +157,31 @@ pub fn is_hiprtc_present() -> bool {
 #[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
 pub fn is_rocblas_present() -> bool {
     rocblas::rocblas::is_rocm_lib_present()
+}
+
+#[cfg(feature = "dynamic-loading")]
+fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
+    use std::env::consts::{DLL_PREFIX, DLL_SUFFIX};
+    use crate::version::{ROCM_MAJOR, ROCM_MINOR};
+
+    let rocm_path = std::env::var("ROCM_PATH").ok();
+
+    let major = *ROCM_MAJOR;
+    let minor = *ROCM_MINOR;
+
+    let stems = [
+        format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}"),
+        format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}.{major}"),
+        format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}.{major}.{minor}"),
+    ];
+
+    let mut out = Vec::with_capacity(stems.len() * (2 + rocm_path.is_some() as usize));
+    for stem in &stems {
+        out.push(stem.clone());
+        out.push(format!("/opt/rocm/lib/{stem}"));
+        if let Some(rocm_path) = &rocm_path {
+            out.push(format!("{rocm_path}/lib/{stem}"));
+        }
+    }
+    out
 }
