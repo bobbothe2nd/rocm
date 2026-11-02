@@ -392,6 +392,449 @@ link! {
     hipblasStatus_t hipblasZswapStridedBatched(hipblasHandle_t handle, int n, *mut hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
 
     // Level 2 BLAS
+    hipblasStatus_t hipblasSgbmv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
+
+    hipblasStatus_t hipblasDgbmv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const double alpha, *const double AP, int lda, *const double x, int incx, *const double beta, *mut double y, int incy);
+
+    hipblasStatus_t hipblasCgbmv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
+
+    hipblasStatus_t hipblasZgbmv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
+
+    hipblasStatus_t hipblasSgbmvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const float alpha, *const *const float AP, int lda, *const *const float x, int incx, *const float beta, *const *mut float y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasDgbmvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const double alpha, *const *const double AP, int lda, *const *const double x, int incx, *const double beta, *const *mut double y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasCgbmvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipComplex alpha, *const *const hipComplex AP, int lda, *const *const hipComplex x, int incx, *const hipComplex beta, *const *mut hipComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasZgbmvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasSgbmvStridedBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const float alpha, *const float AP, int lda, hipblasStride strideA, *const float x, int incx, hipblasStride stridex, *const float beta, *mut float y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasDgbmvStridedBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const double alpha, *const double AP, int lda, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasCgbmvStridedBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasZgbmvStridedBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSgemv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
+
+    hipblasStatus_t hipblasDgemv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const double alpha, *const double AP, int lda, *const double x, int incx, *const double beta, *mut double y, int incy);
+
+    hipblasStatus_t hipblasCgemv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
+
+    hipblasStatus_t hipblasZgemv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
+
+    hipblasStatus_t hipblasSgemvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const float alpha, *const *const float AP, int lda, *const *const float x, int incx, *const float beta, *const *mut float y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasDgemvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const double alpha, *const *const double AP, int lda, *const *const double x, int incx, *const double beta, *const *mut double y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasCgemvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const hipComplex alpha, *const *const hipComplex AP, int lda, *const *const hipComplex x, int incx, *const hipComplex beta, *const *mut hipComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasZgemvBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasSgemvStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, int m, int n, *const float alpha, *const float AP, int lda, hipblasStride strideA, *const float x, int incx, hipblasStride stridex, *const float beta, *mut float y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasDgemvStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, int m, int n, *const double alpha, *const double AP, int lda, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasCgemvStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, int m, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasZgemvStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSger(hipblasHandle_t handle, int m, int n, *const float alpha, *const float x, int incx, *const float y, int incy, *mut float AP, int lda);
+
+    hipblasStatus_t hipblasDger(hipblasHandle_t handle, int m, int n, *const double alpha, *const double x, int incx, *const double y, int incy, *mut double AP, int lda);
+
+    hipblasStatus_t hipblasCgeru(hipblasHandle_t handle, int m, int n, *const hipComplex alpha, *const hipComplex x, int incx, *const hipComplex y, int incy, *mut hipComplex AP, int lda);
+
+    hipblasStatus_t hipblasCgerc(hipblasHandle_t handle, int m, int n, *const hipComplex alpha, *const hipComplex x, int incx, *const hipComplex y, int incy, *mut hipComplex AP, int lda);
+
+    hipblasStatus_t hipblasZgeru(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *const hipDoubleComplex y, int incy, *mut hipDoubleComplex AP, int lda);
+
+    hipblasStatus_t hipblasZgerc(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *const hipDoubleComplex y, int incy, *mut hipDoubleComplex AP, int lda);
+
+    hipblasStatus_t hipblasSgerBatched(hipblasHandle_t handle, int m, int n, *const float alpha, *const *const float x, int incx, *const *const float y, int incy, *const *mut float AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasDgerBatched(hipblasHandle_t handle, int m, int n, *const double alpha, *const *const double x, int incx, *const *const double y, int incy, *const *mut double AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasCgeruBatched(hipblasHandle_t handle, int m, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *const hipComplex y, int incy, *const *mut hipComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasCgercBatched(hipblasHandle_t handle, int m, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *const hipComplex y, int incy, *const *mut hipComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasZgeruBatched(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *const hipDoubleComplex y, int incy, *const *mut hipDoubleComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasZgercBatched(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *const hipDoubleComplex y, int incy, *const *mut hipDoubleComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasSgerStridedBatched(hipblasHandle_t handle, int m, int n, *const float alpha, *const float x, int incx, hipblasStride stridex, *const float y, int incy, hipblasStride stridey, *mut float AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasDgerStridedBatched(hipblasHandle_t handle, int m, int n, *const double alpha, *const double x, int incx, hipblasStride stridex, *const double y, int incy, hipblasStride stridey, *mut double AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasCgeruStridedBatched(hipblasHandle_t handle, int m, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex y, int incy, hipblasStride stridey, *mut hipComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasCgercStridedBatched(hipblasHandle_t handle, int m, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex y, int incy, hipblasStride stridey, *mut hipComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZgeruStridedBatched(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZgercStridedBatched(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasChbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
+
+    hipblasStatus_t hipblasZhbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
+
+    hipblasStatus_t hipblasChbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipComplex alpha, *const *const hipComplex AP, int lda, *const *const hipComplex x, int incx, *const hipComplex beta, *const *mut hipComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasZhbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasChbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasZhbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasChemv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
+
+    hipblasStatus_t hipblasZhemv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
+
+    hipblasStatus_t hipblasChemvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex AP, int lda, *const *const hipComplex x, int incx, *const hipComplex beta, *const *mut hipComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasZhemvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasChemvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasZhemvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasCher(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const hipComplex x, int incx, *mut hipComplex AP, int lda);
+
+    hipblasStatus_t hipblasZher(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const hipDoubleComplex x, int incx, *mut hipDoubleComplex AP, int lda);
+
+    hipblasStatus_t hipblasCherBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const hipComplex x, int incx, *const *mut hipComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasZherBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const hipDoubleComplex x, int incx, *const *mut hipDoubleComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasCherStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const hipComplex x, int incx, hipblasStride stridex, *mut hipComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZherStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasCher2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, *const hipComplex y, int incy, *mut hipComplex AP, int lda);
+
+    hipblasStatus_t hipblasZher2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *const hipDoubleComplex y, int incy, *mut hipDoubleComplex AP, int lda);
+
+    hipblasStatus_t hipblasCher2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *const hipComplex y, int incy, *const *mut hipComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasZher2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *const hipDoubleComplex y, int incy, *const *mut hipDoubleComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasCher2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex y, int incy, hipblasStride stridey, *mut hipComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZher2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasChpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
+
+    hipblasStatus_t hipblasZhpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
+
+    hipblasStatus_t hipblasChpmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex AP, *const *const hipComplex x, int incx, *const hipComplex beta, *const *mut hipComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasZhpmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, *const *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasChpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasZhpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasChpr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const hipComplex x, int incx, *mut hipComplex AP);
+
+    hipblasStatus_t hipblasZhpr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const hipDoubleComplex x, int incx, *mut hipDoubleComplex AP);
+
+    hipblasStatus_t hipblasChprBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const hipComplex x, int incx, *const *mut hipComplex AP, int batchCount);
+
+    hipblasStatus_t hipblasZhprBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const hipDoubleComplex x, int incx, *const *mut hipDoubleComplex AP, int batchCount);
+
+    hipblasStatus_t hipblasChprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const hipComplex x, int incx, hipblasStride stridex, *mut hipComplex AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZhprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasChpr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, *const hipComplex y, int incy, *mut hipComplex AP);
+
+    hipblasStatus_t hipblasZhpr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *const hipDoubleComplex y, int incy, *mut hipDoubleComplex AP);
+
+    hipblasStatus_t hipblasChpr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *const hipComplex y, int incy, *const *mut hipComplex AP, int batchCount);
+
+    hipblasStatus_t hipblasZhpr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *const hipDoubleComplex y, int incy, *const *mut hipDoubleComplex AP, int batchCount);
+
+    hipblasStatus_t hipblasChpr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex y, int incy, hipblasStride stridey, *mut hipComplex AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZhpr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasSsbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
+
+    hipblasStatus_t hipblasDsbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const double alpha, *const double AP, int lda, *const double x, int incx, *const double beta, *mut double y, int incy);
+
+    hipblasStatus_t hipblasSsbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const float alpha, *const *const float AP, int lda, *const *const float x, int incx, *const float beta, *const *mut float y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasDsbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const double alpha, *const *const double AP, int lda, *const *const double x, int incx, *const double beta, *const *mut double y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasSsbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const float alpha, *const float AP, int lda, hipblasStride strideA, *const float x, int incx, hipblasStride stridex, *const float beta, *mut float y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasDsbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const double alpha, *const double AP, int lda, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSspmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, *const float x, int incx, *const float beta, *mut float y, int incy);
+
+    hipblasStatus_t hipblasDspmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double AP, *const double x, int incx, *const double beta, *mut double y, int incy);
+
+    hipblasStatus_t hipblasSspmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const float AP, *const *const float x, int incx, *const float beta, *const *mut float y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasDspmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const double AP, *const *const double x, int incx, *const double beta, *const *mut double y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasSspmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, hipblasStride strideA, *const float x, int incx, hipblasStride stridex, *const float beta, *mut float y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasDspmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double AP, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSspr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *mut float AP);
+
+    hipblasStatus_t hipblasDspr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, *mut double AP);
+
+    hipblasStatus_t hipblasCspr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, *mut hipComplex AP);
+
+    hipblasStatus_t hipblasZspr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *mut hipDoubleComplex AP);
+
+    hipblasStatus_t hipblasSsprBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const float x, int incx, *const *mut float AP, int batchCount);
+
+    hipblasStatus_t hipblasDsprBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const double x, int incx, *const *mut double AP, int batchCount);
+
+    hipblasStatus_t hipblasCsprBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *mut hipComplex AP, int batchCount);
+
+    hipblasStatus_t hipblasZsprBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *mut hipDoubleComplex AP, int batchCount);
+
+    hipblasStatus_t hipblasSsprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, hipblasStride stridex, *mut float AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasDsprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, hipblasStride stridex, *mut double AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasCsprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *mut hipComplex AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZsprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasSspr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *const float y, int incy, *mut float AP);
+
+    hipblasStatus_t hipblasDspr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, *const double y, int incy, *mut double AP);
+
+    hipblasStatus_t hipblasSspr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const float x, int incx, *const *const float y, int incy, *const *mut float AP, int batchCount);
+
+    hipblasStatus_t hipblasDspr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const double x, int incx, *const *const double y, int incy, *const *mut double AP, int batchCount);
+
+    hipblasStatus_t hipblasSspr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, hipblasStride stridex, *const float y, int incy, hipblasStride stridey, *mut float AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasDspr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, hipblasStride stridex, *const double y, int incy, hipblasStride stridey, *mut double AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasSsymv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
+
+    hipblasStatus_t hipblasDsymv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double AP, int lda, *const double x, int incx, *const double beta, *mut double y, int incy);
+
+    hipblasStatus_t hipblasCsymv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
+
+    hipblasStatus_t hipblasZsymv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
+
+    hipblasStatus_t hipblasSsymvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const float AP, int lda, *const *const float x, int incx, *const float beta, *const *mut float y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasDsymvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const double AP, int lda, *const *const double x, int incx, *const double beta, *const *mut double y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasCsymvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex AP, int lda, *const *const hipComplex x, int incx, *const hipComplex beta, *const *mut hipComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasZsymvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int incy, int batchCount);
+
+    hipblasStatus_t hipblasSsymvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, int lda, hipblasStride strideA, *const float x, int incx, hipblasStride stridex, *const float beta, *mut float y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasDsymvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double AP, int lda, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasCsymvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasZsymvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSsyr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *mut float AP, int lda);
+
+    hipblasStatus_t hipblasDsyr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, *mut double AP, int lda);
+
+    hipblasStatus_t hipblasCsyr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, *mut hipComplex AP, int lda);
+
+    hipblasStatus_t hipblasZsyr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *mut hipDoubleComplex AP, int lda);
+
+    hipblasStatus_t hipblasSsyrBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const float x, int incx, *const *mut float AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasDsyrBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const double x, int incx, *const *mut double AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasCsyrBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *mut hipComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasZsyrBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *mut hipDoubleComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasSsyrStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, hipblasStride stridex, *mut float AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasDsyrStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, hipblasStride stridex, *mut double AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasCsyrStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *mut hipComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZsyrStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasSsyr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *const float y, int incy, *mut float AP, int lda);
+
+    hipblasStatus_t hipblasDsyr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, *const double y, int incy, *mut double AP, int lda);
+
+    hipblasStatus_t hipblasCsyr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, *const hipComplex y, int incy, *mut hipComplex AP, int lda);
+
+    hipblasStatus_t hipblasZsyr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *const hipDoubleComplex y, int incy, *mut hipDoubleComplex AP, int lda);
+
+    hipblasStatus_t hipblasSsyr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const *const float x, int incx, *const *const float y, int incy, *const *mut float AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasDsyr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const *const double x, int incx, *const *const double y, int incy, *const *mut double AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasCsyr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const *const hipComplex x, int incx, *const *const hipComplex y, int incy, *const *mut hipComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasZsyr2Batched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int incx, *const *const hipDoubleComplex y, int incy, *const *mut hipDoubleComplex AP, int lda, int batchCount);
+
+    hipblasStatus_t hipblasSsyr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, hipblasStride stridex, *const float y, int incy, hipblasStride stridey, *mut float AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasDsyr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, hipblasStride stridex, *const double y, int incy, hipblasStride stridey, *mut double AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasCsyr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex y, int incy, hipblasStride stridey, *mut hipComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasZsyr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasStbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, *mut float x, int incx);
+
+    hipblasStatus_t hipblasDtbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const double AP, int lda, *mut double x, int incx);
+
+    hipblasStatus_t hipblasCtbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipComplex AP, int lda, *mut hipComplex x, int incx);
+
+    hipblasStatus_t hipblasZtbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, *mut hipDoubleComplex x, int incx);
+
+    hipblasStatus_t hipblasStbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const float AP, int lda, *const *mut float x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasDtbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const double AP, int lda, *const *mut double x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasCtbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const hipComplex AP, int lda, *const *mut hipComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasZtbmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const hipDoubleComplex AP, int lda, *const *mut hipDoubleComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasStbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, hipblasStride strideA, *mut float x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasDtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const double AP, int lda, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasCtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
+    
+    hipblasStatus_t hipblasZtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStbsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, *mut float x, int incx);
+
+    hipblasStatus_t hipblasDtbsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const double AP, int lda, *mut double x, int incx);
+
+    hipblasStatus_t hipblasCtbsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipComplex AP, int lda, *mut hipComplex x, int incx);
+
+    hipblasStatus_t hipblasZtbsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, *mut hipDoubleComplex x, int incx);
+
+    hipblasStatus_t hipblasStbsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const float AP, int lda, *const *mut float x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasDtbsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const double AP, int lda, *const *mut double x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasCtbsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const hipComplex AP, int lda, *const *mut hipComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasZtbsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const *const hipDoubleComplex AP, int lda, *const *mut hipDoubleComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasStbsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, hipblasStride strideA, *mut float x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasDtbsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const double AP, int lda, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasCtbsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasZtbsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, *mut float x, int incx);
+
+    hipblasStatus_t hipblasDtpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, *mut double x, int incx);
+
+    hipblasStatus_t hipblasCtpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, *mut hipComplex x, int incx);
+
+    hipblasStatus_t hipblasZtpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, *mut hipDoubleComplex x, int incx);
+
+    hipblasStatus_t hipblasStpmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const float AP, *const *mut float x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasDtpmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const double AP, *const *mut double x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasCtpmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipComplex AP, *const *mut hipComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasZtpmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipDoubleComplex AP, *const *mut hipDoubleComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasStpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, hipblasStride strideA, *mut float x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasDtpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasCtpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasZtpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStpsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, *mut float x, int incx);
+
+    hipblasStatus_t hipblasDtpsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, *mut double x, int incx);
+
+    hipblasStatus_t hipblasCtpsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, *mut hipComplex x, int incx);
+
+    hipblasStatus_t hipblasZtpsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, *mut hipDoubleComplex x, int incx);
+
+    hipblasStatus_t hipblasStpsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const float AP, *const *mut float x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasDtpsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const double AP, *const *mut double x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasCtpsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipComplex AP, *const *mut hipComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasZtpsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipDoubleComplex AP, *const *mut hipDoubleComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasStpsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, hipblasStride strideA, *mut float x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasDtpsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasCtpsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasZtpsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStrmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, int lda, *mut float x, int incx);
+
+    hipblasStatus_t hipblasDtrmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, int lda, *mut double x, int incx);
+
+    hipblasStatus_t hipblasCtrmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, int lda, *mut hipComplex x, int incx);
+
+    hipblasStatus_t hipblasZtrmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, int lda, *mut hipDoubleComplex x, int incx);
+
+    hipblasStatus_t hipblasStrmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const float AP, int lda, *const *mut float x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasDtrmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const double AP, int lda, *const *mut double x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasCtrmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipComplex AP, int lda, *const *mut hipComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasZtrmvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipDoubleComplex AP, int lda, *const *mut hipDoubleComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasStrmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, int lda, hipblasStride strideA, *mut float x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasDtrmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, int lda, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasCtrmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasZtrmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStrsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, int lda, *mut float x, int incx);
+
+    hipblasStatus_t hipblasDtrsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, int lda, *mut double x, int incx);
+
+    hipblasStatus_t hipblasCtrsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, int lda, *mut hipComplex x, int incx);
+
+    hipblasStatus_t hipblasZtrsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, int lda, *mut hipDoubleComplex x, int incx);
+
+    hipblasStatus_t hipblasStrsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const float AP, int lda, *const *mut float x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasDtrsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const double AP, int lda, *const *mut double x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasCtrsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipComplex AP, int lda, *const *mut hipComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasZtrsvBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const *const hipDoubleComplex AP, int lda, *const *mut hipDoubleComplex x, int incx, int batchCount);
+
+    hipblasStatus_t hipblasStrsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, int lda, hipblasStride strideA, *mut float x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasDtrsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, int lda, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasCtrsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasZtrsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
 
     // Level 3 BLAS
 
