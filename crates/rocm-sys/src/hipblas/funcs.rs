@@ -1137,6 +1137,70 @@ link! {
 
     // BLAS extensions
 
+    // hipblasGemmEx + Batched, StridedBatched
+    hipblasStatus_t hipblasGemmEx(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, *const void B, hipDataType bType, int ldb, *const void beta, *mut void C, hipDataType cType, int ldc, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    hipblasStatus_t hipblasGemmBatchedEx(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const void alpha, *mut *const void A, hipDataType aType, int lda, *mut *const void B, hipDataType bType, int ldb, *const void beta, *mut *mut void C, hipDataType cType, int ldc, int batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    hipblasStatus_t hipblasGemmGroupedBatchedEx(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int m_array, *const int n_array, *const int k_array, *const void alpha_array, *const *const void Aarray, hipDataType aType, *const int lda_array, *const *const void Barray, hipDataType bType, *const int ldb_array, *mut *const void beta_array, *const *const void Carray, hipDataType cType, *const *const int ldc_array, *const *mut void Darray, hipDataType dType, *const int ldd_array, int group_count, *const int group_size, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    hipblasStatus_t hipblasGemmStridedBatchedEx(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, hipblasStride strideA, *const void B, hipDataType bType, int ldb, hipblasStride strideB, *const void beta, *mut void C, hipDataType cType, int ldc, hipblasStride strideC, int batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    // hipblasSyrkEx
+    hipblasStatus_t hipblasSyrkEx(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, *const void beta, *mut void C, hipDataType cType, int ldc, hipDataType computeType);
+
+    // hipblasHerkEx
+    hipblasStatus_t hipblasHerkEx(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, *const void beta, *mut void C, hipDataType cType, int ldc, hipDataType computeType);
+
+    // hipblasTrsmEx + Batched, StridedBatched
+    hipblasStatus_t hipblasTrsmEx(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const void alpha, *mut void A, int lda, *mut void B, int ldb, *const void invA, int invAsize, hipDataType computeType);
+
+    hipblasStatus_t hipblasTrsmBatchedEx(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const void alpha, *mut void A, int lda, *mut void B, int ldb, int batchCount, *const void invA, int invAsize, hipDataType computeType);
+
+    hipblasStatus_t hipblasTrsmStridedBatchedEx(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const void alpha, *mut void A, int lda, hipblasStride strideA, *mut void B, int ldb, hipblasStride strideB, int batchCount, *const void invA, int invAsize, hipblasStride strideInvA, hipDataType computeType);
+
+    // hipblasAxpyEx + Batched, StridedBatched
+    hipblasStatus_t hipblasAxpyEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int incx, *mut void y, hipDataType yType, int incy, hipDataType executionType);
+
+    hipblasStatus_t hipblasAxpyBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int incx, *mut void y, hipDataType yType, int incy, int batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasAxpyStridedBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int incx, hipblasStride stridex, *mut void y, hipDataType yType, int incy, hipblasStride stridey, int batchCount, hipDataType executionType);
+
+    // hipblasDotEx + Batched, StridedBatched
+    hipblasStatus_t hipblasDotEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotStridedBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, hipblasStride stridex, *const void y, hipDataType yType, int incy, hipblasStride stridey, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    // hipblasDotcEx + Batched, StridedBatched
+    hipblasStatus_t hipblasDotcEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotcBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotcStridedBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, hipblasStride stridex, *const void y, hipDataType yType, int incy, hipblasStride stridey, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    // hipblasNrm2Ex + Batched, StridedBatched
+    hipblasStatus_t hipblasNrm2Ex(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasNrm2BatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasNrm2StridedBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, hipblasStride stridex, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    // hipblasRotEx + Batched, StridedBatched
+    hipblasStatus_t hipblasRotEx(hipblasHandle_t handle, int n, *mut void x, hipDataType xType, int incx, *mut void y, hipDataType yType, int incy, *const void c, *const void s, hipDataType csType, hipDataType executionType);
+
+    hipblasStatus_t hipblasRotBatchedEx(hipblasHandle_t handle, int n, *mut void x, hipDataType xType, int incx, *mut void y, hipDataType yType, int incy, *const void c, *const void s, hipDataType csType, int batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasRotStridedBatchedEx(hipblasHandle_t handle, int n, *mut void x, hipDataType xType, int incx, hipblasStride stridex, *mut void y, hipDataType yType, int incy, hipblasStride stridey, *const void c, *const void s, hipDataType csType, int batchCount, hipDataType executionType);
+
+    // hipblasScalEx + Batched, StridedBatched
+    hipblasStatus_t hipblasScalEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int incx, hipDataType executionType);
+
+    hipblasStatus_t hipblasScalBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int incx, int batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasScalStridedBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int incx, hipblasStride stridex, int batchCount, hipDataType executionType);
+
     // SOLVER API
     hipblasStatus_t hipblasSgetrf(hipblasHandle_t handle, int n, *mut float A, int lda, *mut int ipiv, *mut int info);
 
