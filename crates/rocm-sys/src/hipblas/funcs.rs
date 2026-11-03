@@ -1,11 +1,13 @@
 use super::types::*;
 use crate::{hip::*, internal::*};
 
+// TODO: find actual version requirements & support ILP64
+
 #[cfg(feature = "dynamic-loading")]
 use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    hipblas : [7, 8, 9, 10] : rocm_ver;
+    hipblas : rocm_ver;
 
     hipblasStatus_t hipblasCreate(*mut hipblasHandle_t handle);
 

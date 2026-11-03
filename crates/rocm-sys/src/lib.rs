@@ -14,7 +14,7 @@
 #[allow(unused_macros)]
 macro_rules! link {
     (
-        $lib:ident : [$($version:literal),*$(,)?] : $cfg_ver:ident;
+        $lib:ident : $cfg_ver:ident;
 
         $(
             $(
@@ -233,6 +233,7 @@ fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
     let stem = format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}");
 
     let mut out = Vec::with_capacity(1 + rocm_path.is_some() as usize);
+    out.push(format!("{stem}"));
     out.push(format!("/opt/rocm/lib/{stem}"));
     if let Some(rocm_path) = &rocm_path {
         out.push(format!("{rocm_path}/lib/{stem}"));

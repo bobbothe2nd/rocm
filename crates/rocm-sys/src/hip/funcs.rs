@@ -5,7 +5,7 @@ use crate::internal::*;
 use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    amdhip64 : [7, 8, 9, 10] : rocm_ver;
+    amdhip64 : rocm_ver;
 
     hipError_t hipInit(uint flags);
 
