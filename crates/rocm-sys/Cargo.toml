@@ -23,7 +23,7 @@ hip = []
 hiprtc = []
 
 hipblas = ["hip"]
-hipblaslt = ["hip"]
+hipblaslt = ["hip", "hipblas"]
 hipdnn = ["hip"]
 hipfft = ["hip"]
 hiprand = ["hip"]

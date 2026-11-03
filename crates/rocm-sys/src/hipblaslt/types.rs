@@ -1,38 +1,3 @@
-#[repr(i32)]
-#[doc = " \\brief hipblas status codes definition"]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasStatus_t {
-    #[doc = "< Function succeeds"]
-    HIPBLAS_STATUS_SUCCESS = 0,
-    #[doc = "< HIPBLAS library not initialized"]
-    HIPBLAS_STATUS_NOT_INITIALIZED = 1,
-    #[doc = "< resource allocation failed"]
-    HIPBLAS_STATUS_ALLOC_FAILED = 2,
-    #[doc = "< unsupported numerical value was passed to function"]
-    HIPBLAS_STATUS_INVALID_VALUE = 3,
-    #[doc = "< access to GPU memory space failed"]
-    HIPBLAS_STATUS_MAPPING_ERROR = 4,
-    #[doc = "< GPU program failed to execute"]
-    HIPBLAS_STATUS_EXECUTION_FAILED = 5,
-    #[doc = "< an internal HIPBLAS operation failed"]
-    HIPBLAS_STATUS_INTERNAL_ERROR = 6,
-    #[doc = "< function not implemented"]
-    HIPBLAS_STATUS_NOT_SUPPORTED = 7,
-    #[doc = "< architecture mismatch"]
-    HIPBLAS_STATUS_ARCH_MISMATCH = 8,
-    #[doc = "< hipBLAS handle is null pointer"]
-    HIPBLAS_STATUS_HANDLE_IS_NULLPTR = 9,
-    #[doc = "<  unsupported enum value was passed to function"]
-    HIPBLAS_STATUS_INVALID_ENUM = 10,
-    #[doc = "<  back-end returned an unsupported status code"]
-    HIPBLAS_STATUS_UNKNOWN = 11,
-}
-#[doc = " \\brief Struct to represent a 16 bit brain floating point number."]
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct hip_bfloat16 {
-    pub data: u16,
-}
 #[doc = " \\brief Single precision floating point type"]
 pub type hipblasLtFloat = f32;
 #[doc = " \\brief Structure definition for hipblasLtHalf"]
@@ -43,8 +8,7 @@ pub struct _hipblasLtHalf {
 }
 #[doc = " \\brief Structure definition for hipblasLtHalf"]
 pub type hipblasLtHalf = _hipblasLtHalf;
-#[doc = " \\brief Struct to represent a 16 bit brain floating point number."]
-pub type hipblasLtBfloat16 = hip_bfloat16;
+pub type hipblasLtBfloat16 = u16;
 pub type hipblasLtInt8 = i8;
 pub type hipblasLtInt32 = i32;
 #[repr(i32)]
@@ -404,7 +368,7 @@ pub struct _hipblasLtMatmulHeuristicResult_t {
     #[doc = "<Actual size of workspace memory required."]
     pub workspaceSize: usize,
     #[doc = "<Result status. Other fields are valid only if, after call to hipblasLtMatmulAlgoGetHeuristic(), this member is set to HIPBLAS_STATUS_SUCCESS.."]
-    pub state: hipblasStatus_t,
+    pub state: crate::hipblas::hipblasStatus_t,
     #[doc = "<Waves count is a device utilization metric. A wavesCount value of 1.0f suggests that when the kernel is launched it will fully occupy the GPU."]
     pub wavesCount: f32,
     #[doc = "<Reserved."]
