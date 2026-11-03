@@ -1352,8 +1352,8 @@ link! {
         rocblas_int ldd,
         rocblas_datatype compute_type,
         rocblas_gemm_algo algo,
-        i32 solution_index,
-        u32 flags,
+        int32_t solution_index,
+        uint32_t flags,
     );
 
     rocblas_status rocblas_gemm_batched_ex(
@@ -1380,8 +1380,8 @@ link! {
         rocblas_int batch_count,
         rocblas_datatype compute_type,
         rocblas_gemm_algo algo,
-        i32 solution_index,
-        u32 flags,
+        int32_t solution_index,
+        uint32_t flags,
     );
 
     rocblas_status rocblas_gemm_strided_batched_ex(
@@ -1412,8 +1412,8 @@ link! {
         rocblas_int batch_count,
         rocblas_datatype compute_type,
         rocblas_gemm_algo algo,
-        i32 solution_index,
-        u32 flags,
+        int32_t solution_index,
+        uint32_t flags,
     );
 
     // rocblas_gemm_grouped_batched_ex
@@ -1442,7 +1442,7 @@ link! {
         *const rocblas_int group_size,
         rocblas_datatype compute_type,
         rocblas_gemm_algo algo,
-        u32 flags,
+        uint32_t flags,
     );
 
     // rocblas_syrk_ex

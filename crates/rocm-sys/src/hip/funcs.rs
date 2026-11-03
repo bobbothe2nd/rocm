@@ -174,8 +174,8 @@ link! {
     hipError_t hipExtGetLinkTypeAndHopCount(
         int device1,
         int device2,
-        *mut u32 linktype,
-        u32 hopcount,
+        *mut uint32_t linktype,
+        uint32_t hopcount,
     );
 
     hipError_t hipIpcGetMemHandle(
@@ -205,29 +205,29 @@ link! {
 
     hipError_t hipExtModuleLaunchKernel(
         hipFunction_t f,
-        u32 globalWorkSizeX,
-        u32 globalWorkSizeY,
-        u32 globalWorkSizeZ,
-        u32 localWorkSizeX,
-        u32 localWorkSizeY,
-        u32 localWorkSizeZ,
+        uint32_t globalWorkSizeX,
+        uint32_t globalWorkSizeY,
+        uint32_t globalWorkSizeZ,
+        uint32_t localWorkSizeX,
+        uint32_t localWorkSizeY,
+        uint32_t localWorkSizeZ,
         size_t sharedMemBytes,
         hipStream_t hStream,
         *mut *mut void kernelParams,
         *mut *mut void extra,
         hipEvent_t startEvent,
         hipEvent_t stopEvent,
-        u32 flags,
+        uint32_t flags,
     );
 
     hipError_t hipHccModuleLaunchKernel(
         hipFunction_t f,
-        u32 globalWorkSizeX,
-        u32 globalWorkSizeY,
-        u32 globalWorkSizeZ,
-        u32 localWorkSizeX,
-        u32 localWorkSizeY,
-        u32 localWorkSizeZ,
+        uint32_t globalWorkSizeX,
+        uint32_t globalWorkSizeY,
+        uint32_t globalWorkSizeZ,
+        uint32_t localWorkSizeX,
+        uint32_t localWorkSizeY,
+        uint32_t localWorkSizeZ,
         size_t sharedMemBytes,
         hipStream_t hStream,
         *mut *mut void kernelParams,
@@ -389,14 +389,14 @@ link! {
 
     hipError_t hipExtStreamCreateWithCUMask(
         *mut hipStream_t stream,
-        u32 cuMaskSize,
-        *const u32 cuMask,
+        uint32_t cuMaskSize,
+        *const uint32_t cuMask,
     );
 
     hipError_t hipExtStreamGetCUMask(
         hipStream_t stream,
-        u32 cuMaskSize,
-        *mut u32 cuMask,
+        uint32_t cuMaskSize,
+        *mut uint32_t cuMask,
     );
 
     hipError_t hipStreamAddCallback(
@@ -430,25 +430,25 @@ link! {
     hipError_t hipStreamWaitValue32(
         hipStream_t stream,
         *mut void ptr,
-        u32 value,
+        uint32_t value,
         uint flags,
-        u32 mask,
+        uint32_t mask,
     );
 
     #[since = 4 .4, "4.4"]
     hipError_t hipStreamWaitValue64(
         hipStream_t stream,
         *mut void ptr,
-        u64 value,
+        uint64_t value,
         uint flags,
-        u64 mask,
+        uint64_t mask,
     );
 
     #[since = 4 .4, "4.4"]
     hipError_t hipStreamWriteValue32(
         hipStream_t stream,
         *mut void ptr,
-        u32 value,
+        uint32_t value,
         uint flags,
     );
 
@@ -456,7 +456,7 @@ link! {
     hipError_t hipStreamWriteValue64(
         hipStream_t stream,
         *mut void ptr,
-        u64 value,
+        uint64_t value,
         int flags,
     );
 
@@ -730,7 +730,7 @@ link! {
         *const char symbol,
         *mut *mut void pfn,
         int hipVersion,
-        u64 flags,
+        uint64_t flags,
         hipDriverProcAddressQueryResult symbolStatus,
     );
 
@@ -2402,7 +2402,7 @@ link! {
         int flags,
     );
 
-    *const char hipApiName(u32 id);
+    *const char hipApiName(uint32_t id);
 
     *const char hipKernelNameRef(hipFunction_t f);
 
