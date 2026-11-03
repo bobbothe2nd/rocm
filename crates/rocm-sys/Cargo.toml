@@ -53,3 +53,6 @@ required-features = ["hip", "dynamic-loading"]
 [[example]]
 name = "memset"
 required-features = ["hip", "dynamic-loading"]
+
+[dev-dependencies]
+pastey = "0.2.3"

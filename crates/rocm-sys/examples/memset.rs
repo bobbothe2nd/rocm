@@ -1,36 +1,56 @@
 use std::ptr;
 
 use rocm_sys::hip::{
-    hipError_t, hipFree, hipGetDevice, hipMalloc, hipMemsetAsync, hipSetDevice, hipStream_t,
+    hipError_t, hipFree, hipGetDevice, hipMalloc, hipMemsetAsync, hipStream_t,
     hipStreamCreate, hipStreamDestroy, hipStreamSynchronize,
 };
 
 fn main() {
+    println!("trying to get device...");
+
+    let mut device = -1;
     unsafe {
-        let mut device = -1;
         check(hipGetDevice(&mut device), "hipDeviceGet");
-        if device == -1 {
-            unreachable!("device unset with success");
-        }
+    }
+    if device == -1 {
+        unreachable!("device unset with success");
+    }
 
-        check(hipSetDevice(device), "hipSetDevice");
+    println!("creating stream...");
 
-        let mut stream: hipStream_t = ptr::null_mut();
+    let mut stream: hipStream_t = ptr::null_mut();
+    unsafe {
         check(hipStreamCreate(&mut stream), "hipStreamCreate");
+    }
 
-        let mut ptr = ptr::null_mut();
+    println!("allocating buffer...");
+
+    let mut ptr = ptr::null_mut();
+    unsafe {
         check(hipMalloc(&mut ptr, 4096), "hipMalloc");
+    }
 
-        let err = hipMemsetAsync(ptr, 0, 4096, stream);
+    println!("zeroing buffer...");
 
-        println!("hipMemsetAsync = {err:?}");
+    let err = unsafe {
+        hipMemsetAsync(ptr, 0, 4096, stream)
+    };
 
-        check(err, "hipMemsetAsync");
+    println!("  hipMemsetAsync = {err:?}");
 
+    check(err, "hipMemsetAsync");
+
+    println!("synchronizing...");
+
+    unsafe {
         check(hipStreamSynchronize(stream), "hipStreamSynchronize");
+    }
 
-        println!("success");
+    println!("SUCCESS!");
 
+    println!("cleaning up...");
+
+    unsafe {
         check(hipFree(ptr), "hipFree");
         check(hipStreamDestroy(stream), "hipStreamDestroy");
     }

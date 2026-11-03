@@ -88,7 +88,7 @@ If the shared library is present on the system under a different name than one o
                         assert!(major >= $major_version && minor >= $minor_version, concat!(stringify!($name), " requires ", stringify!($library), " version ^{}.{}"), major, minor);
                     )?
 
-                    *$lib.get::<F>(concat!(stringify!($name), "\0")).unwrap()
+                    *$lib.get::<F>(stringify!($name)).unwrap()
                 });
 
                 unsafe {
@@ -117,6 +117,48 @@ If the shared library is present on the system under a different name than one o
                 unsafe fn $name(
                     $($arg: $(*$mut)* $arg_ty),*
                 ) -> $(*$ret_mut)* $ret;
+            }
+
+            $(
+                #[$cfg_internal(feature = "internal")]
+            )?
+            #[cfg(any(
+                feature = "dynamic-loading",
+                all(
+                    not(feature = "dynamic-loading"),
+                    $(
+                        $cfg_ver = $version_string
+                    )?
+                ),
+            ))]
+            $($(#[$cfg_strong(feature = "deprecated")])?)?
+            #[cfg(test)]
+            pastey::paste! {
+                #[test]
+                fn [<test_$name>]() {
+                    #[cfg(feature = "dynamic-loading")]
+                    {
+                        type F = unsafe extern "C" fn(
+                            $($(*$mut)* $arg_ty),*
+                        ) -> $(*$ret_mut)* $ret;
+
+                        let f: F = unsafe {
+                            $(
+                                let major = *MAJOR;
+                                let minor = *MINOR;
+
+                                if !(major >= $major_version && minor >= $minor_version) { return; }
+                            )?
+
+                            *$lib.get::<F>(stringify!($name)).unwrap()
+                        };
+                        let _ = ::core::hint::black_box(f);
+                    }
+                    #[cfg(not(feature = "dynamic-loading"))]
+                    {
+                        let _ = ::core::hint::black_box($name);
+                    }
+                }
             }
         )*
     };
@@ -185,26 +227,15 @@ pub fn is_rocfft_present() -> bool {
 #[cfg(feature = "dynamic-loading")]
 fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
     use std::env::consts::{DLL_PREFIX, DLL_SUFFIX};
-    use crate::version::{ROCM_MAJOR, ROCM_MINOR};
 
     let rocm_path = std::env::var("ROCM_PATH").ok();
 
-    let major = *ROCM_MAJOR;
-    let minor = *ROCM_MINOR;
+    let stem = format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}");
 
-    let stems = [
-        format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}"),
-        format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}.{major}"),
-        format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}.{major}.{minor}"),
-    ];
-
-    let mut out = Vec::with_capacity(stems.len() * (2 + rocm_path.is_some() as usize));
-    for stem in &stems {
-        out.push(stem.clone());
-        out.push(format!("/opt/rocm/lib/{stem}"));
-        if let Some(rocm_path) = &rocm_path {
-            out.push(format!("{rocm_path}/lib/{stem}"));
-        }
+    let mut out = Vec::with_capacity(1 + rocm_path.is_some() as usize);
+    out.push(format!("/opt/rocm/lib/{stem}"));
+    if let Some(rocm_path) = &rocm_path {
+        out.push(format!("{rocm_path}/lib/{stem}"));
     }
     out
 }
