@@ -125,14 +125,17 @@ If the shared library is present on the system under a different name than one o
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
 pub mod hip;
 
+#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
+pub mod hiprtc;
+
 #[cfg(all(feature = "hipblas", any(feature = "dynamic-loading", hipblas)))]
 pub mod hipblas;
 
 #[cfg(all(feature = "hipblaslt", any(feature = "dynamic-loading", hipblaslt)))]
 pub mod hipblaslt;
 
-#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
-pub mod hiprtc;
+#[cfg(all(feature = "hipfft", any(feature = "dynamic-loading", hipfft)))]
+pub mod hipfft;
 
 #[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
 pub mod rocblas;
