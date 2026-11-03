@@ -1,18 +1,3 @@
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct float2 {
-    pub x: f32,
-    pub y: f32,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct double2 {
-    pub x: f64,
-    pub y: f64,
-}
-pub type hipFloatComplex = float2;
-pub type hipDoubleComplex = double2;
-pub type hipComplex = hipFloatComplex;
 #[repr(i32)]
 #[doc = " @brief Result/status/error codes"]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -86,9 +71,9 @@ pub struct hipfftHandle_t {
 }
 pub type hipfftHandle = *mut hipfftHandle_t;
 #[doc = " @brief Single-precision floating point complex type"]
-pub type hipfftComplex = hipComplex;
+pub type hipfftComplex = crate::hip::hipComplex;
 #[doc = " @brief Double-precision floating point complex type"]
-pub type hipfftDoubleComplex = hipDoubleComplex;
+pub type hipfftDoubleComplex = crate::hip::hipDoubleComplex;
 #[doc = " @brief Single-precision floating point type"]
 pub type hipfftReal = f32;
 #[doc = " @brief Double-precision floating point type"]
