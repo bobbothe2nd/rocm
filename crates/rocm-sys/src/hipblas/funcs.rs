@@ -1,6 +1,9 @@
 use super::types::*;
 use crate::{hip::*, internal::*};
 
+#[cfg(feature = "dynamic-loading")]
+use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
+
 link! {
     hipblas : [7, 8, 9, 10] : rocm_ver;
 
@@ -857,8 +860,10 @@ link! {
 
     hipblasStatus_t hipblasZgemmBatched(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex BP, int ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int ldc, int batchCount);
 
+    #[since = 10 .1, "10.1"]
     hipblasStatus_t hipblasSgemmGroupedBatched(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int m_array, *const int n_array, *const int k_array, *const float alpha_array, *const *const float Aarray, *const int lda_array, *const *const float Barray, *const int ldb_array, *const float beta_array, *const *mut float Carray, *const int ldc_array, int group_count, *const int group_size);
 
+    #[since = 10 .1, "10.1"]
     hipblasStatus_t hipblasDgemmGroupedBatched(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int m_array, *const int n_array, *const int k_array, *const double alpha_array, *const *const double Aarray, *const int lda_array, *const *const double Barray, *const int ldb_array, *const double beta_array, *const *mut double Carray, *const int ldc_array, int group_count, *const int group_size);
 
     hipblasStatus_t hipblasHgemmStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const hipblasHalf alpha, *const hipblasHalf AP, int lda, longlong strideA, *const hipblasHalf BP, int ldb, longlong strideB, *const hipblasHalf beta, *mut hipblasHalf CP, int ldc, longlong strideC, int batchCount);
@@ -1142,6 +1147,7 @@ link! {
 
     hipblasStatus_t hipblasGemmBatchedEx(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const void alpha, *mut *const void A, hipDataType aType, int lda, *mut *const void B, hipDataType bType, int ldb, *const void beta, *mut *mut void C, hipDataType cType, int ldc, int batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
 
+    #[since = 10 .1, "10.1"]
     hipblasStatus_t hipblasGemmGroupedBatchedEx(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int m_array, *const int n_array, *const int k_array, *const void alpha_array, *const *const void Aarray, hipDataType aType, *const int lda_array, *const *const void Barray, hipDataType bType, *const int ldb_array, *mut *const void beta_array, *const *const void Carray, hipDataType cType, *const *const int ldc_array, *const *mut void Darray, hipDataType dType, *const int ldd_array, int group_count, *const int group_size, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
 
     hipblasStatus_t hipblasGemmStridedBatchedEx(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, hipblasStride strideA, *const void B, hipDataType bType, int ldb, hipblasStride strideB, *const void beta, *mut void C, hipDataType cType, int ldc, hipblasStride strideC, int batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);

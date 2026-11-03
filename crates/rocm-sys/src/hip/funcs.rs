@@ -36,12 +36,14 @@ link! {
         hipDevice_t device,
     );
 
+    /*
     #[since = 5 .1, "5.1"]
     hipError_t hipDeviceGetLuid(
         *mut char luid,
         *mut uint deviceNodeMask,
         hipDevice_t device,
     );
+    */
 
     hipError_t hipDeviceGetP2PAttribute(
         *mut int value,
@@ -159,11 +161,13 @@ link! {
         uint flags,
     );
 
+    /*
     hipError_t hipInitDevice(
         int device,
         uint deviceFlags,
         uint flags,
     );
+    */
 
     /// assumes hipDeviceProp_tR0600=hipDeviceProp_t
     hipError_t hipChooseDevice(
