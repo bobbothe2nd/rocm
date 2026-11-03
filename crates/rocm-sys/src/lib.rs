@@ -96,24 +96,24 @@ If the shared library is present on the system under a different name than one o
                 }
             }
 
-            unsafe extern "C" {
+            $(
+                #[$cfg_internal(feature = "internal")]
+            )?
+            #[cfg(all(
+                not(feature = "dynamic-loading"),
                 $(
-                    #[$cfg_internal(feature = "internal")]
+                    $cfg_ver = $version_string
                 )?
+            ))]
+            $($(#[$cfg_strong(feature = "deprecated")])?)?
+            unsafe extern "C" {
                 $(
                     #[doc = $docs]
                 )*
                 $(
-                    $(#[$cfg_strong(feature = "deprecated")])?
                     #[deprecated = $note]
                 )?
                 #[inline]
-                #[cfg(all(
-                    not(feature = "dynamic-loading"),
-                    $(
-                        $cfg_ver = $version_string
-                    )?
-                ))]
                 unsafe fn $name(
                     $($arg: $(*$mut)* $arg_ty),*
                 ) -> $(*$ret_mut)* $ret;
@@ -147,24 +147,39 @@ pub mod version;
 
 pub mod internal;
 
-#[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
+#[cfg(all(feature = "hip", feature = "dynamic-loading"))]
 pub fn is_amdhip64_present() -> bool {
     hip::amdhip64::is_rocm_lib_present()
 }
 
-#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
+#[cfg(all(feature = "hiprtc", feature = "dynamic-loading"))]
 pub fn is_hiprtc_present() -> bool {
     hiprtc::hiprtc::is_rocm_lib_present()
 }
 
-#[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
+#[cfg(all(feature = "rocblas", feature = "dynamic-loading"))]
 pub fn is_rocblas_present() -> bool {
     rocblas::rocblas::is_rocm_lib_present()
 }
 
-#[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
+#[cfg(all(feature = "hipblas", feature = "dynamic-loading"))]
 pub fn is_hipblas_present() -> bool {
     hipblas::hipblas::is_rocm_lib_present()
+}
+
+#[cfg(all(feature = "hipblaslt", feature = "dynamic-loading"))]
+pub fn is_hipblaslt_present() -> bool {
+    hipblaslt::hipblaslt::is_rocm_lib_present()
+}
+
+#[cfg(all(feature = "hipfft", feature = "dynamic-loading"))]
+pub fn is_hipfft_present() -> bool {
+    hipfft::hipfft::is_rocm_lib_present()
+}
+
+#[cfg(all(feature = "rocfft", feature = "dynamic-loading"))]
+pub fn is_rocfft_present() -> bool {
+    rocfft::rocfft::is_rocm_lib_present()
 }
 
 #[cfg(feature = "dynamic-loading")]
