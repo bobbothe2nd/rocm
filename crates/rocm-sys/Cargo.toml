@@ -21,7 +21,7 @@ hip = []
 hiprtc = []
 
 hipblas = ["hip"]
-hipblaslt = ["hip", "hipblas"]
+hipblaslt = ["hipblas"]
 hipdnn = ["hip"]
 hipfft = ["hip"]
 hiprand = ["hip"]

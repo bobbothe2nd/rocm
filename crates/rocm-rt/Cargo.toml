@@ -22,7 +22,7 @@ hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]
 
 hipblas = ["rocm-sys/hipblas", "hip"]
-hipblaslt = ["rocm-sys/hipblaslt", "hip"]
+hipblaslt = ["rocm-sys/hipblaslt", "hipblas"]
 hipdnn = ["rocm-sys/hipdnn", "hip"]
 hipfft = ["rocm-sys/hipfft", "hip"]
 hiprand = ["rocm-sys/hiprand", "hip"]

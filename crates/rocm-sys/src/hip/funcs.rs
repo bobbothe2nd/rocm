@@ -108,13 +108,13 @@ link! {
         *mut hipMemPool_t mem_pool,
     );
 
-    /// assumes hipDeviceProp_tR0600=hipDeviceProp_t
+    /// assumes hipDeviceProp_t=hipDeviceProp_t
     hipError_t hipGetDeviceProperties(
-        *mut hipDeviceProp_tR0600 prop,
+        *mut hipDeviceProp_t prop,
         int deviceId,
     );
 
-    #[since = 5 .0, "5.0"]
+    #[since = 6 .0, "6.0"]
     hipError_t hipGetDevicePropertiesR0600(
         *mut hipDeviceProp_tR0600 prop,
         int deviceId,
@@ -169,10 +169,10 @@ link! {
     );
     */
 
-    /// assumes hipDeviceProp_tR0600=hipDeviceProp_t
+    /// assumes hipDeviceProp_t=hipDeviceProp_tR0600 for HIP ^6.0
     hipError_t hipChooseDevice(
         *mut int device,
-        *const hipDeviceProp_tR0600 prop,
+        *const hipDeviceProp_t prop,
     );
 
     hipError_t hipExtGetLinkTypeAndHopCount(

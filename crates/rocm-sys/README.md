@@ -8,6 +8,12 @@ This project is not affiliated with, endorsed by, or sponsored by Advanced Micro
 
 ROCm and AMD are trademarks of Advanced Micro Devices, Inc.
 
+## Breaking Changes
+
+This crate doesn't consider correcting a functions version requirement a breaking change because it has no effect on the validity of code. Any statically-linked code that compiles for a given target will still compile, but the code will support a wider range of targets. Any dynamically-loaded code that doesn't panic is now less likely to panic on older machines.
+
+This does, however, mean you can't rely on panicking or compile errors for detecting undefined symbols.
+
 ## Usage
 
 This is a very unsafe and low-level API. For a safer API, use `rocm-rt`.
