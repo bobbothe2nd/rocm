@@ -235,10 +235,7 @@ fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
 }
 
 #[cfg(feature = "dynamic-loading")]
-static HIP_VER: std::sync::LazyLock<Option<(u32, u32)>> = std::sync::LazyLock::new(hip_runtime_version);
-
-#[cfg(feature = "dynamic-loading")]
-fn hip_runtime_version() -> Option<(u32, u32)> {
+static HIP_VER: std::sync::LazyLock<Option<(u32, u32)>> = std::sync::LazyLock::new(|| {
     fn parse_define(contents: &str, name: &str) -> Option<u32> {
         contents
             .lines()
@@ -273,4 +270,4 @@ fn hip_runtime_version() -> Option<(u32, u32)> {
     }
 
     None
-}
+});
