@@ -1,8 +1,8 @@
 use std::ptr;
 
 use rocm_sys::hip::{
-    hipError_t, hipFree, hipGetDevice, hipMalloc, hipMemsetAsync, hipStream_t,
-    hipStreamCreate, hipStreamDestroy, hipStreamSynchronize,
+    hipError_t, hipFree, hipGetDevice, hipMalloc, hipMemsetAsync, hipStream_t, hipStreamCreate,
+    hipStreamDestroy, hipStreamSynchronize,
 };
 
 fn main() {
@@ -32,9 +32,7 @@ fn main() {
 
     println!("zeroing buffer...");
 
-    let err = unsafe {
-        hipMemsetAsync(ptr, 0, 4096, stream)
-    };
+    let err = unsafe { hipMemsetAsync(ptr, 0, 4096, stream) };
 
     println!("  hipMemsetAsync = {err:?}");
 

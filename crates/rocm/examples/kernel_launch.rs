@@ -1,12 +1,7 @@
 use core::mem::transmute;
 
-use rocm_rt::{
-    hip::{
-        device::Device,
-        graph::{GraphInstantiateFlags, StreamCaptureMode},
-        module::LaunchConfig,
-        stream::HipStream,
-    },
+use rocm::{
+    hip::{device::Device, module::LaunchConfig, stream::HipStream},
     hiprtc::program::{CompileOptions, Hsaco},
 };
 
@@ -50,20 +45,21 @@ fn main() {
     let a = stream.alloc(BYTES).unwrap();
     let b = stream.alloc(BYTES).unwrap();
 
-    let a_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
+    {
+        let a_host = {
+            let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
 
-        stream.alloc_host_init(&buf).unwrap()
-    };
+            stream.alloc_host_init(&buf).unwrap()
+        };
+        let b_host = {
+            let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
 
-    let b_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
+            stream.alloc_host_init(&buf).unwrap()
+        };
 
-        stream.alloc_host_init(&buf).unwrap()
-    };
-
-    a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
-    b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
+        a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
+        b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
+    }
 
     let mut out_ptr = out.as_ptr();
     let mut a_ptr = a.as_ptr();
@@ -82,29 +78,20 @@ fn main() {
         block: [128, 1, 1],
     };
 
-    let graph = stream
-        .capture(StreamCaptureMode::Global, |stream| unsafe {
-            stream.launch(&func, &mut args, conf)
-        })
-        .unwrap();
-
-    let exec = graph.init(GraphInstantiateFlags::empty()).unwrap();
-
     unsafe {
-        exec.upload(&stream).unwrap();
-        stream.launch_graph(&exec).unwrap();
+        stream.launch(&func, &mut args, conf).unwrap();
     }
 
-    stream.sync().unwrap();
-
     let out_host = stream.alloc_host(BYTES).unwrap();
+
+    stream.sync().unwrap();
 
     out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
 
     for chunk in out_host.as_slice().chunks(size_of::<f32>()) {
-        let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
-        let value = f32::from_ne_bytes(bytes);
+        let u8x4: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
+        let float = f32::from_ne_bytes(u8x4);
 
-        assert_eq!(value, A_VAL + B_VAL);
+        assert_eq!(float, A_VAL + B_VAL);
     }
 }

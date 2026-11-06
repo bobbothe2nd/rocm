@@ -1,4 +1,4 @@
-#![allow(clippy::unnecessary_cast)]
+#![allow(clippy::unnecessary_cast, clippy::missing_safety_doc)]
 #![no_std]
 
 extern crate alloc;

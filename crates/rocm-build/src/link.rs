@@ -1,4 +1,4 @@
-use crate::ver::{
+use rocm_core::consts::{
     // KNOWN_HIPBLAS_VERSIONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
     KNOWN_ROCM_VERSIONS,
 };
@@ -150,7 +150,7 @@ pub fn check_cfg() {
         .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(hip_ver, values({rocm_ver}))");
+    println!("cargo:rustc-check-cfg=cfg(rocm_ver, values({rocm_ver}))");
 
     /*
     let rocblas_ver = KNOWN_ROCBLAS_VERSIONS

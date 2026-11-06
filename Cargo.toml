@@ -1,7 +1,8 @@
 [workspace]
 members = [
-    "crates/rocm-rt",
+    "crates/rocm",
     "crates/rocm-build",
     "crates/rocm-sys",
+    "crates/rocm-core",
 ]
 resolver = "3"

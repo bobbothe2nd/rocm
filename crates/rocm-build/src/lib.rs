@@ -1,5 +1,4 @@
 pub mod link;
-pub mod ver;
 
 macro_rules! build {
     ($($link:ident)?) => {
@@ -8,25 +7,24 @@ macro_rules! build {
         let roots = $crate::link::rocm_roots();
         let mut found_rocm_ver = false;
 
-        if let Some(version) = $crate::ver::find_rocm_version(&roots) {
+        if let Some(version) = ::rocm_core::ver::find_rocm_version(&roots) {
             found_rocm_ver = true;
-            $crate::ver::cfg_version("hip_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
+            $crate::cfg_version("rocm_ver", version, ::rocm_core::consts::KNOWN_ROCM_VERSIONS);
         }
 
-        if let Some(component) = $crate::link::find_component(
+        if let Some(_component) = $crate::link::find_component(
             &roots,
             &["hip_runtime_api.h", "hip_runtime.h"],
             &["amdhip64"],
         ) {
             if !found_rocm_ver {
-                let version = $crate::ver::hip_runtime_version(&component.include_dir)
-                    .expect("failed to determine HIP runtime version");
-                $crate::ver::cfg_version("hip_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
+                let version = ::rocm_core::ver::ROCM_VERSION.expect("failed to determine HIP runtime version");
+                $crate::cfg_version("rocm_ver", version, ::rocm_core::consts::KNOWN_ROCM_VERSIONS);
             }
 
             $(
                 let $link = ();
-                $crate::link::link_component(&component);
+                $crate::link::link_component(&_component);
             )?
 
             println!("cargo:rustc-cfg=hip");
@@ -85,4 +83,16 @@ pub fn build_version_cfg() {
 /// Adds cargo `#[cfg]`, links libraries, and finds available versions.
 pub fn build_version_cfg_link() {
     build!(_link);
+}
+
+fn cfg_version(cfg: &str, version: rocm_core::ver::Version, known: &[&str]) {
+    let formatted = format!("{}.{}", version.major, version.minor);
+    let index = known
+        .iter()
+        .position(|x| *x == formatted.as_str())
+        .unwrap_or(known.len() - 1);
+
+    for version in &known[index..] {
+        println!("cargo:rustc-cfg={cfg}=\"{}\"", version);
+    }
 }

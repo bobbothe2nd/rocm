@@ -7,12 +7,12 @@ use crate::{hip::*, internal::*};
 use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    hipblas : hip_ver;
+    hipblas : rocm_ver;
 
     hipblasStatus_t hipblasCreate(*mut hipblasHandle_t handle);
 
     hipblasStatus_t hipblasDestroy(hipblasHandle_t handle);
-    
+
     hipblasStatus_t hipblasSetStream(hipblasHandle_t handle, hipStream_t streamId);
 
     hipblasStatus_t hipblasGetStream(hipblasHandle_t handle, *mut hipStream_t streamId);
@@ -123,7 +123,7 @@ link! {
     hipblasStatus_t hipblasDasumStridedBatched(hipblasHandle_t handle, int n, *const double x, int incx, hipblasStride stridex, int batchCount, *mut double result);
 
     hipblasStatus_t hipblasScasumStridedBatched(hipblasHandle_t handle, int n, *const hipComplex x, int incx, hipblasStride stridex, int batchCount, *mut float result);
-    
+
     hipblasStatus_t hipblasDzasumStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount, *mut double result);
 
     hipblasStatus_t hipblasHaxpy(hipblasHandle_t handle, int n, *const hipblasHalf alpha, *const hipblasHalf x, int incx, *mut hipblasHalf y, int incy);
@@ -131,7 +131,7 @@ link! {
     hipblasStatus_t hipblasSaxpy(hipblasHandle_t handle, int n, *const float alpha, *const float x, int incx, *mut float y, int incy);
 
     hipblasStatus_t hipblasDaxpy(hipblasHandle_t handle, int n, *const double alpha, *const double x, int incx, *mut double y, int incy);
-    
+
     hipblasStatus_t hipblasCaxpy(hipblasHandle_t handle, int n, *const hipComplex alpha, *const hipComplex x, int incx, *mut hipComplex y, int incy);
 
     hipblasStatus_t hipblasZaxpy(hipblasHandle_t handle, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, *mut hipDoubleComplex y, int incy);
@@ -389,7 +389,7 @@ link! {
     hipblasStatus_t hipblasZswapBatched(hipblasHandle_t handle, int n, *const *mut hipDoubleComplex x, int incx, *const *mut hipDoubleComplex y, int incy, int batchCount);
 
     hipblasStatus_t hipblasSswapStridedBatched(hipblasHandle_t handle, int n, *mut float x, int incx, hipblasStride stridex, *mut float y, int incy, hipblasStride stridey, int batchCount);
-    
+
     hipblasStatus_t hipblasDswapStridedBatched(hipblasHandle_t handle, int n, *mut double x, int incx, hipblasStride stridex, *mut double y, int incy, hipblasStride stridey, int batchCount);
 
     hipblasStatus_t hipblasCswapStridedBatched(hipblasHandle_t handle, int n, *mut hipComplex x, int incx, hipblasStride stridex, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
@@ -718,7 +718,7 @@ link! {
     hipblasStatus_t hipblasDtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const double AP, int lda, hipblasStride strideA, *mut double x, int incx, hipblasStride stridex, int batchCount);
 
     hipblasStatus_t hipblasCtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
-    
+
     hipblasStatus_t hipblasZtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
 
     hipblasStatus_t hipblasStbsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, *mut float x, int incx);

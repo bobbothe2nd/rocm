@@ -1,5 +1,5 @@
 [package]
-name = "rocm-rt"
+name = "rocm"
 description = "ROCm abstraction runtime core"
 version = "0.3.0"
 edition = "2024"

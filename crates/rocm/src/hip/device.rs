@@ -7,8 +7,8 @@ use alloc::string::{String, ToString};
 
 use rocm_sys::hip::{
     hipDevice_t, hipDeviceAttribute_t, hipDeviceGetAttribute, hipDeviceGetDefaultMemPool,
-    hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset,
-    hipDeviceSetLimit, hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags,
+    hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset, hipDeviceSetLimit,
+    hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags,
     hipGetDevicePropertiesR0600, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
 };
 

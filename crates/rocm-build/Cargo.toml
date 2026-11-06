@@ -7,3 +7,6 @@ license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
 documentation = "https://docs.rs/crate/rocm-build/latest"
 categories = ["development-tools::build-utils"]
+
+[dependencies]
+rocm-core = { path = "../rocm-core", version = "0.1", features = ["std"] }

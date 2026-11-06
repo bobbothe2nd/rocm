@@ -1,6 +1,6 @@
 use core::mem::transmute;
 
-use rocm_rt::{
+use rocm::{
     hip::{
         device::Device,
         graph::{Graph, GraphInstantiateFlags, KernelParams},

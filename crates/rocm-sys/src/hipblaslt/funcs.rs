@@ -1,11 +1,11 @@
 use super::types::*;
-use crate::{internal::*, hip::*, hipblas::*};
+use crate::{hip::*, hipblas::*, internal::*};
 
 // #[cfg(feature = "dynamic-loading")]
 // use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    hipblaslt : hip_ver;
+    hipblaslt : rocm_ver;
 
     hipblasStatus_t hipblasLtCreate(*mut hipblasLtHandle_t handle);
 

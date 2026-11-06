@@ -76,9 +76,9 @@ If the shared library is present on the system under a different name than one o
                 ) -> $(*$ret_mut)* $ret;
                 static SYMBOL: ::std::sync::LazyLock<F> = ::std::sync::LazyLock::new(|| unsafe {
                     $(
-                        let ver = $crate::HIP_VER.expect("failed to get HIP version");
-                        let min_ver = ($major_version, $minor_version);
-                        assert!(ver >= min_ver, ::core::concat!(::core::stringify!($name), " requires ", ::core::stringify!($lib), " version ^", ::core::stringify!($major_version), ".", ::core::stringify!($minor_version), ", found {}.{}"), ver.0, ver.1);
+                        let ver = ::rocm_core::ver::ROCM_VERSION.expect("failed to get HIP version");
+                        let min_ver = ::rocm_core::ver::Version { major: $major_version, minor: $minor_version };
+                        assert!(ver >= min_ver, ::core::concat!(::core::stringify!($name), " requires ", ::core::stringify!($lib), " version ^", ::core::stringify!($major_version), ".", ::core::stringify!($minor_version), ", found {}.{}"), ver.major, ver.minor);
                     )?
                     *$lib.get::<F>(::core::stringify!($name)).unwrap()
                 });
@@ -134,8 +134,9 @@ If the shared library is present on the system under a different name than one o
                         ) -> $(*$ret_mut)* $ret;
                         let f: F = unsafe {
                             $(
-                                let Some((major, minor)) = *$crate::HIP_VER else { return; };
-                                if !(major >= $major_version && minor >= $minor_version) { return; }
+                                let Some(ver) = *::rocm_core::ver::ROCM_VERSION else { return; };
+                                let min_ver = ::rocm_core::ver::Version { major: $major_version, minor: $minor_version };
+                                if ver < min_ver { return; }
                             )?
                             *$lib.get::<F>(::core::stringify!($name)).unwrap()
                         };
@@ -218,48 +219,10 @@ fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
     let stem = format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}");
 
     let mut out = Vec::with_capacity(2 + rocm_path.is_some() as usize);
-    out.push(format!("{stem}"));
+    out.push(stem.clone());
     out.push(format!("/opt/rocm/lib/{stem}"));
     if let Some(rocm_path) = &rocm_path {
         out.push(format!("{rocm_path}/lib/{stem}"));
     }
     out
 }
-
-#[cfg(feature = "dynamic-loading")]
-static HIP_VER: std::sync::LazyLock<Option<(u32, u32)>> = std::sync::LazyLock::new(|| {
-    fn parse_define(contents: &str, name: &str) -> Option<u32> {
-        contents
-            .lines()
-            .find_map(|line| {
-                let mut parts = line.split_whitespace();
-
-                if parts.next()? == "#define" && parts.next()? == name {
-                    parts.next()?.parse().ok()
-                } else {
-                    None
-                }
-            })
-    }
-
-    let rocm_path = std::env::var("ROCM_PATH").ok();
-
-    let mut headers = Vec::with_capacity(1 + rocm_path.is_some() as usize);
-    headers.push(format!("/opt/rocm/include/rocm-core/rocm_version.h"));
-    if let Some(rocm_path) = &rocm_path {
-        headers.push(format!("{rocm_path}/include/rocm-core/rocm_version.h"));
-    }
-
-    for header in headers {
-        let Ok(contents) = std::fs::read_to_string(&header) else {
-            continue;
-        };
-
-        let major = parse_define(&contents, "ROCM_VERSION_MAJOR")?;
-        let minor = parse_define(&contents, "ROCM_VERSION_MINOR")?;
-
-        return Some((major, minor));
-    }
-
-    None
-});

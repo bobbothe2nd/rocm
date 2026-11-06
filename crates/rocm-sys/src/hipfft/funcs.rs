@@ -1,5 +1,5 @@
 use super::types::*;
-use crate::{internal::*, hip::*};
+use crate::{hip::*, internal::*};
 
 // #[cfg(feature = "dynamic-loading")]
 // use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
@@ -7,7 +7,7 @@ use crate::{internal::*, hip::*};
 // TODO: support hipFFTW, callback APIs, and memory management APIs
 
 link! {
-    hipfft : hip_ver;
+    hipfft : rocm_ver;
 
     hipfftResult hipfftPlan1d(*mut hipfftHandle plan, int nx, hipfftType type_, int batch);
 

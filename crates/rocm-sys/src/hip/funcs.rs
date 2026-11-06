@@ -2,7 +2,7 @@ use super::types::*;
 use crate::internal::*;
 
 link! {
-    amdhip64 : hip_ver;
+    amdhip64 : rocm_ver;
 
     hipError_t hipInit(uint flags);
 
@@ -298,14 +298,12 @@ link! {
         uint flags,
     );
 
-    #[since = 6 .5, "6.5"]
     hipError_t hipLaunchKernelExC(
         *const hipLaunchConfig_t config,
         *const void fPtr,
         *mut *mut void args,
     );
 
-    #[since = 6 .5, "6.5"]
     hipError_t hipDrvLaunchKernelEx(
         *const HIP_LAUNCH_CONFIG config,
         hipFunction_t f,
@@ -427,7 +425,6 @@ link! {
         hipStream_t src,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipStreamWaitValue32(
         hipStream_t stream,
         *mut void ptr,
@@ -436,7 +433,6 @@ link! {
         uint32_t mask,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipStreamWaitValue64(
         hipStream_t stream,
         *mut void ptr,
@@ -445,7 +441,6 @@ link! {
         uint64_t mask,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipStreamWriteValue32(
         hipStream_t stream,
         *mut void ptr,
@@ -453,7 +448,6 @@ link! {
         uint flags,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipStreamWriteValue64(
         hipStream_t stream,
         *mut void ptr,
@@ -1018,7 +1012,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipMemcpy2DToArrayAsync(
         hipArray_t dst,
         size_t wOffset,
@@ -1174,14 +1167,12 @@ link! {
     );
 
     /// This API is currently not supported on Linux.
-    #[since = 4 .3, "4.3"]
     hipError_t hipImportExternalSemaphore(
         *mut hipExternalSemaphore_t extSem_out,
         *const hipExternalSemaphoreHandleDesc semHandleDesc,
     );
 
     /// This API is currently not supported on Linux.
-    #[since = 4 .3, "4.3"]
     hipError_t hipSignalExternalSemaphoresAsync(
         *const hipExternalSemaphore_t extSemArray,
         *const hipExternalSemaphoreSignalParams paramsArray,
@@ -1198,23 +1189,19 @@ link! {
     );
 
     /// This API is currently not supported on Linux.
-    #[since = 4 .3, "4.3"]
     hipError_t hipDestroyExternalSemaphore(hipExternalSemaphore_t extSem);
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipImportExternalMemory(
         *mut hipExternalMemory_t extMem_out,
         *const hipExternalMemoryHandleDesc memHandleDesc,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipExternalMemoryGetMappedBuffer(
         *mut *mut void devPtr,
         hipExternalMemory_t extMem,
         *const hipExternalMemoryBufferDesc bufferDesc,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipDestroyExternalMemory(hipExternalMemory_t extMem);
 
     hipError_t hipExternalMemoryGetMappedMipmappedArray(
@@ -1371,7 +1358,7 @@ link! {
         hipMemAllocationType ty,
     );
 
-    #[since = 7 .15, "7.15"]
+    #[since = 10 .0, "10.0"]
     hipError_t hipMemGetDefaultMemPool(
         *mut hipMemPool_t memPool,
         *mut hipMemLocation location,
@@ -2321,14 +2308,12 @@ link! {
         int blockSize,
     );
 
-    #[since = 6 .5, "6.5"]
     hipError_t hipOccupancyMaxActiveClusters(
         *mut int numClusters,
         *const void f,
         *const hipLaunchConfig_t config,
     );
 
-    #[since = 6 .5, "6.5"]
     hipError_t hipOccupancyMaxPotentialClusterSize(
         *mut int clusterSize,
         *const void f,
@@ -2388,7 +2373,6 @@ link! {
         *mut void userData,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipDrvMemcpy2DUnaligned(*const hip_Memcpy2D pCopy);
 
     hipError_t hipExtLaunchKernel(
@@ -2414,7 +2398,6 @@ link! {
 
     int hipGetStreamDeviceId(hipStream_t stream);
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipStreamBeginCapture(
         hipStream_t stream,
         hipStreamCaptureMode mode,
@@ -2433,20 +2416,17 @@ link! {
         hipStreamCaptureMode mode,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipStreamEndCapture(
         hipStream_t stream,
         *mut hipGraph_t pGraph,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipStreamGetCaptureInfo(
         hipStream_t stream,
         *mut hipStreamCaptureStatus pCaptureStatus,
         *mut ulonglong pId,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipStreamGetCaptureInfo_v2(
         hipStream_t stream,
         *mut hipStreamCaptureStatus captureStatus_out,
@@ -2456,13 +2436,11 @@ link! {
         *mut size_t numDependencies_out,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipStreamIsCapturing(
         hipStream_t stream,
         *mut hipStreamCaptureStatus pCaptureStatus,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipStreamUpdateCaptureDependencies(
         hipStream_t stream,
         *mut hipGraphNode_t dependencies,
@@ -2473,16 +2451,13 @@ link! {
     #[since = 5 .0, "5.0"]
     hipError_t hipThreadExchangeStreamCaptureMode(*mut hipStreamCaptureMode mode);
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphCreate(
         *mut hipGraph_t pGraph,
         uint flags,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphDestroy(hipGraph_t graph);
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphAddDependencies(
         hipGraph_t graph,
         *const hipGraphNode_t from,
@@ -2490,7 +2465,6 @@ link! {
         size_t numDependencies,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphRemoveDependencies(
         hipGraph_t graph,
         *const hipGraphNode_t from,
@@ -2498,7 +2472,6 @@ link! {
         size_t numDependencies,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphGetEdges(
         hipGraph_t graph,
         *mut hipGraphNode_t from,
@@ -2506,57 +2479,48 @@ link! {
         *mut size_t numEdges,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphGetNodes(
         hipGraph_t graph,
         *mut hipGraphNode_t nodes,
         *mut size_t numNodes,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphGetRootNodes(
         hipGraph_t graph,
         *mut hipGraphNode_t pRootNodes,
         *mut size_t pNumRootNodes,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphNodeGetDependencies(
         hipGraphNode_t node,
         *mut hipGraphNode_t pDependencies,
         *mut size_t pNumDependencies,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphNodeGetDependentNodes(
         hipGraphNode_t node,
         *mut hipGraphNode_t pDependentNodes,
         *mut size_t pNumDependentNodes,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphNodeGetType(
         hipGraphNode_t node,
         *mut hipGraphNodeType pType,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphDestroyNode(hipGraphNode_t node);
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphClone(
         *mut hipGraph_t pGraphClone,
         hipGraph_t originalGraph,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphNodeFindInClone(
         *mut hipGraphNode_t pNode,
         hipGraphNode_t originalNode,
         hipGraph_t clonedGraph,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphInstantiate(
         *mut hipGraphExec_t pGraphExec,
         hipGraph_t graph,
@@ -2565,7 +2529,6 @@ link! {
         size_t bufferSize,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphInstantiateWithFlags(
         *mut hipGraphExec_t pGraphExec,
         hipGraph_t graph,
@@ -2579,7 +2542,6 @@ link! {
         *mut hipGraphInstantiateParams instantiateParams,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphLaunch(
         hipGraphExec_t graphExec,
         hipStream_t stream,
@@ -2619,10 +2581,8 @@ link! {
         *mut hipGraphNodeParams nodeParams,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphExecDestroy(hipGraphExec_t graphExec);
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecUpdate(
         hipGraphExec_t hGraphExec,
         hipGraph_t hGraph,
@@ -2630,7 +2590,6 @@ link! {
         *mut hipGraphExecUpdateResult updateResult_out,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphAddKernelNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2639,13 +2598,11 @@ link! {
         *const hipKernelNodeParams pNodeParams,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphKernelNodeGetParams(
         hipGraphNode_t node,
         *mut hipKernelNodeParams pNodeParams,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphKernelNodeSetParams(
         hipGraphNode_t node,
         *const hipKernelNodeParams pNodeParams,
@@ -2661,7 +2618,6 @@ link! {
         hipCtx_t ctx,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphAddMemcpyNode(
         *mut hipGraphNode_t pGraphNode_t,
         hipGraph_t graph,
@@ -2670,26 +2626,22 @@ link! {
         *const hipMemcpy3DParms pCopyParams,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphMemcpyNodeGetParams(
         hipGraphNode_t node,
         *mut hipMemcpy3DParms pNodeParams,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphMemcpyNodeSetParams(
         hipGraphNode_t node,
         *const hipMemcpy3DParms pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecMemcpyNodeSetParams(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
         *mut hipMemcpy3DParms pNodeParams,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphAddMemcpyNode1D(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2701,7 +2653,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphMemcpyNodeSetParams1D(
         hipGraphNode_t node,
         *mut void dst,
@@ -2710,7 +2661,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecMemcpyNodeSetParams1D(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
@@ -2720,7 +2670,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphAddMemcpyNodeFromSymbol(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2733,7 +2682,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphMemcpyNodeSetParamsFromSymbol(
         hipGraphNode_t node,
         *mut void dst,
@@ -2743,7 +2691,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecMemcpyNodeSetParamsFromSymbol(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
@@ -2754,7 +2701,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphAddMemcpyNodeToSymbol(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2767,7 +2713,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphMemcpyNodeSetParamsToSymbol(
         hipGraphNode_t node,
         *const void symbol,
@@ -2777,7 +2722,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecMemcpyNodeSetParamsToSymbol(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
@@ -2788,7 +2732,6 @@ link! {
         hipMemcpyKind kind,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphAddMemsetNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2797,26 +2740,22 @@ link! {
         *const hipMemsetParams pMemsetParams,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphMemsetNodeGetParams(
         hipGraphNode_t node,
         *mut hipMemsetParams pNodeParams,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphMemsetNodeSetParams(
         hipGraphNode_t node,
         *const hipMemsetParams pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecMemsetNodeSetParams(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
         *const hipMemsetParams pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphAddHostNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2825,26 +2764,22 @@ link! {
         *const hipHostNodeParams pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphHostNodeGetParams(
         hipGraphNode_t node,
         *mut hipHostNodeParams pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphHostNodeSetParams(
         hipGraphNode_t node,
         *const hipHostNodeParams pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecHostNodeSetParams(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
         *const hipHostNodeParams pNodeParams,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphAddChildGraphNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2853,20 +2788,17 @@ link! {
         hipGraph_t childGraph,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphChildGraphNodeGetGraph(
         hipGraphNode_t node,
         *mut hipGraph_t pGraph,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecChildGraphNodeSetParams(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t node,
         hipGraph_t childGraph,
     );
 
-    #[since = 4 .4, "4.4"]
     hipError_t hipGraphAddEmptyNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2874,7 +2806,6 @@ link! {
         size_t numDependencies,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphAddEventRecordNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2883,26 +2814,22 @@ link! {
         hipEvent_t event,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphEventRecordNodeGetEvent(
         hipGraphNode_t node,
         *mut hipEvent_t event_out,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphEventRecordNodeSetEvent(
         hipGraphNode_t node,
         hipEvent_t event,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecEventRecordNodeSetEvent(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t hNode,
         hipEvent_t event,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphAddEventWaitNode(
         *mut hipGraphNode_t pGraphNode,
         hipGraph_t graph,
@@ -2911,19 +2838,16 @@ link! {
         hipEvent_t event,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphEventWaitNodeGetEvent(
         hipGraphNode_t node,
         *mut hipEvent_t event_out,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphEventWaitNodeSetEvent(
         hipGraphNode_t node,
         hipEvent_t event,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphExecEventWaitNodeSetEvent(
         hipGraphExec_t hGraphExec,
         hipGraphNode_t hNode,
@@ -2960,14 +2884,12 @@ link! {
         *mut void dev_ptr,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipDeviceGetGraphMemAttribute(
         int device,
         hipGraphMemAttributeType attr,
         *mut void value,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipDeviceGraphMemTrim(int device);
 
     #[since = 5 .3, "5.3"]
@@ -3136,7 +3058,6 @@ link! {
         hipCtx_t ctx,
     );
 
-    #[since = 6 .5, "6.5"]
     hipError_t hipMemGetHandleForAddressRange(
         *mut void handle,
         hipDeviceptr_t dptr,
@@ -3145,14 +3066,12 @@ link! {
         ulonglong flags,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphicsMapResources(
         int count,
         *mut hipGraphicsResource_t resources,
         hipStream_t stream,
     );
 
-    #[since = 4 .5, "4.5"]
     hipError_t hipGraphicsSubResourceGetMappedArray(
         *mut hipArray_t array,
         hipGraphicsResource_t resource,
@@ -3160,21 +3079,18 @@ link! {
         uint mipLevel,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphicsResourceGetMappedPointer(
         *mut *mut void devPtr,
         *mut size_t size,
         hipGraphicsResource_t resource,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphicsUnmapResources(
         int count,
         *mut hipGraphicsResource_t resrources,
         hipStream_t stream,
     );
 
-    #[since = 4 .3, "4.3"]
     hipError_t hipGraphicsUnregisterResource(hipGraphicsResource_t resource);
 
     #[since = 5 .5, "5.5"]

@@ -2,7 +2,7 @@ use super::types::*;
 use crate::internal::*;
 
 link! {
-    hiprtc : hip_ver;
+    hiprtc : rocm_ver;
 
     // In HIP, this function returns the name of the error, if the hiprtc result is defined, it will return “Invalid HIPRTC error code”
     *const char hiprtcGetErrorString(hiprtcResult result);

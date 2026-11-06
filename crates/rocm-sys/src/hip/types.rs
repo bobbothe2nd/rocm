@@ -47,11 +47,7 @@ where
             index % 8
         };
         let mask = 1 << bit_index;
-        if val {
-            byte | mask
-        } else {
-            byte & !mask
-        }
+        if val { byte | mask } else { byte & !mask }
     }
     #[inline]
     pub fn set_bit(&mut self, index: usize, val: bool) {
@@ -1619,9 +1615,9 @@ impl hipError_t {
         matches!(self, Self::hipSuccess | Self::hipErrorNotReady)
     }
 }
-#[cfg(any(hip_ver = "6.0", feature = "dynamic-loading"))]
+#[cfg(any(rocm_ver = "6.0", feature = "dynamic-loading"))]
 pub type hipDeviceProp_t = hipDeviceProp_tR0600;
-#[cfg(not(any(hip_ver = "6.0", feature = "dynamic-loading")))]
+#[cfg(not(any(rocm_ver = "6.0", feature = "dynamic-loading")))]
 pub type hipDeviceProp_t = hipDeviceProp_tR0000;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -2140,7 +2136,6 @@ pub struct hipDeviceProp_tR0600 {
     pub hipReserved: [::core::ffi::c_int; 32],
 
     // HIP-specific fields.
-
     /// Name of the AMD GPU architecture (GCN architecture name).
     pub gcnArchName: [::core::ffi::c_char; 256],
 

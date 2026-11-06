@@ -5,7 +5,7 @@ use crate::{hip::*, internal::*};
 use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    rocblas : hip_ver;
+    rocblas : rocm_ver;
 
     rocblas_status rocblas_create_handle(*mut rocblas_handle handle);
 
@@ -1233,7 +1233,7 @@ link! {
     rocblas_status rocblas_ctpmv(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int n, *const rocblas_float_complex A, *mut rocblas_float_complex x, rocblas_int incx);
 
     rocblas_status rocblas_ztpmv(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int n, *const rocblas_double_complex A, *mut rocblas_double_complex x, rocblas_int incx);
-    
+
     rocblas_status rocblas_stpmv_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int n, *const *const float A, *const *mut float x, rocblas_int incx, rocblas_int batch_count);
 
     rocblas_status rocblas_dtpmv_batched(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, rocblas_int n, *const *const double A, *const *mut double x, rocblas_int incx, rocblas_int batch_count);
@@ -1834,7 +1834,7 @@ link! {
 
     #[since = 6 .1, "6.1"]
     rocblas_status rocblas_ztpmv_64(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, int64_t n, *const rocblas_double_complex A, *mut rocblas_double_complex x, int64_t incx);
-    
+
     #[since = 6 .1, "6.1"]
     rocblas_status rocblas_stpmv_batched_64(rocblas_handle handle, rocblas_fill uplo, rocblas_operation transA, rocblas_diagonal diag, int64_t n, *const *const float A, *const *mut float x, int64_t incx, int64_t batch_count);
 
