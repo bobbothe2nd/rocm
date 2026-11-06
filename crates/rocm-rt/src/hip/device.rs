@@ -9,7 +9,7 @@ use rocm_sys::hip::{
     hipDevice_t, hipDeviceAttribute_t, hipDeviceGetAttribute, hipDeviceGetDefaultMemPool,
     hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset,
     hipDeviceSetLimit, hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags,
-    hipGetDeviceProperties, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
+    hipGetDevicePropertiesR0600, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
 };
 
 use crate::{
@@ -91,13 +91,8 @@ impl Device {
 
     /// Gets properties of the device
     pub fn properties(self) -> Result<DeviceProp, HipError> {
-        let mut prop = core::mem::MaybeUninit::<DeviceProp>::uninit();
-
-        let err = unsafe { hipGetDeviceProperties(prop.as_mut_ptr(), self.dev) };
-
-        match err {
-            rocm_sys::hip::hipError_t::hipSuccess => Ok(unsafe { prop.assume_init() }),
-            err => Err(HipError::from(err)),
+        unsafe {
+            wrap_sys_res!(|prop| hipGetDevicePropertiesR0600((&raw mut prop).cast(), self.dev))
         }
     }
 

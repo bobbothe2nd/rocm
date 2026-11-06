@@ -84,8 +84,10 @@ If the shared library is present on the system under a different name than one o
                     $(
                         let major = *MAJOR;
                         let minor = *MINOR;
+                        let ver = $crate::version::Ver2 { major, minor };
+                        let min_ver = $crate::version::Ver2 { major: $major_version, minor: $minor_version };
 
-                        assert!(major >= $major_version && minor >= $minor_version, concat!(stringify!($name), " requires ", stringify!($library), " version ^{}.{}"), major, minor);
+                        assert!(ver >= min_ver, concat!(stringify!($name), " requires ", stringify!($lib), " version ^", stringify!($major_version), ".", stringify!($minor_version), ", found {}.{}"), major, minor);
                     )?
 
                     *$lib.get::<F>(stringify!($name)).unwrap()

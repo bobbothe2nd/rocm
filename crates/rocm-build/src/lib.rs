@@ -19,11 +19,8 @@ macro_rules! build {
             &["amdhip64"],
         ) {
             if !found_rocm_ver {
-                let version = unsafe {
-                    $crate::ver::hip_runtime_version(&component.library_dir)
-                        .expect("failed to determine HIP runtime version")
-                };
-
+                let version = $crate::ver::hip_runtime_version(&component.include_dir)
+                    .expect("failed to determine HIP runtime version");
                 $crate::ver::cfg_version("rocm_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
             }
 
@@ -69,17 +66,10 @@ macro_rules! build {
     };
 
     (@component $roots:ident $([$link:ident])? $name:literal $ver:path) => {
-        if let Some(component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$name]) {
-            let version = unsafe {
-                $crate::ver::rocblas_version(&component.library_dir)
-                    .expect("failed to determine HIP runtime version")
-            };
-
-            $crate::ver::cfg_version(concat!($name, "_ver"), version, $ver);
-
+        if let Some(_component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$name]) {
             $(
                 let $link = ();
-                $crate::link::link_component(&component);
+                $crate::link::link_component(&_component);
             )?
 
             println!(concat!("cargo:rustc-cfg=", $name));

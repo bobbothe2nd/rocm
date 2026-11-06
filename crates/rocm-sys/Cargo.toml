@@ -13,7 +13,7 @@ categories = ["hardware-support", "external-ffi-bindings"]
 libloading = { version = "0.9", optional = true }
 
 [build-dependencies]
-rocm-build = { path = "../rocm-build", version = "0.2" }
+rocm-build = { path = "../rocm-build", version = "0.3" }
 
 [features]
 # configure included libraries

@@ -1,7 +1,5 @@
-use libloading::Library;
 use std::{
-    fs,
-    path::{Path, PathBuf},
+    fs, path::{Path, PathBuf},
 };
 
 pub const KNOWN_ROCM_VERSIONS: &[&str] = &[
@@ -63,66 +61,6 @@ pub fn find_rocm_version(roots: &[PathBuf]) -> Option<Version> {
     None
 }
 
-/// Queries the HIP runtime API version.
-///
-/// # Safety
-///
-/// The library must be a valid `amdhip64` path.
-pub unsafe fn hip_runtime_version(library: &Path) -> Option<Version> {
-    type HipRuntimeGetVersion = unsafe extern "C" fn(*mut i32) -> i32;
-
-    let lib = unsafe { Library::new(library).ok()? };
-
-    let get_version = unsafe {
-        lib.get::<HipRuntimeGetVersion>(b"hipRuntimeGetVersion\0")
-            .ok()?
-    };
-
-    let mut version = 0i32;
-
-    let status = unsafe { get_version(&mut version) };
-
-    if status != 0 {
-        return None;
-    }
-
-    let version = version as u32;
-
-    Some(Version {
-        major: version / 10_000_000,
-        minor: (version / 100_000) % 100,
-    })
-}
-
-/// Queries the rocBLAS API version.
-///
-/// # Safety
-///
-/// The library must be a valid rocBLAS path.
-pub unsafe fn rocblas_version(library: &Path) -> Option<Version> {
-    let lib = unsafe { Library::new(library).ok()? };
-
-    type GetVersionString = unsafe extern "C" fn(*mut std::ffi::c_char, usize) -> i32;
-
-    let get_version = unsafe {
-        lib.get::<GetVersionString>(b"rocblas_get_version_string\0")
-            .ok()?
-    };
-
-    let mut buffer = vec![0i8; 64];
-
-    let status = unsafe { get_version(buffer.as_mut_ptr(), buffer.len()) };
-
-    if status != 0 {
-        return None;
-    }
-
-    let cstr = unsafe { std::ffi::CStr::from_ptr(buffer.as_ptr()) };
-    let string = cstr.to_str().ok()?;
-
-    parse_version(string)
-}
-
 pub fn parse_version(s: &str) -> Option<Version> {
     let mut nums = s
         .split(|c: char| !c.is_ascii_digit())
@@ -133,4 +71,32 @@ pub fn parse_version(s: &str) -> Option<Version> {
         major: nums.next()??,
         minor: nums.next()??,
     })
+}
+
+pub fn hip_runtime_version(include: &Path) -> Option<Version> {
+    let header = include.join("hip_version.h");
+
+    println!("cargo:rerun-if-changed={}", header.display());
+
+    let contents = fs::read_to_string(&header)
+        .expect("Could not find HIP version header");
+
+    let major = parse_define(&contents, "HIP_VERSION_MAJOR")?;
+    let minor = parse_define(&contents, "HIP_VERSION_MINOR")?;
+
+    Some(Version { major, minor })
+}
+
+pub fn parse_define(contents: &str, name: &str) -> Option<u32> {
+    contents
+        .lines()
+        .find_map(|line| {
+            let mut parts = line.split_whitespace();
+
+            if parts.next()? == "#define" && parts.next()? == name {
+                parts.next()?.parse().ok()
+            } else {
+                None
+            }
+        })
 }
