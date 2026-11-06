@@ -7,7 +7,7 @@ use crate::{internal::*, hip::*};
 // TODO: support hipFFTW, callback APIs, and memory management APIs
 
 link! {
-    hipfft : rocm_ver;
+    hipfft : hip_ver;
 
     hipfftResult hipfftPlan1d(*mut hipfftHandle plan, int nx, hipfftType type_, int batch);
 

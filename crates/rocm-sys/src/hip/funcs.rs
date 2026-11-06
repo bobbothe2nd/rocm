@@ -1,11 +1,8 @@
 use super::types::*;
 use crate::internal::*;
 
-#[cfg(feature = "dynamic-loading")]
-use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
-
 link! {
-    amdhip64 : rocm_ver;
+    amdhip64 : hip_ver;
 
     hipError_t hipInit(uint flags);
 

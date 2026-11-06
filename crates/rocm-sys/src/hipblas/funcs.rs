@@ -7,7 +7,7 @@ use crate::{hip::*, internal::*};
 use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    hipblas : rocm_ver;
+    hipblas : hip_ver;
 
     hipblasStatus_t hipblasCreate(*mut hipblasHandle_t handle);
 

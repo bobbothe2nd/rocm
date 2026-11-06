@@ -5,7 +5,7 @@ use crate::{hip::*, internal::*};
 use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    rocblas : rocm_ver;
+    rocblas : hip_ver;
 
     rocblas_status rocblas_create_handle(*mut rocblas_handle handle);
 

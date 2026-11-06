@@ -1619,9 +1619,9 @@ impl hipError_t {
         matches!(self, Self::hipSuccess | Self::hipErrorNotReady)
     }
 }
-#[cfg(any(rocm_ver = "6.0", feature = "dynamic-loading"))]
+#[cfg(any(hip_ver = "6.0", feature = "dynamic-loading"))]
 pub type hipDeviceProp_t = hipDeviceProp_tR0600;
-#[cfg(not(any(rocm_ver = "6.0", feature = "dynamic-loading")))]
+#[cfg(not(any(hip_ver = "6.0", feature = "dynamic-loading")))]
 pub type hipDeviceProp_t = hipDeviceProp_tR0000;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

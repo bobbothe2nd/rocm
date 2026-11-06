@@ -78,23 +78,18 @@ If the shared library is present on the system under a different name than one o
                     $($(*$mut)* $arg_ty),*
                 ) -> $(*$ret_mut)* $ret;
 
-                static SYMBOL: ::std::sync::OnceLock<F> = ::std::sync::OnceLock::new();
-
-                let f = SYMBOL.get_or_init(|| unsafe {
+                static SYMBOL: ::std::sync::LazyLock<F> = ::std::sync::LazyLock::new(|| unsafe {
                     $(
-                        let major = *MAJOR;
-                        let minor = *MINOR;
-                        let ver = $crate::version::Ver2 { major, minor };
-                        let min_ver = $crate::version::Ver2 { major: $major_version, minor: $minor_version };
-
-                        assert!(ver >= min_ver, concat!(stringify!($name), " requires ", stringify!($lib), " version ^", stringify!($major_version), ".", stringify!($minor_version), ", found {}.{}"), major, minor);
+                        let ver = $crate::HIP_VER.expect("failed to get HIP version");
+                        let min_ver = ($major_version, $minor_version);
+                        assert!(ver >= min_ver, concat!(stringify!($name), " requires ", stringify!($lib), " version ^", stringify!($major_version), ".", stringify!($minor_version), ", found {}.{}"), ver.0, ver.1);
                     )?
 
                     *$lib.get::<F>(stringify!($name)).unwrap()
                 });
 
                 unsafe {
-                    f($($arg),*)
+                    (SYMBOL)($($arg),*)
                 }
             }
 
@@ -146,9 +141,7 @@ If the shared library is present on the system under a different name than one o
 
                         let f: F = unsafe {
                             $(
-                                let major = *MAJOR;
-                                let minor = *MINOR;
-
+                                let Some((major, minor)) = *$crate::HIP_VER else { return; };
                                 if !(major >= $major_version && minor >= $minor_version) { return; }
                             )?
 
@@ -186,8 +179,6 @@ pub mod rocblas;
 
 #[cfg(all(feature = "rocfft", any(feature = "dynamic-loading", rocfft)))]
 pub mod rocfft;
-
-pub mod version;
 
 pub mod internal;
 
@@ -234,11 +225,52 @@ fn get_lib_name_candidates(lib_name: &str) -> Vec<String> {
 
     let stem = format!("{DLL_PREFIX}{lib_name}{DLL_SUFFIX}");
 
-    let mut out = Vec::with_capacity(1 + rocm_path.is_some() as usize);
+    let mut out = Vec::with_capacity(2 + rocm_path.is_some() as usize);
     out.push(format!("{stem}"));
     out.push(format!("/opt/rocm/lib/{stem}"));
     if let Some(rocm_path) = &rocm_path {
         out.push(format!("{rocm_path}/lib/{stem}"));
     }
     out
+}
+
+#[cfg(feature = "dynamic-loading")]
+static HIP_VER: std::sync::LazyLock<Option<(u32, u32)>> = std::sync::LazyLock::new(hip_runtime_version);
+
+#[cfg(feature = "dynamic-loading")]
+fn hip_runtime_version() -> Option<(u32, u32)> {
+    fn parse_define(contents: &str, name: &str) -> Option<u32> {
+        contents
+            .lines()
+            .find_map(|line| {
+                let mut parts = line.split_whitespace();
+
+                if parts.next()? == "#define" && parts.next()? == name {
+                    parts.next()?.parse().ok()
+                } else {
+                    None
+                }
+            })
+    }
+
+    let rocm_path = std::env::var("ROCM_PATH").ok();
+
+    let mut headers = Vec::with_capacity(1 + rocm_path.is_some() as usize);
+    headers.push(format!("/opt/rocm/include/hip/hip_version.h"));
+    if let Some(rocm_path) = &rocm_path {
+        headers.push(format!("{rocm_path}/include/hip/hip_version.h"));
+    }
+
+    for header in headers {
+        let Ok(contents) = std::fs::read_to_string(&header) else {
+            continue;
+        };
+
+        let major = parse_define(&contents, "HIP_VERSION_MAJOR")?;
+        let minor = parse_define(&contents, "HIP_VERSION_MINOR")?;
+
+        return Some((major, minor));
+    }
+
+    None
 }

@@ -1,5 +1,5 @@
 use crate::ver::{
-    KNOWN_HIPBLAS_VERSIONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
+    // KNOWN_HIPBLAS_VERSIONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
     KNOWN_ROCM_VERSIONS,
 };
 use std::{
@@ -150,8 +150,9 @@ pub fn check_cfg() {
         .map(|ver| format!("\"{ver}\""))
         .collect::<Vec<_>>()
         .join(", ");
-    println!("cargo:rustc-check-cfg=cfg(rocm_ver, values({rocm_ver}))");
+    println!("cargo:rustc-check-cfg=cfg(hip_ver, values({rocm_ver}))");
 
+    /*
     let rocblas_ver = KNOWN_ROCBLAS_VERSIONS
         .iter()
         .map(|ver| format!("\"{ver}\""))
@@ -179,4 +180,5 @@ pub fn check_cfg() {
         .collect::<Vec<_>>()
         .join(", ");
     println!("cargo:rustc-check-cfg=cfg(hipblaslt_ver, values({hipblaslt_ver}))");
+    */
 }

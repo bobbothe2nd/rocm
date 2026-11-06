@@ -78,8 +78,7 @@ pub fn hip_runtime_version(include: &Path) -> Option<Version> {
 
     println!("cargo:rerun-if-changed={}", header.display());
 
-    let contents = fs::read_to_string(&header)
-        .expect("Could not find HIP version header");
+    let contents = fs::read_to_string(&header).ok()?;
 
     let major = parse_define(&contents, "HIP_VERSION_MAJOR")?;
     let minor = parse_define(&contents, "HIP_VERSION_MINOR")?;

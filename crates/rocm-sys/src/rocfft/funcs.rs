@@ -5,7 +5,7 @@ use crate::internal::*;
 // use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
 link! {
-    rocfft : rocm_ver;
+    rocfft : hip_ver;
 
     rocfft_status rocfft_setup();
 

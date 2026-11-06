@@ -10,7 +10,7 @@ macro_rules! build {
 
         if let Some(version) = $crate::ver::find_rocm_version(&roots) {
             found_rocm_ver = true;
-            $crate::ver::cfg_version("rocm_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
+            $crate::ver::cfg_version("hip_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
         }
 
         if let Some(component) = $crate::link::find_component(
@@ -21,7 +21,7 @@ macro_rules! build {
             if !found_rocm_ver {
                 let version = $crate::ver::hip_runtime_version(&component.include_dir)
                     .expect("failed to determine HIP runtime version");
-                $crate::ver::cfg_version("rocm_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
+                $crate::ver::cfg_version("hip_ver", version, $crate::ver::KNOWN_ROCM_VERSIONS);
             }
 
             $(
@@ -33,8 +33,8 @@ macro_rules! build {
         }
         build!(@component roots $([$link])? "hiprtc");
 
-        build!(@component roots $([$link])? "hipblas" $crate::ver::KNOWN_HIPBLAS_VERSIONS);
-        build!(@component roots $([$link])? "hipblaslt" $crate::ver::KNOWN_HIPBLASLT_VERSIONS);
+        build!(@component roots $([$link])? "hipblas");
+        build!(@component roots $([$link])? "hipblaslt");
         build!(@component roots $([$link])? "hipdnn");
         build!(@component roots $([$link])? "hipfft");
         build!(@component roots $([$link])? "hiprand");
@@ -44,8 +44,8 @@ macro_rules! build {
         build!(@component roots $([$link])? "hiptensor");
 
         build!(@component roots $([$link])? "rocalution");
-        build!(@component roots $([$link])? "rocblas" $crate::ver::KNOWN_ROCBLAS_VERSIONS);
-        build!(@component roots $([$link])? "rocfft" $crate::ver::KNOWN_ROCFFT_VERSIONS);
+        build!(@component roots $([$link])? "rocblas");
+        build!(@component roots $([$link])? "rocfft");
         build!(@component roots $([$link])? "rocrand");
         build!(@component roots $([$link])? "rocsolver");
         build!(@component roots $([$link])? "rocsparse");
