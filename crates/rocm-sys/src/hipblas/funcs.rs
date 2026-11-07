@@ -4,9 +4,6 @@ use rocm_include::ctype::*;
 
 // TODO: find actual version requirements & support ILP64
 
-#[cfg(feature = "dynamic-loading")]
-use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
-
 link! {
     hipblas : rocm_ver;
 
