@@ -1,4 +1,4 @@
-use rocm::hip::stream::HipStream;
+use roc::hip::stream::HipStream;
 
 #[test]
 fn htod_copy_preserves_bytes_outside_requested_range() {

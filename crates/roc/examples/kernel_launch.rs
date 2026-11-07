@@ -1,6 +1,6 @@
 use core::mem::transmute;
 
-use rocm::{
+use roc::{
     hip::{device::Device, module::LaunchConfig, stream::HipStream},
     hiprtc::program::{CompileOptions, Hsaco},
 };
