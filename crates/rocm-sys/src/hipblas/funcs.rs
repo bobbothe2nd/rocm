@@ -4,7 +4,7 @@ use rocm_include::ctype::*;
 
 // TODO: find actual version requirements & support ILP64
 
-link! {
+rocm_include::link! {
     hipblas : rocm_ver;
 
     hipblasStatus_t hipblasCreate(*mut hipblasHandle_t handle);

@@ -1,7 +1,7 @@
 use super::types::*;
 use rocm_include::ctype::*;
 
-link! {
+rocm_include::link! {
     amdhip64 : rocm_ver;
 
     hipError_t hipInit(uint flags);

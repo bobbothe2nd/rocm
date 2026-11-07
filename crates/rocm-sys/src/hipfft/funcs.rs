@@ -7,7 +7,7 @@ use rocm_include::ctype::*;
 
 // TODO: support hipFFTW, callback APIs, and memory management APIs
 
-link! {
+rocm_include::link! {
     hipfft : rocm_ver;
 
     hipfftResult hipfftPlan1d(*mut hipfftHandle plan, int nx, hipfftType type_, int batch);

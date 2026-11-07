@@ -9,7 +9,7 @@ macro_rules! build {
 
         if let Some(version) = ::rocm_include::ver::find_rocm_version(&roots) {
             found_rocm_ver = true;
-            $crate::cfg_version("rocm_ver", version, ::rocm_include::consts::KNOWN_ROCM_VERSIONS);
+            $crate::cfg_version("rocm_ver", version, ::rocm_include::ver::KNOWN_ROCM_VERSIONS);
         }
 
         if let Some(_component) = $crate::link::find_component(
@@ -19,7 +19,7 @@ macro_rules! build {
         ) {
             if !found_rocm_ver {
                 let version = ::rocm_include::ver::ROCM_VERSION.expect("failed to determine HIP runtime version");
-                $crate::cfg_version("rocm_ver", version, ::rocm_include::consts::KNOWN_ROCM_VERSIONS);
+                $crate::cfg_version("rocm_ver", version, ::rocm_include::ver::KNOWN_ROCM_VERSIONS);
             }
 
             $(

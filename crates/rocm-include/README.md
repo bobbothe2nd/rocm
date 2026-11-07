@@ -1,4 +1,4 @@
-# `rocm-core`
+# `rocm-include`
 
 Parsing C and enumerating versions of ROCm in the most primitive way possible.
 

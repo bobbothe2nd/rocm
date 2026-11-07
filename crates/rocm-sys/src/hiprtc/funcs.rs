@@ -1,7 +1,7 @@
 use super::types::*;
 use rocm_include::ctype::*;
 
-link! {
+rocm_include::link! {
     hiprtc : rocm_ver;
 
     // In HIP, this function returns the name of the error, if the hiprtc result is defined, it will return “Invalid HIPRTC error code”

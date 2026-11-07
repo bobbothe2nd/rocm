@@ -2,7 +2,7 @@ use super::types::*;
 use crate::hip::*;
 use rocm_include::ctype::*;
 
-link! {
+rocm_include::link! {
     rocblas : rocm_ver;
 
     rocblas_status rocblas_create_handle(*mut rocblas_handle handle);

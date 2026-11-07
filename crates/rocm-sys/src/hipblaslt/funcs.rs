@@ -5,7 +5,7 @@ use rocm_include::ctype::*;
 // #[cfg(feature = "dynamic-loading")]
 // use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
 
-link! {
+rocm_include::link! {
     hipblaslt : rocm_ver;
 
     hipblasStatus_t hipblasLtCreate(*mut hipblasLtHandle_t handle);
