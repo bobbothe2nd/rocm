@@ -5,7 +5,7 @@ version = "0.4.0"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
-documentation = "https://docs.rs/crate/rocm/latest"
+documentation = "https://docs.rs/crate/roc/latest"
 keywords = ["gpu", "hip", "rocm", "rocfft", "rocblas"]
 categories = ["hardware-support"]
 

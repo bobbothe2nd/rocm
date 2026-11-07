@@ -1,4 +1,5 @@
 use core::{ffi::c_void, mem::transmute};
+use alloc::boxed::Box;
 use rocm_sys::hip::hipLaunchHostFunc;
 
 use crate::hip::{HipError, stream::HipStream};
@@ -8,21 +9,18 @@ impl HipStream {
     ///
     /// # Safety
     ///
-    /// This function is only as safe as `func`
+    /// The function's lifetimes must last at least until this function is finished.
     ///
-    /// Undefined behavior if capturing in a graph and replaying or calling HIP API functions inside the callback
-    pub unsafe fn callback<F>(&self, func: F, data: *mut u8) -> Result<(), HipError>
+    /// Undefined behavior if capturing in a graph and replaying or calling HIP API functions inside the callback.
+    pub unsafe fn callback<T, F>(&self, func: F, data: *mut T) -> Result<(), HipError>
     where
-        F: FnOnce(*mut u8) + Send + 'static,
+        F: FnOnce(*mut T) + Send + 'static,
     {
-        use alloc::boxed::Box;
-
-        unsafe extern "C" fn wrapper<F>(data: *mut c_void)
+        unsafe extern "C" fn wrapper<T, F>(data: *mut (F, *mut T))
         where
-            F: FnOnce(*mut u8),
+            F: FnOnce(*mut T),
         {
-            let func = unsafe { Box::from_raw(data.cast::<(F, *mut u8)>()) };
-
+            let func = unsafe { Box::from_raw(data) };
             (func.0)(func.1);
         }
 
@@ -30,10 +28,7 @@ impl HipStream {
         let data = Box::into_raw(func);
 
         unsafe {
-            try_err!(
-                hipLaunchHostFunc(self.raw.raw, Some(wrapper::<F>), data.cast(),),
-                Ok(())
-            )
+            self.launch_host(wrapper::<T, F>, data)
         }
     }
 
@@ -41,29 +36,20 @@ impl HipStream {
     ///
     /// # Safety
     ///
-    /// This function is only as safe as `func` and `func` must not call HIP API functions inside the callback
-    pub unsafe fn launch_host(&self, func: Callback, data: *mut u8) -> Result<(), HipError> {
+    /// This function is only as safe as `func`.
+    /// The function must be safe to send across threads and all lifetimes must last at least until this function is finished.
+    ///
+    /// Undefined behavior if capturing in a graph and replaying or calling HIP API functions inside the callback.
+    #[inline(always)]
+    pub unsafe fn launch_host<T>(&self, func: unsafe extern "C" fn(*mut T), data: *mut T) -> Result<(), HipError> {
+        let func = unsafe {
+            transmute::<unsafe extern "C" fn(*mut T), unsafe extern "C" fn(*mut c_void)>(func)
+        };
         unsafe {
             try_err!(
-                hipLaunchHostFunc(self.raw.raw, Some(func.func), data.cast()),
+                hipLaunchHostFunc(self.raw.raw, Some(func), data.cast()),
                 Ok(())
             )
         }
-    }
-}
-
-#[repr(transparent)]
-#[derive(Debug, Clone, Copy)]
-pub struct Callback {
-    func: unsafe extern "C" fn(*mut c_void),
-}
-
-impl Callback {
-    pub const fn new(func: unsafe extern "C" fn(*mut u8)) -> Self {
-        let func = unsafe {
-            transmute::<unsafe extern "C" fn(*mut u8), unsafe extern "C" fn(*mut c_void)>(func)
-        };
-
-        Self { func }
     }
 }
