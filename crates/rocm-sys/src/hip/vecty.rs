@@ -1,4 +1,4 @@
-use crate::internal::*;
+use rocm_core::ctype::*;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

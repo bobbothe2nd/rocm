@@ -8,7 +8,7 @@ use rocm_sys::hip::{
 use crate::hip::{HipError, stream::HipStream};
 
 #[repr(transparent)]
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct HipEvent {
     raw: hipEvent_t,
 }

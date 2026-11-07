@@ -97,11 +97,11 @@ fn main() {
 
     stream.sync().unwrap();
 
-    let out_host = stream.alloc_host(BYTES).unwrap();
+    let mut out_host = stream.alloc_host(BYTES).unwrap();
 
-    out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
+    out.copy_to_host(&mut out_host, 0, 0, BYTES).unwrap();
 
-    for chunk in out_host.as_slice().chunks(size_of::<f32>()) {
+    for chunk in out_host.chunks(size_of::<f32>()) {
         let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
         let value = f32::from_ne_bytes(bytes);
 

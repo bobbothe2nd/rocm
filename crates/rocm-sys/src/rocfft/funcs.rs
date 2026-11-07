@@ -1,5 +1,5 @@
 use super::types::*;
-use crate::internal::*;
+use rocm_core::ctype::*;
 
 // #[cfg(feature = "dynamic-loading")]
 // use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};

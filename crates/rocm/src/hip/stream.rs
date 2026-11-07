@@ -2,6 +2,7 @@ use alloc::rc::Rc;
 use core::{
     ffi::{c_int, c_ulonglong},
     mem::transmute,
+    ptr,
 };
 use rocm_sys::hip::{
     hipError_t, hipFreeAsync, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync,
@@ -12,7 +13,7 @@ use rocm_sys::hip::{
 use crate::hip::{
     HipError,
     device::Device,
-    memory::{Buffer, RefMapped},
+    memory::{Buffer, HostSlice, HostSliceMut},
 };
 
 #[derive(Debug, Clone)]
@@ -46,14 +47,18 @@ impl HipStream {
 
     pub unsafe fn copy_htod(
         &self,
-        src: &RefMapped<'_>,
+        src: &HostSlice<'_>,
         dst: &Buffer,
         src_off: u32,
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size())
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
+        if src_off
+            .checked_add(len)
+            .is_none_or(|end| end > src.data.len() as u32)
+            || dst_off
+                .checked_add(len)
+                .is_none_or(|end| end > dst.ptr.len() as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -61,9 +66,10 @@ impl HipStream {
         unsafe { self.copy_htod_unchecked(src, dst, src_off, dst_off, len) }
     }
 
+    #[inline(always)]
     pub unsafe fn copy_htod_unchecked(
         &self,
-        src: &RefMapped<'_>,
+        src: &HostSlice<'_>,
         dst: &Buffer,
         src_off: u32,
         dst_off: u32,
@@ -72,8 +78,8 @@ impl HipStream {
         unsafe {
             try_err!(
                 hipMemcpyHtoDAsync(
-                    dst.ptr.add(dst_off as usize).cast(),
-                    src.data.as_ptr().add(src_off as usize).cast(),
+                    dst.ptr.byte_add(dst_off as usize).cast(),
+                    src.data.byte_add(src_off as usize).cast(),
                     len as usize,
                     self.raw.raw,
                 ),
@@ -85,13 +91,17 @@ impl HipStream {
     pub unsafe fn copy_dtoh(
         &self,
         src: &Buffer,
-        dst: &RefMapped<'_>,
+        dst: &HostSliceMut<'_>,
         src_off: u32,
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size())
+        if src_off
+            .checked_add(len)
+            .is_none_or(|end| end > src.ptr.len() as u32)
+            || dst_off
+                .checked_add(len)
+                .is_none_or(|end| end > dst.data.len() as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -99,10 +109,11 @@ impl HipStream {
         unsafe { self.copy_dtoh_unchecked(src, dst, src_off, dst_off, len) }
     }
 
+    #[inline(always)]
     pub unsafe fn copy_dtoh_unchecked(
         &self,
         src: &Buffer,
-        dst: &RefMapped<'_>,
+        dst: &HostSliceMut<'_>,
         src_off: u32,
         dst_off: u32,
         len: u32,
@@ -110,8 +121,8 @@ impl HipStream {
         unsafe {
             try_err!(
                 hipMemcpyDtoHAsync(
-                    dst.data.as_ptr().add(dst_off as usize) as *mut _,
-                    src.ptr.add(src_off as usize).cast(),
+                    dst.data.byte_add(dst_off as usize) as *mut _,
+                    src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                     self.raw.raw,
                 ),
@@ -128,9 +139,13 @@ impl HipStream {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > src.size)
-            || dst_off.checked_add(len).is_none_or(|end| end > dst.size)
-            || src.ptr == dst.ptr
+        if src_off
+            .checked_add(len)
+            .is_none_or(|end| end > src.ptr.len() as u32)
+            || dst_off
+                .checked_add(len)
+                .is_none_or(|end| end > dst.ptr.len() as u32)
+            || ptr::eq(src.ptr, dst.ptr)
         {
             return Err(HipError::InvalidValue);
         }
@@ -138,6 +153,7 @@ impl HipStream {
         unsafe { self.copy_dtod_unchecked(src, dst, src_off, dst_off, len) }
     }
 
+    #[inline(always)]
     pub unsafe fn copy_dtod_unchecked(
         &self,
         src: &Buffer,
@@ -149,8 +165,8 @@ impl HipStream {
         unsafe {
             try_err!(
                 hipMemcpyDtoDAsync(
-                    dst.ptr.add(dst_off as usize).cast(),
-                    src.ptr.add(src_off as usize).cast(),
+                    dst.ptr.byte_add(dst_off as usize).cast(),
+                    src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                     self.raw.raw,
                 ),
@@ -164,6 +180,7 @@ impl HipStream {
     /// # Safety
     ///
     /// The buffer must not be dropped or freed again
+    #[inline(always)]
     pub unsafe fn free(&self, buf: &Buffer) -> Result<(), HipError> {
         unsafe { try_err!(hipFreeAsync(buf.ptr.cast(), self.raw.raw,), Ok(())) }
     }
@@ -179,24 +196,29 @@ impl HipStream {
     }
 
     /// Waits until the stream has finished all queued tasks
+    #[inline(always)]
     pub fn sync(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipStreamSynchronize(self.raw.raw), Ok(())) }
     }
 
+    #[inline(always)]
     pub fn get_id(&self) -> Result<u64, HipError> {
         unsafe { wrap_sys_res!(|id| hipStreamGetId(self.raw.raw, (&raw mut id).cast())) }
             .map(|id: c_ulonglong| id as u64)
     }
 
+    #[inline(always)]
     pub fn get_priority(&self) -> Result<i32, HipError> {
         unsafe { wrap_sys_res!(|prio| hipStreamGetPriority(self.raw.raw, (&raw mut prio).cast())) }
             .map(|prio: c_int| prio as i32)
     }
 
+    #[inline(always)]
     pub fn get_dev(&self) -> Result<Device, HipError> {
         unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(self.raw.raw, (&raw mut dev).cast())) }
     }
 
+    #[inline(always)]
     pub(crate) fn same_as(&self, other: &Self) -> bool {
         self.raw.raw == other.raw.raw
     }
@@ -208,12 +230,14 @@ pub struct StreamInner {
 }
 
 impl StreamInner {
+    #[inline(always)]
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipStreamDestroy(self.raw), Ok(())) }
     }
 }
 
 impl Drop for StreamInner {
+    #[inline(always)]
     fn drop(&mut self) {
         unsafe {
             let _ = self.destroy_unchecked();

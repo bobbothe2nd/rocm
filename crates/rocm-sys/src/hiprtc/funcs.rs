@@ -1,5 +1,5 @@
 use super::types::*;
-use crate::internal::*;
+use rocm_core::ctype::*;
 
 link! {
     hiprtc : rocm_ver;

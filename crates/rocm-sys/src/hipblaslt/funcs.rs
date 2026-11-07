@@ -1,5 +1,6 @@
 use super::types::*;
-use crate::{hip::*, hipblas::*, internal::*};
+use crate::{hip::*, hipblas::*};
+use rocm_core::ctype::*;
 
 // #[cfg(feature = "dynamic-loading")]
 // use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};

@@ -1,5 +1,5 @@
 use super::types::*;
-use crate::internal::*;
+use rocm_core::ctype::*;
 
 link! {
     amdhip64 : rocm_ver;
@@ -820,6 +820,7 @@ link! {
         hipDeviceptr_t dest,
         int value,
         size_t count,
+        hipStream_t stream
     );
 
     hipError_t hipMemset2D(

@@ -1,6 +1,6 @@
 use std::{env, fs, path::PathBuf, sync::LazyLock};
 
-use crate::{c::parse_define_const, ver::Version};
+use crate::{cparse::parse_define_const, ver::Version};
 
 pub static ROCM_VERSION: LazyLock<Option<Version>> = LazyLock::new(|| {
     let rocm_path = env::var("ROCM_PATH").ok();
