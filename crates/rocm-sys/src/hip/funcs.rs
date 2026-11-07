@@ -1,5 +1,5 @@
 use super::types::*;
-use rocm_core::ctype::*;
+use rocm_include::ctype::*;
 
 link! {
     amdhip64 : rocm_ver;

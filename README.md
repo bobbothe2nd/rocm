@@ -1,10 +1,13 @@
 # ROCm
 
-This project consists of 3 Rust crates:
+This project consists of 4 Rust crates:
 
-1. `rocm-build`: build-time ROCm library linking/detection
-2. `rocm-sys`: low-level, raw ROCm bindings for various libraries
-3. `rocm-rt`: a high-level abstraction around `rocm-sys`, offering a safe API
+1. `rocm-include`: mostly compile-time version and C parsing
+2. `rocm-build`: build-time ROCm library linking/detection
+3. `rocm-sys`: low-level, raw ROCm bindings for various libraries
+4. `rocm`: a high-level abstraction around `rocm-sys`, offering a safe API
+
+Each level builds off the previous ones.
 
 ## Disclaimer
 

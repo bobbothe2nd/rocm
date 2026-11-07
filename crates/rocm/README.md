@@ -1,6 +1,6 @@
-# `rocm-rt`
+# `rocm`
 
-Safe ROCm wrappers around `rocm-sys`, using `rocm-build` to find available libraries.
+Safe ROCm wrappers around `rocm-sys` and `rocm-core`, using `rocm-build` to find available libraries.
 
 ## Disclaimer
 
@@ -17,7 +17,7 @@ The example shown below compiles and launches a simple program:
 ```rust
 use core::mem::transmute;
 
-use rocm_rt::{
+use rocm::{
     hip::{device::Device, module::LaunchConfig, stream::HipStream},
     hiprtc::program::{CompileOptions, Hsaco},
 };

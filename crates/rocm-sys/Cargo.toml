@@ -11,7 +11,7 @@ categories = ["hardware-support", "external-ffi-bindings"]
 
 [dependencies]
 libloading = { version = "0.9", optional = true }
-rocm-core = { path = "../rocm-core", version = "0.1" }
+rocm-include = { path = "../rocm-include", version = "0.1" }
 
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.3" }
@@ -39,7 +39,7 @@ rocsolver = ["hip"]
 rocsparse = ["hip"]
 
 # link options
-dynamic-loading = ["dep:libloading", "rocm-core/std"]
+dynamic-loading = ["dep:libloading", "rocm-include/std"]
 
 # include symbols that might not be in shared library
 deprecated = []

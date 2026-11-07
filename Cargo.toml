@@ -3,6 +3,6 @@ members = [
     "crates/rocm",
     "crates/rocm-build",
     "crates/rocm-sys",
-    "crates/rocm-core",
+    "crates/rocm-include",
 ]
 resolver = "3"

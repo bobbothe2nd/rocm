@@ -9,4 +9,4 @@ documentation = "https://docs.rs/crate/rocm-build/latest"
 categories = ["development-tools::build-utils"]
 
 [dependencies]
-rocm-core = { path = "../rocm-core", version = "0.1", features = ["std"] }
+rocm-include = { path = "../rocm-include", version = "0.1", features = ["std"] }

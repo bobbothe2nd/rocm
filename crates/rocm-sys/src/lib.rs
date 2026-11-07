@@ -76,8 +76,8 @@ If the shared library is present on the system under a different name than one o
                 ) -> $(*$ret_mut)* $ret;
                 static SYMBOL: ::std::sync::LazyLock<F> = ::std::sync::LazyLock::new(|| unsafe {
                     $(
-                        let ver = ::rocm_core::ver::ROCM_VERSION.expect("failed to get HIP version");
-                        let min_ver = ::rocm_core::ver::Version { major: $major_version, minor: $minor_version };
+                        let ver = ::rocm_include::ver::ROCM_VERSION.expect("failed to get HIP version");
+                        let min_ver = ::rocm_include::ver::Version { major: $major_version, minor: $minor_version };
                         assert!(ver >= min_ver, ::core::concat!(::core::stringify!($name), " requires ", ::core::stringify!($lib), " version ^", ::core::stringify!($major_version), ".", ::core::stringify!($minor_version), ", found {}.{}"), ver.major, ver.minor);
                     )?
                     *$lib.get::<F>(::core::stringify!($name)).unwrap()
@@ -134,8 +134,8 @@ If the shared library is present on the system under a different name than one o
                         ) -> $(*$ret_mut)* $ret;
                         let f: F = unsafe {
                             $(
-                                let Some(ver) = *::rocm_core::ver::ROCM_VERSION else { return; };
-                                let min_ver = ::rocm_core::ver::Version { major: $major_version, minor: $minor_version };
+                                let Some(ver) = *::rocm_include::ver::ROCM_VERSION else { return; };
+                                let min_ver = ::rocm_include::ver::Version { major: $major_version, minor: $minor_version };
                                 if ver < min_ver { return; }
                             )?
                             *$lib.get::<F>(::core::stringify!($name)).unwrap()

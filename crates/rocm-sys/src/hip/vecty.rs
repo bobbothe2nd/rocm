@@ -1,4 +1,4 @@
-use rocm_core::ctype::*;
+use rocm_include::ctype::*;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

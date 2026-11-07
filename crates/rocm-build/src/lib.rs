@@ -7,9 +7,9 @@ macro_rules! build {
         let roots = $crate::link::rocm_roots();
         let mut found_rocm_ver = false;
 
-        if let Some(version) = ::rocm_core::ver::find_rocm_version(&roots) {
+        if let Some(version) = ::rocm_include::ver::find_rocm_version(&roots) {
             found_rocm_ver = true;
-            $crate::cfg_version("rocm_ver", version, ::rocm_core::consts::KNOWN_ROCM_VERSIONS);
+            $crate::cfg_version("rocm_ver", version, ::rocm_include::consts::KNOWN_ROCM_VERSIONS);
         }
 
         if let Some(_component) = $crate::link::find_component(
@@ -18,8 +18,8 @@ macro_rules! build {
             &["amdhip64"],
         ) {
             if !found_rocm_ver {
-                let version = ::rocm_core::ver::ROCM_VERSION.expect("failed to determine HIP runtime version");
-                $crate::cfg_version("rocm_ver", version, ::rocm_core::consts::KNOWN_ROCM_VERSIONS);
+                let version = ::rocm_include::ver::ROCM_VERSION.expect("failed to determine HIP runtime version");
+                $crate::cfg_version("rocm_ver", version, ::rocm_include::consts::KNOWN_ROCM_VERSIONS);
             }
 
             $(
@@ -85,7 +85,7 @@ pub fn build_version_cfg_link() {
     build!(_link);
 }
 
-fn cfg_version(cfg: &str, version: rocm_core::ver::Version, known: &[&str]) {
+fn cfg_version(cfg: &str, version: rocm_include::ver::Version, known: &[&str]) {
     let formatted = format!("{}.{}", version.major, version.minor);
     let index = known
         .iter()

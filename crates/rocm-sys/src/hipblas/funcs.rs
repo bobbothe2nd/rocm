@@ -1,6 +1,6 @@
 use super::types::*;
 use crate::hip::*;
-use rocm_core::ctype::*;
+use rocm_include::ctype::*;
 
 // TODO: find actual version requirements & support ILP64
 

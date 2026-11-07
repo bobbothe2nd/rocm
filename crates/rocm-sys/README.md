@@ -14,15 +14,29 @@ This crate doesn't consider correcting a functions version requirement a breakin
 
 This does, however, mean you can't rely on panicking or compile errors for detecting undefined symbols.
 
+## Implementation
+
+Currently implemented:
+
+- HIP - Heterogeneous-Compute Interface for Portability
+- HIPRTC - HIP runtime compiler without dependencies
+- hipBLAS - portable Basic Linear Algebra Subprograms
+- hipBLASLt - generic and specialized GEMM kernels in HIP
+- hipFFT - portable Fast Fourier Transform 
+- rocBLAS - Basic Linear Algebra Subprograms for AMD-only
+- rocFFT - Fast Fourier Transform for AMD-only
+
+All `roc*` libraries are AMD-only while `hip*`/`HIP*` are portable to Nvidia if ROCm is isntalled.
+
 ## Usage
 
-This is a very unsafe and low-level API. For a safer API, use `rocm-rt`.
+This is a very unsafe and low-level API. For a safer API, use `rocm`.
 
 ```rust
 let mut count = -1;
 
 unsafe {
-    hipGetDeviceCount(&raw mut count);
+    rocm_sys::hip::hipGetDeviceCount(&raw mut count);
 }
 
 println!("device count = {count}");

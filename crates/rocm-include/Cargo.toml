@@ -1,0 +1,11 @@
+[package]
+name = "rocm-include"
+version = "0.1.0"
+edition = "2024"
+description = "Low-level ROCm-focused C interface and versioning"
+license = "MIT"
+repository = "https://github.com/bobbothe2nd/rocm"
+documentation = "https://docs.rs/crate/rocm-include/latest"
+
+[features]
+std = []

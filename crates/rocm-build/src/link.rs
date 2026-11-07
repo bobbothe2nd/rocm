@@ -1,4 +1,4 @@
-use rocm_core::consts::{
+use rocm_include::consts::{
     // KNOWN_HIPBLAS_VERSIONS, KNOWN_HIPBLASLT_VERSIONS, KNOWN_ROCBLAS_VERSIONS, KNOWN_ROCFFT_VERSIONS,
     KNOWN_ROCM_VERSIONS,
 };
