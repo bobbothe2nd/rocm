@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "crates/rocm",
+    "crates/roc",
     "crates/rocm-build",
     "crates/rocm-sys",
     "crates/rocm-include",

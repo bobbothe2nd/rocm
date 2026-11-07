@@ -1,5 +1,7 @@
 # ROCm
 
+Third-part Rust ROCm bindings and safe wrappers.
+
 This project consists of 4 Rust crates:
 
 1. `rocm-include`: mostly compile-time version and C parsing
