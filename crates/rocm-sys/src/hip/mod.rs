@@ -15,3 +15,7 @@ pub use vecty::*;
 mod libty;
 
 pub use libty::*;
+
+mod consts;
+
+pub use consts::*;

@@ -1,10 +1,11 @@
 use crate::hip::{
-    HipError, event::HipEvent, memory::{HostSlice, HostSliceMut, Memset}, stream::HipStream,
+    HipError,
+    event::HipEvent,
+    memory::{HostSlice, HostSliceMut, Memset},
+    stream::HipStream,
 };
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr};
-use rocm_sys::hip::{
-    hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemsetD8,
-};
+use rocm_sys::hip::{hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemsetD8};
 
 /// Handle to an allocation on the GPU
 #[repr(C)]
@@ -329,7 +330,7 @@ impl Buffer {
         }
 
         unsafe {
-            self.stream.copy_htod(&src, self, src_off, dst_off, len)?;
+            self.stream.copy_htod(src, self, src_off, dst_off, len)?;
         }
 
         self.event.record(&self.stream)?;
@@ -382,7 +383,9 @@ impl Buffer {
             return Err(HipError::InvalidValue);
         }
 
-        unsafe { T::memset_async(self.ptr.cast(), val, self.ptr.len(), &self.stream)?; }
+        unsafe {
+            T::memset_async(self.ptr.cast(), val, self.ptr.len(), &self.stream)?;
+        }
 
         self.event.record(&self.stream)?;
 

@@ -1,15 +1,32 @@
-use rocm_sys::hip::{hipMemsetD8, hipMemsetD8Async, hipMemsetD16, hipMemsetD16Async, hipMemsetD32, hipMemsetD32Async};
+use rocm_sys::hip::{
+    hipMemsetD8, hipMemsetD8Async, hipMemsetD16, hipMemsetD16Async, hipMemsetD32, hipMemsetD32Async,
+};
 
 use crate::hip::{HipError, stream::HipStream};
 
 pub trait Memset {
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError>;
-    unsafe fn memset_async(dst: *mut Self, value: Self, size: usize, stream: &HipStream) -> Result<(), HipError>;
+    unsafe fn memset_async(
+        dst: *mut Self,
+        value: Self,
+        size: usize,
+        stream: &HipStream,
+    ) -> Result<(), HipError>;
 }
 
 impl Memset for u8 {
-    unsafe fn memset_async(dst: *mut Self, value: Self, size: usize, stream: &HipStream) -> Result<(), HipError> {
-        unsafe { try_err!(hipMemsetD8Async(dst.cast(), value, size, stream.raw.raw), Ok(())) }
+    unsafe fn memset_async(
+        dst: *mut Self,
+        value: Self,
+        size: usize,
+        stream: &HipStream,
+    ) -> Result<(), HipError> {
+        unsafe {
+            try_err!(
+                hipMemsetD8Async(dst.cast(), value, size, stream.raw.raw),
+                Ok(())
+            )
+        }
     }
 
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
@@ -18,8 +35,18 @@ impl Memset for u8 {
 }
 
 impl Memset for u16 {
-    unsafe fn memset_async(dst: *mut Self, value: Self, size: usize, stream: &HipStream) -> Result<(), HipError> {
-        unsafe { try_err!(hipMemsetD16Async(dst.cast(), value, size, stream.raw.raw), Ok(())) }
+    unsafe fn memset_async(
+        dst: *mut Self,
+        value: Self,
+        size: usize,
+        stream: &HipStream,
+    ) -> Result<(), HipError> {
+        unsafe {
+            try_err!(
+                hipMemsetD16Async(dst.cast(), value, size, stream.raw.raw),
+                Ok(())
+            )
+        }
     }
 
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
@@ -28,8 +55,18 @@ impl Memset for u16 {
 }
 
 impl Memset for i32 {
-    unsafe fn memset_async(dst: *mut Self, value: Self, size: usize, stream: &HipStream) -> Result<(), HipError> {
-        unsafe { try_err!(hipMemsetD32Async(dst.cast(), value, size, stream.raw.raw), Ok(())) }
+    unsafe fn memset_async(
+        dst: *mut Self,
+        value: Self,
+        size: usize,
+        stream: &HipStream,
+    ) -> Result<(), HipError> {
+        unsafe {
+            try_err!(
+                hipMemsetD32Async(dst.cast(), value, size, stream.raw.raw),
+                Ok(())
+            )
+        }
     }
 
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
