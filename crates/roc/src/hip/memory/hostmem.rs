@@ -1,9 +1,6 @@
 use crate::hip::{HipError, event::HipEvent, memory::Buffer, stream::HipStream};
 use core::{
-    cell::UnsafeCell,
-    marker::PhantomData,
-    mem::ManuallyDrop,
-    ops::{Deref, DerefMut},
+    cell::UnsafeCell, hint::unreachable_unchecked, marker::PhantomData, mem::ManuallyDrop, ops::{Deref, DerefMut}, slice,
 };
 use rocm_sys::hip::{
     hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMemcpyDtoH,
@@ -14,7 +11,9 @@ use rocm_sys::hip::{
 #[repr(C)]
 #[derive(Debug)]
 pub struct HostSlice<'a> {
-    pub(crate) data: *const [u8],
+    pub(crate) data: *const u8,
+    pub(crate) size: u32,
+    pub(crate) premapped: bool,
     pub(crate) event: HipEvent,
     pub(crate) stream: HipStream,
     _marker: PhantomData<&'a HostBuffer>,
@@ -24,15 +23,16 @@ impl<'a> HostSlice<'a> {
     /// Maps the data and return a handle
     pub fn new(data: &'a [u8], stream: HipStream) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(data.as_ptr() as *mut _, data.len(), 0) };
-        if !matches!(
-            res,
-            hipError_t::hipErrorHostMemoryAlreadyRegistered | hipError_t::hipSuccess
-        ) {
-            try_err!(res);
-        }
+        let premapped = match res {
+            hipError_t::hipSuccess => true,
+            hipError_t::hipErrorHostMemoryAlreadyRegistered => false,
+            res => try_err!(res, unsafe { unreachable_unchecked() }),
+        };
 
         Ok(Self {
-            data,
+            data: data.as_ptr(),
+            size: data.len() as u32,
+            premapped,
             event: HipEvent::create()?,
             stream,
             _marker: PhantomData,
@@ -41,26 +41,30 @@ impl<'a> HostSlice<'a> {
 
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        data: &'a mut [u8],
+        data: *mut u8,
+        size: u32,
+        premapped: bool,
         stream: HipStream,
         event: HipEvent,
     ) -> Self {
         Self {
             data,
+            size,
             event,
             stream,
+            premapped,
             _marker: PhantomData,
         }
     }
 
     #[inline(always)]
     pub const fn as_slice(&self) -> &[u8] {
-        unsafe { &*self.data }
+        unsafe { slice::from_raw_parts(self.data, self.size as usize) }
     }
 
     #[inline(always)]
     pub const fn size(&self) -> u32 {
-        self.data.len() as u32
+        self.size
     }
 
     /// Maps the buffer such that is is accessible
@@ -68,7 +72,7 @@ impl<'a> HostSlice<'a> {
     pub fn map(&self) -> Result<(), HipError> {
         unsafe {
             try_err!(
-                hipHostRegister(self.data as *mut _, self.data.len(), 0),
+                hipHostRegister(self.data as *mut _, self.size as usize, 0),
                 Ok(())
             )
         }
@@ -91,7 +95,7 @@ impl<'a> HostSlice<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size())
+        if src_off.checked_add(len).is_none_or(|end| end > self.size)
             || dst_off
                 .checked_add(len)
                 .is_none_or(|end| end > other.ptr.len() as u32)
@@ -127,6 +131,9 @@ impl Drop for HostSlice<'_> {
     #[inline(always)]
     fn drop(&mut self) {
         let _ = self.event.sync();
+        if !self.premapped {
+            let _ = unsafe { self.unmap() };
+        }
     }
 }
 
@@ -135,7 +142,7 @@ impl Deref for HostSlice<'_> {
 
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
-        unsafe { &*self.data }
+        self.as_slice()
     }
 }
 
@@ -143,7 +150,9 @@ impl Deref for HostSlice<'_> {
 #[repr(C)]
 #[derive(Debug)]
 pub struct HostSliceMut<'a> {
-    pub(crate) data: *mut [u8],
+    pub(crate) data: *mut u8,
+    pub(crate) size: u32,
+    pub(crate) premapped: bool,
     pub(crate) event: HipEvent,
     pub(crate) stream: HipStream,
     _marker: PhantomData<&'a HostBuffer>,
@@ -153,15 +162,16 @@ impl<'a> HostSliceMut<'a> {
     /// Maps the data and return a handle
     pub fn new(data: &'a mut [u8], stream: HipStream) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(data.as_mut_ptr().cast(), data.len(), 0) };
-        if !matches!(
-            res,
-            hipError_t::hipErrorHostMemoryAlreadyRegistered | hipError_t::hipSuccess
-        ) {
-            try_err!(res);
-        }
+        let premapped = match res {
+            hipError_t::hipSuccess => true,
+            hipError_t::hipErrorHostMemoryAlreadyRegistered => false,
+            res => try_err!(res, unsafe { unreachable_unchecked() }),
+        };
 
         Ok(Self {
-            data,
+            data: data.as_mut_ptr(),
+            size: data.len() as u32,
+            premapped,
             event: HipEvent::create()?,
             stream,
             _marker: PhantomData,
@@ -170,12 +180,16 @@ impl<'a> HostSliceMut<'a> {
 
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        data: &'a mut [u8],
+        data: *mut u8,
+        size: u32,
+        premapped: bool,
         stream: HipStream,
         event: HipEvent,
     ) -> Self {
         Self {
             data,
+            size,
+            premapped,
             event,
             stream,
             _marker: PhantomData,
@@ -184,12 +198,17 @@ impl<'a> HostSliceMut<'a> {
 
     #[inline(always)]
     pub const fn as_slice(&self) -> &[u8] {
-        unsafe { &mut *self.data }
+        unsafe { slice::from_raw_parts(self.data, self.size as usize) }
+    }
+
+    #[inline(always)]
+    pub const fn as_mut_slice(&mut self) -> &mut [u8] {
+        unsafe { slice::from_raw_parts_mut(self.data, self.size as usize) }
     }
 
     #[inline(always)]
     pub const fn size(&self) -> u32 {
-        self.data.len() as u32
+        self.size
     }
 
     /// Maps the buffer such that is is accessible
@@ -197,7 +216,7 @@ impl<'a> HostSliceMut<'a> {
     pub fn map(&self) -> Result<(), HipError> {
         unsafe {
             try_err!(
-                hipHostRegister(self.data.cast(), self.data.len(), 0),
+                hipHostRegister(self.data.cast(), self.size as usize, 0),
                 Ok(())
             )
         }
@@ -220,7 +239,7 @@ impl<'a> HostSliceMut<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size())
+        if src_off.checked_add(len).is_none_or(|end| end > self.size)
             || dst_off
                 .checked_add(len)
                 .is_none_or(|end| end > other.ptr.len() as u32)
@@ -258,7 +277,7 @@ impl<'a> HostSliceMut<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size())
+        if src_off.checked_add(len).is_none_or(|end| end > self.size)
             || dst_off
                 .checked_add(len)
                 .is_none_or(|end| end > other.ptr.len() as u32)
@@ -294,6 +313,9 @@ impl Drop for HostSliceMut<'_> {
     #[inline(always)]
     fn drop(&mut self) {
         let _ = self.event.sync();
+        if !self.premapped {
+            let _ = unsafe { self.unmap() };
+        }
     }
 }
 
@@ -302,14 +324,14 @@ impl Deref for HostSliceMut<'_> {
 
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
-        unsafe { &*self.data }
+        unsafe { slice::from_raw_parts(self.data, self.size as usize) }
     }
 }
 
 impl DerefMut for HostSliceMut<'_> {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { &mut *self.data }
+        unsafe { slice::from_raw_parts_mut(self.data, self.size as usize) }
     }
 }
 
@@ -317,7 +339,9 @@ impl DerefMut for HostSliceMut<'_> {
 #[repr(C)]
 #[derive(Debug)]
 pub struct HostBuffer {
-    pub(crate) ptr: *mut [u8],
+    pub(crate) data: *mut u8,
+    pub(crate) size: u32,
+    pub(crate) is_mapped: bool,
     pub(crate) event: HipEvent,
     pub(crate) stream: HipStream,
     _marker: PhantomData<UnsafeCell<()>>,
@@ -331,15 +355,16 @@ impl HipStream {
     pub fn alloc_host(&self, size: u32) -> Result<HostBuffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size as usize, 0)) };
-        let ptr = ptr?;
+        let data = ptr?;
 
-        if ptr.is_null() {
+        if data.is_null() {
             return Err(HipError::InvalidValue);
         }
 
-        let slice = core::ptr::slice_from_raw_parts_mut(ptr, size as usize);
         Ok(HostBuffer {
-            ptr: slice,
+            data,
+            size,
+            is_mapped: true,
             stream: self.clone(),
             event: HipEvent::create()?,
             _marker: PhantomData,
@@ -353,9 +378,7 @@ impl HipStream {
         let buf = self.alloc_host(size as u32)?;
 
         unsafe {
-            buf.ptr
-                .cast::<u8>()
-                .copy_from_nonoverlapping(data.as_ptr(), size);
+            buf.data.copy_from_nonoverlapping(data.as_ptr(), size);
         }
 
         Ok(buf)
@@ -375,14 +398,15 @@ impl HipStream {
 impl HostBuffer {
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        ptr: *mut u8,
+        data: *mut u8,
         size: u32,
         stream: HipStream,
         event: HipEvent,
     ) -> Self {
-        let slice = core::ptr::slice_from_raw_parts_mut(ptr, size as usize);
         Self {
-            ptr: slice,
+            data,
+            size,
+            is_mapped: false,
             stream,
             event,
             _marker: PhantomData,
@@ -391,17 +415,22 @@ impl HostBuffer {
 
     #[inline(always)]
     pub const fn as_ptr(&self) -> *mut u8 {
-        self.ptr.cast()
+        self.data
     }
 
     #[inline(always)]
-    pub const fn as_slice(&mut self) -> &mut [u8] {
-        unsafe { &mut *self.ptr }
+    pub const fn as_slice(&self) -> &[u8] {
+        unsafe { slice::from_raw_parts(self.data, self.size as usize) }
+    }
+    
+    #[inline(always)]
+    pub const fn as_mut_slice(&mut self) -> &mut [u8] {
+        unsafe { slice::from_raw_parts_mut(self.data, self.size as usize) }
     }
 
     #[inline(always)]
     pub const fn size(&self) -> u32 {
-        self.ptr.len() as u32
+        self.size
     }
 
     /// Deallocates the GPU-accessible buffer and synchronizes
@@ -423,7 +452,7 @@ impl HostBuffer {
     ///
     /// The buffer must never be deallocated again or dropped and the buffer can't be used again.
     pub unsafe fn dealloc_unchecked(&self) -> Result<(), HipError> {
-        unsafe { try_err!(hipHostFree(self.ptr.cast()), Ok(())) }
+        unsafe { try_err!(hipHostFree(self.data.cast()), Ok(())) }
     }
 }
 
@@ -442,14 +471,14 @@ impl Deref for HostBuffer {
 
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
-        unsafe { &*self.ptr }
+        unsafe { slice::from_raw_parts(self.data, self.size as usize) }
     }
 }
 
 impl DerefMut for HostBuffer {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { &mut *self.ptr }
+        unsafe { slice::from_raw_parts_mut(self.data, self.size as usize) }
     }
 }
 

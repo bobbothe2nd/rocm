@@ -55,7 +55,7 @@ impl HipStream {
     ) -> Result<(), HipError> {
         if src_off
             .checked_add(len)
-            .is_none_or(|end| end > src.data.len() as u32)
+            .is_none_or(|end| end > src.size as u32)
             || dst_off
                 .checked_add(len)
                 .is_none_or(|end| end > dst.ptr.len() as u32)
@@ -79,7 +79,7 @@ impl HipStream {
             try_err!(
                 hipMemcpyHtoDAsync(
                     dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.data.byte_add(src_off as usize).cast(),
+                    src.data.add(src_off as usize).cast(),
                     len as usize,
                     self.raw.raw,
                 ),
@@ -101,7 +101,7 @@ impl HipStream {
             .is_none_or(|end| end > src.ptr.len() as u32)
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > dst.data.len() as u32)
+                .is_none_or(|end| end > dst.size as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -121,7 +121,7 @@ impl HipStream {
         unsafe {
             try_err!(
                 hipMemcpyDtoHAsync(
-                    dst.data.byte_add(dst_off as usize) as *mut _,
+                    dst.data.add(dst_off as usize) as *mut _,
                     src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                     self.raw.raw,
