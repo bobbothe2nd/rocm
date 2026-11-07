@@ -78,7 +78,7 @@ If the shared library is present on the system under a different name than one o
                     $(
                         let ver = ::rocm_include::ver::ROCM_VERSION.expect("failed to get HIP version");
                         let min_ver = ::rocm_include::ver::Version { major: $major_version, minor: $minor_version };
-                        assert!(ver >= min_ver, ::core::concat!(::core::stringify!($name), " requires ", ::core::stringify!($lib), " version ^", ::core::stringify!($major_version), ".", ::core::stringify!($minor_version), ", found {}.{}"), ver.major, ver.minor);
+                        assert!(ver >= min_ver, ::core::concat!(::core::stringify!($name), " requires ", ::core::stringify!($lib), " version ^", ::core::stringify!($major_version), ".", ::core::stringify!($minor_version), ", found {}"), ver);
                     )?
                     *$lib.get::<F>(::core::stringify!($name)).unwrap()
                 });
