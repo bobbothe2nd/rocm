@@ -6,16 +6,16 @@ pub mod cparse;
 
 pub mod ctype;
 
-pub mod strum;
-
 pub mod test;
 
 pub mod ver;
 
+#[deprecated(since = "0.1.1", note = "moved to rocm_include::ver")]
+pub mod consts;
+
 #[cfg(feature = "std")]
 mod dynamic;
 
-#[deprecated(since = "0.1.1", note = "moved to rocm_include::ver")]
-pub mod consts;
+mod strum;
 
 doctest!(readme: "../README.md");
