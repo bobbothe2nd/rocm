@@ -1,123 +1,15 @@
-#[repr(u32)]
-#[doc = " hipJitOption"]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipJitOption {
-    #[doc = "< CUDA Only Maximum registers may be used in a thread,\n< passed to compiler"]
-    hipJitOptionMaxRegisters = 0,
-    #[doc = "< CUDA Only Number of thread per block"]
-    hipJitOptionThreadsPerBlock = 1,
-    #[doc = "< CUDA Only Value for total wall clock time"]
-    hipJitOptionWallTime = 2,
-    #[doc = "< CUDA Only Pointer to the buffer with logged information"]
-    hipJitOptionInfoLogBuffer = 3,
-    #[doc = "< CUDA Only Size of the buffer in bytes for logged info"]
-    hipJitOptionInfoLogBufferSizeBytes = 4,
-    #[doc = "< CUDA Only Pointer to the buffer with logged error(s)"]
-    hipJitOptionErrorLogBuffer = 5,
-    #[doc = "< CUDA Only Size of the buffer in bytes for logged\n< error(s)"]
-    hipJitOptionErrorLogBufferSizeBytes = 6,
-    #[doc = "< Value of optimization level for generated codes, acceptable\n< options -O0, -O1, -O2, -O3"]
-    hipJitOptionOptimizationLevel = 7,
-    #[doc = "< CUDA Only The target context, which is the default"]
-    hipJitOptionTargetFromContext = 8,
-    #[doc = "< CUDA Only JIT target"]
-    hipJitOptionTarget = 9,
-    #[doc = "< CUDA Only Fallback strategy"]
-    hipJitOptionFallbackStrategy = 10,
-    #[doc = "< CUDA Only Generate debug information"]
-    hipJitOptionGenerateDebugInfo = 11,
-    #[doc = "< CUDA Only Generate log verbose"]
-    hipJitOptionLogVerbose = 12,
-    #[doc = "< CUDA Only Generate line number information"]
-    hipJitOptionGenerateLineInfo = 13,
-    #[doc = "< CUDA Only Set cache mode"]
-    hipJitOptionCacheMode = 14,
-    #[doc = "< @deprecated CUDA Only New SM3X option."]
-    hipJitOptionSm3xOpt = 15,
-    #[doc = "< CUDA Only Set fast compile"]
-    hipJitOptionFastCompile = 16,
-    #[doc = "< CUDA Only Array of device symbol names to be relocated to the\n< host"]
-    hipJitOptionGlobalSymbolNames = 17,
-    #[doc = "< CUDA Only Array of host addresses to be relocated to the\n< device"]
-    hipJitOptionGlobalSymbolAddresses = 18,
-    #[doc = "< CUDA Only Number of symbol count."]
-    hipJitOptionGlobalSymbolCount = 19,
-    #[doc = "< @deprecated CUDA Only Enable link-time optimization for device code"]
-    hipJitOptionLto = 20,
-    #[doc = "< @deprecated CUDA Only Set single-precision denormals."]
-    hipJitOptionFtz = 21,
-    #[doc = "< @deprecated CUDA Only Set single-precision floating-point division\n< and reciprocals"]
-    hipJitOptionPrecDiv = 22,
-    #[doc = "< @deprecated CUDA Only Set single-precision floating-point square root"]
-    hipJitOptionPrecSqrt = 23,
-    #[doc = "< @deprecated CUDA Only Enable floating-point multiplies and\n< adds/subtracts operations"]
-    hipJitOptionFma = 24,
-    #[doc = "< CUDA Only Generates Position Independent code"]
-    hipJitOptionPositionIndependentCode = 25,
-    #[doc = "< CUDA Only Hints to JIT compiler the minimum number of CTAs frin\n< kernel's grid to be mapped to SM"]
-    hipJitOptionMinCTAPerSM = 26,
-    #[doc = "< CUDA only Maximum number of threads in a thread block"]
-    hipJitOptionMaxThreadsPerBlock = 27,
-    #[doc = "< Cuda only Override Directive values"]
-    hipJitOptionOverrideDirectiveValues = 28,
-    #[doc = "< Number of options"]
-    hipJitOptionNumOptions = 29,
-    #[doc = "< Hip Only Linker options to be passed on to compiler"]
-    hipJitOptionIRtoISAOptExt = 10000,
-    #[doc = "< Hip Only Count of linker options to be passed on to compiler"]
-    hipJitOptionIRtoISAOptCountExt = 10001,
-}
-#[repr(u32)]
-#[doc = " hipJitInputType"]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipJitInputType {
-    #[doc = "< Cuda only Input cubin"]
-    hipJitInputCubin = 0,
-    #[doc = "< Cuda only Input PTX"]
-    hipJitInputPtx = 1,
-    #[doc = "< Cuda Only Input FAT Binary"]
-    hipJitInputFatBinary = 2,
-    #[doc = "< Cuda Only Host Object with embedded device code"]
-    hipJitInputObject = 3,
-    #[doc = "< Cuda Only Archive of Host Objects with embedded\n< device code"]
-    hipJitInputLibrary = 4,
-    #[doc = "< @deprecated Cuda only High Level intermediate\n< code for LTO"]
-    hipJitInputNvvm = 5,
-    #[doc = "< Count of Legacy Input Types"]
-    hipJitNumLegacyInputTypes = 6,
-    #[doc = "< HIP Only LLVM Bitcode or IR assembly"]
-    hipJitInputLLVMBitcode = 100,
-    #[doc = "< HIP Only LLVM Clang Bundled Code"]
-    hipJitInputLLVMBundledBitcode = 101,
-    #[doc = "< HIP Only LLVM Archive of Bundled Bitcode"]
-    hipJitInputLLVMArchivesOfBundledBitcode = 102,
-    #[doc = "< HIP Only SPIRV Code Object"]
-    hipJitInputSpirv = 103,
-    #[doc = "< Count of Input Types"]
-    hipJitNumInputTypes = 10,
-}
-#[repr(u32)]
-#[doc = " hipJitCacheMode"]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipJitCacheMode {
-    hipJitCacheOptionNone = 0,
-    hipJitCacheOptionCG = 1,
-    hipJitCacheOptionCA = 2,
-}
-#[repr(u32)]
-#[doc = " hipJitFallback"]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipJitFallback {
-    hipJitPreferPTX = 0,
-    hipJitPreferBinary = 1,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipLibraryOption_e {
-    hipLibraryHostUniversalFunctionAndDataTable = 0,
-    hipLibraryBinaryIsPreserved = 1,
-}
-pub use self::hipLibraryOption_e as hipLibraryOption;
+#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipJitOption instead")]
+pub type hipJitOption = crate::hip::hipJitOption;
+#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipJitInputType instead")]
+pub type hipJitInputType = crate::hip::hipJitInputType;
+#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipJitCacheMode instead")]
+pub type hipJitCacheMode = crate::hip::hipJitCacheMode;
+#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipJitFallback instead")]
+pub type hipJitFallback = crate::hip::hipJitFallback;
+#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipLibraryOption instead")]
+pub type hipLibraryOption = crate::hip::hipLibraryOption;
+#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipLibraryOption_e instead")]
+pub type hipLibraryOption_e = crate::hip::hipLibraryOption_e;
 #[repr(u32)]
 #[doc = " @addtogroup GlobalDefs\n @{\n\n/\n/**\n hiprtc error code"]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
