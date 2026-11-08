@@ -66,5 +66,10 @@ pub fn is_rocfft_present() -> bool {
     rocfft::rocfft::is_rocm_lib_present()
 }
 
+#[cfg(all(feature = "rocfft", feature = "dynamic-loading"))]
+pub fn is_miopen_present() -> bool {
+    miopen::MIOpen::is_rocm_lib_present()
+}
+
 #[cfg(any(feature = "dynamic-loading", hip))]
 rocm_include::doctest!(["hip"] readme: "../README.md");

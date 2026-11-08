@@ -4,6 +4,7 @@
 macro_rules! link {
     (
         $lib:ident : $cfg_ver:ident;
+        dev $prefix:ident $paste:path;
 
         $(
             $(#[internal($cfg_internal:ident)])?
@@ -72,9 +73,9 @@ If the shared library is present on the system under a different name than one o
             $(#[$cfg_internal(feature = "internal")])?
             $($(#[$cfg_strong(feature = "deprecated")])?)?
             #[cfg(test)]
-            pastey::paste! {
+            $paste! {
                 #[test]
-                fn [<test_$name>]() {
+                fn [<$prefix $name>]() {
                     type F = unsafe extern "C" fn(
                         $($(*$mut)* $arg_ty),*
                     ) -> $(*$ret_mut)* $ret;
@@ -99,6 +100,7 @@ If the shared library is present on the system under a different name than one o
 macro_rules! link {
     (
         $lib:ident : $cfg_ver:ident;
+        dev $prefx:ident $paste:path;
 
         $(
             $(#[internal($cfg_internal:ident)])?
@@ -129,9 +131,9 @@ macro_rules! link {
             $(#[cfg($cfg_ver = $version_string)])?
             $($(#[$cfg_strong(feature = "deprecated")])?)?
             #[cfg(test)]
-            pastey::paste! {
+            $paste! {
                 #[test]
-                fn [<test_$name>]() {
+                fn [<$prefix $name>]() {
                     let _ = ::core::hint::black_box($name);
                 }
             }

@@ -6,6 +6,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     hipblas : rocm_ver;
+    dev exists_ pastey::paste;
 
     hipblasStatus_t hipblasCreate(*mut hipblasHandle_t handle);
 

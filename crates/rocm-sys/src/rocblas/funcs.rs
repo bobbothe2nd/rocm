@@ -4,6 +4,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     rocblas : rocm_ver;
+    dev exists_ pastey::paste;
 
     rocblas_status rocblas_create_handle(*mut rocblas_handle handle);
 

@@ -2,13 +2,11 @@ use super::types::*;
 use crate::hip::*;
 use rocm_include::ctype::*;
 
-// #[cfg(feature = "dynamic-loading")]
-// use crate::version::{ROCM_MAJOR as MAJOR, ROCM_MINOR as MINOR};
-
 // TODO: support hipFFTW, callback APIs, and memory management APIs
 
 rocm_include::link! {
     hipfft : rocm_ver;
+    dev exists_ pastey::paste;
 
     hipfftResult hipfftPlan1d(*mut hipfftHandle plan, int nx, hipfftType type_, int batch);
 
