@@ -43,7 +43,7 @@ pub const MIOPEN_ROCBLAS_VERSION_PATCH: u32 = 1;
 pub const MIOPEN_ROCBLAS_VERSION_FLAT: u32 = 5001001;
 pub const MIOPEN_GOLDEN_DB_VERSION: u32 = 21;
 pub const MIOPEN_API_VERSION_REDUCE_TENSOR: u32 = 1;
-pub type miopenAcceleratorQueue_t = crate::hip::types::hipStream_t;
+pub type miopenAcceleratorQueue_t = crate::hip::hipStream_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenHandle {
@@ -341,7 +341,8 @@ pub struct miopenOperatorArgs {
 pub type miopenOperatorArgs_t = *mut miopenOperatorArgs;
 pub const miopenFusionDirection_t_miopenVerticalFusion: miopenFusionDirection_t = 0;
 pub const miopenFusionDirection_t_miopenHorizontalFusion: miopenFusionDirection_t = 1;
-pub type miopenFusionDirection_t = ::std::os::raw::c_uint;pub const miopenRNNMode_t_miopenRNNRELU: miopenRNNMode_t = 0;
+pub type miopenFusionDirection_t = ::std::os::raw::c_uint;
+pub const miopenRNNMode_t_miopenRNNRELU: miopenRNNMode_t = 0;
 pub const miopenRNNMode_t_miopenRNNTANH: miopenRNNMode_t = 1;
 pub const miopenRNNMode_t_miopenLSTM: miopenRNNMode_t = 2;
 pub const miopenRNNMode_t_miopenGRU: miopenRNNMode_t = 3;
@@ -374,6 +375,8 @@ pub const miopenRNNBaseLayout_t_miopenRNNDataBatchMajorPadded: miopenRNNBaseLayo
 pub type miopenRNNBaseLayout_t = ::std::os::raw::c_uint;
 pub const miopenCTCLossAlgo_t_MIOPEN_CTC_LOSS_ALGO_DETERMINISTIC: miopenCTCLossAlgo_t = 0;
 pub type miopenCTCLossAlgo_t = ::std::os::raw::c_uint;
+pub const miopenRNGType_t_MIOPEN_RNG_PSEUDO_XORWOW: miopenRNGType_t = 0;
+pub type miopenRNGType_t = ::std::os::raw::c_uint;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenProblem {
@@ -457,3 +460,4 @@ pub const miopenTuningPolicy_t_miopenTuningPolicyDbUpdate: miopenTuningPolicy_t 
 pub const miopenTuningPolicy_t_miopenTuningPolicySearch: miopenTuningPolicy_t = 3;
 pub const miopenTuningPolicy_t_miopenTuningPolicySearchDbUpdate: miopenTuningPolicy_t = 4;
 pub const miopenTuningPolicy_t_miopenTuningPolicyDbClean: miopenTuningPolicy_t = 5;
+pub type miopenTuningPolicy_t = ::std::os::raw::c_uint;

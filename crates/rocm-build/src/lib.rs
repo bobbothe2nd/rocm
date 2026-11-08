@@ -5,11 +5,12 @@ macro_rules! build {
         $crate::link::check_cfg();
 
         let roots = $crate::link::rocm_roots();
-        let mut found_rocm_ver = false;
 
-        if let Some(version) = ::rocm_include::ver::find_rocm_version(&roots) {
-            found_rocm_ver = true;
-            $crate::cfg_version("rocm_ver", version, ::rocm_include::ver::KNOWN_ROCM_VERSIONS);
+        match ::rocm_include::ver::find_rocm_version(&roots) {
+            Some(version) => $crate::cfg_version("rocm_ver", version, ::rocm_include::ver::KNOWN_ROCM_VERSIONS),
+            None => if let Some(version) = *::rocm_include::ver::ROCM_VERSION {
+                $crate::cfg_version("rocm_ver", version, ::rocm_include::ver::KNOWN_ROCM_VERSIONS);
+            },
         }
 
         if let Some(_component) = $crate::link::find_component(
@@ -17,11 +18,6 @@ macro_rules! build {
             &["hip_runtime_api.h", "hip_runtime.h"],
             &["amdhip64"],
         ) {
-            if !found_rocm_ver {
-                let version = ::rocm_include::ver::ROCM_VERSION.expect("failed to determine HIP runtime version");
-                $crate::cfg_version("rocm_ver", version, ::rocm_include::ver::KNOWN_ROCM_VERSIONS);
-            }
-
             $(
                 let $link = ();
                 $crate::link::link_component(&_component);
@@ -48,28 +44,22 @@ macro_rules! build {
         build!(@component roots $([$link])? "rocsolver");
         build!(@component roots $([$link])? "rocsparse");
 
+        build!(@component roots $([$link])? "miopen" "MIOpen");
+
         println!("cargo:rerun-if-env-changed=ROCM_PATH");
         println!("cargo:rerun-if-env-changed=ROCM_HOME");
     };
 
     (@component $roots:ident $([$link:ident])? $name:literal) => {
-        $(
-            let $link = ();
-            if let Some(component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$name]) {
-                $crate::link::link_component(&component);
-
-                println!(concat!("cargo:rustc-cfg=", $name));
-            }
-        )?
+        build!(@component $roots $([$link])? $name $name);
     };
 
-    (@component $roots:ident $([$link:ident])? $name:literal $ver:path) => {
-        if let Some(_component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$name]) {
+    (@component $roots:ident $([$link:ident])? $name:literal $lib:literal) => {
+        if let Some(_component) = $crate::link::find_component(&$roots, &[concat!($name, ".h")], &[$lib]) {
             $(
                 let $link = ();
                 $crate::link::link_component(&_component);
             )?
-
             println!(concat!("cargo:rustc-cfg=", $name));
         }
     };

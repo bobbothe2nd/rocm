@@ -14,10 +14,10 @@ libloading = { version = "0.9", optional = true }
 rocm-include = { path = "../rocm-include", version = "0.1.1" }
 
 [build-dependencies]
-rocm-build = { path = "../rocm-build", version = "0.3" }
+rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["hiprtc"]
+default = ["hiprtc", "miopen"]
 
 # configure included libraries
 hip = []

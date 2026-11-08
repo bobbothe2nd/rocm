@@ -124,6 +124,7 @@ pub fn link_component(component: &Component) {
 pub fn check_cfg() {
     println!("cargo:rustc-check-cfg=cfg(hip)");
     println!("cargo:rustc-check-cfg=cfg(hiprtc)");
+
     println!("cargo:rustc-check-cfg=cfg(hipblas)");
     println!("cargo:rustc-check-cfg=cfg(hipblaslt)");
     println!("cargo:rustc-check-cfg=cfg(hipcub)");
@@ -134,16 +135,16 @@ pub fn check_cfg() {
     println!("cargo:rustc-check-cfg=cfg(hipsparse)");
     println!("cargo:rustc-check-cfg=cfg(hipsparselt)");
     println!("cargo:rustc-check-cfg=cfg(hiptensor)");
-    println!("cargo:rustc-check-cfg=cfg(hipthreads)");
+
     println!("cargo:rustc-check-cfg=cfg(rocalution)");
     println!("cargo:rustc-check-cfg=cfg(rocblas)");
     println!("cargo:rustc-check-cfg=cfg(rocfft)");
-    println!("cargo:rustc-check-cfg=cfg(rocprim)");
     println!("cargo:rustc-check-cfg=cfg(rocrand)");
     println!("cargo:rustc-check-cfg=cfg(rocsolver)");
     println!("cargo:rustc-check-cfg=cfg(rocsparse)");
-    println!("cargo:rustc-check-cfg=cfg(rocthrust)");
     println!("cargo:rustc-check-cfg=cfg(rocwmma)");
+
+    println!("cargo:rustc-check-cfg=cfg(miopen)");
 
     let rocm_ver = KNOWN_ROCM_VERSIONS
         .iter()

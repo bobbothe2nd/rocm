@@ -1,6 +1,6 @@
 [package]
 name = "rocm-build"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2024"
 description = "Discovery of ROCm libraries for build scripts"
 license = "MIT"
