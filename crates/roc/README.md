@@ -10,7 +10,7 @@ ROCm and AMD are trademarks of Advanced Micro Devices, Inc.
 
 ## Usage
 
-This API is very limited and only covers a small subset of HIP and hipRTC, but no Linear Algebra libraries (hipBLAS, rocFFT, rocSOLVER, etc.).
+This API is very limited and only covers a small subset of HIP and hipRTC, but no higher level libraries (e.g., hipBLAS, rocFFT, rocSOLVER).
 
 The example shown below compiles and launches a simple program:
 

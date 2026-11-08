@@ -1,6 +1,6 @@
 # `rocm-sys`
 
-FFI bindings to C for ROCm, explicitly checks for correct ROCm versions and function calls are guarnateed to be safe provided their prerequisites defined by AMDs documentation.
+FFI bindings to C for ROCm, explicitly checks for correct ROCm versions and function calls are guaranteed to be safe provided their prerequisites defined by AMD's documentation.
 
 ## Disclaimer
 
