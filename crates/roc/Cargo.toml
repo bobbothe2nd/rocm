@@ -13,6 +13,7 @@ categories = ["hardware-support"]
 bitflags = "2"
 log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.6" }
+rocm-include = { path = "../rocm-include", version = "0.1" }
 
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.3" }
@@ -39,9 +40,9 @@ rocrand = ["rocm-sys/rocrand", "hip"]
 rocsolver = ["rocm-sys/rocsolver", "hip"]
 rocsparse = ["rocm-sys/rocsparse", "hip"]
 
-dynamic-loading = ["rocm-sys/dynamic-loading"]
+dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
 
-std = []
+std = ["rocm-include/std"]
 log = ["dep:log"]
 
 [[example]]

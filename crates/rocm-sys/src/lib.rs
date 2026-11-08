@@ -66,3 +66,6 @@ pub fn is_hipfft_present() -> bool {
 pub fn is_rocfft_present() -> bool {
     rocfft::rocfft::is_rocm_lib_present()
 }
+
+#[cfg(any(feature = "dynamic-loading", hip))]
+rocm_include::doctest!(["hip"] readme: "../README.md");

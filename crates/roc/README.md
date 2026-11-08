@@ -36,6 +36,10 @@ const BYTES: u32 = (LEN * size_of::<f32>()) as u32;
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
 
+if !roc::is_amdhip64_present() || !roc::is_hiprtc_present() {
+    return;
+}
+
 let dev = Device::current().unwrap();
 let arch = dev.gfx_version().unwrap();
 
@@ -96,13 +100,13 @@ unsafe {
     stream.launch(&func, &mut args, conf).unwrap();
 }
 
-let out_host = stream.alloc_host(BYTES).unwrap();
+let mut out_host = stream.alloc_host(BYTES).unwrap();
 
 stream.sync().unwrap();
 
-out.copy_to_host(&out_host.borrowed(), 0, 0, BYTES).unwrap();
+out.copy_to_host(&mut out_host, 0, 0, BYTES).unwrap();
 
-for chunk in out_host.as_slice().chunks(size_of::<f32>()) {
+for chunk in out_host.chunks(size_of::<f32>()) {
     let u8x4: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
     let float = f32::from_ne_bytes(u8x4);
 

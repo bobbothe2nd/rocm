@@ -77,3 +77,6 @@ pub use rocm_sys::is_rocfft_present;
 
 #[cfg(all(feature = "hipfft", any(feature = "dynamic-loading", hipfft)))]
 pub use rocm_sys::is_hipfft_present;
+
+#[cfg(any(feature = "dynamic-loading", all(hip, hiprtc)))]
+rocm_include::doctest!(["hip", "hiprtc"] readme: "../README.md");

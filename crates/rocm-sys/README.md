@@ -26,13 +26,17 @@ Currently implemented:
 - rocBLAS - Basic Linear Algebra Subprograms for AMD-only
 - rocFFT - Fast Fourier Transform for AMD-only
 
-All `roc*` libraries are AMD-only while `hip*`/`HIP*` are portable to Nvidia if ROCm is isntalled.
+All `roc*` libraries are AMD-only while `hip*`/`HIP*` are portable to Nvidia if ROCm is installed.
 
 ## Usage
 
 This is a very unsafe and low-level API. For a safer API, use `rocm`.
 
 ```rust
+if !rocm_sys::is_amdhip64_present() {
+    return;
+}
+
 let mut count = -1;
 
 unsafe {

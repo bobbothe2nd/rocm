@@ -96,3 +96,5 @@ fn cfg_version(cfg: &str, version: rocm_include::ver::Version, known: &[&str]) {
         println!("cargo:rustc-cfg={cfg}=\"{}\"", version);
     }
 }
+
+rocm_include::doctest!(readme: "../README.md");

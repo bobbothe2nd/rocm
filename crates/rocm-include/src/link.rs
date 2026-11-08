@@ -1,3 +1,4 @@
+/// Links functions at a given directory using dynamic loading when `std` is available
 #[macro_export]
 #[cfg(feature = "std")]
 macro_rules! link {
@@ -21,6 +22,10 @@ macro_rules! link {
                 }
                 false
             }
+
+            #[cfg(test)]
+            #[allow(dead_code)]
+            pub(super) static HAS_ROCMLIB: ::std::sync::LazyLock<bool> = ::std::sync::LazyLock::new(is_rocm_lib_present);
         }
 
         static $lib: ::std::sync::LazyLock<::libloading::Library> = {
@@ -73,6 +78,7 @@ If the shared library is present on the system under a different name than one o
                     type F = unsafe extern "C" fn(
                         $($(*$mut)* $arg_ty),*
                     ) -> $(*$ret_mut)* $ret;
+                    if !*$lib::HAS_ROCMLIB { return; }
                     let f: F = unsafe {
                         $(
                             let Some(ver) = *::rocm_include::ver::ROCM_VERSION else { return; };

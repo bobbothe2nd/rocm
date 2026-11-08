@@ -8,8 +8,12 @@ pub mod ctype;
 
 pub mod ver;
 
+pub mod test;
+
 #[cfg(feature = "std")]
 mod dynamic;
 
 #[deprecated(since = "0.1.1", note = "moved to rocm_include::ver")]
 pub mod consts;
+
+doctest!(readme: "../README.md");
