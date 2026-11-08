@@ -72,7 +72,7 @@ When using static linking, a linker error may occur when a function is linked wh
 This crate tries to assume as little about the target as possible.
 
 - If `dynamic-loading` feature is disabled, the target is assumed to be the build machine
-- `hipGetDeviceProperties` and `hipChooseDevice` are only correct where `hipDeviceProp_tR0600` = `hipDeviceProp_t` (not `hipDeviceProp_tR0000)
+- `hipGetDeviceProperties` and `hipChooseDevice` are only correct where `hipDeviceProp_tR0600` = `hipDeviceProp_t` (not `hipDeviceProp_tR0000`)
 
 These should always be true.
 
