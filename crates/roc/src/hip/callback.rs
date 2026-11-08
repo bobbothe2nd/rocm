@@ -1,5 +1,5 @@
-use core::{ffi::c_void, mem::transmute};
 use alloc::boxed::Box;
+use core::{ffi::c_void, mem::transmute};
 use rocm_sys::hip::hipLaunchHostFunc;
 
 use crate::hip::{HipError, stream::HipStream};
@@ -27,9 +27,7 @@ impl HipStream {
         let func = Box::new((func, data));
         let data = Box::into_raw(func);
 
-        unsafe {
-            self.launch_host(wrapper::<T, F>, data)
-        }
+        unsafe { self.launch_host(wrapper::<T, F>, data) }
     }
 
     /// Launches a host callback to run on the stream asynchronously
@@ -41,7 +39,11 @@ impl HipStream {
     ///
     /// Undefined behavior if capturing in a graph and replaying or calling HIP API functions inside the callback.
     #[inline(always)]
-    pub unsafe fn launch_host<T>(&self, func: unsafe extern "C" fn(*mut T), data: *mut T) -> Result<(), HipError> {
+    pub unsafe fn launch_host<T>(
+        &self,
+        func: unsafe extern "C" fn(*mut T),
+        data: *mut T,
+    ) -> Result<(), HipError> {
         let func = unsafe {
             transmute::<unsafe extern "C" fn(*mut T), unsafe extern "C" fn(*mut c_void)>(func)
         };

@@ -10,6 +10,7 @@ macro_rules! try_err {
 pub mod callback;
 pub mod device;
 pub mod event;
+pub mod gfx;
 pub mod graph;
 pub mod memory;
 pub mod stream;

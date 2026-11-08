@@ -49,8 +49,6 @@ macro_rules! raii {
     };
 }
 
-pub mod shared;
-
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
 pub mod hip;
 

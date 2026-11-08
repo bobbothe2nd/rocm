@@ -6,9 +6,11 @@ pub mod cparse;
 
 pub mod ctype;
 
-pub mod ver;
+pub mod strum;
 
 pub mod test;
+
+pub mod ver;
 
 #[cfg(feature = "std")]
 mod dynamic;

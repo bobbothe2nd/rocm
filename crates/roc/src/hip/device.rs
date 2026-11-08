@@ -12,10 +12,7 @@ use rocm_sys::hip::{
     hipGetDevicePropertiesR0600, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
 };
 
-use crate::{
-    hip::{HipError, memory::MemPool},
-    shared::GfxVersion,
-};
+use crate::hip::{HipError, gfx::GfxVersion, memory::MemPool};
 
 #[repr(transparent)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

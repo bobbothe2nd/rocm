@@ -1,6 +1,11 @@
 use crate::hip::{HipError, event::HipEvent, memory::Buffer, stream::HipStream};
 use core::{
-    cell::UnsafeCell, hint::unreachable_unchecked, marker::PhantomData, mem::ManuallyDrop, ops::{Deref, DerefMut}, slice,
+    cell::UnsafeCell,
+    hint::unreachable_unchecked,
+    marker::PhantomData,
+    mem::ManuallyDrop,
+    ops::{Deref, DerefMut},
+    slice,
 };
 use rocm_sys::hip::{
     hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMemcpyDtoH,
@@ -422,7 +427,7 @@ impl HostBuffer {
     pub const fn as_slice(&self) -> &[u8] {
         unsafe { slice::from_raw_parts(self.data, self.size as usize) }
     }
-    
+
     #[inline(always)]
     pub const fn as_mut_slice(&mut self) -> &mut [u8] {
         unsafe { slice::from_raw_parts_mut(self.data, self.size as usize) }
