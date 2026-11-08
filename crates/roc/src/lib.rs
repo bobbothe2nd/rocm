@@ -62,16 +62,31 @@ pub mod hiprtc;
 pub use rocm_sys::is_hiprtc_present;
 
 #[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
+mod rocblas;
+
+#[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
 pub use rocm_sys::is_rocblas_present;
+
+#[cfg(all(feature = "hipblas", any(feature = "dynamic-loading", hipblas)))]
+pub use hipblas;
 
 #[cfg(all(feature = "hipblas", any(feature = "dynamic-loading", hipblas)))]
 pub use rocm_sys::is_hipblas_present;
 
 #[cfg(all(feature = "hipblaslt", any(feature = "dynamic-loading", hipblaslt)))]
+pub use hipblaslt;
+
+#[cfg(all(feature = "hipblaslt", any(feature = "dynamic-loading", hipblaslt)))]
 pub use rocm_sys::is_hipblaslt_present;
 
 #[cfg(all(feature = "rocfft", any(feature = "dynamic-loading", rocfft)))]
+pub use rocfft;
+
+#[cfg(all(feature = "rocfft", any(feature = "dynamic-loading", rocfft)))]
 pub use rocm_sys::is_rocfft_present;
+
+#[cfg(all(feature = "hipfft", any(feature = "dynamic-loading", hipfft)))]
+pub use hipfft;
 
 #[cfg(all(feature = "hipfft", any(feature = "dynamic-loading", hipfft)))]
 pub use rocm_sys::is_hipfft_present;
