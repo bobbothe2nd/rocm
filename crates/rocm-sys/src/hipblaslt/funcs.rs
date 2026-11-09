@@ -4,7 +4,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     hipblaslt : rocm_ver;
-    dev exists_ pastey::paste;
+    dev hipblaslt_ _exists pastey::paste;
 
     hipblasStatus_t hipblasLtCreate(*mut hipblasLtHandle_t handle);
 

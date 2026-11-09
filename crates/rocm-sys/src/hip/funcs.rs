@@ -3,7 +3,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     amdhip64 : rocm_ver;
-    dev exists_ pastey::paste;
+    dev hip_ _exists pastey::paste;
 
     hipError_t hipInit(uint flags);
 

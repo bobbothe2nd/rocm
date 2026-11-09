@@ -3,7 +3,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     MIOpen : rocm_ver;
-    dev exists_ pastey::paste;
+    dev miopen_ _exists pastey::paste;
 
     *const void miopenGetErrorString(miopenStatus_t error);
 

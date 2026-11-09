@@ -6,7 +6,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     hipfft : rocm_ver;
-    dev exists_ pastey::paste;
+    dev hipfft_ _exists pastey::paste;
 
     hipfftResult hipfftPlan1d(*mut hipfftHandle plan, int nx, hipfftType type_, int batch);
 

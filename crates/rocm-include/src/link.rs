@@ -4,7 +4,7 @@
 macro_rules! link {
     (
         $lib:ident : $cfg_ver:ident;
-        dev $prefix:ident $paste:path;
+        dev $prefix:ident $suffix:ident $paste:path;
 
         $(
             $(#[internal($cfg_internal:ident)])?
@@ -75,7 +75,7 @@ If the shared library is present on the system under a different name than one o
             #[cfg(test)]
             $paste! {
                 #[test]
-                fn [<$prefix $name>]() {
+                fn [<$prefix $name $suffix>]() {
                     type F = unsafe extern "C" fn(
                         $($(*$mut)* $arg_ty),*
                     ) -> $(*$ret_mut)* $ret;
@@ -95,12 +95,13 @@ If the shared library is present on the system under a different name than one o
     };
 }
 
+/// Links functions at a given directory using dynamic loading when `std` is available
 #[macro_export]
 #[cfg(not(feature = "std"))]
 macro_rules! link {
     (
         $lib:ident : $cfg_ver:ident;
-        dev $prefx:ident $paste:path;
+        dev $prefix:ident $suffix:ident $paste:path;
 
         $(
             $(#[internal($cfg_internal:ident)])?
@@ -133,7 +134,7 @@ macro_rules! link {
             #[cfg(test)]
             $paste! {
                 #[test]
-                fn [<$prefix $name>]() {
+                fn [<$prefix $name $suffix>]() {
                     let _ = ::core::hint::black_box($name);
                 }
             }

@@ -3,7 +3,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     rocfft : rocm_ver;
-    dev exists_ pastey::paste;
+    dev rocfft_ _exists pastey::paste;
 
     rocfft_status rocfft_setup();
 

@@ -2,7 +2,7 @@ use super::types::*;
 use crate::hip::*;
 use rocm_include::ctype::*;
 
-// TODO: find actual version requirements & support ILP64
+// TODO: find actual version requirements
 
 rocm_include::link! {
     hipblas : rocm_ver;
@@ -77,29 +77,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasIzamaxStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount, *mut int result);
 
-    hipblasStatus_t hipblasIsamax64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIsamax_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIdamax64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIdamax_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIcamax64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIcamax_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIzamax64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIzamax_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIsamaxBatched64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIsamaxBatched_64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIdamaxBatched64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIdamaxBatched_64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIcamaxBatched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIcamaxBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIzamaxBatched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIzamaxBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIsamaxStridedBatched64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIsamaxStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIdamaxStridedBatched64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIdamaxStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIcamaxStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIcamaxStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIzamaxStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIzamaxStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
     hipblasStatus_t hipblasIsamin(hipblasHandle_t handle, int n, *const float x, int incx, *mut int result);
 
@@ -125,29 +125,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasIzaminStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount, *mut int result);
 
-    hipblasStatus_t hipblasIsamin64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIsamin_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIdamin64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIdamin_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIcamin64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIcamin_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIzamin64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut int64_t result);
+    hipblasStatus_t hipblasIzamin_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut int64_t result);
 
-    hipblasStatus_t hipblasIsaminBatched64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIsaminBatched_64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIdaminBatched64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIdaminBatched_64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIcaminBatched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIcaminBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIzaminBatched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIzaminBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIsaminStridedBatched64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIsaminStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIdaminStridedBatched64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIdaminStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIcaminStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIcaminStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
-    hipblasStatus_t hipblasIzaminStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
+    hipblasStatus_t hipblasIzaminStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut int64_t result);
 
     hipblasStatus_t hipblasSasum(hipblasHandle_t handle, int n, *const float x, int incx, *mut float result);
 
@@ -173,29 +173,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasDzasumStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount, *mut double result);
 
-    hipblasStatus_t hipblasSasum64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut float result);
+    hipblasStatus_t hipblasSasum_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut float result);
 
-    hipblasStatus_t hipblasDasum64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut double result);
+    hipblasStatus_t hipblasDasum_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut double result);
 
-    hipblasStatus_t hipblasScasum64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut float result);
+    hipblasStatus_t hipblasScasum_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut float result);
 
-    hipblasStatus_t hipblasDzasum64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut double result);
+    hipblasStatus_t hipblasDzasum_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut double result);
 
-    hipblasStatus_t hipblasSasumBatched64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasSasumBatched_64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDasumBatched64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDasumBatched_64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasScasumBatched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasScasumBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDzasumBatched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDzasumBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasSasumStridedBatched64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasSasumStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDasumStridedBatched64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDasumStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasScasumStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasScasumStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDzasumStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDzasumStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
 
     hipblasStatus_t hipblasHaxpy(hipblasHandle_t handle, int n, *const hipblasHalf alpha, *const hipblasHalf x, int incx, *mut hipblasHalf y, int incy);
 
@@ -227,35 +227,35 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZaxpyStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
 
-    hipblasStatus_t hipblasHaxpy64(hipblasHandle_t handle, int64_t n, *const hipblasHalf alpha, *const hipblasHalf x, int64_t incx, *mut hipblasHalf y, int64_t incy);
+    hipblasStatus_t hipblasHaxpy_64(hipblasHandle_t handle, int64_t n, *const hipblasHalf alpha, *const hipblasHalf x, int64_t incx, *mut hipblasHalf y, int64_t incy);
 
-    hipblasStatus_t hipblasSaxpy64(hipblasHandle_t handle, int64_t n, *const float alpha, *const float x, int64_t incx, *mut float y, int64_t incy);
+    hipblasStatus_t hipblasSaxpy_64(hipblasHandle_t handle, int64_t n, *const float alpha, *const float x, int64_t incx, *mut float y, int64_t incy);
 
-    hipblasStatus_t hipblasDaxpy64(hipblasHandle_t handle, int64_t n, *const double alpha, *const double x, int64_t incx, *mut double y, int64_t incy);
+    hipblasStatus_t hipblasDaxpy_64(hipblasHandle_t handle, int64_t n, *const double alpha, *const double x, int64_t incx, *mut double y, int64_t incy);
 
-    hipblasStatus_t hipblasCaxpy64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy);
+    hipblasStatus_t hipblasCaxpy_64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy);
 
-    hipblasStatus_t hipblasZaxpy64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy);
+    hipblasStatus_t hipblasZaxpy_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy);
 
-    hipblasStatus_t hipblasHaxpyBatched64(hipblasHandle_t handle, int64_t n, *const hipblasHalf alpha, *const *const hipblasHalf x, int64_t incx, *const *mut hipblasHalf y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasHaxpyBatched_64(hipblasHandle_t handle, int64_t n, *const hipblasHalf alpha, *const *const hipblasHalf x, int64_t incx, *const *mut hipblasHalf y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasSaxpyBatched64(hipblasHandle_t handle, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *mut float y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasSaxpyBatched_64(hipblasHandle_t handle, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *mut float y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasDaxpyBatched64(hipblasHandle_t handle, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *mut double y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasDaxpyBatched_64(hipblasHandle_t handle, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *mut double y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasCaxpyBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasCaxpyBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasZaxpyBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasZaxpyBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasHaxpyStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipblasHalf alpha, *const hipblasHalf x, int64_t incx, hipblasStride stridex, *mut hipblasHalf y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasHaxpyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipblasHalf alpha, *const hipblasHalf x, int64_t incx, hipblasStride stridex, *mut hipblasHalf y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasSaxpyStridedBatched64(hipblasHandle_t handle, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasSaxpyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasDaxpyStridedBatched64(hipblasHandle_t handle, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasDaxpyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasCaxpyStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasCaxpyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasZaxpyStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasZaxpyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasScopy(hipblasHandle_t handle, int n, *const float x, int incx, *mut float y, int incy);
 
@@ -281,29 +281,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZcopyStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
 
-    hipblasStatus_t hipblasScopy64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut float y, int64_t incy);
+    hipblasStatus_t hipblasScopy_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut float y, int64_t incy);
 
-    hipblasStatus_t hipblasDcopy64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut double y, int64_t incy);
+    hipblasStatus_t hipblasDcopy_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut double y, int64_t incy);
 
-    hipblasStatus_t hipblasCcopy64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy);
+    hipblasStatus_t hipblasCcopy_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy);
 
-    hipblasStatus_t hipblasZcopy64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy);
+    hipblasStatus_t hipblasZcopy_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy);
 
-    hipblasStatus_t hipblasScopyBatched64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, *const *mut float y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasScopyBatched_64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, *const *mut float y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasDcopyBatched64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, *const *mut double y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasDcopyBatched_64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, *const *mut double y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasCcopyBatched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasCcopyBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasZcopyBatched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasZcopyBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasScopyStridedBatched64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasScopyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasDcopyStridedBatched64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasDcopyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasCcopyStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasCcopyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasZcopyStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasZcopyStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasHdot(hipblasHandle_t handle, int n, *const hipblasHalf x, int incx, *const hipblasHalf y, int incy, *mut hipblasHalf result);
 
@@ -353,53 +353,53 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZdotuStridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount, *mut hipDoubleComplex result);
 
-    hipblasStatus_t hipblasHdot64(hipblasHandle_t handle, int64_t n, *const hipblasHalf x, int64_t incx, *const hipblasHalf y, int64_t incy, *mut hipblasHalf result);
+    hipblasStatus_t hipblasHdot_64(hipblasHandle_t handle, int64_t n, *const hipblasHalf x, int64_t incx, *const hipblasHalf y, int64_t incy, *mut hipblasHalf result);
 
-    hipblasStatus_t hipblasBfdot64(hipblasHandle_t handle, int64_t n, *const hipblasBfloat16 x, int64_t incx, *const hipblasBfloat16 y, int64_t incy, *mut hipblasBfloat16 result);
+    hipblasStatus_t hipblasBfdot_64(hipblasHandle_t handle, int64_t n, *const hipblasBfloat16 x, int64_t incx, *const hipblasBfloat16 y, int64_t incy, *mut hipblasBfloat16 result);
 
-    hipblasStatus_t hipblasSdot64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *const float y, int64_t incy, *mut float result);
+    hipblasStatus_t hipblasSdot_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *const float y, int64_t incy, *mut float result);
 
-    hipblasStatus_t hipblasDdot64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *const double y, int64_t incy, *mut double result);
+    hipblasStatus_t hipblasDdot_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *const double y, int64_t incy, *mut double result);
 
-    hipblasStatus_t hipblasCdotc64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex result);
+    hipblasStatus_t hipblasCdotc_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex result);
 
-    hipblasStatus_t hipblasCdotu64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex result);
+    hipblasStatus_t hipblasCdotu_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex result);
 
-    hipblasStatus_t hipblasZdotc64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex result);
+    hipblasStatus_t hipblasZdotc_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex result);
 
-    hipblasStatus_t hipblasZdotu64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex result);
+    hipblasStatus_t hipblasZdotu_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex result);
 
-    hipblasStatus_t hipblasHdotBatched64(hipblasHandle_t handle, int64_t n, *const *const hipblasHalf x, int64_t incx, *const *const hipblasHalf y, int64_t incy, int64_t batchCount, *mut hipblasHalf result);
+    hipblasStatus_t hipblasHdotBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipblasHalf x, int64_t incx, *const *const hipblasHalf y, int64_t incy, int64_t batchCount, *mut hipblasHalf result);
 
-    hipblasStatus_t hipblasBfdotBatched64(hipblasHandle_t handle, int64_t n, *const *const hipblasBfloat16 x, int64_t incx, *const *const hipblasBfloat16 y, int64_t incy, int64_t batchCount, *mut hipblasBfloat16 result);
+    hipblasStatus_t hipblasBfdotBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipblasBfloat16 x, int64_t incx, *const *const hipblasBfloat16 y, int64_t incy, int64_t batchCount, *mut hipblasBfloat16 result);
 
-    hipblasStatus_t hipblasSdotBatched64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, *const *const float y, int64_t incy, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasSdotBatched_64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, *const *const float y, int64_t incy, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDdotBatched64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, *const *const double y, int64_t incy, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDdotBatched_64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, *const *const double y, int64_t incy, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasCdotcBatched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, int64_t batchCount, *mut hipComplex result);
+    hipblasStatus_t hipblasCdotcBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, int64_t batchCount, *mut hipComplex result);
 
-    hipblasStatus_t hipblasCdotuBatched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, int64_t batchCount, *mut hipComplex result);
+    hipblasStatus_t hipblasCdotuBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, int64_t batchCount, *mut hipComplex result);
 
-    hipblasStatus_t hipblasZdotcBatched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, int64_t batchCount, *mut hipDoubleComplex result);
+    hipblasStatus_t hipblasZdotcBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, int64_t batchCount, *mut hipDoubleComplex result);
 
-    hipblasStatus_t hipblasZdotuBatched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, int64_t batchCount, *mut hipDoubleComplex result);
+    hipblasStatus_t hipblasZdotuBatched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, int64_t batchCount, *mut hipDoubleComplex result);
 
-    hipblasStatus_t hipblasHdotStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipblasHalf x, int64_t incx, hipblasStride stridex, *const hipblasHalf y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipblasHalf result);
+    hipblasStatus_t hipblasHdotStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipblasHalf x, int64_t incx, hipblasStride stridex, *const hipblasHalf y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipblasHalf result);
 
-    hipblasStatus_t hipblasBfdotStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipblasBfloat16 x, int64_t incx, hipblasStride stridex, *const hipblasBfloat16 y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipblasBfloat16 result);
+    hipblasStatus_t hipblasBfdotStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipblasBfloat16 x, int64_t incx, hipblasStride stridex, *const hipblasBfloat16 y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipblasBfloat16 result);
 
-    hipblasStatus_t hipblasSdotStridedBatched64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, *const float y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasSdotStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, *const float y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDdotStridedBatched64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, *const double y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDdotStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, *const double y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasCdotcStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipComplex result);
+    hipblasStatus_t hipblasCdotcStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipComplex result);
 
-    hipblasStatus_t hipblasCdotuStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipComplex result);
+    hipblasStatus_t hipblasCdotuStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipComplex result);
 
-    hipblasStatus_t hipblasZdotcStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipDoubleComplex result);
+    hipblasStatus_t hipblasZdotcStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipDoubleComplex result);
 
-    hipblasStatus_t hipblasZdotuStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipDoubleComplex result);
+    hipblasStatus_t hipblasZdotuStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut hipDoubleComplex result);
 
     hipblasStatus_t hipblasSnrm2(hipblasHandle_t handle, int n, *const float x, int incx, *mut float result);
 
@@ -425,29 +425,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasDznrm2StridedBatched(hipblasHandle_t handle, int n, *const hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount, *mut double result);
 
-    hipblasStatus_t hipblasSnrm264(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut float result);
+    hipblasStatus_t hipblasSnrm2_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, *mut float result);
 
-    hipblasStatus_t hipblasDnrm264(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut double result);
+    hipblasStatus_t hipblasDnrm2_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, *mut double result);
 
-    hipblasStatus_t hipblasScnrm264(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut float result);
+    hipblasStatus_t hipblasScnrm2_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, *mut float result);
 
-    hipblasStatus_t hipblasDznrm264(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut double result);
+    hipblasStatus_t hipblasDznrm2_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, *mut double result);
 
-    hipblasStatus_t hipblasSnrm2Batched64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasSnrm2Batched_64(hipblasHandle_t handle, int64_t n, *const *const float x, int64_t incx, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDnrm2Batched64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDnrm2Batched_64(hipblasHandle_t handle, int64_t n, *const *const double x, int64_t incx, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasScnrm2Batched64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasScnrm2Batched_64(hipblasHandle_t handle, int64_t n, *const *const hipComplex x, int64_t incx, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDznrm2Batched64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDznrm2Batched_64(hipblasHandle_t handle, int64_t n, *const *const hipDoubleComplex x, int64_t incx, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasSnrm2StridedBatched64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasSnrm2StridedBatched_64(hipblasHandle_t handle, int64_t n, *const float x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDnrm2StridedBatched64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDnrm2StridedBatched_64(hipblasHandle_t handle, int64_t n, *const double x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
 
-    hipblasStatus_t hipblasScnrm2StridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
+    hipblasStatus_t hipblasScnrm2StridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut float result);
 
-    hipblasStatus_t hipblasDznrm2StridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
+    hipblasStatus_t hipblasDznrm2StridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut double result);
 
     hipblasStatus_t hipblasSrot(hipblasHandle_t handle, int n, *mut float x, int incx, *mut float y, int incy, *const float c, *const float s);
 
@@ -485,41 +485,41 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZdrotStridedBatched(hipblasHandle_t handle, int n, *mut hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex y, int incy, hipblasStride stridey, *const double c, *const double s, int batchCount);
 
-    hipblasStatus_t hipblasSrot64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, *mut float y, int64_t incy, *const float c, *const float s);
+    hipblasStatus_t hipblasSrot_64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, *mut float y, int64_t incy, *const float c, *const float s);
 
-    hipblasStatus_t hipblasDrot64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, *mut double y, int64_t incy, *const double c, *const double s);
+    hipblasStatus_t hipblasDrot_64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, *mut double y, int64_t incy, *const double c, *const double s);
 
-    hipblasStatus_t hipblasCrot64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy, *const float c, *const hipComplex s);
+    hipblasStatus_t hipblasCrot_64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy, *const float c, *const hipComplex s);
 
-    hipblasStatus_t hipblasCsrot64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy, *const float c, *const float s);
+    hipblasStatus_t hipblasCsrot_64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy, *const float c, *const float s);
 
-    hipblasStatus_t hipblasZrot64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy, *const double c, *const hipDoubleComplex s);
+    hipblasStatus_t hipblasZrot_64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy, *const double c, *const hipDoubleComplex s);
 
-    hipblasStatus_t hipblasZdrot64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy, *const double c, *const double s);
+    hipblasStatus_t hipblasZdrot_64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy, *const double c, *const double s);
 
-    hipblasStatus_t hipblasSrotBatched64(hipblasHandle_t handle, int64_t n, *const *mut float x, int64_t incx, *const *mut float y, int64_t incy, *const float c, *const float s, int64_t batchCount);
+    hipblasStatus_t hipblasSrotBatched_64(hipblasHandle_t handle, int64_t n, *const *mut float x, int64_t incx, *const *mut float y, int64_t incy, *const float c, *const float s, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotBatched64(hipblasHandle_t handle, int64_t n, *const *mut double x, int64_t incx, *const *mut double y, int64_t incy, *const double c, *const double s, int64_t batchCount);
+    hipblasStatus_t hipblasDrotBatched_64(hipblasHandle_t handle, int64_t n, *const *mut double x, int64_t incx, *const *mut double y, int64_t incy, *const double c, *const double s, int64_t batchCount);
 
-    hipblasStatus_t hipblasCrotBatched64(hipblasHandle_t handle, int64_t n, *const *mut hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, *const float c, *const hipComplex s, int64_t batchCount);
+    hipblasStatus_t hipblasCrotBatched_64(hipblasHandle_t handle, int64_t n, *const *mut hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, *const float c, *const hipComplex s, int64_t batchCount);
 
-    hipblasStatus_t hipblasCsrotBatched64(hipblasHandle_t handle, int64_t n, *const *mut hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, *const float c, *const float s, int64_t batchCount);
+    hipblasStatus_t hipblasCsrotBatched_64(hipblasHandle_t handle, int64_t n, *const *mut hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, *const float c, *const float s, int64_t batchCount);
 
-    hipblasStatus_t hipblasZrotBatched64(hipblasHandle_t handle, int64_t n, *const *mut hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, *const double c, *const hipDoubleComplex s, int64_t batchCount);
+    hipblasStatus_t hipblasZrotBatched_64(hipblasHandle_t handle, int64_t n, *const *mut hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, *const double c, *const hipDoubleComplex s, int64_t batchCount);
 
-    hipblasStatus_t hipblasZdrotBatched64(hipblasHandle_t handle, int64_t n, *const *mut hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, *const double c, *const double s, int64_t batchCount);
+    hipblasStatus_t hipblasZdrotBatched_64(hipblasHandle_t handle, int64_t n, *const *mut hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, *const double c, *const double s, int64_t batchCount);
 
-    hipblasStatus_t hipblasSrotStridedBatched64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, *const float c, *const float s, int64_t batchCount);
+    hipblasStatus_t hipblasSrotStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, *const float c, *const float s, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotStridedBatched64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, *const double c, *const double s, int64_t batchCount);
+    hipblasStatus_t hipblasDrotStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, *const double c, *const double s, int64_t batchCount);
 
-    hipblasStatus_t hipblasCrotStridedBatched64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, *const float c, *const hipComplex s, int64_t batchCount);
+    hipblasStatus_t hipblasCrotStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, *const float c, *const hipComplex s, int64_t batchCount);
 
-    hipblasStatus_t hipblasCsrotStridedBatched64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, *const float c, *const float s, int64_t batchCount);
+    hipblasStatus_t hipblasCsrotStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, *const float c, *const float s, int64_t batchCount);
 
-    hipblasStatus_t hipblasZrotStridedBatched64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, *const double c, *const hipDoubleComplex s, int64_t batchCount);
+    hipblasStatus_t hipblasZrotStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, *const double c, *const hipDoubleComplex s, int64_t batchCount);
 
-    hipblasStatus_t hipblasZdrotStridedBatched64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, *const double c, *const double s, int64_t batchCount);
+    hipblasStatus_t hipblasZdrotStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, *const double c, *const double s, int64_t batchCount);
 
     hipblasStatus_t hipblasSrotg(hipblasHandle_t handle, *mut float a, *mut float b, *mut float c, *mut float s);
 
@@ -545,29 +545,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZrotgStridedBatched(hipblasHandle_t handle, *mut hipDoubleComplex a, hipblasStride stridea, *mut hipDoubleComplex b, hipblasStride strideb, *mut double c, hipblasStride stridec, *mut hipDoubleComplex s, hipblasStride strides, int batchCount);
 
-    hipblasStatus_t hipblasSrotg64(hipblasHandle_t handle, *mut float a, *mut float b, *mut float c, *mut float s);
+    hipblasStatus_t hipblasSrotg_64(hipblasHandle_t handle, *mut float a, *mut float b, *mut float c, *mut float s);
 
-    hipblasStatus_t hipblasDrotg64(hipblasHandle_t handle, *mut double a, *mut double b, *mut double c, *mut double s);
+    hipblasStatus_t hipblasDrotg_64(hipblasHandle_t handle, *mut double a, *mut double b, *mut double c, *mut double s);
 
-    hipblasStatus_t hipblasCrotg64(hipblasHandle_t handle, *mut hipComplex a, *mut hipComplex b, *mut float c, *mut hipComplex s);
+    hipblasStatus_t hipblasCrotg_64(hipblasHandle_t handle, *mut hipComplex a, *mut hipComplex b, *mut float c, *mut hipComplex s);
 
-    hipblasStatus_t hipblasZrotg64(hipblasHandle_t handle, *mut hipDoubleComplex a, *mut hipDoubleComplex b, *mut double c, *mut hipDoubleComplex s);
+    hipblasStatus_t hipblasZrotg_64(hipblasHandle_t handle, *mut hipDoubleComplex a, *mut hipDoubleComplex b, *mut double c, *mut hipDoubleComplex s);
 
-    hipblasStatus_t hipblasSrotgBatched64(hipblasHandle_t handle, *const *mut float a, *const *mut float b, *const *mut float c, *const *mut float s, int64_t batchCount);
+    hipblasStatus_t hipblasSrotgBatched_64(hipblasHandle_t handle, *const *mut float a, *const *mut float b, *const *mut float c, *const *mut float s, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotgBatched64(hipblasHandle_t handle, *const *mut double a, *const *mut double b, *const *mut double c, *const *mut double s, int64_t batchCount);
+    hipblasStatus_t hipblasDrotgBatched_64(hipblasHandle_t handle, *const *mut double a, *const *mut double b, *const *mut double c, *const *mut double s, int64_t batchCount);
 
-    hipblasStatus_t hipblasCrotgBatched64(hipblasHandle_t handle, *const *mut hipComplex a, *const *mut hipComplex b, *const *mut float c, *const *mut hipComplex s, int64_t batchCount);
+    hipblasStatus_t hipblasCrotgBatched_64(hipblasHandle_t handle, *const *mut hipComplex a, *const *mut hipComplex b, *const *mut float c, *const *mut hipComplex s, int64_t batchCount);
 
-    hipblasStatus_t hipblasZrotgBatched64(hipblasHandle_t handle, *const *mut hipDoubleComplex a, *const *mut hipDoubleComplex b, *const *mut double c, *const *mut hipDoubleComplex s, int64_t batchCount);
+    hipblasStatus_t hipblasZrotgBatched_64(hipblasHandle_t handle, *const *mut hipDoubleComplex a, *const *mut hipDoubleComplex b, *const *mut double c, *const *mut hipDoubleComplex s, int64_t batchCount);
 
-    hipblasStatus_t hipblasSrotgStridedBatched64(hipblasHandle_t handle, *mut float a, hipblasStride stridea, *mut float b, hipblasStride strideb, *mut float c, hipblasStride stridec, *mut float s, hipblasStride strides, int64_t batchCount);
+    hipblasStatus_t hipblasSrotgStridedBatched_64(hipblasHandle_t handle, *mut float a, hipblasStride stridea, *mut float b, hipblasStride strideb, *mut float c, hipblasStride stridec, *mut float s, hipblasStride strides, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotgStridedBatched64(hipblasHandle_t handle, *mut double a, hipblasStride stridea, *mut double b, hipblasStride strideb, *mut double c, hipblasStride stridec, *mut double s, hipblasStride strides, int64_t batchCount);
+    hipblasStatus_t hipblasDrotgStridedBatched_64(hipblasHandle_t handle, *mut double a, hipblasStride stridea, *mut double b, hipblasStride strideb, *mut double c, hipblasStride stridec, *mut double s, hipblasStride strides, int64_t batchCount);
 
-    hipblasStatus_t hipblasCrotgStridedBatched64(hipblasHandle_t handle, *mut hipComplex a, hipblasStride stridea, *mut hipComplex b, hipblasStride strideb, *mut float c, hipblasStride stridec, *mut hipComplex s, hipblasStride strides, int64_t batchCount);
+    hipblasStatus_t hipblasCrotgStridedBatched_64(hipblasHandle_t handle, *mut hipComplex a, hipblasStride stridea, *mut hipComplex b, hipblasStride strideb, *mut float c, hipblasStride stridec, *mut hipComplex s, hipblasStride strides, int64_t batchCount);
 
-    hipblasStatus_t hipblasZrotgStridedBatched64(hipblasHandle_t handle, *mut hipDoubleComplex a, hipblasStride stridea, *mut hipDoubleComplex b, hipblasStride strideb, *mut double c, hipblasStride stridec, *mut hipDoubleComplex s, hipblasStride strides, int64_t batchCount);
+    hipblasStatus_t hipblasZrotgStridedBatched_64(hipblasHandle_t handle, *mut hipDoubleComplex a, hipblasStride stridea, *mut hipDoubleComplex b, hipblasStride strideb, *mut double c, hipblasStride stridec, *mut hipDoubleComplex s, hipblasStride strides, int64_t batchCount);
 
     hipblasStatus_t hipblasSrotm(hipblasHandle_t handle, int n, *mut float x, int incx, *mut float y, int incy, *const float param);
 
@@ -581,17 +581,17 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasDrotmStridedBatched(hipblasHandle_t handle, int n, *mut double x, int incx, hipblasStride stridex, *mut double y, int incy, hipblasStride stridey, *const double param, hipblasStride strideParam, int batchCount);
 
-    hipblasStatus_t hipblasSrotm64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, *mut float y, int64_t incy, *const float param);
+    hipblasStatus_t hipblasSrotm_64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, *mut float y, int64_t incy, *const float param);
 
-    hipblasStatus_t hipblasDrotm64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, *mut double y, int64_t incy, *const double param);
+    hipblasStatus_t hipblasDrotm_64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, *mut double y, int64_t incy, *const double param);
 
-    hipblasStatus_t hipblasSrotmBatched64(hipblasHandle_t handle, int64_t n, *const *mut float x, int64_t incx, *const *mut float y, int64_t incy, *const *const float param, int64_t batchCount);
+    hipblasStatus_t hipblasSrotmBatched_64(hipblasHandle_t handle, int64_t n, *const *mut float x, int64_t incx, *const *mut float y, int64_t incy, *const *const float param, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotmBatched64(hipblasHandle_t handle, int64_t n, *const *mut double x, int64_t incx, *const *mut double y, int64_t incy, *const *const double param, int64_t batchCount);
+    hipblasStatus_t hipblasDrotmBatched_64(hipblasHandle_t handle, int64_t n, *const *mut double x, int64_t incx, *const *mut double y, int64_t incy, *const *const double param, int64_t batchCount);
 
-    hipblasStatus_t hipblasSrotmStridedBatched64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, *const float param, hipblasStride strideParam, int64_t batchCount);
+    hipblasStatus_t hipblasSrotmStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, *const float param, hipblasStride strideParam, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotmStridedBatched64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, *const double param, hipblasStride strideParam, int64_t batchCount);
+    hipblasStatus_t hipblasDrotmStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, *const double param, hipblasStride strideParam, int64_t batchCount);
 
     hipblasStatus_t hipblasSrotmg(hipblasHandle_t handle, *mut float d1, *mut float d2, *mut float x1, *const float y1, *mut float param);
 
@@ -605,17 +605,17 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasDrotmgStridedBatched(hipblasHandle_t handle, *mut double d1, hipblasStride strided1, *mut double d2, hipblasStride strided2, *mut double x1, hipblasStride stridex1, *const double y1, hipblasStride stridey1, *mut double param, hipblasStride strideParam, int batchCount);
 
-    hipblasStatus_t hipblasSrotmg64(hipblasHandle_t handle, *mut float d1, *mut float d2, *mut float x1, *const float y1, *mut float param);
+    hipblasStatus_t hipblasSrotmg_64(hipblasHandle_t handle, *mut float d1, *mut float d2, *mut float x1, *const float y1, *mut float param);
 
-    hipblasStatus_t hipblasDrotmg64(hipblasHandle_t handle, *mut double d1, *mut double d2, *mut double x1, *const double y1, *mut double param);
+    hipblasStatus_t hipblasDrotmg_64(hipblasHandle_t handle, *mut double d1, *mut double d2, *mut double x1, *const double y1, *mut double param);
 
-    hipblasStatus_t hipblasSrotmgBatched64(hipblasHandle_t handle, *const *mut float d1, *const *mut float d2, *const *mut float x1, *const *const float y1, *const *mut float param, int64_t batchCount);
+    hipblasStatus_t hipblasSrotmgBatched_64(hipblasHandle_t handle, *const *mut float d1, *const *mut float d2, *const *mut float x1, *const *const float y1, *const *mut float param, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotmgBatched64(hipblasHandle_t handle, *const *mut double d1, *const *mut double d2, *const *mut double x1, *const *const double y1, *const *mut double param, int64_t batchCount);
+    hipblasStatus_t hipblasDrotmgBatched_64(hipblasHandle_t handle, *const *mut double d1, *const *mut double d2, *const *mut double x1, *const *const double y1, *const *mut double param, int64_t batchCount);
 
-    hipblasStatus_t hipblasSrotmgStridedBatched64(hipblasHandle_t handle, *mut float d1, hipblasStride strided1, *mut float d2, hipblasStride strided2, *mut float x1, hipblasStride stridex1, *const float y1, hipblasStride stridey1, *mut float param, hipblasStride strideParam, int64_t batchCount);
+    hipblasStatus_t hipblasSrotmgStridedBatched_64(hipblasHandle_t handle, *mut float d1, hipblasStride strided1, *mut float d2, hipblasStride strided2, *mut float x1, hipblasStride stridex1, *const float y1, hipblasStride stridey1, *mut float param, hipblasStride strideParam, int64_t batchCount);
 
-    hipblasStatus_t hipblasDrotmgStridedBatched64(hipblasHandle_t handle, *mut double d1, hipblasStride strided1, *mut double d2, hipblasStride strided2, *mut double x1, hipblasStride stridex1, *const double y1, hipblasStride stridey1, *mut double param, hipblasStride strideParam, int64_t batchCount);
+    hipblasStatus_t hipblasDrotmgStridedBatched_64(hipblasHandle_t handle, *mut double d1, hipblasStride strided1, *mut double d2, hipblasStride strided2, *mut double x1, hipblasStride stridex1, *const double y1, hipblasStride stridey1, *mut double param, hipblasStride strideParam, int64_t batchCount);
 
     hipblasStatus_t hipblasSscal(hipblasHandle_t handle, int n, *const float alpha, *mut float x, int incx);
 
@@ -653,41 +653,41 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZdscalStridedBatched(hipblasHandle_t handle, int n, *const double alpha, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
 
-    hipblasStatus_t hipblasSscal64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut float x, int64_t incx);
+    hipblasStatus_t hipblasSscal_64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut float x, int64_t incx);
 
-    hipblasStatus_t hipblasDscal64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut double x, int64_t incx);
+    hipblasStatus_t hipblasDscal_64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut double x, int64_t incx);
 
-    hipblasStatus_t hipblasCscal64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *mut hipComplex x, int64_t incx);
+    hipblasStatus_t hipblasCscal_64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *mut hipComplex x, int64_t incx);
 
-    hipblasStatus_t hipblasCsscal64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut hipComplex x, int64_t incx);
+    hipblasStatus_t hipblasCsscal_64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut hipComplex x, int64_t incx);
 
-    hipblasStatus_t hipblasZscal64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *mut hipDoubleComplex x, int64_t incx);
+    hipblasStatus_t hipblasZscal_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *mut hipDoubleComplex x, int64_t incx);
 
-    hipblasStatus_t hipblasZdscal64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut hipDoubleComplex x, int64_t incx);
+    hipblasStatus_t hipblasZdscal_64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut hipDoubleComplex x, int64_t incx);
 
-    hipblasStatus_t hipblasSscalBatched64(hipblasHandle_t handle, int64_t n, *const float alpha, *const *mut float x, int64_t incx, int64_t batchCount);
+    hipblasStatus_t hipblasSscalBatched_64(hipblasHandle_t handle, int64_t n, *const float alpha, *const *mut float x, int64_t incx, int64_t batchCount);
 
-    hipblasStatus_t hipblasDscalBatched64(hipblasHandle_t handle, int64_t n, *const double alpha, *const *mut double x, int64_t incx, int64_t batchCount);
+    hipblasStatus_t hipblasDscalBatched_64(hipblasHandle_t handle, int64_t n, *const double alpha, *const *mut double x, int64_t incx, int64_t batchCount);
 
-    hipblasStatus_t hipblasCscalBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+    hipblasStatus_t hipblasCscalBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
 
-    hipblasStatus_t hipblasZscalBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+    hipblasStatus_t hipblasZscalBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
 
-    hipblasStatus_t hipblasCsscalBatched64(hipblasHandle_t handle, int64_t n, *const float alpha, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+    hipblasStatus_t hipblasCsscalBatched_64(hipblasHandle_t handle, int64_t n, *const float alpha, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
 
-    hipblasStatus_t hipblasZdscalBatched64(hipblasHandle_t handle, int64_t n, *const double alpha, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+    hipblasStatus_t hipblasZdscalBatched_64(hipblasHandle_t handle, int64_t n, *const double alpha, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
 
-    hipblasStatus_t hipblasSscalStridedBatched64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+    hipblasStatus_t hipblasSscalStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
-    hipblasStatus_t hipblasDscalStridedBatched64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+    hipblasStatus_t hipblasDscalStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
-    hipblasStatus_t hipblasCscalStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+    hipblasStatus_t hipblasCscalStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipComplex alpha, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
-    hipblasStatus_t hipblasZscalStridedBatched64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+    hipblasStatus_t hipblasZscalStridedBatched_64(hipblasHandle_t handle, int64_t n, *const hipDoubleComplex alpha, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
-    hipblasStatus_t hipblasCsscalStridedBatched64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+    hipblasStatus_t hipblasCsscalStridedBatched_64(hipblasHandle_t handle, int64_t n, *const float alpha, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
-    hipblasStatus_t hipblasZdscalStridedBatched64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+    hipblasStatus_t hipblasZdscalStridedBatched_64(hipblasHandle_t handle, int64_t n, *const double alpha, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
     hipblasStatus_t hipblasSswap(hipblasHandle_t handle, int n, *mut float x, int incx, *mut float y, int incy);
 
@@ -713,29 +713,29 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZswapStridedBatched(hipblasHandle_t handle, int n, *mut hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
 
-    hipblasStatus_t hipblasSswap64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, *mut float y, int64_t incy);
+    hipblasStatus_t hipblasSswap_64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, *mut float y, int64_t incy);
 
-    hipblasStatus_t hipblasDswap64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, *mut double y, int64_t incy);
+    hipblasStatus_t hipblasDswap_64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, *mut double y, int64_t incy);
 
-    hipblasStatus_t hipblasCswap64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy);
+    hipblasStatus_t hipblasCswap_64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, *mut hipComplex y, int64_t incy);
 
-    hipblasStatus_t hipblasZswap64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy);
+    hipblasStatus_t hipblasZswap_64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex y, int64_t incy);
 
-    hipblasStatus_t hipblasSswapBatched64(hipblasHandle_t handle, int64_t n, *const *mut float x, int64_t incx, *const *mut float y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasSswapBatched_64(hipblasHandle_t handle, int64_t n, *const *mut float x, int64_t incx, *const *mut float y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasDswapBatched64(hipblasHandle_t handle, int64_t n, *const *mut double x, int64_t incx, *const *mut double y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasDswapBatched_64(hipblasHandle_t handle, int64_t n, *const *mut double x, int64_t incx, *const *mut double y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasCswapBatched64(hipblasHandle_t handle, int64_t n, *const *mut hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasCswapBatched_64(hipblasHandle_t handle, int64_t n, *const *mut hipComplex x, int64_t incx, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasZswapBatched64(hipblasHandle_t handle, int64_t n, *const *mut hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+    hipblasStatus_t hipblasZswapBatched_64(hipblasHandle_t handle, int64_t n, *const *mut hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
 
-    hipblasStatus_t hipblasSswapStridedBatched64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasSswapStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut float x, int64_t incx, hipblasStride stridex, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasDswapStridedBatched64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasDswapStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut double x, int64_t incx, hipblasStride stridex, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasCswapStridedBatched64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasCswapStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
-    hipblasStatus_t hipblasZswapStridedBatched64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+    hipblasStatus_t hipblasZswapStridedBatched_64(hipblasHandle_t handle, int64_t n, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     // Level 2 BLAS
     hipblasStatus_t hipblasSgbmv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
@@ -762,6 +762,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZgbmvStridedBatched(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, int kl, int ku, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
 
+    hipblasStatus_t hipblasSgbmv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const float alpha, *const float AP, int64_t lda, *const float x, int64_t incx, *const float beta, *mut float y, int64_t incy);
+
+    hipblasStatus_t hipblasDgbmv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const double alpha, *const double AP, int64_t lda, *const double x, int64_t incx, *const double beta, *mut double y, int64_t incy);
+
+    hipblasStatus_t hipblasCgbmv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex x, int64_t incx, *const hipComplex beta, *mut hipComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasZgbmv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasSgbmvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const float alpha, *const *const float AP, int64_t lda, *const *const float x, int64_t incx, *const float beta, *const *mut float y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgbmvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const double alpha, *const *const double AP, int64_t lda, *const *const double x, int64_t incx, *const double beta, *const *mut double y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgbmvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex x, int64_t incx, *const hipComplex beta, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgbmvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasSgbmvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float x, int64_t incx, hipblasStride stridex, *const float beta, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgbmvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double x, int64_t incx, hipblasStride stridex, *const double beta, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgbmvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgbmvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, int64_t kl, int64_t ku, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
     hipblasStatus_t hipblasSgemv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
 
     hipblasStatus_t hipblasDgemv(hipblasHandle_t handle, hipblasOperation_t trans, int m, int n, *const double alpha, *const double AP, int lda, *const double x, int incx, *const double beta, *mut double y, int incy);
@@ -785,6 +809,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCgemvStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, int m, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
 
     hipblasStatus_t hipblasZgemvStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSgemv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, *const float x, int64_t incx, *const float beta, *mut float y, int64_t incy);
+
+    hipblasStatus_t hipblasDgemv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, *const double x, int64_t incx, *const double beta, *mut double y, int64_t incy);
+
+    hipblasStatus_t hipblasCgemv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex x, int64_t incx, *const hipComplex beta, *mut hipComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasZgemv_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasSgemvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const float alpha, *const *const float AP, int64_t lda, *const *const float x, int64_t incx, *const float beta, *const *mut float y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgemvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const double alpha, *const *const double AP, int64_t lda, *const *const double x, int64_t incx, *const double beta, *const *mut double y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgemvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex x, int64_t incx, *const hipComplex beta, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgemvBatched_64(hipblasHandle_t handle, hipblasOperation_t trans, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasSgemvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float x, int64_t incx, hipblasStride stridex, *const float beta, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgemvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double x, int64_t incx, hipblasStride stridex, *const double beta, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgemvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgemvStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasSger(hipblasHandle_t handle, int m, int n, *const float alpha, *const float x, int incx, *const float y, int incy, *mut float AP, int lda);
 
@@ -822,6 +870,42 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZgercStridedBatched(hipblasHandle_t handle, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
 
+    hipblasStatus_t hipblasSger_64(hipblasHandle_t handle, int64_t m, int64_t n, *const float alpha, *const float x, int64_t incx, *const float y, int64_t incy, *mut float AP, int64_t lda);
+
+    hipblasStatus_t hipblasDger_64(hipblasHandle_t handle, int64_t m, int64_t n, *const double alpha, *const double x, int64_t incx, *const double y, int64_t incy, *mut double AP, int64_t lda);
+
+    hipblasStatus_t hipblasCgeru_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasCgerc_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasZgeru_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasZgerc_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasSgerBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *const float y, int64_t incy, *const *mut float AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgerBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *const double y, int64_t incy, *const *mut double AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgeruBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, *const *mut hipComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgercBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, *const *mut hipComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgeruBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, *const *mut hipDoubleComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgercBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, *const *mut hipDoubleComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasSgerStridedBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *const float y, int64_t incy, hipblasStride stridey, *mut float AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgerStridedBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *const double y, int64_t incy, hipblasStride stridey, *mut double AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgeruStridedBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, *mut hipComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgercStridedBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, *mut hipComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgeruStridedBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, *mut hipDoubleComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgercStridedBatched_64(hipblasHandle_t handle, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, *mut hipDoubleComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
     hipblasStatus_t hipblasChbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
 
     hipblasStatus_t hipblasZhbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
@@ -834,6 +918,18 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZhbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
 
+    hipblasStatus_t hipblasChbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex x, int64_t incx, *const hipComplex beta, *mut hipComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasZhbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasChbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex x, int64_t incx, *const hipComplex beta, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasChbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
     hipblasStatus_t hipblasChemv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
 
     hipblasStatus_t hipblasZhemv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
@@ -845,6 +941,18 @@ rocm_include::link! {
     hipblasStatus_t hipblasChemvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
 
     hipblasStatus_t hipblasZhemvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasChemv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex x, int64_t incx, *const hipComplex beta, *mut hipComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasZhemv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasChemvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex x, int64_t incx, *const hipComplex beta, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhemvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasChemvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhemvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasCher(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const hipComplex x, int incx, *mut hipComplex AP, int lda);
 
@@ -870,6 +978,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZher2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
 
+    hipblasStatus_t hipblasCher_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const hipComplex x, int64_t incx, *mut hipComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasZher_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasCherBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const hipComplex x, int64_t incx, *const *mut hipComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasZherBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasCherStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZherStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasCher2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasZher2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasCher2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, *const *mut hipComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasZher2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, *const *mut hipDoubleComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasCher2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, *mut hipComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZher2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, *mut hipDoubleComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
     hipblasStatus_t hipblasChpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, *const hipComplex x, int incx, *const hipComplex beta, *mut hipComplex y, int incy);
 
     hipblasStatus_t hipblasZhpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, *const hipDoubleComplex x, int incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy);
@@ -881,6 +1013,18 @@ rocm_include::link! {
     hipblasStatus_t hipblasChpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
 
     hipblasStatus_t hipblasZhpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasChpmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex AP, *const hipComplex x, int64_t incx, *const hipComplex beta, *mut hipComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasZhpmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasChpmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, *const *const hipComplex x, int64_t incx, *const hipComplex beta, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhpmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, *const *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasChpmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex AP, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhpmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasChpr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const hipComplex x, int incx, *mut hipComplex AP);
 
@@ -906,6 +1050,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZhpr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, hipblasStride strideA, int batchCount);
 
+    hipblasStatus_t hipblasChpr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const hipComplex x, int64_t incx, *mut hipComplex AP);
+
+    hipblasStatus_t hipblasZhpr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex AP);
+
+    hipblasStatus_t hipblasChprBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const hipComplex x, int64_t incx, *const *mut hipComplex AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhprBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasChprStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhprStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasChpr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex AP);
+
+    hipblasStatus_t hipblasZhpr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex AP);
+
+    hipblasStatus_t hipblasChpr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, *const *mut hipComplex AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhpr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, *const *mut hipDoubleComplex AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasChpr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, *mut hipComplex AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhpr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, *mut hipDoubleComplex AP, hipblasStride strideA, int64_t batchCount);
+
     hipblasStatus_t hipblasSsbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
 
     hipblasStatus_t hipblasDsbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const double alpha, *const double AP, int lda, *const double x, int incx, *const double beta, *mut double y, int incy);
@@ -918,6 +1086,18 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasDsbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, int k, *const double alpha, *const double AP, int lda, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
 
+    hipblasStatus_t hipblasSsbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, *const float x, int64_t incx, *const float beta, *mut float y, int64_t incy);
+
+    hipblasStatus_t hipblasDsbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, *const double x, int64_t incx, *const double beta, *mut double y, int64_t incy);
+
+    hipblasStatus_t hipblasSsbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const float alpha, *const *const float AP, int64_t lda, *const *const float x, int64_t incx, *const float beta, *const *mut float y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const double alpha, *const *const double AP, int64_t lda, *const *const double x, int64_t incx, *const double beta, *const *mut double y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float x, int64_t incx, hipblasStride stridex, *const float beta, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double x, int64_t incx, hipblasStride stridex, *const double beta, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
     hipblasStatus_t hipblasSspmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, *const float x, int incx, *const float beta, *mut float y, int incy);
 
     hipblasStatus_t hipblasDspmv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double AP, *const double x, int incx, *const double beta, *mut double y, int incy);
@@ -929,6 +1109,18 @@ rocm_include::link! {
     hipblasStatus_t hipblasSspmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, hipblasStride strideA, *const float x, int incx, hipblasStride stridex, *const float beta, *mut float y, int incy, hipblasStride stridey, int batchCount);
 
     hipblasStatus_t hipblasDspmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double AP, hipblasStride strideA, *const double x, int incx, hipblasStride stridex, *const double beta, *mut double y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSspmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float AP, *const float x, int64_t incx, *const float beta, *mut float y, int64_t incy);
+
+    hipblasStatus_t hipblasDspmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double AP, *const double x, int64_t incx, *const double beta, *mut double y, int64_t incy);
+
+    hipblasStatus_t hipblasSspmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const float AP, *const *const float x, int64_t incx, *const float beta, *const *mut float y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasDspmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const double AP, *const *const double x, int64_t incx, *const double beta, *const *mut double y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasSspmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float AP, hipblasStride strideA, *const float x, int64_t incx, hipblasStride stridex, *const float beta, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasDspmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double AP, hipblasStride strideA, *const double x, int64_t incx, hipblasStride stridex, *const double beta, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasSspr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *mut float AP);
 
@@ -954,6 +1146,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZsprStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex AP, hipblasStride strideA, int batchCount);
 
+    hipblasStatus_t hipblasSspr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, *mut float AP);
+
+    hipblasStatus_t hipblasDspr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, *mut double AP);
+
+    hipblasStatus_t hipblasCspr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *mut hipComplex AP);
+
+    hipblasStatus_t hipblasZspr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex AP);
+
+    hipblasStatus_t hipblasSsprBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *mut float AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsprBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *mut double AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsprBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *mut hipComplex AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsprBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsprStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *mut float AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsprStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *mut double AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsprStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsprStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex AP, hipblasStride strideA, int64_t batchCount);
+
     hipblasStatus_t hipblasSspr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *const float y, int incy, *mut float AP);
 
     hipblasStatus_t hipblasDspr2(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, *const double y, int incy, *mut double AP);
@@ -965,6 +1181,18 @@ rocm_include::link! {
     hipblasStatus_t hipblasSspr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, hipblasStride stridex, *const float y, int incy, hipblasStride stridey, *mut float AP, hipblasStride strideA, int batchCount);
 
     hipblasStatus_t hipblasDspr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const double alpha, *const double x, int incx, hipblasStride stridex, *const double y, int incy, hipblasStride stridey, *mut double AP, hipblasStride strideA, int batchCount);
+
+    hipblasStatus_t hipblasSspr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, *const float y, int64_t incy, *mut float AP);
+
+    hipblasStatus_t hipblasDspr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, *const double y, int64_t incy, *mut double AP);
+
+    hipblasStatus_t hipblasSspr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *const float y, int64_t incy, *const *mut float AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasDspr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *const double y, int64_t incy, *const *mut double AP, int64_t batchCount);
+
+    hipblasStatus_t hipblasSspr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *const float y, int64_t incy, hipblasStride stridey, *mut float AP, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasDspr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *const double y, int64_t incy, hipblasStride stridey, *mut double AP, hipblasStride strideA, int64_t batchCount);
 
     hipblasStatus_t hipblasSsymv(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float AP, int lda, *const float x, int incx, *const float beta, *mut float y, int incy);
 
@@ -989,6 +1217,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCsymvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex x, int incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int incy, hipblasStride stridey, int batchCount);
 
     hipblasStatus_t hipblasZsymvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int incy, hipblasStride stridey, int batchCount);
+
+    hipblasStatus_t hipblasSsymv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float AP, int64_t lda, *const float x, int64_t incx, *const float beta, *mut float y, int64_t incy);
+
+    hipblasStatus_t hipblasDsymv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double AP, int64_t lda, *const double x, int64_t incx, *const double beta, *mut double y, int64_t incy);
+
+    hipblasStatus_t hipblasCsymv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex x, int64_t incx, *const hipComplex beta, *mut hipComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasZsymv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy);
+
+    hipblasStatus_t hipblasSsymvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const float AP, int64_t lda, *const *const float x, int64_t incx, *const float beta, *const *mut float y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsymvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const double AP, int64_t lda, *const *const double x, int64_t incx, *const double beta, *const *mut double y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsymvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex x, int64_t incx, *const hipComplex beta, *const *mut hipComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsymvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex beta, *const *mut hipDoubleComplex y, int64_t incy, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsymvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float x, int64_t incx, hipblasStride stridex, *const float beta, *mut float y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsymvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double x, int64_t incx, hipblasStride stridex, *const double beta, *mut double y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsymvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex beta, *mut hipComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsymvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex beta, *mut hipDoubleComplex y, int64_t incy, hipblasStride stridey, int64_t batchCount);
 
     hipblasStatus_t hipblasSsyr(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const float alpha, *const float x, int incx, *mut float AP, int lda);
 
@@ -1038,6 +1290,54 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZsyr2StridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int incx, hipblasStride stridex, *const hipDoubleComplex y, int incy, hipblasStride stridey, *mut hipDoubleComplex AP, int lda, hipblasStride strideA, int batchCount);
 
+    hipblasStatus_t hipblasSsyr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, *mut float AP, int64_t lda);
+
+    hipblasStatus_t hipblasDsyr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, *mut double AP, int64_t lda);
+
+    hipblasStatus_t hipblasCsyr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *mut hipComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasZsyr_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasSsyrBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *mut float AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyrBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *mut double AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyrBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *mut hipComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyrBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyrStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *mut float AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyrStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *mut double AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyrStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyrStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, *const float y, int64_t incy, *mut float AP, int64_t lda);
+
+    hipblasStatus_t hipblasDsyr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, *const double y, int64_t incy, *mut double AP, int64_t lda);
+
+    hipblasStatus_t hipblasCsyr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, *const hipComplex y, int64_t incy, *mut hipComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasZsyr2_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, *const hipDoubleComplex y, int64_t incy, *mut hipDoubleComplex AP, int64_t lda);
+
+    hipblasStatus_t hipblasSsyr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const *const float x, int64_t incx, *const *const float y, int64_t incy, *const *mut float AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const *const double x, int64_t incx, *const *const double y, int64_t incy, *const *mut double AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const *const hipComplex x, int64_t incx, *const *const hipComplex y, int64_t incy, *const *mut hipComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyr2Batched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex x, int64_t incx, *const *const hipDoubleComplex y, int64_t incy, *const *mut hipDoubleComplex AP, int64_t lda, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const float alpha, *const float x, int64_t incx, hipblasStride stridex, *const float y, int64_t incy, hipblasStride stridey, *mut float AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const double alpha, *const double x, int64_t incx, hipblasStride stridex, *const double y, int64_t incy, hipblasStride stridey, *mut double AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipComplex alpha, *const hipComplex x, int64_t incx, hipblasStride stridex, *const hipComplex y, int64_t incy, hipblasStride stridey, *mut hipComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyr2StridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *const hipDoubleComplex y, int64_t incy, hipblasStride stridey, *mut hipDoubleComplex AP, int64_t lda, hipblasStride strideA, int64_t batchCount);
+
     hipblasStatus_t hipblasStbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, *mut float x, int incx);
 
     hipblasStatus_t hipblasDtbmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const double AP, int lda, *mut double x, int incx);
@@ -1061,6 +1361,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
 
     hipblasStatus_t hipblasZtbmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const float AP, int64_t lda, *mut float x, int64_t incx);
+
+    hipblasStatus_t hipblasDtbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const double AP, int64_t lda, *mut double x, int64_t incx);
+
+    hipblasStatus_t hipblasCtbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipComplex AP, int64_t lda, *mut hipComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasZtbmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipDoubleComplex AP, int64_t lda, *mut hipDoubleComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasStbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const float AP, int64_t lda, *const *mut float x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const double AP, int64_t lda, *const *mut double x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const hipComplex AP, int64_t lda, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtbmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const hipDoubleComplex AP, int64_t lda, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasStbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const float AP, int64_t lda, hipblasStride strideA, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const double AP, int64_t lda, hipblasStride strideA, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipComplex AP, int64_t lda, hipblasStride strideA, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtbmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
     hipblasStatus_t hipblasStbsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const float AP, int lda, *mut float x, int incx);
 
@@ -1086,6 +1410,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZtbsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, int k, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
 
+    hipblasStatus_t hipblasStbsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const float AP, int64_t lda, *mut float x, int64_t incx);
+
+    hipblasStatus_t hipblasDtbsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const double AP, int64_t lda, *mut double x, int64_t incx);
+
+    hipblasStatus_t hipblasCtbsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipComplex AP, int64_t lda, *mut hipComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasZtbsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipDoubleComplex AP, int64_t lda, *mut hipDoubleComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasStbsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const float AP, int64_t lda, *const *mut float x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtbsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const double AP, int64_t lda, *const *mut double x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtbsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const hipComplex AP, int64_t lda, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtbsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const *const hipDoubleComplex AP, int64_t lda, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasStbsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const float AP, int64_t lda, hipblasStride strideA, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtbsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const double AP, int64_t lda, hipblasStride strideA, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtbsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipComplex AP, int64_t lda, hipblasStride strideA, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtbsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, int64_t k, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
     hipblasStatus_t hipblasStpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, *mut float x, int incx);
 
     hipblasStatus_t hipblasDtpmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, *mut double x, int incx);
@@ -1109,6 +1457,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCtpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
 
     hipblasStatus_t hipblasZtpmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStpmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, *mut float x, int64_t incx);
+
+    hipblasStatus_t hipblasDtpmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, *mut double x, int64_t incx);
+
+    hipblasStatus_t hipblasCtpmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, *mut hipComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasZtpmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, *mut hipDoubleComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasStpmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const float AP, *const *mut float x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtpmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const double AP, *const *mut double x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtpmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipComplex AP, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtpmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipDoubleComplex AP, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasStpmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, hipblasStride strideA, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtpmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, hipblasStride strideA, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtpmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, hipblasStride strideA, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtpmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, hipblasStride strideA, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
     hipblasStatus_t hipblasStpsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, *mut float x, int incx);
 
@@ -1134,6 +1506,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZtpsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
 
+    hipblasStatus_t hipblasStpsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, *mut float x, int64_t incx);
+
+    hipblasStatus_t hipblasDtpsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, *mut double x, int64_t incx);
+
+    hipblasStatus_t hipblasCtpsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, *mut hipComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasZtpsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, *mut hipDoubleComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasStpsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const float AP, *const *mut float x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtpsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const double AP, *const *mut double x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtpsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipComplex AP, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtpsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipDoubleComplex AP, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasStpsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, hipblasStride strideA, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtpsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, hipblasStride strideA, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtpsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, hipblasStride strideA, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtpsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, hipblasStride strideA, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
     hipblasStatus_t hipblasStrmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, int lda, *mut float x, int incx);
 
     hipblasStatus_t hipblasDtrmv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const double AP, int lda, *mut double x, int incx);
@@ -1157,6 +1553,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCtrmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex x, int incx, hipblasStride stridex, int batchCount);
 
     hipblasStatus_t hipblasZtrmvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
+
+    hipblasStatus_t hipblasStrmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, int64_t lda, *mut float x, int64_t incx);
+
+    hipblasStatus_t hipblasDtrmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, int64_t lda, *mut double x, int64_t incx);
+
+    hipblasStatus_t hipblasCtrmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, int64_t lda, *mut hipComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasZtrmv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, int64_t lda, *mut hipDoubleComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasStrmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const float AP, int64_t lda, *const *mut float x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const double AP, int64_t lda, *const *mut double x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipComplex AP, int64_t lda, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrmvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipDoubleComplex AP, int64_t lda, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasStrmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, int64_t lda, hipblasStride strideA, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, int64_t lda, hipblasStride strideA, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, int64_t lda, hipblasStride strideA, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrmvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
 
     hipblasStatus_t hipblasStrsv(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const float AP, int lda, *mut float x, int incx);
 
@@ -1182,6 +1602,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZtrsvStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int n, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex x, int incx, hipblasStride stridex, int batchCount);
 
+    hipblasStatus_t hipblasStrsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, int64_t lda, *mut float x, int64_t incx);
+
+    hipblasStatus_t hipblasDtrsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, int64_t lda, *mut double x, int64_t incx);
+
+    hipblasStatus_t hipblasCtrsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, int64_t lda, *mut hipComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasZtrsv_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, int64_t lda, *mut hipDoubleComplex x, int64_t incx);
+
+    hipblasStatus_t hipblasStrsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const float AP, int64_t lda, *const *mut float x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const double AP, int64_t lda, *const *mut double x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipComplex AP, int64_t lda, *const *mut hipComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrsvBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const *const hipDoubleComplex AP, int64_t lda, *const *mut hipDoubleComplex x, int64_t incx, int64_t batchCount);
+
+    hipblasStatus_t hipblasStrsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const float AP, int64_t lda, hipblasStride strideA, *mut float x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const double AP, int64_t lda, hipblasStride strideA, *mut double x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipComplex AP, int64_t lda, hipblasStride strideA, *mut hipComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrsvStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t n, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *mut hipDoubleComplex x, int64_t incx, hipblasStride stridex, int64_t batchCount);
+
     // Level 3 BLAS
     hipblasStatus_t hipblasHgemm(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const hipblasHalf alpha, *const hipblasHalf AP, int lda, *const hipblasHalf BP, int ldb, *const hipblasHalf beta, *mut hipblasHalf CP, int ldc);
 
@@ -1203,6 +1647,26 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZgemmBatched(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int lda, *const *const hipDoubleComplex BP, int ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int ldc, int batchCount);
 
+    hipblasStatus_t hipblasHgemm_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipblasHalf alpha, *const hipblasHalf AP, int64_t lda, *const hipblasHalf BP, int64_t ldb, *const hipblasHalf beta, *mut hipblasHalf CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSgemm_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, *const float BP, int64_t ldb, *const float beta, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDgemm_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, *const double BP, int64_t ldb, *const double beta, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCgemm_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const hipComplex beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZgemm_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasHgemmBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipblasHalf alpha, *const *const hipblasHalf AP, int64_t lda, *const *const hipblasHalf BP, int64_t ldb, *const hipblasHalf beta, *const *mut hipblasHalf CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSgemmBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const float alpha, *const *const float AP, int64_t lda, *const *const float BP, int64_t ldb, *const float beta, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgemmBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const double alpha, *const *const double AP, int64_t lda, *const *const double BP, int64_t ldb, *const double beta, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgemmBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const hipComplex beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgemmBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
     #[since = 10 .1, "10.1"]
     hipblasStatus_t hipblasSgemmGroupedBatched(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int m_array, *const int n_array, *const int k_array, *const float alpha_array, *const *const float Aarray, *const int lda_array, *const *const float Barray, *const int ldb_array, *const float beta_array, *const *mut float Carray, *const int ldc_array, int group_count, *const int group_size);
 
@@ -1218,6 +1682,22 @@ rocm_include::link! {
     hipblasStatus_t hipblasCgemmStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, longlong strideA, *const hipComplex BP, int ldb, longlong strideB, *const hipComplex beta, *mut hipComplex CP, int ldc, longlong strideC, int batchCount);
 
     hipblasStatus_t hipblasZgemmStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, longlong strideA, *const hipDoubleComplex BP, int ldb, longlong strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int ldc, longlong strideC, int batchCount);
+
+    #[since = 10 .1, "10.1"]
+    hipblasStatus_t hipblasSgemmGroupedBatched_64(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int64_t m_array, *const int64_t n_array, *const int64_t k_array, *const float alpha_array, *const *const float Aarray, *const int64_t lda_array, *const *const float Barray, *const int64_t ldb_array, *const float beta_array, *const *mut float Carray, *const int64_t ldc_array, int64_t group_count, *const int64_t group_size);
+
+    #[since = 10 .1, "10.1"]
+    hipblasStatus_t hipblasDgemmGroupedBatched_64(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int64_t m_array, *const int64_t n_array, *const int64_t k_array, *const double alpha_array, *const *const double Aarray, *const int64_t lda_array, *const *const double Barray, *const int64_t ldb_array, *const double beta_array, *const *mut double Carray, *const int64_t ldc_array, int64_t group_count, *const int64_t group_size);
+
+    hipblasStatus_t hipblasHgemmStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipblasHalf alpha, *const hipblasHalf AP, int64_t lda, longlong strideA, *const hipblasHalf BP, int64_t ldb, longlong strideB, *const hipblasHalf beta, *mut hipblasHalf CP, int64_t ldc, longlong strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasSgemmStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, longlong strideA, *const float BP, int64_t ldb, longlong strideB, *const float beta, *mut float CP, int64_t ldc, longlong strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgemmStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, longlong strideA, *const double BP, int64_t ldb, longlong strideB, *const double beta, *mut double CP, int64_t ldc, longlong strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgemmStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, longlong strideA, *const hipComplex BP, int64_t ldb, longlong strideB, *const hipComplex beta, *mut hipComplex CP, int64_t ldc, longlong strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgemmStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, longlong strideA, *const hipDoubleComplex BP, int64_t ldb, longlong strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc, longlong strideC, int64_t batchCount);
 
     hipblasStatus_t hipblasCherk(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const float alpha, *const hipComplex AP, int lda, *const float beta, *mut hipComplex CP, int ldc);
 
@@ -1243,6 +1723,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZherkxStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex BP, int ldb, hipblasStride strideB, *const double beta, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
+    hipblasStatus_t hipblasCherk_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const hipComplex AP, int64_t lda, *const float beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZherk_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const hipDoubleComplex AP, int64_t lda, *const double beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCherkBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const *const hipComplex AP, int64_t lda, *const float beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZherkBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const *const hipDoubleComplex AP, int64_t lda, *const double beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCherkStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const float beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZherkStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const double beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCherkx_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const float beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZherkx_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const double beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCherkxBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const float beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZherkxBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const double beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCherkxStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *const float beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZherkxStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *const double beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
     hipblasStatus_t hipblasCher2k(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex BP, int ldb, *const float beta, *mut hipComplex CP, int ldc);
 
     hipblasStatus_t hipblasZher2k(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex BP, int ldb, *const double beta, *mut hipDoubleComplex CP, int ldc);
@@ -1254,6 +1758,18 @@ rocm_include::link! {
     hipblasStatus_t hipblasCher2kStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex BP, int ldb, hipblasStride strideB, *const float beta, *mut hipComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
     hipblasStatus_t hipblasZher2kStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex BP, int ldb, hipblasStride strideB, *const double beta, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
+
+    hipblasStatus_t hipblasCher2k_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const float beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZher2k_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const double beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCher2kBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const float beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZher2kBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const double beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCher2kStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *const float beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZher2kStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *const double beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
 
     hipblasStatus_t hipblasSsymm(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int m, int n, *const float alpha, *const float AP, int lda, *const float BP, int ldb, *const float beta, *mut float CP, int ldc);
 
@@ -1279,6 +1795,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZsymmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex BP, int ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
+    hipblasStatus_t hipblasSsymm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, *const float BP, int64_t ldb, *const float beta, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDsymm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, *const double BP, int64_t ldb, *const double beta, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCsymm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const hipComplex beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZsymm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSsymmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const float alpha, *const *const float AP, int64_t lda, *const *const float BP, int64_t ldb, *const float beta, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsymmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const double alpha, *const *const double AP, int64_t lda, *const *const double BP, int64_t ldb, *const double beta, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsymmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const hipComplex beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsymmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsymmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float BP, int64_t ldb, hipblasStride strideB, *const float beta, *mut float CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsymmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double BP, int64_t ldb, hipblasStride strideB, *const double beta, *mut double CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsymmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *const hipComplex beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsymmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
     hipblasStatus_t hipblasSsyrk(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const float alpha, *const float AP, int lda, *const float beta, *mut float CP, int ldc);
 
     hipblasStatus_t hipblasDsyrk(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const double alpha, *const double AP, int lda, *const double beta, *mut double CP, int ldc);
@@ -1302,6 +1842,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCsyrkStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex beta, *mut hipComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
     hipblasStatus_t hipblasZsyrkStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
+
+    hipblasStatus_t hipblasSsyrk_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, *const float beta, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDsyrk_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, *const double beta, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCsyrk_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZsyrk_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSsyrkBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const *const float AP, int64_t lda, *const float beta, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyrkBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const *const double AP, int64_t lda, *const double beta, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyrkBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const hipComplex beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyrkBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyrkStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float beta, *mut float CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyrkStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double beta, *mut double CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyrkStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyrkStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
 
     hipblasStatus_t hipblasSsyr2k(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const float alpha, *const float AP, int lda, *const float BP, int ldb, *const float beta, *mut float CP, int ldc);
 
@@ -1351,6 +1915,54 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZsyrkxStridedBatched(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex BP, int ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
+    hipblasStatus_t hipblasSsyr2k_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, *const float BP, int64_t ldb, *const float beta, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDsyr2k_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, *const double BP, int64_t ldb, *const double beta, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCsyr2k_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const hipComplex beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZsyr2k_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSsyr2kBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const *const float AP, int64_t lda, *const *const float BP, int64_t ldb, *const float beta, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyr2kBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const *const double AP, int64_t lda, *const *const double BP, int64_t ldb, *const double beta, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyr2kBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const hipComplex beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyr2kBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyr2kStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float BP, int64_t ldb, hipblasStride strideB, *const float beta, *mut float CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyr2kStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double BP, int64_t ldb, hipblasStride strideB, *const double beta, *mut double CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyr2kStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *const hipComplex beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyr2kStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyrkx_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, *const float BP, int64_t ldb, *const float beta, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDsyrkx_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, *const double BP, int64_t ldb, *const double beta, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCsyrkx_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const hipComplex beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZsyrkx_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSsyrkxBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const *const float AP, int64_t lda, *const *const float BP, int64_t ldb, *const float beta, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyrkxBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const *const double AP, int64_t lda, *const *const double BP, int64_t ldb, *const double beta, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyrkxBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const hipComplex beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyrkxBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSsyrkxStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float BP, int64_t ldb, hipblasStride strideB, *const float beta, *mut float CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDsyrkxStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double BP, int64_t ldb, hipblasStride strideB, *const double beta, *mut double CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCsyrkxStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *const hipComplex beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZsyrkxStridedBatched_64(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
     hipblasStatus_t hipblasSgeam(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, *const float alpha, *const float AP, int lda, *const float beta, *const float BP, int ldb, *mut float CP, int ldc);
 
     hipblasStatus_t hipblasDgeam(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, *const double alpha, *const double AP, int lda, *const double beta, *const double BP, int ldb, *mut double CP, int ldc);
@@ -1375,6 +1987,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZgeamStridedBatched(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex beta, *const hipDoubleComplex BP, int ldb, hipblasStride strideB, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
+    hipblasStatus_t hipblasSgeam_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, *const float beta, *const float BP, int64_t ldb, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDgeam_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, *const double beta, *const double BP, int64_t ldb, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCgeam_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex beta, *const hipComplex BP, int64_t ldb, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZgeam_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex beta, *const hipDoubleComplex BP, int64_t ldb, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSgeamBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const float alpha, *const *const float AP, int64_t lda, *const float beta, *const *const float BP, int64_t ldb, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgeamBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const double alpha, *const *const double AP, int64_t lda, *const double beta, *const *const double BP, int64_t ldb, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgeamBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const hipComplex beta, *const *const hipComplex BP, int64_t ldb, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgeamBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex beta, *const *const hipDoubleComplex BP, int64_t ldb, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSgeamStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *const float beta, *const float BP, int64_t ldb, hipblasStride strideB, *mut float CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDgeamStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *const double beta, *const double BP, int64_t ldb, hipblasStride strideB, *mut double CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCgeamStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex beta, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZgeamStridedBatched_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex beta, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
     hipblasStatus_t hipblasChemm(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, *const hipComplex BP, int ldb, *const hipComplex beta, *mut hipComplex CP, int ldc);
 
     hipblasStatus_t hipblasZhemm(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, *const hipDoubleComplex BP, int ldb, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int ldc);
@@ -1386,6 +2022,18 @@ rocm_include::link! {
     hipblasStatus_t hipblasChemmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int n, int k, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *const hipComplex BP, int ldb, hipblasStride strideB, *const hipComplex beta, *mut hipComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
     hipblasStatus_t hipblasZhemmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int n, int k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex BP, int ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
+
+    hipblasStatus_t hipblasChemm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *const hipComplex BP, int64_t ldb, *const hipComplex beta, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZhemm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasChemmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *const hipComplex BP, int64_t ldb, *const hipComplex beta, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhemmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex BP, int64_t ldb, *const hipDoubleComplex beta, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasChemmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex BP, int64_t ldb, hipblasStride strideB, *const hipComplex beta, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZhemmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, int64_t n, int64_t k, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, *const hipDoubleComplex beta, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
 
     hipblasStatus_t hipblasStrmm(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const float alpha, *const float A, int lda, *const float B, int ldb, *mut float C, int ldc);
 
@@ -1411,6 +2059,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZtrmmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex A, int lda, hipblasStride strideA, *const hipDoubleComplex B, int ldb, hipblasStride strideB, *mut hipDoubleComplex C, int ldc, hipblasStride strideC, int batchCount);
 
+    hipblasStatus_t hipblasStrmm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const float alpha, *const float A, int64_t lda, *const float B, int64_t ldb, *mut float C, int64_t ldc);
+
+    hipblasStatus_t hipblasDtrmm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const double alpha, *const double A, int64_t lda, *const double B, int64_t ldb, *mut double C, int64_t ldc);
+
+    hipblasStatus_t hipblasCtrmm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex A, int64_t lda, *const hipComplex B, int64_t ldb, *mut hipComplex C, int64_t ldc);
+
+    hipblasStatus_t hipblasZtrmm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex A, int64_t lda, *const hipDoubleComplex B, int64_t ldb, *mut hipDoubleComplex C, int64_t ldc);
+
+    hipblasStatus_t hipblasStrmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const float alpha, *const *const float A, int64_t lda, *const *const float B, int64_t ldb, *const *mut float C, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const double alpha, *const *const double A, int64_t lda, *const *const double B, int64_t ldb, *const *mut double C, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex A, int64_t lda, *const *const hipComplex B, int64_t ldb, *const *mut hipComplex C, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex A, int64_t lda, *const *const hipDoubleComplex B, int64_t ldb, *const *mut hipDoubleComplex C, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasStrmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const float alpha, *const float A, int64_t lda, hipblasStride strideA, *const float B, int64_t ldb, hipblasStride strideB, *mut float C, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const double alpha, *const double A, int64_t lda, hipblasStride strideA, *const double B, int64_t ldb, hipblasStride strideB, *mut double C, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex A, int64_t lda, hipblasStride strideA, *const hipComplex B, int64_t ldb, hipblasStride strideB, *mut hipComplex C, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex A, int64_t lda, hipblasStride strideA, *const hipDoubleComplex B, int64_t ldb, hipblasStride strideB, *mut hipDoubleComplex C, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
     hipblasStatus_t hipblasStrsm(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const float alpha, *const float AP, int lda, *mut float BP, int ldb);
 
     hipblasStatus_t hipblasDtrsm(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const double alpha, *const double AP, int lda, *mut double BP, int ldb);
@@ -1434,6 +2106,30 @@ rocm_include::link! {
     hipblasStatus_t hipblasCtrsmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const hipComplex alpha, *const hipComplex AP, int lda, hipblasStride strideA, *mut hipComplex BP, int ldb, hipblasStride strideB, int batchCount);
 
     hipblasStatus_t hipblasZtrsmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int m, int n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *mut hipDoubleComplex BP, int ldb, hipblasStride strideB, int batchCount);
+
+    hipblasStatus_t hipblasStrsm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, *mut float BP, int64_t ldb);
+
+    hipblasStatus_t hipblasDtrsm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, *mut double BP, int64_t ldb);
+
+    hipblasStatus_t hipblasCtrsm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, *mut hipComplex BP, int64_t ldb);
+
+    hipblasStatus_t hipblasZtrsm_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, *mut hipDoubleComplex BP, int64_t ldb);
+
+    hipblasStatus_t hipblasStrsmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const float alpha, *const *const float AP, int64_t lda, *const *mut float BP, int64_t ldb, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrsmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const double alpha, *const *const double AP, int64_t lda, *const *mut double BP, int64_t ldb, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrsmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipComplex alpha, *const *const hipComplex AP, int64_t lda, *const *mut hipComplex BP, int64_t ldb, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrsmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const *const hipDoubleComplex AP, int64_t lda, *const *mut hipDoubleComplex BP, int64_t ldb, int64_t batchCount);
+
+    hipblasStatus_t hipblasStrsmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const float alpha, *const float AP, int64_t lda, hipblasStride strideA, *mut float BP, int64_t ldb, hipblasStride strideB, int64_t batchCount);
+
+    hipblasStatus_t hipblasDtrsmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const double alpha, *const double AP, int64_t lda, hipblasStride strideA, *mut double BP, int64_t ldb, hipblasStride strideB, int64_t batchCount);
+
+    hipblasStatus_t hipblasCtrsmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipComplex alpha, *const hipComplex AP, int64_t lda, hipblasStride strideA, *mut hipComplex BP, int64_t ldb, hipblasStride strideB, int64_t batchCount);
+
+    hipblasStatus_t hipblasZtrsmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, hipblasFillMode_t uplo, hipblasOperation_t transA, hipblasDiagType_t diag, int64_t m, int64_t n, *const hipDoubleComplex alpha, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *mut hipDoubleComplex BP, int64_t ldb, hipblasStride strideB, int64_t batchCount);
 
     hipblasStatus_t hipblasStrtri(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasDiagType_t diag, int n, *const float AP, int lda, *mut float invA, int ldinvA);
 
@@ -1483,6 +2179,30 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasZdgmmStridedBatched(hipblasHandle_t handle, hipblasSideMode_t side, int m, int n, *const hipDoubleComplex AP, int lda, hipblasStride strideA, *const hipDoubleComplex x, int incx, hipblasStride stridex, *mut hipDoubleComplex CP, int ldc, hipblasStride strideC, int batchCount);
 
+    hipblasStatus_t hipblasSdgmm_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const float AP, int64_t lda, *const float x, int64_t incx, *mut float CP, int64_t ldc);
+
+    hipblasStatus_t hipblasDdgmm_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const double AP, int64_t lda, *const double x, int64_t incx, *mut double CP, int64_t ldc);
+
+    hipblasStatus_t hipblasCdgmm_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const hipComplex AP, int64_t lda, *const hipComplex x, int64_t incx, *mut hipComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasZdgmm_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const hipDoubleComplex AP, int64_t lda, *const hipDoubleComplex x, int64_t incx, *mut hipDoubleComplex CP, int64_t ldc);
+
+    hipblasStatus_t hipblasSdgmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const *const float AP, int64_t lda, *const *const float x, int64_t incx, *const *mut float CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasDdgmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const *const double AP, int64_t lda, *const *const double x, int64_t incx, *const *mut double CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasCdgmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const *const hipComplex AP, int64_t lda, *const *const hipComplex x, int64_t incx, *const *mut hipComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasZdgmmBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const *const hipDoubleComplex AP, int64_t lda, *const *const hipDoubleComplex x, int64_t incx, *const *mut hipDoubleComplex CP, int64_t ldc, int64_t batchCount);
+
+    hipblasStatus_t hipblasSdgmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const float AP, int64_t lda, hipblasStride strideA, *const float x, int64_t incx, hipblasStride stridex, *mut float CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasDdgmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const double AP, int64_t lda, hipblasStride strideA, *const double x, int64_t incx, hipblasStride stridex, *mut double CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasCdgmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const hipComplex AP, int64_t lda, hipblasStride strideA, *const hipComplex x, int64_t incx, hipblasStride stridex, *mut hipComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
+    hipblasStatus_t hipblasZdgmmStridedBatched_64(hipblasHandle_t handle, hipblasSideMode_t side, int64_t m, int64_t n, *const hipDoubleComplex AP, int64_t lda, hipblasStride strideA, *const hipDoubleComplex x, int64_t incx, hipblasStride stridex, *mut hipDoubleComplex CP, int64_t ldc, hipblasStride strideC, int64_t batchCount);
+
     // BLAS extensions
 
     // hipblasGemmEx + Batched, StridedBatched
@@ -1494,6 +2214,15 @@ rocm_include::link! {
     hipblasStatus_t hipblasGemmGroupedBatchedEx(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int m_array, *const int n_array, *const int k_array, *const void alpha_array, *const *const void Aarray, hipDataType aType, *const int lda_array, *const *const void Barray, hipDataType bType, *const int ldb_array, *mut *const void beta_array, *const *const void Carray, hipDataType cType, *const *const int ldc_array, *const *mut void Darray, hipDataType dType, *const int ldd_array, int group_count, *const int group_size, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
 
     hipblasStatus_t hipblasGemmStridedBatchedEx(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int m, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, hipblasStride strideA, *const void B, hipDataType bType, int ldb, hipblasStride strideB, *const void beta, *mut void C, hipDataType cType, int ldc, hipblasStride strideC, int batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    hipblasStatus_t hipblasGemmEx_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const void alpha, *const void A, hipDataType aType, int64_t lda, *const void B, hipDataType bType, int64_t ldb, *const void beta, *mut void C, hipDataType cType, int64_t ldc, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    hipblasStatus_t hipblasGemmBatchedEx_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const void alpha, *mut *const void A, hipDataType aType, int64_t lda, *mut *const void B, hipDataType bType, int64_t ldb, *const void beta, *mut *mut void C, hipDataType cType, int64_t ldc, int64_t batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    #[since = 10 .1, "10.1"]
+    hipblasStatus_t hipblasGemmGroupedBatchedEx_64(hipblasHandle_t handle, *const hipblasOperation_t transA_array, *const hipblasOperation_t transB_array, *const int64_t m_array, *const int64_t n_array, *const int64_t k_array, *const void alpha_array, *const *const void Aarray, hipDataType aType, *const int64_t lda_array, *const *const void Barray, hipDataType bType, *const int64_t ldb_array, *mut *const void beta_array, *const *const void Carray, hipDataType cType, *const *const int64_t ldc_array, *const *mut void Darray, hipDataType dType, *const int64_t ldd_array, int64_t group_count, *const int64_t group_size, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
+
+    hipblasStatus_t hipblasGemmStridedBatchedEx_64(hipblasHandle_t handle, hipblasOperation_t transA, hipblasOperation_t transB, int64_t m, int64_t n, int64_t k, *const void alpha, *const void A, hipDataType aType, int64_t lda, hipblasStride strideA, *const void B, hipDataType bType, int64_t ldb, hipblasStride strideB, *const void beta, *mut void C, hipDataType cType, int64_t ldc, hipblasStride strideC, int64_t batchCount, hipblasComputeType_t computeType, hipblasGemmAlgo_t algo);
 
     // hipblasSyrkEx
     hipblasStatus_t hipblasSyrkEx(hipblasHandle_t handle, hipblasFillMode_t uplo, hipblasOperation_t transA, int n, int k, *const void alpha, *const void A, hipDataType aType, int lda, *const void beta, *mut void C, hipDataType cType, int ldc, hipDataType computeType);
@@ -1515,12 +2244,24 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasAxpyStridedBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int incx, hipblasStride stridex, *mut void y, hipDataType yType, int incy, hipblasStride stridey, int batchCount, hipDataType executionType);
 
+    hipblasStatus_t hipblasAxpyEx_64(hipblasHandle_t handle, int64_t n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int64_t incx, *mut void y, hipDataType yType, int64_t incy, hipDataType executionType);
+
+    hipblasStatus_t hipblasAxpyBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int64_t incx, *mut void y, hipDataType yType, int64_t incy, int64_t batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasAxpyStridedBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void alpha, hipDataType alphaType, *const void x, hipDataType xType, int64_t incx, hipblasStride stridex, *mut void y, hipDataType yType, int64_t incy, hipblasStride stridey, int64_t batchCount, hipDataType executionType);
+
     // hipblasDotEx + Batched, StridedBatched
     hipblasStatus_t hipblasDotEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, *mut void result, hipDataType resultType, hipDataType executionType);
 
     hipblasStatus_t hipblasDotBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
 
     hipblasStatus_t hipblasDotStridedBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, hipblasStride stridex, *const void y, hipDataType yType, int incy, hipblasStride stridey, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, *const void y, hipDataType yType, int64_t incy, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, *const void y, hipDataType yType, int64_t incy, int64_t batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotStridedBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, hipblasStride stridex, *const void y, hipDataType yType, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
 
     // hipblasDotcEx + Batched, StridedBatched
     hipblasStatus_t hipblasDotcEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *const void y, hipDataType yType, int incy, *mut void result, hipDataType resultType, hipDataType executionType);
@@ -1529,12 +2270,24 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasDotcStridedBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, hipblasStride stridex, *const void y, hipDataType yType, int incy, hipblasStride stridey, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
 
+    hipblasStatus_t hipblasDotcEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, *const void y, hipDataType yType, int64_t incy, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotcBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, *const void y, hipDataType yType, int64_t incy, int64_t batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasDotcStridedBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, hipblasStride stridex, *const void y, hipDataType yType, int64_t incy, hipblasStride stridey, int64_t batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
     // hipblasNrm2Ex + Batched, StridedBatched
     hipblasStatus_t hipblasNrm2Ex(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, *mut void result, hipDataType resultType, hipDataType executionType);
 
     hipblasStatus_t hipblasNrm2BatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
 
     hipblasStatus_t hipblasNrm2StridedBatchedEx(hipblasHandle_t handle, int n, *const void x, hipDataType xType, int incx, hipblasStride stridex, int batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasNrm2Ex_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasNrm2BatchedEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, int64_t batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
+
+    hipblasStatus_t hipblasNrm2StridedBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void x, hipDataType xType, int64_t incx, hipblasStride stridex, int64_t batchCount, *mut void result, hipDataType resultType, hipDataType executionType);
 
     // hipblasRotEx + Batched, StridedBatched
     hipblasStatus_t hipblasRotEx(hipblasHandle_t handle, int n, *mut void x, hipDataType xType, int incx, *mut void y, hipDataType yType, int incy, *const void c, *const void s, hipDataType csType, hipDataType executionType);
@@ -1543,12 +2296,24 @@ rocm_include::link! {
 
     hipblasStatus_t hipblasRotStridedBatchedEx(hipblasHandle_t handle, int n, *mut void x, hipDataType xType, int incx, hipblasStride stridex, *mut void y, hipDataType yType, int incy, hipblasStride stridey, *const void c, *const void s, hipDataType csType, int batchCount, hipDataType executionType);
 
+    hipblasStatus_t hipblasRotEx_64(hipblasHandle_t handle, int64_t n, *mut void x, hipDataType xType, int64_t incx, *mut void y, hipDataType yType, int64_t incy, *const void c, *const void s, hipDataType csType, hipDataType executionType);
+
+    hipblasStatus_t hipblasRotBatchedEx_64(hipblasHandle_t handle, int64_t n, *mut void x, hipDataType xType, int64_t incx, *mut void y, hipDataType yType, int64_t incy, *const void c, *const void s, hipDataType csType, int64_t batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasRotStridedBatchedEx_64(hipblasHandle_t handle, int64_t n, *mut void x, hipDataType xType, int64_t incx, hipblasStride stridex, *mut void y, hipDataType yType, int64_t incy, hipblasStride stridey, *const void c, *const void s, hipDataType csType, int64_t batchCount, hipDataType executionType);
+
     // hipblasScalEx + Batched, StridedBatched
     hipblasStatus_t hipblasScalEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int incx, hipDataType executionType);
 
     hipblasStatus_t hipblasScalBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int incx, int batchCount, hipDataType executionType);
 
     hipblasStatus_t hipblasScalStridedBatchedEx(hipblasHandle_t handle, int n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int incx, hipblasStride stridex, int batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasScalEx_64(hipblasHandle_t handle, int64_t n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int64_t incx, hipDataType executionType);
+
+    hipblasStatus_t hipblasScalBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int64_t incx, int64_t batchCount, hipDataType executionType);
+
+    hipblasStatus_t hipblasScalStridedBatchedEx_64(hipblasHandle_t handle, int64_t n, *const void alpha, hipDataType alphaType, *mut void x, hipDataType xType, int64_t incx, hipblasStride stridex, int64_t batchCount, hipDataType executionType);
 
     // SOLVER API
     hipblasStatus_t hipblasSgetrf(hipblasHandle_t handle, int n, *mut float A, int lda, *mut int ipiv, *mut int info);

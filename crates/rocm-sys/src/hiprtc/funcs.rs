@@ -4,7 +4,7 @@ use rocm_include::ctype::*;
 
 rocm_include::link! {
     hiprtc : rocm_ver;
-    dev exists_ pastey::paste;
+    dev hiprtc_ _exists pastey::paste;
 
     /// In HIP, this function returns the name of the error, if the hiprtc result is defined, it will return “Invalid HIPRTC error code”
     *const char hiprtcGetErrorString(hiprtcResult result);
