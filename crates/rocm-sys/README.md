@@ -25,6 +25,7 @@ Currently implemented:
 - hipFFT - portable Fast Fourier Transform 
 - rocBLAS - Basic Linear Algebra Subprograms for AMD-only
 - rocFFT - Fast Fourier Transform for AMD-only
+- MIOpen - Deep learning primitives
 
 All `roc*` libraries are AMD-only while `hip*`/`HIP*` are portable to Nvidia if ROCm is installed.
 

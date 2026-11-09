@@ -1,4 +1,4 @@
-use super::types::{hiprtcResult, hiprtcLinkState, hiprtcProgram};
+use super::types::{hiprtcLinkState, hiprtcProgram, hiprtcResult};
 use crate::hip::*;
 use rocm_include::ctype::*;
 

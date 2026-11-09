@@ -8,7 +8,10 @@ pub type hipJitCacheMode = crate::hip::hipJitCacheMode;
 pub type hipJitFallback = crate::hip::hipJitFallback;
 #[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipLibraryOption instead")]
 pub type hipLibraryOption = crate::hip::hipLibraryOption;
-#[deprecated(since = "0.6.1", note = "use rocm_sys::hip::hipLibraryOption_e instead")]
+#[deprecated(
+    since = "0.6.1",
+    note = "use rocm_sys::hip::hipLibraryOption_e instead"
+)]
 pub type hipLibraryOption_e = crate::hip::hipLibraryOption_e;
 #[repr(u32)]
 #[doc = " @addtogroup GlobalDefs\n @{\n\n/\n/**\n hiprtc error code"]

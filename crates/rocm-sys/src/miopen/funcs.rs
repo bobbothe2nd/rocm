@@ -76,7 +76,7 @@ rocm_include::link! {
         int hStride,
         int wStride,
     );
-    
+
     miopenStatus_t miopenGet4dTensorDescriptor(
         miopenTensorDescriptor_t tensorDesc,
         *mut miopenDataType_t dataType,
@@ -89,7 +89,7 @@ rocm_include::link! {
         *mut int hStride,
         *mut int wStride,
     );
-    
+
     miopenStatus_t miopenSetTensorDescriptor(
         miopenTensorDescriptor_t tensorDesc,
         miopenDataType_t dataType,
@@ -97,29 +97,29 @@ rocm_include::link! {
         *const int dimsA,
         *const int stridesA,
     );
-    
+
     miopenStatus_t miopenGetTensorDescriptorSize(
         miopenTensorDescriptor_t tensorDesc,
         *mut int size,
     );
-    
+
     miopenStatus_t miopenGetTensorDescriptor(
         miopenTensorDescriptor_t tensorDesc,
         *mut miopenDataType_t dataType,
         *mut int dimsA,
         *mut int stridesA,
     );
-    
+
     miopenStatus_t miopenDestroyTensorDescriptor(miopenTensorDescriptor_t tensorDesc);
-    
+
     miopenStatus_t miopenCreateSeqTensorDescriptor(
         *mut miopenSeqTensorDescriptor_t tensorDesc,
     );
-    
+
     miopenStatus_t miopenDestroySeqTensorDescriptor(
         miopenSeqTensorDescriptor_t tensorDesc,
     );
-    
+
     miopenStatus_t miopenOpTensor(
         miopenHandle_t handle,
         miopenTensorOp_t tensorOp,
@@ -133,26 +133,26 @@ rocm_include::link! {
         miopenTensorDescriptor_t cDesc,
         *mut void C,
     );
-    
+
     miopenStatus_t miopenSetTensor(
         miopenHandle_t handle,
         miopenTensorDescriptor_t yDesc,
         *mut void y,
         *const void alpha,
     );
-    
+
     miopenStatus_t miopenScaleTensor(
         miopenHandle_t handle,
         miopenTensorDescriptor_t yDesc,
         *mut void y,
         *const void alpha,
     );
-    
+
     miopenStatus_t miopenGetTensorNumBytes(
         miopenTensorDescriptor_t tensorDesc,
         *mut size_t numBytes,
     );
-    
+
     miopenStatus_t miopenTransformTensor(
         miopenHandle_t handle,
         *const void alpha,
@@ -162,11 +162,11 @@ rocm_include::link! {
         miopenTensorDescriptor_t yDesc,
         *mut void y,
     );
-    
+
     miopenStatus_t miopenCreateConvolutionDescriptor(
         *mut miopenConvolutionDescriptor_t convDesc,
     );
-    
+
     miopenStatus_t miopenInitConvolutionDescriptor(
         miopenConvolutionDescriptor_t convDesc,
         miopenConvolutionMode_t c_mode,
@@ -177,7 +177,7 @@ rocm_include::link! {
         int dilation_h,
         int dilation_w,
     );
-    
+
     miopenStatus_t miopenInitConvolutionNdDescriptor(
         miopenConvolutionDescriptor_t convDesc,
         int spatialDim,
@@ -186,12 +186,12 @@ rocm_include::link! {
         *const int dilationA,
         miopenConvolutionMode_t c_mode,
     );
-    
+
     miopenStatus_t miopenGetConvolutionSpatialDim(
         miopenConvolutionDescriptor_t convDesc,
         *mut int spatialDim,
     );
-    
+
     miopenStatus_t miopenGetConvolutionDescriptor(
         miopenConvolutionDescriptor_t convDesc,
         *mut miopenConvolutionMode_t c_mode,
@@ -202,7 +202,7 @@ rocm_include::link! {
         *mut int dilation_h,
         *mut int dilation_w,
     );
-    
+
     miopenStatus_t miopenGetConvolutionNdDescriptor(
         miopenConvolutionDescriptor_t convDesc,
         int requestedSpatialDim,
@@ -212,29 +212,29 @@ rocm_include::link! {
         *mut int dilationA,
         *mut miopenConvolutionMode_t c_mode,
     );
-    
+
     miopenStatus_t miopenGetConvolutionGroupCount(
         miopenConvolutionDescriptor_t convDesc,
         *mut int groupCount,
     );
-    
+
     miopenStatus_t miopenSetConvolutionGroupCount(
         miopenConvolutionDescriptor_t convDesc,
         int groupCount,
     );
-    
+
     miopenStatus_t miopenSetTransposeConvOutputPadding(
         miopenConvolutionDescriptor_t convDesc,
         int adj_h,
         int adj_w,
     );
-    
+
     miopenStatus_t miopenSetTransposeConvNdOutputPadding(
         miopenConvolutionDescriptor_t convDesc,
         int spatialDim,
         *const int adjA,
     );
-    
+
     miopenStatus_t miopenGetConvolutionForwardOutputDim(
         miopenConvolutionDescriptor_t convDesc,
         miopenTensorDescriptor_t inputTensorDesc,
@@ -278,7 +278,7 @@ rocm_include::link! {
         miopenConvolutionDescriptor_t convDesc,
         *mut miopenConvolutionFindMode_t findMode,
     );
-    
+
     miopenStatus_t miopenConvolutionForwardGetSolutionCount(
         miopenHandle_t handle,
         miopenTensorDescriptor_t wDesc,
@@ -1066,7 +1066,7 @@ rocm_include::link! {
         miopenSoftmaxAlgorithm_t algorithm,
         miopenSoftmaxMode_t mode,
     );
-    
+
 
     miopenStatus_t miopenCreateFusionPlan(
         *mut miopenFusionPlanDescriptor_t fusePlanDesc,
@@ -1892,7 +1892,7 @@ rocm_include::link! {
         miopenTensorArgumentId_t id,
         miopenTensorDescriptor_t descriptor,
     );
-    
+
     miopenStatus_t miopenCreateFindOptions(*mut miopenFindOptions_t options);
 
     miopenStatus_t miopenDestroyFindOptions(miopenFindOptions_t options);

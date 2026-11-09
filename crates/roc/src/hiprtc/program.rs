@@ -10,7 +10,7 @@ use rocm_sys::hiprtc::{
     hiprtcGetCodeSize, hiprtcProgram,
 };
 
-use crate::{hiprtc::HiprtcError, hip::gfx::GfxVersion};
+use crate::{hip::gfx::GfxVersion, hiprtc::HiprtcError};
 
 /// Represents a compiled HSACO binary. (like CUBIN)
 pub struct Hsaco {

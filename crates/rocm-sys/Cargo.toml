@@ -17,8 +17,6 @@ rocm-include = { path = "../rocm-include", version = "0.2.0" }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["hiprtc", "miopen"]
-
 # configure included libraries
 hip = []
 hiprtc = []
@@ -58,4 +56,4 @@ name = "memset"
 required-features = ["hip", "dynamic-loading"]
 
 [dev-dependencies]
-pastey = "0.2.3"
+pastey = "0.2"
