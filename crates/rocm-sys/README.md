@@ -10,7 +10,7 @@ ROCm and AMD are trademarks of Advanced Micro Devices, Inc.
 
 ## Breaking Changes
 
-This crate doesn't consider correcting a functions version requirement a breaking change because it has no effect on the validity of code. Any statically-linked code that compiles for a given target will still compile, but the code will support a wider range of targets. Any dynamically-loaded code that doesn't panic is now less likely to panic on older machines.
+This crate doesn't consider correcting a function's version requirement a breaking change because it has no effect on the validity of code. Any statically-linked code that compiles for a given target will still compile, but the code will support a wider range of targets. Any dynamically-loaded code that doesn't panic is now less likely to panic on older machines.
 
 This does, however, mean you can't rely on panicking or compile errors for detecting undefined symbols.
 
@@ -73,7 +73,7 @@ When using static linking, a linker error may occur when a function is linked wh
 This crate tries to assume as little about the target as possible.
 
 - If `dynamic-loading` feature is disabled, the target is assumed to be the build machine
-- `hipGetDeviceProperties` and `hipChooseDevice` are only correct where `hipDeviceProp_tR0600` = `hipDeviceProp_t` (not `hipDeviceProp_tR0000`)
+- `hipGetDeviceProperties` and `hipChooseDevice` are only correct where `hipDeviceProp_tR0600` == `hipDeviceProp_t` (!`hipDeviceProp_tR0000`)
 
 These should always be true.
 
