@@ -4519,6 +4519,7 @@ pub enum hipLaunchAttributeID {
     hipLaunchAttributeExtDynDataPrefetch = 1024,
     hipLaunchAttributeMax = 1025,
 }
+pub type hipStreamAttrID = hipLaunchAttributeID;
 #[doc = "  Launch Attribute Value"]
 #[repr(C)]
 #[derive(Copy, Clone)]

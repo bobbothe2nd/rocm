@@ -36,9 +36,7 @@ pub enum HiprtcError {
 
 impl Display for HiprtcError {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        let cstr_ptr = unsafe {
-            rocm_sys::hiprtc::hiprtcGetErrorString((*self).into())
-        };
+        let cstr_ptr = unsafe { rocm_sys::hiprtc::hiprtcGetErrorString((*self).into()) };
         let cstr = unsafe { core::ffi::CStr::from_ptr(cstr_ptr) };
         let formatted = cstr.to_str().map_err(|_| fmt::Error)?;
         f.write_str(formatted)

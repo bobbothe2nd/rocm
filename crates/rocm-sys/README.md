@@ -31,7 +31,7 @@ All `roc*` libraries are AMD-only while `hip*`/`HIP*` are portable to Nvidia if 
 
 ## Usage
 
-This is a very unsafe and low-level API. For a safer API, use `rocm`.
+This is a very unsafe and low-level API. For a safer API, use `roc`.
 
 ```rust
 if !rocm_sys::is_amdhip64_present() {

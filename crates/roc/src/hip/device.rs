@@ -23,7 +23,7 @@ pub struct Device {
 impl Device {
     /// Recreates the current device
     pub fn current() -> Result<Self, HipError> {
-        unsafe { wrap_sys_res!(|dev| hipGetDevice((&raw mut dev).cast())) }
+        unsafe { wrap_sys_res!(|dev: Device| hipGetDevice(dev.as_mut_ptr().cast())) }
     }
 
     /// Creates a device from the ID
@@ -65,15 +65,15 @@ impl Device {
     pub fn get_attr(self, attr: DeviceAttr) -> Result<i32, HipError> {
         unsafe {
             let attr = transmute::<DeviceAttr, hipDeviceAttribute_t>(attr);
-            wrap_sys_res!(|val| hipDeviceGetAttribute((&raw mut val).cast(), attr, self.dev))
+            wrap_sys_res!(|val| hipDeviceGetAttribute(val.as_mut_ptr(), attr, self.dev))
         }
     }
 
     /// Gets default memory pool for the device
     pub fn get_default_mem_pool(self) -> Result<MemPool, HipError> {
         unsafe {
-            wrap_sys_res!(|mem_pool| hipDeviceGetDefaultMemPool(
-                (&raw mut mem_pool).cast(),
+            wrap_sys_res!(|mem_pool: MemPool| hipDeviceGetDefaultMemPool(
+                mem_pool.as_mut_ptr().cast(),
                 self.dev
             ))
         }
@@ -82,15 +82,16 @@ impl Device {
     /// Gets active memory pool for the device
     pub fn get_mem_pool(self) -> Result<MemPool, HipError> {
         unsafe {
-            wrap_sys_res!(|mem_pool| hipDeviceGetMemPool(self.dev, (&raw mut mem_pool).cast()))
+            wrap_sys_res!(|mem_pool: MemPool| hipDeviceGetMemPool(
+                self.dev,
+                mem_pool.as_mut_ptr().cast()
+            ))
         }
     }
 
     /// Gets properties of the device
     pub fn properties(self) -> Result<DeviceProp, HipError> {
-        unsafe {
-            wrap_sys_res!(|prop| hipGetDevicePropertiesR0600((&raw mut prop).cast(), self.dev))
-        }
+        unsafe { wrap_sys_res!(|prop| hipGetDevicePropertiesR0600(prop.as_mut_ptr(), self.dev)) }
     }
 
     /// Gets the GFX/GCN architecture name.
@@ -111,7 +112,7 @@ impl Device {
 
     /// Gets a count of available ROCm devices.
     pub fn get_dev_count() -> Result<i32, HipError> {
-        unsafe { wrap_sys_res!(|count| hipGetDeviceCount((&raw mut count).cast())) }
+        unsafe { wrap_sys_res!(|count| hipGetDeviceCount(count.as_mut_ptr())) }
             .map(|count: c_int| count as i32)
     }
 
@@ -164,7 +165,7 @@ pub fn reset() -> Result<(), HipError> {
 pub fn get_limit(limit: DeviceLimit) -> Result<usize, HipError> {
     unsafe {
         let limit = transmute::<DeviceLimit, hipLimit_t>(limit);
-        wrap_sys_res!(|val| hipDeviceGetLimit((&raw mut val).cast(), limit))
+        wrap_sys_res!(|val| hipDeviceGetLimit(val.as_mut_ptr(), limit))
     }
 }
 
@@ -178,7 +179,7 @@ pub fn set_limit(limit: DeviceLimit, val: usize) -> Result<(), HipError> {
 
 /// Gets flags set for current device
 pub fn get_flags() -> Result<u32, HipError> {
-    unsafe { wrap_sys_res!(|flags| hipGetDeviceFlags((&raw mut flags).cast())) }
+    unsafe { wrap_sys_res!(|flags| hipGetDeviceFlags(flags.as_mut_ptr())) }
         .map(|flags: c_uint| flags as u32)
 }
 

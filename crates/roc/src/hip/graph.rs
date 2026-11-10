@@ -175,18 +175,16 @@ impl HipStream {
     }
 
     pub fn end_capture(&self) -> Result<Graph, HipError> {
-        let raw: Result<hipGraph_t, HipError> = unsafe {
-            wrap_sys_res!(|graph| hipStreamEndCapture(self.raw, graph.as_mut_ptr()))
-        };
+        let raw: Result<hipGraph_t, HipError> =
+            unsafe { wrap_sys_res!(|graph| hipStreamEndCapture(self.raw, graph.as_mut_ptr())) };
         let raw = raw?;
 
         Ok(Graph { raw })
     }
 
     pub fn is_capturing(&self) -> Result<bool, HipError> {
-        let status: Result<hipStreamCaptureStatus, HipError> = unsafe {
-            wrap_sys_res!(|status| hipStreamIsCapturing(self.raw, status.as_mut_ptr()))
-        };
+        let status: Result<hipStreamCaptureStatus, HipError> =
+            unsafe { wrap_sys_res!(|status| hipStreamIsCapturing(self.raw, status.as_mut_ptr())) };
 
         match status? {
             hipStreamCaptureStatus::hipStreamCaptureStatusActive => Ok(true),
@@ -219,7 +217,10 @@ pub struct Node {
 impl Node {
     pub unsafe fn get_kernel_params(&self) -> Result<KernelParams, HipError> {
         unsafe {
-            wrap_sys_res!(|params: KernelParams| hipGraphKernelNodeGetParams(self.raw, params.as_mut_ptr().cast()))
+            wrap_sys_res!(|params: KernelParams| hipGraphKernelNodeGetParams(
+                self.raw,
+                params.as_mut_ptr().cast()
+            ))
         }
     }
 }

@@ -409,14 +409,14 @@ rocm_include::link! {
     #[since = 7 .1, "7.1"]
     hipError_t hipStreamSetAttribute(
         hipStream_t stream,
-        hipLaunchAttributeID attr,
+        hipStreamAttrID attr,
         *const hipLaunchAttributeValue value,
     );
 
     #[since = 7 .1, "7.1"]
     hipError_t hipStreamGetAttribute(
         hipStream_t stream,
-        hipLaunchAttributeID attr,
+        hipStreamAttrID attr,
         *mut hipLaunchAttributeValue value_out,
     );
 

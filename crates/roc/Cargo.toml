@@ -19,7 +19,7 @@ rocm-include = { path = "../rocm-include", version = "0.2" }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["rocblas", "dynamic-loading", "hiprtc"]
+default = ["rocblas", "dynamic-loading", "hiprtc", "log"]
 
 hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]

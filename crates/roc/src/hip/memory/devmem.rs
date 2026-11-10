@@ -4,8 +4,8 @@ use crate::hip::{
     memory::{HostSlice, HostSliceMut, Memset},
     stream::HipStream,
 };
-use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr};
 use alloc::sync::Arc;
+use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr};
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemsetD8};
 
 /// Handle to an allocation on the GPU
@@ -65,6 +65,40 @@ impl HipStream {
 }
 
 impl Buffer {
+    /// Records a synchronization checkpoint for the buffer, or a logical buffer usage.
+    pub fn latesync(&self) -> Result<(), HipError> {
+        self.event.record(&self.stream)
+    }
+
+    /// Synchronizes the buffer up to it's last `latesync` or usage.
+    ///
+    /// These are logically equivalent (other than edge cases and errors):
+    /// 
+    /// ```no_run
+    /// # #[cfg(feature = "dynamic-loading")] {
+    /// # use roc::hip::*;
+    /// # let stream = stream::HipStream::create().unwrap();
+    /// # let buf = stream.alloc(128).unwrap();
+    /// buf.latesync().unwrap();
+    /// buf.sync().unwrap();
+    /// # }
+    /// ```
+    ///
+    /// and
+    /// 
+    /// ```no_run
+    /// # #[cfg(feature = "dynamic-loading")] {
+    /// # use roc::hip::*;
+    /// # let stream = stream::HipStream::create().unwrap();
+    /// stream.sync().unwrap();
+    /// # }
+    /// ```
+    /// 
+    /// assuming `buf` was allocated on `stream`.
+    pub fn sync(&self) -> Result<(), HipError> {
+        self.event.sync()
+    }
+
     /// Constructs a GPU buffer from a raw pointer, size, stream, and event
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
@@ -96,13 +130,13 @@ impl Buffer {
 
     /// Deallocates a buffer
     ///
-    /// This allows you to safely handle errors which would normally panic when dropped.
+    /// This allows you to safely raw errors which would normally panic when dropped.
     #[inline(always)]
     pub fn dealloc(self) -> Result<(), HipError> {
-        let handle = ManuallyDrop::new(self);
+        let raw = ManuallyDrop::new(self);
 
         unsafe {
-            handle.dealloc_unchecked()?;
+            raw.dealloc_unchecked()?;
         }
 
         Ok(())
@@ -116,6 +150,14 @@ impl Buffer {
     #[inline(always)]
     pub unsafe fn dealloc_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipFree(self.ptr.cast()), Ok(())) }
+    }
+
+    /// Deallocates a buffer asynchronously
+    #[inline(always)]
+    pub fn dealloc_async(self) -> Result<(), HipError> {
+        let raw = ManuallyDrop::new(self);
+
+        unsafe { raw.stream.free_unchecked(&raw) }
     }
 
     pub fn copy_to_host<'a, S>(
@@ -155,7 +197,7 @@ impl Buffer {
         unsafe {
             try_err!(
                 hipMemcpyDtoH(
-                    dst.as_mut().data.byte_add(dst_off as usize) as *mut _,
+                    dst.as_mut().ptr.byte_add(dst_off as usize) as *mut _,
                     self.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                 ),
@@ -202,7 +244,7 @@ impl Buffer {
             try_err!(
                 hipMemcpyHtoD(
                     self.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().data.byte_add(src_off as usize).cast(),
+                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                 ),
                 Ok(())
@@ -287,8 +329,8 @@ impl Buffer {
             self.stream.copy_dtod(src, self, src_off, dst_off, len)?;
         }
 
-        self.event.record(&self.stream)?;
-        src.event.record(&self.stream)?;
+        self.latesync()?;
+        src.latesync()?;
 
         Ok(())
     }
@@ -308,8 +350,8 @@ impl Buffer {
             self.stream.copy_dtod(self, dst, src_off, dst_off, len)?;
         }
 
-        self.event.record(&self.stream)?;
-        dst.event.record(&self.stream)?;
+        self.latesync()?;
+        dst.latesync()?;
 
         Ok(())
     }
@@ -334,8 +376,8 @@ impl Buffer {
             self.stream.copy_htod(src, self, src_off, dst_off, len)?;
         }
 
-        self.event.record(&self.stream)?;
-        src.event.record(&self.stream)?;
+        self.latesync()?;
+        src.latesync()?;
 
         Ok(())
     }
@@ -360,8 +402,8 @@ impl Buffer {
             self.stream.copy_dtoh(self, dst, src_off, dst_off, len)?;
         }
 
-        self.event.record(&self.stream)?;
-        dst.event.record(&self.stream)?;
+        self.latesync()?;
+        dst.latesync()?;
 
         Ok(())
     }
@@ -388,7 +430,7 @@ impl Buffer {
             T::memset_async(self.ptr.cast(), val, self.ptr.len(), &self.stream)?;
         }
 
-        self.event.record(&self.stream)?;
+        self.latesync()?;
 
         Ok(())
     }
@@ -396,10 +438,16 @@ impl Buffer {
 
 impl Drop for Buffer {
     fn drop(&mut self) {
-        let _ = self.event.sync();
+        if self.stream.has_async_alloc {
+            unsafe {
+                let _ = self.stream.free_unchecked(self);
+            }
+        } else {
+            let _ = self.event.sync();
 
-        unsafe {
-            let _ = self.dealloc_unchecked();
+            unsafe {
+                let _ = self.dealloc_unchecked();
+            }
         }
     }
 }

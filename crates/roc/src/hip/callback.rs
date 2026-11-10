@@ -47,11 +47,6 @@ impl HipStream {
         let func = unsafe {
             transmute::<unsafe extern "C" fn(*mut T), unsafe extern "C" fn(*mut c_void)>(func)
         };
-        unsafe {
-            try_err!(
-                hipLaunchHostFunc(self.raw, Some(func), data.cast()),
-                Ok(())
-            )
-        }
+        unsafe { try_err!(hipLaunchHostFunc(self.raw, Some(func), data.cast()), Ok(())) }
     }
 }

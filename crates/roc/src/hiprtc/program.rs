@@ -3,7 +3,7 @@ use core::{
     ptr::null,
 };
 
-use alloc::{boxed::Box, ffi::CString, format, vec::Vec};
+use alloc::{ffi::CString, format, sync::Arc, vec::Vec};
 
 use rocm_sys::hiprtc::{
     hiprtcCompileProgram, hiprtcCreateProgram, hiprtcDestroyProgram, hiprtcGetCode,
@@ -14,7 +14,7 @@ use crate::{hip::gfx::GfxVersion, hiprtc::HiprtcError};
 
 /// Represents a compiled HSACO binary. (like CUBIN)
 pub struct Hsaco {
-    pub(crate) code: Box<[u8]>,
+    pub(crate) code: Arc<[u8]>,
 }
 
 impl Hsaco {
@@ -65,7 +65,7 @@ impl Hsaco {
 
                 use rocm_sys::hiprtc::{hiprtcGetProgramLog, hiprtcGetProgramLogSize};
 
-                use alloc::{string::String, vec};
+                use alloc::{boxed::Box, string::String};
 
                 let mut log_size = 0usize;
 
@@ -74,12 +74,11 @@ impl Hsaco {
                 }
 
                 if log_size != 0 {
-                    let mut log = vec![0u8; log_size];
-
+                    let mut log = Box::new_uninit_slice(log_size);
                     unsafe {
-                        try_err!(hiprtcGetProgramLog(prog.raw, log.as_mut_ptr().cast(),));
+                        try_err!(hiprtcGetProgramLog(prog.raw, log.as_mut_ptr().cast()));
                     }
-
+                    let log = unsafe { log.assume_init() };
                     let log = String::from_utf8_lossy(&log);
                     error!("HIPRTC program log:\n{log}");
                 } else {
@@ -101,10 +100,10 @@ impl Hsaco {
             };
             let code_size = code_size?;
 
-            let mut code = Box::new_uninit_slice(code_size);
+            let code = Arc::new_uninit_slice(code_size);
 
             unsafe {
-                try_err!(hiprtcGetCode(prog.raw, code.as_mut_ptr().cast()));
+                try_err!(hiprtcGetCode(prog.raw, code.as_ptr() as *mut _));
             }
 
             unsafe { code.assume_init() }
