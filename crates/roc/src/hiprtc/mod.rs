@@ -10,11 +10,6 @@ macro_rules! try_err {
 
 pub mod program;
 
-use core::{
-    error::Error,
-    fmt::{self, Display, Formatter, Result},
-};
-
 use rocm_sys::hiprtc::hiprtcResult;
 
 #[repr(u32)]
@@ -34,28 +29,4 @@ pub enum HiprtcError {
     Linking = 100,
 }
 
-impl Display for HiprtcError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        let cstr_ptr = unsafe { rocm_sys::hiprtc::hiprtcGetErrorString((*self).into()) };
-        let cstr = unsafe { core::ffi::CStr::from_ptr(cstr_ptr) };
-        let formatted = cstr.to_str().map_err(|_| fmt::Error)?;
-        f.write_str(formatted)
-    }
-}
-
-impl Error for HiprtcError {}
-
-impl From<hiprtcResult> for HiprtcError {
-    fn from(value: hiprtcResult) -> Self {
-        match value {
-            hiprtcResult::HIPRTC_SUCCESS => panic!("converting HIPRTC_SUCCESS to HiprtcError"),
-            err => unsafe { core::mem::transmute::<hiprtcResult, Self>(err) },
-        }
-    }
-}
-
-impl From<HiprtcError> for hiprtcResult {
-    fn from(value: HiprtcError) -> Self {
-        unsafe { core::mem::transmute::<HiprtcError, Self>(value) }
-    }
-}
+err_ty!(type HiprtcError = hiprtcResult is !HIPRTC_SUCCESS from rocm_sys::hiprtc::hiprtcGetErrorString;);

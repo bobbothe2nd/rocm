@@ -1,5 +1,3 @@
-use core::{error::Error, fmt};
-
 use alloc::sync::Arc;
 use rocm_sys::rocblas::{
     rocblas_create_handle, rocblas_handle, rocblas_pointer_mode, rocblas_set_pointer_mode,
@@ -82,30 +80,4 @@ pub enum RocblasError {
     RocblasStatusArchMismatch = 15,
 }
 
-impl fmt::Display for RocblasError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let cstr_ptr = unsafe { rocm_sys::rocblas::rocblas_status_to_string((*self).into()) };
-        let cstr = unsafe { core::ffi::CStr::from_ptr(cstr_ptr) };
-        let formatted = cstr.to_str().map_err(|_| fmt::Error)?;
-        f.write_str(formatted)
-    }
-}
-
-impl Error for RocblasError {}
-
-impl From<rocblas_status> for RocblasError {
-    fn from(value: rocblas_status) -> Self {
-        match value {
-            rocblas_status::rocblas_status_success => {
-                panic!("converting rocblas_status_success to RocblasError")
-            }
-            err => unsafe { core::mem::transmute::<rocblas_status, Self>(err) },
-        }
-    }
-}
-
-impl From<RocblasError> for rocblas_status {
-    fn from(value: RocblasError) -> Self {
-        unsafe { core::mem::transmute::<RocblasError, Self>(value) }
-    }
-}
+err_ty!(type RocblasError = rocblas_status is !rocblas_status_success from rocm_sys::rocblas::rocblas_status_to_string;);

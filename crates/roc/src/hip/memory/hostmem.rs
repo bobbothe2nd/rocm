@@ -1,5 +1,5 @@
 use crate::hip::{HipError, event::HipEvent, memory::Buffer, stream::HipStream};
-use alloc::sync::Arc;
+use alloc::rc::Rc;
 use core::{
     cell::UnsafeCell,
     hint::unreachable_unchecked,
@@ -21,13 +21,13 @@ pub struct HostSlice<'a> {
     pub(crate) size: u32,
     pub(crate) premapped: bool,
     pub(crate) event: HipEvent,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) stream: Rc<HipStream>,
     _marker: PhantomData<&'a HostBuffer>,
 }
 
 impl<'a> HostSlice<'a> {
     /// Maps the ptr and return a handle
-    pub fn new(ptr: &'a [u8], stream: Arc<HipStream>) -> Result<Self, HipError> {
+    pub fn new(ptr: &'a [u8], stream: Rc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_ptr() as *mut _, ptr.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -49,12 +49,16 @@ impl<'a> HostSlice<'a> {
         self.event.record(&self.stream)
     }
 
+    pub fn sync(&self) -> Result<(), HipError> {
+        self.event.sync()
+    }
+
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
         ptr: *mut u8,
         size: u32,
         premapped: bool,
-        stream: Arc<HipStream>,
+        stream: Rc<HipStream>,
         event: HipEvent,
     ) -> Self {
         Self {
@@ -140,9 +144,9 @@ impl<'a> HostSlice<'a> {
 impl Drop for HostSlice<'_> {
     #[inline(always)]
     fn drop(&mut self) {
-        let _ = self.event.sync();
+        log_if_err!("failed to deallocate HostSlice": self.event.sync());
         if !self.premapped {
-            let _ = unsafe { self.unmap() };
+            log_if_err!("failed to deallocate HostSlice": unsafe { self.unmap() });
         }
     }
 }
@@ -164,13 +168,13 @@ pub struct HostSliceMut<'a> {
     pub(crate) size: u32,
     pub(crate) premapped: bool,
     pub(crate) event: HipEvent,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) stream: Rc<HipStream>,
     _marker: PhantomData<&'a HostBuffer>,
 }
 
 impl<'a> HostSliceMut<'a> {
     /// Maps the ptr and return a handle
-    pub fn new(ptr: &'a mut [u8], stream: Arc<HipStream>) -> Result<Self, HipError> {
+    pub fn new(ptr: &'a mut [u8], stream: Rc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_mut_ptr().cast(), ptr.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -192,12 +196,16 @@ impl<'a> HostSliceMut<'a> {
         self.event.record(&self.stream)
     }
 
+    pub fn sync(&self) -> Result<(), HipError> {
+        self.event.sync()
+    }
+
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
         ptr: *mut u8,
         size: u32,
         premapped: bool,
-        stream: Arc<HipStream>,
+        stream: Rc<HipStream>,
         event: HipEvent,
     ) -> Self {
         Self {
@@ -326,9 +334,9 @@ impl<'a> HostSliceMut<'a> {
 impl Drop for HostSliceMut<'_> {
     #[inline(always)]
     fn drop(&mut self) {
-        let _ = self.event.sync();
+        log_if_err!("failed to deallocate HostSlice": self.event.sync());
         if !self.premapped {
-            let _ = unsafe { self.unmap() };
+            log_if_err!("failed to deallocate HostSlice": unsafe { self.unmap() });
         }
     }
 }
@@ -357,13 +365,13 @@ pub struct HostBuffer {
     pub(crate) size: u32,
     pub(crate) is_mapped: bool,
     pub(crate) event: HipEvent,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) stream: Rc<HipStream>,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
 impl HipStream {
     /// Allocates `size` bytes and makes it accessible from all HIP devices
-    pub fn alloc_host(self: &Arc<Self>, size: u32) -> Result<HostBuffer, HipError> {
+    pub fn alloc_host(self: &Rc<Self>, size: u32) -> Result<HostBuffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size as usize, 0)) };
         let ptr = ptr?;
@@ -383,7 +391,7 @@ impl HipStream {
     }
 
     /// Allocates a slice of bytes and makes it accessible from all HIP devices
-    pub fn alloc_host_init(self: &Arc<Self>, ptr: &[u8]) -> Result<HostBuffer, HipError> {
+    pub fn alloc_host_init(self: &Rc<Self>, ptr: &[u8]) -> Result<HostBuffer, HipError> {
         let size = ptr.len();
 
         let buf = self.alloc_host(size as u32)?;
@@ -396,13 +404,13 @@ impl HipStream {
     }
 
     /// Borrows bytes and makes it accessible from all HIP devices
-    pub fn host_slice<'a>(self: &Arc<Self>, ptr: &'a [u8]) -> Result<HostSlice<'a>, HipError> {
+    pub fn host_slice<'a>(self: &Rc<Self>, ptr: &'a [u8]) -> Result<HostSlice<'a>, HipError> {
         HostSlice::new(ptr, self.clone())
     }
 
     /// Borrows bytes and makes it accessible from all HIP devices
     pub fn host_slice_mut<'a>(
-        self: &Arc<Self>,
+        self: &Rc<Self>,
         ptr: &'a mut [u8],
     ) -> Result<HostSliceMut<'a>, HipError> {
         HostSliceMut::new(ptr, self.clone())
@@ -414,11 +422,15 @@ impl HostBuffer {
         self.event.record(&self.stream)
     }
 
+    pub fn sync(&self) -> Result<(), HipError> {
+        self.event.sync()
+    }
+
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
         ptr: *mut u8,
         size: u32,
-        stream: Arc<HipStream>,
+        stream: Rc<HipStream>,
         event: HipEvent,
     ) -> Self {
         Self {
@@ -476,11 +488,8 @@ impl HostBuffer {
 
 impl Drop for HostBuffer {
     fn drop(&mut self) {
-        let _ = self.event.sync();
-
-        unsafe {
-            let _ = self.dealloc_unchecked();
-        }
+        log_if_err!("failed to deallocate HostSlice": self.event.sync());
+        log_if_err!("failed to deallocate HostSlice": unsafe { self.dealloc_unchecked() });
     }
 }
 

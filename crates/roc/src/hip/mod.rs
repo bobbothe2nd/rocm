@@ -18,11 +18,6 @@ pub mod stream;
 #[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
 pub mod module;
 
-use core::{
-    error::Error,
-    fmt::{self, Display, Formatter, Result},
-};
-
 use rocm_sys::hip::hipError_t;
 
 #[repr(u32)]
@@ -105,28 +100,4 @@ pub enum HipError {
     Tbd = 1054,
 }
 
-impl Display for HipError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        let cstr_ptr = unsafe { rocm_sys::hip::hipGetErrorString((*self).into()) };
-        let cstr = unsafe { core::ffi::CStr::from_ptr(cstr_ptr) };
-        let formatted = cstr.to_str().map_err(|_| fmt::Error)?;
-        f.write_str(formatted)
-    }
-}
-
-impl Error for HipError {}
-
-impl From<hipError_t> for HipError {
-    fn from(value: hipError_t) -> Self {
-        match value {
-            hipError_t::hipSuccess => panic!("converting hipSuccess to HipError"),
-            err => unsafe { core::mem::transmute::<hipError_t, Self>(err) },
-        }
-    }
-}
-
-impl From<HipError> for hipError_t {
-    fn from(value: HipError) -> Self {
-        unsafe { core::mem::transmute::<HipError, Self>(value) }
-    }
-}
+err_ty!(type HipError = hipError_t is !hipSuccess from rocm_sys::hip::hipGetErrorString;);

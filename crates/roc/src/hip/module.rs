@@ -85,9 +85,7 @@ unsafe impl Sync for ModuleInner {}
 
 impl Drop for ModuleInner {
     fn drop(&mut self) {
-        unsafe {
-            hipModuleUnload(self.raw);
-        }
+        log_if_err!("failed to unload Module": HipError::wrap(unsafe { hipModuleUnload(self.raw) }));
     }
 }
 

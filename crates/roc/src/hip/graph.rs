@@ -95,9 +95,7 @@ impl Graph {
 
 impl Drop for Graph {
     fn drop(&mut self) {
-        unsafe {
-            let _ = self.destroy_unchecked();
-        }
+        log_if_err!("failed to destroy Graph": unsafe { self.destroy_unchecked() });
     }
 }
 

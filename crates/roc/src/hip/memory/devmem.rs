@@ -4,7 +4,7 @@ use crate::hip::{
     memory::{HostSlice, HostSliceMut, Memset},
     stream::HipStream,
 };
-use alloc::sync::Arc;
+use alloc::rc::Rc;
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr};
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemsetD8};
 
@@ -14,13 +14,13 @@ use rocm_sys::hip::{hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyH
 pub struct Buffer {
     pub(crate) ptr: *mut [u8],
     pub(crate) event: HipEvent,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) stream: Rc<HipStream>,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
 impl HipStream {
     /// Allocates `size` bytes on the default device
-    pub fn alloc(self: &Arc<Self>, size: u32) -> Result<Buffer, HipError> {
+    pub fn alloc(self: &Rc<Self>, size: u32) -> Result<Buffer, HipError> {
         let event = HipEvent::create()?;
 
         let ptr: Result<*mut u8, HipError> =
@@ -41,7 +41,7 @@ impl HipStream {
     }
 
     /// Allocates `size` zeroed bytes on the default device
-    pub fn alloc_zeroed(self: &Arc<Self>, size: u32) -> Result<Buffer, HipError> {
+    pub fn alloc_zeroed(self: &Rc<Self>, size: u32) -> Result<Buffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
         let ptr = ptr?;
@@ -104,7 +104,7 @@ impl Buffer {
     pub const unsafe fn from_raw_parts(
         ptr: *mut u8,
         size: u32,
-        stream: Arc<HipStream>,
+        stream: Rc<HipStream>,
         event: HipEvent,
     ) -> Self {
         let slice = core::ptr::slice_from_raw_parts_mut(ptr, size as usize);
@@ -440,13 +440,12 @@ impl Drop for Buffer {
     fn drop(&mut self) {
         if self.stream.has_async_alloc {
             unsafe {
-                let _ = self.stream.free_unchecked(self);
+                log_if_err!("failed to deallocate Buffer": self.stream.free_unchecked(self));
             }
         } else {
-            let _ = self.event.sync();
-
+            log_if_err!("failed to deallocate Buffer": self.event.sync());
             unsafe {
-                let _ = self.dealloc_unchecked();
+                log_if_err!("failed to deallocate Buffer": self.dealloc_unchecked());
             }
         }
     }
