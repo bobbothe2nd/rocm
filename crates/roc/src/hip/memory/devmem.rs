@@ -4,7 +4,7 @@ use crate::hip::{
     memory::{HostSlice, HostSliceMut, Memset},
     stream::HipStream,
 };
-use alloc::rc::Rc;
+use alloc::sync::Arc;
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ptr};
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyHtoD, hipMemsetD8};
 
@@ -14,13 +14,16 @@ use rocm_sys::hip::{hipFree, hipMalloc, hipMemcpyDtoD, hipMemcpyDtoH, hipMemcpyH
 pub struct Buffer {
     pub(crate) ptr: *mut [u8],
     pub(crate) event: HipEvent,
-    pub(crate) stream: Rc<HipStream>,
+    pub(crate) stream: Arc<HipStream>,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
+unsafe impl Send for Buffer {}
+unsafe impl Sync for Buffer {}
+
 impl HipStream {
     /// Allocates `size` bytes on the default device
-    pub fn alloc(self: &Rc<Self>, size: u32) -> Result<Buffer, HipError> {
+    pub fn alloc(self: &Arc<Self>, size: u32) -> Result<Buffer, HipError> {
         let event = HipEvent::create()?;
 
         let ptr: Result<*mut u8, HipError> =
@@ -41,7 +44,7 @@ impl HipStream {
     }
 
     /// Allocates `size` zeroed bytes on the default device
-    pub fn alloc_zeroed(self: &Rc<Self>, size: u32) -> Result<Buffer, HipError> {
+    pub fn alloc_zeroed(self: &Arc<Self>, size: u32) -> Result<Buffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size as usize)) };
         let ptr = ptr?;
@@ -104,7 +107,7 @@ impl Buffer {
     pub const unsafe fn from_raw_parts(
         ptr: *mut u8,
         size: u32,
-        stream: Rc<HipStream>,
+        stream: Arc<HipStream>,
         event: HipEvent,
     ) -> Self {
         let slice = core::ptr::slice_from_raw_parts_mut(ptr, size as usize);

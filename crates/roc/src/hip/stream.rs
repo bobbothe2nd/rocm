@@ -1,4 +1,4 @@
-use alloc::rc::Rc;
+use alloc::sync::Arc;
 use core::{
     ffi::{c_int, c_ulonglong},
     mem::transmute,
@@ -23,8 +23,11 @@ pub struct HipStream {
     pub(crate) has_async_alloc: bool,
 }
 
+unsafe impl Send for HipStream {}
+unsafe impl Sync for HipStream {}
+
 impl HipStream {
-    pub fn create() -> Result<Rc<Self>, HipError> {
+    pub fn create() -> Result<Arc<Self>, HipError> {
         let raw: Result<hipStream_t, HipError> = unsafe {
             wrap_sys_res!(|stream: hipStream_t| hipStreamCreate(stream.as_mut_ptr().cast()))
         };
@@ -37,19 +40,19 @@ impl HipStream {
     }
 
     #[inline(always)]
-    pub fn into_raw(self: Rc<Self>) -> hipStream_t {
+    pub fn into_raw(self: Arc<Self>) -> hipStream_t {
         self.raw
     }
 
     #[inline(always)]
-    pub unsafe fn from_raw(raw: hipStream_t) -> Result<Rc<Self>, HipError> {
+    pub unsafe fn from_raw(raw: hipStream_t) -> Result<Arc<Self>, HipError> {
         let dev_raw: Result<i32, HipError> =
             unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(raw, dev.as_mut_ptr())) };
         let dev = unsafe { Device::from_raw(dev_raw?) };
         let has_async_alloc = dev
             .get_attr(DeviceAttr::MemoryPoolsSupported)
             .is_ok_and(|x| x > 0);
-        Ok(Rc::new(Self {
+        Ok(Arc::new(Self {
             raw,
             has_async_alloc,
         }))

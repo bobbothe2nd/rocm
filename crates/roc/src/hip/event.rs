@@ -13,6 +13,9 @@ pub struct HipEvent {
     raw: hipEvent_t,
 }
 
+unsafe impl Send for HipEvent {}
+unsafe impl Sync for HipEvent {}
+
 impl HipEvent {
     pub fn create() -> Result<Self, HipError> {
         unsafe { wrap_sys_res!(|event| hipEventCreate((&raw mut event).cast())) }

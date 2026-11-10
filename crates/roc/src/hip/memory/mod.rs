@@ -1,9 +1,11 @@
 use rocm_sys::hip::hipMemPool_t;
 
+mod copy;
 mod devmem;
 mod hostmem;
 mod memset;
 
+pub use copy::*;
 pub use devmem::*;
 pub use hostmem::*;
 pub use memset::*;
