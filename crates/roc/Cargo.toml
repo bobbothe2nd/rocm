@@ -16,7 +16,7 @@ rocm-sys = { path = "../rocm-sys", version = "0.6" }
 rocm-include = { path = "../rocm-include", version = "0.2" }
 
 [build-dependencies]
-rocm-build = { path = "../rocm-build", version = "0.3" }
+rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
 default = ["rocblas", "dynamic-loading", "hiprtc"]
@@ -40,6 +40,8 @@ rocfft = ["rocm-sys/rocfft", "hip"]
 rocrand = ["rocm-sys/rocrand", "hip"]
 rocsolver = ["rocm-sys/rocsolver", "hip"]
 rocsparse = ["rocm-sys/rocsparse", "hip"]
+
+miopen = ["rocm-sys/miopen", "hip"]
 
 dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
 

@@ -7,6 +7,7 @@ use core::{
     ops::{Deref, DerefMut},
     slice,
 };
+use alloc::sync::Arc;
 use rocm_sys::hip::{
     hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMemcpyDtoH,
     hipMemcpyHtoD,
@@ -20,13 +21,13 @@ pub struct HostSlice<'a> {
     pub(crate) size: u32,
     pub(crate) premapped: bool,
     pub(crate) event: HipEvent,
-    pub(crate) stream: HipStream,
+    pub(crate) stream: Arc<HipStream>,
     _marker: PhantomData<&'a HostBuffer>,
 }
 
 impl<'a> HostSlice<'a> {
     /// Maps the data and return a handle
-    pub fn new(data: &'a [u8], stream: HipStream) -> Result<Self, HipError> {
+    pub fn new(data: &'a [u8], stream: Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(data.as_ptr() as *mut _, data.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -49,7 +50,7 @@ impl<'a> HostSlice<'a> {
         data: *mut u8,
         size: u32,
         premapped: bool,
-        stream: HipStream,
+        stream: Arc<HipStream>,
         event: HipEvent,
     ) -> Self {
         Self {
@@ -159,13 +160,13 @@ pub struct HostSliceMut<'a> {
     pub(crate) size: u32,
     pub(crate) premapped: bool,
     pub(crate) event: HipEvent,
-    pub(crate) stream: HipStream,
+    pub(crate) stream: Arc<HipStream>,
     _marker: PhantomData<&'a HostBuffer>,
 }
 
 impl<'a> HostSliceMut<'a> {
     /// Maps the data and return a handle
-    pub fn new(data: &'a mut [u8], stream: HipStream) -> Result<Self, HipError> {
+    pub fn new(data: &'a mut [u8], stream: Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(data.as_mut_ptr().cast(), data.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -188,7 +189,7 @@ impl<'a> HostSliceMut<'a> {
         data: *mut u8,
         size: u32,
         premapped: bool,
-        stream: HipStream,
+        stream: Arc<HipStream>,
         event: HipEvent,
     ) -> Self {
         Self {
@@ -348,7 +349,7 @@ pub struct HostBuffer {
     pub(crate) size: u32,
     pub(crate) is_mapped: bool,
     pub(crate) event: HipEvent,
-    pub(crate) stream: HipStream,
+    pub(crate) stream: Arc<HipStream>,
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
@@ -357,7 +358,7 @@ pub type DevMapped = HostBuffer;
 
 impl HipStream {
     /// Allocates `size` bytes and makes it accessible from all HIP devices
-    pub fn alloc_host(&self, size: u32) -> Result<HostBuffer, HipError> {
+    pub fn alloc_host(self: &Arc<Self>, size: u32) -> Result<HostBuffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), size as usize, 0)) };
         let data = ptr?;
@@ -377,7 +378,7 @@ impl HipStream {
     }
 
     /// Allocates a slice of bytes and makes it accessible from all HIP devices
-    pub fn alloc_host_init(&self, data: &[u8]) -> Result<HostBuffer, HipError> {
+    pub fn alloc_host_init(self: &Arc<Self>, data: &[u8]) -> Result<HostBuffer, HipError> {
         let size = data.len();
 
         let buf = self.alloc_host(size as u32)?;
@@ -390,12 +391,12 @@ impl HipStream {
     }
 
     /// Borrows bytes and makes it accessible from all HIP devices
-    pub fn host_slice<'a>(&self, data: &'a [u8]) -> Result<HostSlice<'a>, HipError> {
+    pub fn host_slice<'a>(self: &Arc<Self>, data: &'a [u8]) -> Result<HostSlice<'a>, HipError> {
         HostSlice::new(data, self.clone())
     }
 
     /// Borrows bytes and makes it accessible from all HIP devices
-    pub fn host_slice_mut<'a>(&self, data: &'a mut [u8]) -> Result<HostSliceMut<'a>, HipError> {
+    pub fn host_slice_mut<'a>(self: &Arc<Self>, data: &'a mut [u8]) -> Result<HostSliceMut<'a>, HipError> {
         HostSliceMut::new(data, self.clone())
     }
 }
@@ -405,7 +406,7 @@ impl HostBuffer {
     pub const unsafe fn from_raw_parts(
         data: *mut u8,
         size: u32,
-        stream: HipStream,
+        stream: Arc<HipStream>,
         event: HipEvent,
     ) -> Self {
         Self {

@@ -8,45 +8,10 @@ extern crate std;
 
 #[allow(unused_macros)]
 macro_rules! wrap_sys_res {
-    (|$val:ident| $expr:expr) => {{
-        let mut $val = ::core::mem::MaybeUninit::uninit();
-
+    (|$val:ident$(:$ty:ty)?| $expr:expr) => {{
+        let mut $val$(: ::core::mem::MaybeUninit<$ty>)? = ::core::mem::MaybeUninit::uninit();
         Ok(try_err!($expr, $val.assume_init()))
     }};
-}
-
-#[allow(unused_macros)]
-macro_rules! raii {
-    ($name:ident($inner:ident)) => {
-        #[::core::derive(::core::fmt::Debug)]
-        pub struct $name {
-            pub(crate) inner: ::alloc::sync::Arc<$inner>,
-        }
-
-        impl ::core::clone::Clone for $name {
-            fn clone(&self) -> Self {
-                Self {
-                    inner: ::alloc::sync::Arc::clone(&self.inner),
-                }
-            }
-        }
-
-        impl ::core::ops::Deref for $name {
-            type Target = $inner;
-
-            fn deref(&self) -> &Self::Target {
-                &self.inner
-            }
-        }
-
-        impl $inner {
-            pub fn managed(self) -> $name {
-                $name {
-                    inner: ::alloc::sync::Arc::new(self),
-                }
-            }
-        }
-    };
 }
 
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
@@ -62,7 +27,7 @@ pub mod hiprtc;
 pub use rocm_sys::is_hiprtc_present;
 
 #[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
-mod rocblas;
+pub mod rocblas;
 
 #[cfg(all(feature = "rocblas", any(feature = "dynamic-loading", rocblas)))]
 pub use rocm_sys::is_rocblas_present;
@@ -90,6 +55,12 @@ pub use hipfft;
 
 #[cfg(all(feature = "hipfft", any(feature = "dynamic-loading", hipfft)))]
 pub use rocm_sys::is_hipfft_present;
+
+#[cfg(all(feature = "miopen", any(feature = "dynamic-loading", miopen)))]
+pub use miopen;
+
+#[cfg(all(feature = "miopen", any(feature = "dynamic-loading", miopen)))]
+pub use rocm_sys::is_miopen_present;
 
 #[cfg(any(feature = "dynamic-loading", all(hip, hiprtc)))]
 rocm_include::doctest!(["hip", "hiprtc"] readme: "../README.md");

@@ -49,7 +49,7 @@ impl HipStream {
         };
         unsafe {
             try_err!(
-                hipLaunchHostFunc(self.raw.raw, Some(func), data.cast()),
+                hipLaunchHostFunc(self.raw, Some(func), data.cast()),
                 Ok(())
             )
         }

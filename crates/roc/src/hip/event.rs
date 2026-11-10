@@ -19,7 +19,7 @@ impl HipEvent {
     }
 
     pub fn record(&self, stream: &HipStream) -> Result<(), HipError> {
-        unsafe { try_err!(hipEventRecord(self.raw, stream.raw.raw), Ok(())) }
+        unsafe { try_err!(hipEventRecord(self.raw, stream.raw), Ok(())) }
     }
 
     pub fn is_ready(&self) -> Result<bool, HipError> {

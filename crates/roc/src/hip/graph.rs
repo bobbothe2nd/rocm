@@ -22,10 +22,13 @@ pub struct Graph {
     raw: hipGraph_t,
 }
 
+unsafe impl Send for Graph {}
+unsafe impl Sync for Graph {}
+
 impl Graph {
     pub fn new(flags: GraphInstantiateFlags) -> Result<Self, HipError> {
         let raw: Result<hipGraph_t, HipError> = unsafe {
-            wrap_sys_res!(|graph| hipGraphCreate((&raw mut graph).cast(), flags.bits() as c_uint))
+            wrap_sys_res!(|graph| hipGraphCreate(graph.as_mut_ptr(), flags.bits() as c_uint))
         };
         let raw = raw?;
 
@@ -57,7 +60,7 @@ impl Graph {
     }
 
     pub fn try_clone(&self) -> Result<Self, HipError> {
-        unsafe { wrap_sys_res!(|clone| hipGraphClone((&raw mut clone).cast(), self.raw)) }
+        unsafe { wrap_sys_res!(|clone: Self| hipGraphClone(clone.as_mut_ptr().cast(), self.raw)) }
     }
 
     pub fn add_kernel_node(
@@ -66,8 +69,8 @@ impl Graph {
         params: &KernelParams,
     ) -> Result<Node, HipError> {
         unsafe {
-            wrap_sys_res!(|node| hipGraphAddKernelNode(
-                (&raw mut node).cast(),
+            wrap_sys_res!(|node: Node| hipGraphAddKernelNode(
+                node.as_mut_ptr().cast(),
                 self.raw,
                 dep.as_ptr().cast(),
                 dep.len(),
@@ -79,7 +82,7 @@ impl Graph {
     pub fn init(self, flags: GraphInstantiateFlags) -> Result<ExecGraph, HipError> {
         let exec: Result<hipGraphExec_t, HipError> = unsafe {
             wrap_sys_res!(|graph_exec| hipGraphInstantiateWithFlags(
-                (&raw mut graph_exec).cast(),
+                graph_exec.as_mut_ptr(),
                 self.raw,
                 flags.bits() as c_ulonglong
             ))
@@ -130,7 +133,7 @@ impl ExecGraph {
     }
 
     pub fn upload(&self, stream: &HipStream) -> Result<(), HipError> {
-        unsafe { try_err!(hipGraphUpload(self.raw, stream.raw.raw), Ok(())) }
+        unsafe { try_err!(hipGraphUpload(self.raw, stream.raw), Ok(())) }
     }
 }
 
@@ -163,7 +166,7 @@ impl HipStream {
         unsafe {
             try_err!(
                 hipStreamBeginCapture(
-                    self.raw.raw,
+                    self.raw,
                     transmute::<StreamCaptureMode, hipStreamCaptureMode>(mode)
                 ),
                 Ok(())
@@ -173,7 +176,7 @@ impl HipStream {
 
     pub fn end_capture(&self) -> Result<Graph, HipError> {
         let raw: Result<hipGraph_t, HipError> = unsafe {
-            wrap_sys_res!(|graph| hipStreamEndCapture(self.raw.raw, (&raw mut graph).cast()))
+            wrap_sys_res!(|graph| hipStreamEndCapture(self.raw, graph.as_mut_ptr()))
         };
         let raw = raw?;
 
@@ -182,7 +185,7 @@ impl HipStream {
 
     pub fn is_capturing(&self) -> Result<bool, HipError> {
         let status: Result<hipStreamCaptureStatus, HipError> = unsafe {
-            wrap_sys_res!(|status| hipStreamIsCapturing(self.raw.raw, (&raw mut status).cast()))
+            wrap_sys_res!(|status| hipStreamIsCapturing(self.raw, status.as_mut_ptr()))
         };
 
         match status? {
@@ -195,7 +198,7 @@ impl HipStream {
     }
 
     pub unsafe fn launch_graph(&self, graph: &ExecGraph) -> Result<(), HipError> {
-        unsafe { try_err!(hipGraphLaunch(graph.raw, self.raw.raw), Ok(())) }
+        unsafe { try_err!(hipGraphLaunch(graph.raw, self.raw), Ok(())) }
     }
 }
 
@@ -216,7 +219,7 @@ pub struct Node {
 impl Node {
     pub unsafe fn get_kernel_params(&self) -> Result<KernelParams, HipError> {
         unsafe {
-            wrap_sys_res!(|params| hipGraphKernelNodeGetParams(self.raw, (&raw mut params).cast()))
+            wrap_sys_res!(|params: KernelParams| hipGraphKernelNodeGetParams(self.raw, params.as_mut_ptr().cast()))
         }
     }
 }

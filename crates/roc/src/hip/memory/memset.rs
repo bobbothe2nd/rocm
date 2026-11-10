@@ -23,7 +23,7 @@ impl Memset for u8 {
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
-                hipMemsetD8Async(dst.cast(), value, size, stream.raw.raw),
+                hipMemsetD8Async(dst.cast(), value, size, stream.raw),
                 Ok(())
             )
         }
@@ -43,7 +43,7 @@ impl Memset for u16 {
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
-                hipMemsetD16Async(dst.cast(), value, size, stream.raw.raw),
+                hipMemsetD16Async(dst.cast(), value, size, stream.raw),
                 Ok(())
             )
         }
@@ -63,7 +63,7 @@ impl Memset for i32 {
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
-                hipMemsetD32Async(dst.cast(), value, size, stream.raw.raw),
+                hipMemsetD32Async(dst.cast(), value, size, stream.raw),
                 Ok(())
             )
         }

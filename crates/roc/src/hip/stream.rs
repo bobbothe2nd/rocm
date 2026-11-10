@@ -1,9 +1,9 @@
-use alloc::rc::Rc;
 use core::{
     ffi::{c_int, c_ulonglong},
     mem::transmute,
     ptr,
 };
+use alloc::sync::Arc;
 use rocm_sys::hip::{
     hipError_t, hipFreeAsync, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync,
     hipStream_t, hipStreamCreate, hipStreamDestroy, hipStreamGetDevice, hipStreamGetId,
@@ -16,33 +16,33 @@ use crate::hip::{
     memory::{Buffer, HostSlice, HostSliceMut},
 };
 
-#[derive(Debug, Clone)]
+#[repr(transparent)]
+#[derive(Debug)]
 pub struct HipStream {
-    pub(crate) raw: Rc<StreamInner>,
+    pub(crate) raw: hipStream_t,
 }
 
+unsafe impl Send for HipStream {}
+unsafe impl Sync for HipStream {}
+
 impl HipStream {
-    pub fn create() -> Result<Self, HipError> {
-        let raw: Result<StreamInner, HipError> =
-            unsafe { wrap_sys_res!(|stream| hipStreamCreate((&raw mut stream).cast())) };
-        Ok(Self { raw: Rc::new(raw?) })
+    pub fn create() -> Result<Arc<Self>, HipError> {
+        unsafe { wrap_sys_res!(|stream| hipStreamCreate((&raw mut stream).cast())) }
     }
 
     #[inline(always)]
     pub fn as_raw(&self) -> hipStream_t {
-        self.raw.raw
+        self.raw
     }
 
     #[inline(always)]
-    pub fn into_raw(self) -> hipStream_t {
-        self.raw.raw
+    pub fn into_raw(self: Arc<Self>) -> hipStream_t {
+        self.raw
     }
 
     #[inline(always)]
     pub unsafe fn from_raw(raw: hipStream_t) -> Self {
-        Self {
-            raw: Rc::new(StreamInner { raw }),
-        }
+        Self { raw }
     }
 
     pub unsafe fn copy_htod(
@@ -81,7 +81,7 @@ impl HipStream {
                     dst.ptr.byte_add(dst_off as usize).cast(),
                     src.data.add(src_off as usize).cast(),
                     len as usize,
-                    self.raw.raw,
+                    self.raw,
                 ),
                 Ok(())
             )
@@ -124,7 +124,7 @@ impl HipStream {
                     dst.data.add(dst_off as usize) as *mut _,
                     src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
-                    self.raw.raw,
+                    self.raw,
                 ),
                 Ok(())
             )
@@ -168,7 +168,7 @@ impl HipStream {
                     dst.ptr.byte_add(dst_off as usize).cast(),
                     src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
-                    self.raw.raw,
+                    self.raw,
                 ),
                 Ok(())
             )
@@ -182,12 +182,12 @@ impl HipStream {
     /// The buffer must not be dropped or freed again
     #[inline(always)]
     pub unsafe fn free(&self, buf: &Buffer) -> Result<(), HipError> {
-        unsafe { try_err!(hipFreeAsync(buf.ptr.cast(), self.raw.raw,), Ok(())) }
+        unsafe { try_err!(hipFreeAsync(buf.ptr.cast(), self.raw,), Ok(())) }
     }
 
     /// Returns `true` if the stream has finished all queued tasks
     pub fn is_ready(&self) -> Result<bool, HipError> {
-        let res = unsafe { hipStreamQuery(self.raw.raw) };
+        let res = unsafe { hipStreamQuery(self.raw) };
         match res {
             hipError_t::hipSuccess => Ok(true),
             hipError_t::hipErrorNotReady => Ok(false),
@@ -198,45 +198,38 @@ impl HipStream {
     /// Waits until the stream has finished all queued tasks
     #[inline(always)]
     pub fn sync(&self) -> Result<(), HipError> {
-        unsafe { try_err!(hipStreamSynchronize(self.raw.raw), Ok(())) }
+        unsafe { try_err!(hipStreamSynchronize(self.raw), Ok(())) }
     }
 
     #[inline(always)]
     pub fn get_id(&self) -> Result<u64, HipError> {
-        unsafe { wrap_sys_res!(|id| hipStreamGetId(self.raw.raw, (&raw mut id).cast())) }
+        unsafe { wrap_sys_res!(|id| hipStreamGetId(self.raw, (&raw mut id).cast())) }
             .map(|id: c_ulonglong| id as u64)
     }
 
     #[inline(always)]
     pub fn get_priority(&self) -> Result<i32, HipError> {
-        unsafe { wrap_sys_res!(|prio| hipStreamGetPriority(self.raw.raw, (&raw mut prio).cast())) }
+        unsafe { wrap_sys_res!(|prio| hipStreamGetPriority(self.raw, (&raw mut prio).cast())) }
             .map(|prio: c_int| prio as i32)
     }
 
     #[inline(always)]
     pub fn get_dev(&self) -> Result<Device, HipError> {
-        unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(self.raw.raw, (&raw mut dev).cast())) }
+        unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(self.raw, (&raw mut dev).cast())) }
     }
 
     #[inline(always)]
     pub(crate) fn same_as(&self, other: &Self) -> bool {
-        self.raw.raw == other.raw.raw
+        self.raw == other.raw
     }
-}
 
-#[derive(Debug)]
-pub struct StreamInner {
-    pub(crate) raw: hipStream_t,
-}
-
-impl StreamInner {
     #[inline(always)]
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipStreamDestroy(self.raw), Ok(())) }
     }
 }
 
-impl Drop for StreamInner {
+impl Drop for HipStream {
     #[inline(always)]
     fn drop(&mut self) {
         unsafe {

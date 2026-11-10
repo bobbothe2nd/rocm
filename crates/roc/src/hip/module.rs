@@ -1,6 +1,6 @@
 use core::{ffi::CStr, ptr::null_mut};
 
-use alloc::{ffi::CString, rc::Rc};
+use alloc::{ffi::CString, sync::Arc};
 
 use rocm_sys::hip::{
     hipFunction_t, hipModule_t, hipModuleGetFunction, hipModuleLaunchKernel, hipModuleLoadData,
@@ -15,7 +15,7 @@ use crate::{
 #[derive(Clone)]
 #[repr(transparent)]
 pub struct Module {
-    inner: Rc<ModuleInner>,
+    inner: Arc<ModuleInner>,
 }
 
 impl Module {
@@ -69,7 +69,7 @@ mod hiprtc {
                 ))
             };
 
-            let inner = Rc::new(ModuleInner { raw: module? });
+            let inner = Arc::new(ModuleInner { raw: module? });
 
             Ok(Module { inner })
         }
@@ -79,6 +79,9 @@ mod hiprtc {
 struct ModuleInner {
     raw: hipModule_t,
 }
+
+unsafe impl Send for ModuleInner {}
+unsafe impl Sync for ModuleInner {}
 
 impl Drop for ModuleInner {
     fn drop(&mut self) {
@@ -133,7 +136,7 @@ impl HipStream {
                     conf.block[1],
                     conf.block[2],
                     0,
-                    self.raw.raw,
+                    self.raw,
                     args.as_mut_ptr().cast(),
                     null_mut(),
                 ),
