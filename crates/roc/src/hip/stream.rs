@@ -71,7 +71,7 @@ impl HipStream {
             .is_none_or(|end| end > src.size as u32)
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > dst.ptr.len() as u32)
+                .is_none_or(|end| end > dst.size as u32)
         {
             return Err(HipError::InvalidValue);
         }
@@ -111,7 +111,7 @@ impl HipStream {
     ) -> Result<(), HipError> {
         if src_off
             .checked_add(len)
-            .is_none_or(|end| end > src.ptr.len() as u32)
+            .is_none_or(|end| end > src.size as u32)
             || dst_off
                 .checked_add(len)
                 .is_none_or(|end| end > dst.size as u32)
@@ -154,10 +154,10 @@ impl HipStream {
     ) -> Result<(), HipError> {
         if src_off
             .checked_add(len)
-            .is_none_or(|end| end > src.ptr.len() as u32)
+            .is_none_or(|end| end > src.size as u32)
             || dst_off
                 .checked_add(len)
-                .is_none_or(|end| end > dst.ptr.len() as u32)
+                .is_none_or(|end| end > dst.size as u32)
             || ptr::eq(src.ptr, dst.ptr)
         {
             return Err(HipError::InvalidValue);

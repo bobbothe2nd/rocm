@@ -1,4 +1,4 @@
-use crate::hip::{HipError, event::HipEvent, memory::Buffer, stream::HipStream};
+use crate::hip::{HipError, event::HipEvent, memory::{CopyTo, DevPtr, StreamBound}, stream::HipStream};
 use alloc::sync::Arc;
 use core::{
     cell::UnsafeCell,
@@ -8,10 +8,7 @@ use core::{
     ops::{Deref, DerefMut},
     slice,
 };
-use rocm_sys::hip::{
-    hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister, hipMemcpyDtoH,
-    hipMemcpyHtoD,
-};
+use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister};
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
@@ -105,42 +102,62 @@ impl<'a> HostSlice<'a> {
         unsafe { try_err!(hipHostUnregister(self.ptr as *mut _), Ok(())) }
     }
 
-    pub fn copy_to_dev(
-        &self,
-        other: &Buffer,
+    #[inline]
+    pub fn copy_from_sync<Src>(
+        &mut self,
+        src: &Src,
         src_off: u32,
         dst_off: u32,
         len: u32,
-    ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > other.ptr.len() as u32)
-        {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe { self.copy_to_dev_unchecked(other, src_off, dst_off, len) }
+    ) -> Result<(), HipError>
+    where 
+        Src: CopyTo<Self>,
+    {
+        super::copy(src, self, src_off, dst_off, len)
     }
 
-    #[inline(always)]
-    pub unsafe fn copy_to_dev_unchecked(
+    #[inline]
+    pub fn copy_to_sync<Dst>(
         &self,
-        other: &Buffer,
+        dst: &mut Dst,
         src_off: u32,
         dst_off: u32,
         len: u32,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyHtoD(
-                    other.ptr.byte_add(dst_off as usize).cast(),
-                    self.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
+    ) -> Result<(), HipError>
+    where 
+        Self: CopyTo<Dst>,
+        Dst: DevPtr,
+    {
+        super::copy(self, dst, src_off, dst_off, len)
+    }
+
+    #[inline]
+    pub fn copy_from_async<Src>(
+        &mut self,
+        src: &Src,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
+    ) -> Result<(), HipError>
+    where 
+        Src: CopyTo<Self> + StreamBound,
+    {
+        super::copy_async(src, self, src_off, dst_off, len)
+    }
+
+    #[inline]
+    pub fn copy_to_async<Dst>(
+        &self,
+        dst: &mut Dst,
+        src_off: u32,
+        dst_off: u32,
+        len: u32,
+    ) -> Result<(), HipError>
+    where 
+        Self: CopyTo<Dst>,
+        Dst: DevPtr + StreamBound,
+    {
+        super::copy_async(self, dst, src_off, dst_off, len)
     }
 }
 
@@ -260,80 +277,62 @@ impl<'a> HostSliceMut<'a> {
         unsafe { try_err!(hipHostUnregister(self.ptr.cast()), Ok(())) }
     }
 
-    pub fn copy_to_dev(
-        &self,
-        other: &Buffer,
+    #[inline]
+    pub fn copy_from_sync<Src>(
+        &mut self,
+        src: &Src,
         src_off: u32,
         dst_off: u32,
         len: u32,
-    ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > other.ptr.len() as u32)
-        {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe { self.copy_to_dev_unchecked(other, src_off, dst_off, len) }
+    ) -> Result<(), HipError>
+    where 
+        Src: CopyTo<Self>,
+    {
+        super::copy(src, self, src_off, dst_off, len)
     }
 
-    #[inline(always)]
-    pub unsafe fn copy_to_dev_unchecked(
+    #[inline]
+    pub fn copy_to_sync<Dst>(
         &self,
-        other: &Buffer,
+        dst: &mut Dst,
         src_off: u32,
         dst_off: u32,
         len: u32,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyHtoD(
-                    other.ptr.byte_add(dst_off as usize).cast(),
-                    self.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
+    ) -> Result<(), HipError>
+    where 
+        Self: CopyTo<Dst>,
+        Dst: DevPtr,
+    {
+        super::copy(self, dst, src_off, dst_off, len)
     }
 
-    pub fn copy_from_dev(
-        &self,
-        other: &Buffer,
+    #[inline]
+    pub fn copy_from_async<Src>(
+        &mut self,
+        src: &Src,
         src_off: u32,
         dst_off: u32,
         len: u32,
-    ) -> Result<(), HipError> {
-        if src_off.checked_add(len).is_none_or(|end| end > self.size)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > other.ptr.len() as u32)
-        {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe { self.copy_from_dev_unchecked(other, src_off, dst_off, len) }
+    ) -> Result<(), HipError>
+    where 
+        Src: CopyTo<Self> + StreamBound,
+    {
+        super::copy_async(src, self, src_off, dst_off, len)
     }
 
-    #[inline(always)]
-    pub unsafe fn copy_from_dev_unchecked(
+    #[inline]
+    pub fn copy_to_async<Dst>(
         &self,
-        other: &Buffer,
+        dst: &mut Dst,
         src_off: u32,
         dst_off: u32,
         len: u32,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyDtoH(
-                    self.ptr.byte_add(src_off as usize) as *mut _,
-                    other.ptr.byte_add(dst_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
+    ) -> Result<(), HipError>
+    where 
+        Self: CopyTo<Dst>,
+        Dst: DevPtr + StreamBound,
+    {
+        super::copy_async(self, dst, src_off, dst_off, len)
     }
 }
 

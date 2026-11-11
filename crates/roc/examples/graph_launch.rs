@@ -19,7 +19,7 @@ void vec_add(float* out, const float* a, const float* b, int n) {
 "#;
 
 const LEN: usize = 1024;
-const BYTES: u32 = (LEN * size_of::<f32>()) as u32;
+const BYTES: usize = LEN * size_of::<f32>();
 
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
@@ -62,8 +62,8 @@ fn main() {
         stream.alloc_host_init(&buf).unwrap()
     };
 
-    a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
-    b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
+    a.copy_from_async(&a_host, 0, 0, BYTES as u32).unwrap();
+    b.copy_from_async(&b_host, 0, 0, BYTES as u32).unwrap();
 
     let mut n = LEN as i32;
 
@@ -97,11 +97,11 @@ fn main() {
         stream.launch_graph(&exec).unwrap();
     }
 
+    let mut out_host = stream.alloc_host(BYTES as u32).unwrap();
+
+    out.copy_to_async(&mut out_host, 0, 0, BYTES as u32).unwrap();
+
     stream.sync().unwrap();
-
-    let mut out_host = stream.alloc_host(BYTES).unwrap();
-
-    out.copy_to_host(&mut out_host, 0, 0, BYTES).unwrap();
 
     for chunk in out_host.chunks(size_of::<f32>()) {
         let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
