@@ -1,4 +1,5 @@
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDataType {
     HIP_R_32F = 0,
@@ -40,6 +41,7 @@ pub enum hipDataType {
 }
 
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLibraryPropertyType {
     HIP_LIBRARY_MAJOR_VERSION = 0,

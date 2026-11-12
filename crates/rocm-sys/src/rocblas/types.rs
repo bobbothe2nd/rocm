@@ -1,10 +1,12 @@
 #[doc = " \\brief Struct to represent a 16-bit Brain floating-point number."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct rocblas_bfloat16 {
     pub data: u16,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct _rocblas_handle {
     _unused: [u8; 0],
@@ -13,6 +15,7 @@ pub struct _rocblas_handle {
 pub type rocblas_handle = *mut _rocblas_handle;
 #[doc = " \\brief Opaque base class for device memory allocation"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct rocblas_device_malloc_base {
     _unused: [u8; 0],
@@ -26,12 +29,14 @@ pub type rocblas_float = f32;
 pub type rocblas_double = f64;
 #[doc = " \\brief Structure to represent an unsigned 16-bit integer type."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct rocblas_half {
     pub data: u16,
 }
 #[doc = " \\brief Struct to represent a complex number with single-precision real and imaginary parts."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct rocblas_float_complex {
     pub x: f32,
@@ -39,6 +44,7 @@ pub struct rocblas_float_complex {
 }
 #[doc = " \\brief Struct to represent a complex number with double-precision real and imaginary parts."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct rocblas_double_complex {
     pub x: f64,
@@ -46,6 +52,7 @@ pub struct rocblas_double_complex {
 }
 #[repr(i32)]
 #[doc = " \\brief Used to specify whether the matrix is to be transposed or not."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_operation_ {
     #[doc = "< Operate with the matrix."]
@@ -58,6 +65,7 @@ pub enum rocblas_operation_ {
 pub use self::rocblas_operation_ as rocblas_operation;
 #[repr(i32)]
 #[doc = " \\brief Used by the Hermitian, symmetric, and triangular matrix\n routines to specify whether the upper or lower triangle is being referenced."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_fill_ {
     #[doc = "< Upper triangle."]
@@ -70,6 +78,7 @@ pub enum rocblas_fill_ {
 pub use self::rocblas_fill_ as rocblas_fill;
 #[repr(i32)]
 #[doc = " \\brief Used by the triangular matrix routines to specify whether the\n matrix is unit triangular."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_diagonal_ {
     #[doc = "< Non-unit triangular."]
@@ -81,6 +90,7 @@ pub enum rocblas_diagonal_ {
 pub use self::rocblas_diagonal_ as rocblas_diagonal;
 #[repr(i32)]
 #[doc = " \\brief Indicates the side matrix A is located on, relative to matrix B, during multiplication."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_side_ {
     #[doc = "< Multiply general matrix by symmetric,\nHermitian, or triangular matrix on the left."]
@@ -93,6 +103,7 @@ pub enum rocblas_side_ {
 pub use self::rocblas_side_ as rocblas_side;
 #[repr(i32)]
 #[doc = " \\brief Indicates the precision width of the data stored in a BLAS type."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_datatype_ {
     #[doc = "< 16-bit floating point, real"]
@@ -134,6 +145,7 @@ pub enum rocblas_datatype_ {
 pub use self::rocblas_datatype_ as rocblas_datatype;
 #[repr(i32)]
 #[doc = "   @brief rocBLAS status codes definition."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_status_ {
     #[doc = "< Success."]
@@ -170,6 +182,7 @@ pub enum rocblas_status_ {
 pub use self::rocblas_status_ as rocblas_status;
 #[repr(i32)]
 #[doc = " \\brief Indicates whether scalar pointers are on the host or device. This is used for\n    scalars alpha and beta and for scalar function return values."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_pointer_mode_ {
     #[doc = " \\brief Scalar values affected by this variable are located on the host."]
@@ -181,6 +194,7 @@ pub enum rocblas_pointer_mode_ {
 pub use self::rocblas_pointer_mode_ as rocblas_pointer_mode;
 #[repr(i32)]
 #[doc = " \\brief Indicates whether atomics operations are allowed. Not allowing atomic operations\n    can generally improve determinism and repeatability of results at a cost to performance.\n    Defaults to ``rocblas_atomics_allowed``."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_atomics_mode_ {
     #[doc = " \\brief Algorithms refrain from atomics where applicable"]
@@ -192,6 +206,7 @@ pub enum rocblas_atomics_mode_ {
 pub use self::rocblas_atomics_mode_ as rocblas_atomics_mode;
 #[repr(i32)]
 #[doc = " \\brief Indicates which performance metric Tensile uses when selecting the optimal\n    solution for gemm problems."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_performance_metric_ {
     #[doc = " \\brief Use Tensile's default performance metric for solution selection"]
@@ -205,6 +220,7 @@ pub enum rocblas_performance_metric_ {
 pub use self::rocblas_performance_metric_ as rocblas_performance_metric;
 #[repr(i32)]
 #[doc = " \\brief Indicates whether the layer is active by means of a bitmask."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_layer_mode_ {
     #[doc = " \\brief No logging will take place."]
@@ -222,6 +238,7 @@ pub enum rocblas_layer_mode_ {
 pub use self::rocblas_layer_mode_ as rocblas_layer_mode;
 #[repr(i32)]
 #[doc = " \\brief Indicates whether the layer is active by means of a bitmask."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_gemm_algo_ {
     rocblas_gemm_algo_standard = 0,
@@ -231,6 +248,7 @@ pub enum rocblas_gemm_algo_ {
 pub use self::rocblas_gemm_algo_ as rocblas_gemm_algo;
 #[repr(i32)]
 #[doc = " \\brief Which mathematical geam-like operation to perform for geam_ex"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_geam_ex_operation_ {
     rocblas_geam_ex_operation_min_plus = 0,
@@ -240,6 +258,7 @@ pub enum rocblas_geam_ex_operation_ {
 pub use self::rocblas_geam_ex_operation_ as rocblas_geam_ex_operation;
 #[repr(i32)]
 #[doc = " \\brief Controls the flags passed into GEMM algorithms invoked by the Tensile host."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_gemm_flags_ {
     #[doc = " \\brief Default empty flags"]
@@ -259,6 +278,7 @@ pub enum rocblas_gemm_flags_ {
 pub use self::rocblas_gemm_flags_ as rocblas_gemm_flags;
 #[doc = " \\brief Union for representing scalar values"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union rocblas_union_u {
     pub h: rocblas_half,
@@ -272,6 +292,7 @@ pub union rocblas_union_u {
 pub type rocblas_union_t = rocblas_union_u;
 #[repr(i32)]
 #[doc = " \\brief Numerical checking for verifying the Input and Output vector/matrix of the rocBLAS functions for a NaN, zero, infinity and denormal value"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_check_numerics_mode_ {
     rocblas_check_numerics_mode_no_check = 0,
@@ -283,6 +304,7 @@ pub enum rocblas_check_numerics_mode_ {
 #[doc = " \\brief Numerical checking for verifying the Input and Output vector/matrix of the rocBLAS functions for a NaN, zero, infinity and denormal value"]
 pub use self::rocblas_check_numerics_mode_ as rocblas_check_numerics_mode;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum rocblas_math_mode_ {
     rocblas_default_math = 0,

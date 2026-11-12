@@ -12,6 +12,7 @@ use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hip
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct HostSlice<'a> {
     pub(crate) ptr: *const u8,
@@ -182,6 +183,7 @@ impl Deref for HostSlice<'_> {
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct HostSliceMut<'a> {
     pub(crate) ptr: *mut u8,
@@ -364,6 +366,7 @@ impl DerefMut for HostSliceMut<'_> {
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct HostBuffer {
     pub(crate) ptr: *mut u8,

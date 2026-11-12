@@ -17,6 +17,8 @@ use rocm_sys::hip::{
 
 use crate::hip::{HipError, stream::HipStream};
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[derive(Debug)]
 #[repr(transparent)]
 pub struct Graph {
     raw: hipGraph_t,
@@ -99,6 +101,8 @@ impl Drop for Graph {
     }
 }
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[derive(Debug)]
 #[repr(transparent)]
 pub struct ExecGraph {
     raw: hipGraphExec_t,
@@ -199,6 +203,7 @@ impl HipStream {
 }
 
 #[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum StreamCaptureMode {
     Global = 0,
@@ -207,6 +212,7 @@ pub enum StreamCaptureMode {
 }
 
 #[repr(transparent)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone)]
 pub struct Node {
     raw: hipGraphNode_t,
@@ -224,6 +230,7 @@ impl Node {
 }
 
 #[repr(transparent)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Clone)]
 pub struct KernelParams {
     raw: hipKernelNodeParams,
@@ -252,6 +259,7 @@ impl KernelParams {
 }
 
 #[repr(transparent)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Clone)]
 pub struct GraphParams {
     raw: hipGraphNodeParams,
@@ -273,6 +281,7 @@ impl GraphParams {
 }
 
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union ParamDescriptor {
     pub reserved1: [::core::ffi::c_longlong; 29usize],
@@ -302,6 +311,7 @@ pub type ParamMemcpy = hipMemcpyNodeParams;
 pub type ParamKernel = hipKernelNodeParams;
 
 #[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum NodeType {
     Kernel = 0,
@@ -323,6 +333,7 @@ pub enum NodeType {
 }
 
 bitflags::bitflags! {
+    #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct GraphInstantiateFlags: u32 {
         /// This makes two graph launches unsafe.

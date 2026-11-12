@@ -2,6 +2,7 @@ pub const MIOPEN_HIP_COMPILER: &[u8; 36] = b"/usr/lib64/rocm/llvm/bin/amdclang++
 pub const MIOPEN_CACHE_DIR: &[u8; 17] = b"~/.cache/miopen/\0";
 pub type miopenAcceleratorQueue_t = crate::hip::hipStream_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenHandle {
     pub _address: u8,
@@ -29,78 +30,91 @@ pub type miopenDeallocatorFunction = ::std::option::Option<
     unsafe extern "C" fn(context: *mut ::std::os::raw::c_void, memory: *mut ::std::os::raw::c_void),
 >;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenFusionOpDescriptor {
     pub _address: u8,
 }
 pub type miopenFusionOpDescriptor_t = *mut miopenFusionOpDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenTensorDescriptor {
     pub _address: u8,
 }
 pub type miopenTensorDescriptor_t = *mut miopenTensorDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenSeqTensorDescriptor {
     pub _address: u8,
 }
 pub type miopenSeqTensorDescriptor_t = *mut miopenSeqTensorDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenConvolutionDescriptor {
     pub _address: u8,
 }
 pub type miopenConvolutionDescriptor_t = *mut miopenConvolutionDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenPoolingDescriptor {
     pub _address: u8,
 }
 pub type miopenPoolingDescriptor_t = *mut miopenPoolingDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenLRNDescriptor {
     pub _address: u8,
 }
 pub type miopenLRNDescriptor_t = *mut miopenLRNDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenActivationDescriptor {
     pub _address: u8,
 }
 pub type miopenActivationDescriptor_t = *mut miopenActivationDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenRNNDescriptor {
     pub _address: u8,
 }
 pub type miopenRNNDescriptor_t = *mut miopenRNNDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenCTCLossDescriptor {
     pub _address: u8,
 }
 pub type miopenCTCLossDescriptor_t = *mut miopenCTCLossDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenDropoutDescriptor {
     pub _address: u8,
 }
 pub type miopenDropoutDescriptor_t = *mut miopenDropoutDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenReduceTensorDescriptor {
     pub _address: u8,
 }
 pub type miopenReduceTensorDescriptor_t = *mut miopenReduceTensorDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenMhaDescriptor {
     pub _address: u8,
 }
 pub type miopenMhaDescriptor_t = *mut miopenMhaDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenSoftmaxDescriptor {
     pub _address: u8,
@@ -257,6 +271,7 @@ pub const miopenConvAlgorithm_t_miopenConvolutionAlgoWinograd: miopenConvAlgorit
 pub const miopenConvAlgorithm_t_miopenConvolutionAlgoImplicitGEMM: miopenConvAlgorithm_t = 5;
 pub type miopenConvAlgorithm_t = ::std::os::raw::c_uint;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct miopenConvAlgoPerf_t {
     pub __bindgen_anon_1: miopenConvAlgoPerf_t__bindgen_ty_1,
@@ -264,6 +279,7 @@ pub struct miopenConvAlgoPerf_t {
     pub memory: usize,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union miopenConvAlgoPerf_t__bindgen_ty_1 {
     pub fwd_algo: miopenConvFwdAlgorithm_t,
@@ -271,6 +287,7 @@ pub union miopenConvAlgoPerf_t__bindgen_ty_1 {
     pub bwd_data_algo: miopenConvBwdDataAlgorithm_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenConvSolution_t {
     pub time: f32,
@@ -279,18 +296,21 @@ pub struct miopenConvSolution_t {
     pub algorithm: miopenConvAlgorithm_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenFusionPlanDescriptor {
     pub _address: u8,
 }
 pub type miopenFusionPlanDescriptor_t = *mut miopenFusionPlanDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenOperatorDescriptor {
     pub _address: u8,
 }
 pub type miopenOperatorDescriptor_t = *mut miopenOperatorDescriptor;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenOperatorArgs {
     pub _address: u8,
@@ -335,6 +355,7 @@ pub type miopenCTCLossAlgo_t = ::std::os::raw::c_uint;
 pub const miopenRNGType_t_MIOPEN_RNG_PSEUDO_XORWOW: miopenRNGType_t = 0;
 pub type miopenRNGType_t = ::std::os::raw::c_uint;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenProblem {
     pub _address: u8,
@@ -394,18 +415,21 @@ pub const miopenMhaMask_t_miopenMhaMaskNone: miopenMhaMask_t = 0;
 pub const miopenMhaMask_t_miopenMhaMaskCausal: miopenMhaMask_t = 1;
 pub type miopenMhaMask_t = ::std::os::raw::c_uint;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenFindOptions {
     pub _address: u8,
 }
 pub type miopenFindOptions_t = *mut miopenFindOptions;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenSolution {
     pub _address: u8,
 }
 pub type miopenSolution_t = *mut miopenSolution;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct miopenTensorArgument_t {
     pub id: miopenTensorArgumentId_t,

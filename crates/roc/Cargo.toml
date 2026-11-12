@@ -14,12 +14,13 @@ bitflags = "2"
 log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.6" }
 rocm-include = { path = "../rocm-include", version = "0.2" }
+stable_auto = { version = "0.2", optional = true }
 
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["rocblas", "dynamic-loading", "hiprtc", "log"]
+default = ["rocblas", "dynamic-loading", "hiprtc", "log", "stable_auto"]
 
 hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]
@@ -47,6 +48,7 @@ dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
 
 std = ["rocm-include/std"]
 log = ["dep:log"]
+stable_auto = ["rocm-sys/stable_auto", "dep:stable_auto"]
 
 [[example]]
 name = "kernel_launch"

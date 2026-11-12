@@ -1,4 +1,5 @@
 rocm_include::strum! {
+    #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub enum GfxVersion {
         Gfx908 = "gfx908",
@@ -87,6 +88,7 @@ impl GfxVersion {
     }
 }
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct MatrixCapabilities {
     pub kind: MatrixKind,
@@ -94,6 +96,8 @@ pub struct MatrixCapabilities {
     pub operations: MatrixOperations,
 }
 
+#[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum MatrixKind {
     None,
@@ -102,6 +106,7 @@ pub enum MatrixKind {
 }
 
 bitflags::bitflags! {
+    #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct MatrixOperations: u32 {
         const F16  = 1 << 0;

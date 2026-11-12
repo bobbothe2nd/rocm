@@ -1,5 +1,6 @@
 #[repr(i32)]
 #[doc = " @brief Result/status/error codes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipfftResult_t {
     #[doc = " hipFFT operation was successful"]
@@ -39,6 +40,7 @@ pub enum hipfftResult_t {
 pub use self::hipfftResult_t as hipfftResult;
 #[repr(i32)]
 #[doc = " @brief Transform type\n  @details This type is used to declare the Fourier transform type that will be executed."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipfftType_t {
     #[doc = " Real to complex (interleaved)"]
@@ -57,6 +59,7 @@ pub enum hipfftType_t {
 #[doc = " @brief Transform type\n  @details This type is used to declare the Fourier transform type that will be executed."]
 pub use self::hipfftType_t as hipfftType;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipfftLibraryPropertyType_t {
     HIPFFT_MAJOR_VERSION = 0,
@@ -65,6 +68,7 @@ pub enum hipfftLibraryPropertyType_t {
 }
 pub use self::hipfftLibraryPropertyType_t as hipfftLibraryPropertyType;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct hipfftHandle_t {
     _unused: [u8; 0],

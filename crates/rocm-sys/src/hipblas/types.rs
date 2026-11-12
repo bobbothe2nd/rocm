@@ -1,5 +1,6 @@
 #[repr(i32)]
 #[doc = " \\brief hipblas status codes definition"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasStatus_t {
     #[doc = "< Function succeeds"]
@@ -29,6 +30,7 @@ pub enum hipblasStatus_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Used to specify whether the matrix is to be transposed or not."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasOperation_t {
     #[doc = "<  Operate with the matrix."]
@@ -40,6 +42,7 @@ pub enum hipblasOperation_t {
 }
 #[repr(i32)]
 #[doc = " \\brief The compute type to be used. Currently only used with GemmEx with the HIPBLAS_V2 interface.\n         Note that support for compute types is largely dependent on backend."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasComputeType_t {
     #[doc = "< compute will be at least 16-bit precision"]
@@ -80,12 +83,14 @@ pub type hipblasInt8 = i8;
 #[doc = " \\brief  Stride between matrices or vectors in strided_batched functions."]
 pub type hipblasStride = i64;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipblasBfloat16 {
     pub data: u16,
 }
 #[repr(i32)]
 #[doc = " \\brief Indicates whether scalar pointers are on the host or device. This is used for scalars alpha and beta and for scalar function return values."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasPointerMode_t {
     #[doc = "< Scalar values affected by this variable will be located on the host."]
@@ -95,6 +100,7 @@ pub enum hipblasPointerMode_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Used by the Hermitian, symmetric, and triangular matrix routines to specify whether the upper or lower triangle is being referenced."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasFillMode_t {
     #[doc = "<  Upper triangle."]
@@ -105,6 +111,7 @@ pub enum hipblasFillMode_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Used by the triangular matrix routines to specify whether the matrix is unit triangular."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasDiagType_t {
     #[doc = "<  Non-unit triangular."]
@@ -114,6 +121,7 @@ pub enum hipblasDiagType_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Indicates the side matrix A is located on, relative to matrix B, during multiplication."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasSideMode_t {
     HIPBLAS_SIDE_LEFT = 141,
@@ -121,6 +129,7 @@ pub enum hipblasSideMode_t {
     HIPBLAS_SIDE_BOTH = 143,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasMath_t {
     HIPBLAS_DEFAULT_MATH = 0,
@@ -132,6 +141,7 @@ pub enum hipblasMath_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Indicates whether the layer is active through the use of a bitmask."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasGemmAlgo_t {
     #[doc = "<  enumerator ``rocblas_gemm_algo_standard``"]
@@ -139,6 +149,7 @@ pub enum hipblasGemmAlgo_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Indicates whether atomics operations are allowed. Not allowing atomic operations can generally improve determinism and repeatability of results at a cost of performance.\n         By default, the rocBLAS backend allows atomic operations, while the cuBLAS backend disallows atomic operations. See the backend documentation\n         for more details."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasAtomicsMode_t {
     #[doc = "<  Algorithms will refrain from atomics where applicable."]
@@ -148,6 +159,7 @@ pub enum hipblasAtomicsMode_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Control flags passed into gemm ex with flags algorithms. Only relevant with rocBLAS backend. See rocBLAS documentation\n         for more information."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasGemmFlags_t {
     #[doc = "< Default empty flags"]
@@ -160,6 +172,7 @@ pub enum hipblasGemmFlags_t {
 }
 #[repr(i32)]
 #[doc = " \\brief Library property types for querying version components."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLibraryProperty_t {
     #[doc = "< Major version number"]

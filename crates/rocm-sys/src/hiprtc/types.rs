@@ -15,6 +15,7 @@ pub type hipLibraryOption = crate::hip::hipLibraryOption;
 pub type hipLibraryOption_e = crate::hip::hipLibraryOption_e;
 #[repr(u32)]
 #[doc = " @addtogroup GlobalDefs\n @{\n\n/\n/**\n hiprtc error code"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hiprtcResult {
     #[doc = "< Success"]
@@ -45,6 +46,7 @@ pub enum hiprtcResult {
     HIPRTC_ERROR_LINKING = 100,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihiprtcLinkState {
     _unused: [u8; 0],
@@ -52,6 +54,7 @@ pub struct ihiprtcLinkState {
 #[doc = "  hiprtc link state\n"]
 pub type hiprtcLinkState = *mut ihiprtcLinkState;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct _hiprtcProgram {
     _unused: [u8; 0],

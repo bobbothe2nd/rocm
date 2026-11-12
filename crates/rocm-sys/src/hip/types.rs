@@ -1,4 +1,5 @@
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct __BindgenBitfieldUnit<Storage> {
     storage: Storage,
@@ -517,6 +518,7 @@ pub type wctype_t = ::core::ffi::c_ushort;
 pub type __time32_t = ::core::ffi::c_long;
 pub type __time64_t = ::core::ffi::c_longlong;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct __crt_locale_data_public {
     pub _locale_pctype: *const ::core::ffi::c_ushort,
@@ -524,6 +526,7 @@ pub struct __crt_locale_data_public {
     pub _locale_lc_codepage: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct __crt_locale_pointers {
     pub locinfo: *mut __crt_locale_data,
@@ -531,6 +534,7 @@ pub struct __crt_locale_pointers {
 }
 pub type _locale_t = *mut __crt_locale_pointers;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _Mbstatet {
     pub _Wchar: ::core::ffi::c_ulong,
@@ -565,6 +569,7 @@ pub type _invalid_parameter_handler = ::std::option::Option<
     ),
 >;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _div_t {
     pub quot: ::core::ffi::c_int,
@@ -572,6 +577,7 @@ pub struct _div_t {
 }
 pub type div_t = _div_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _ldiv_t {
     pub quot: ::core::ffi::c_long,
@@ -579,6 +585,7 @@ pub struct _ldiv_t {
 }
 pub type ldiv_t = _ldiv_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _lldiv_t {
     pub quot: ::core::ffi::c_longlong,
@@ -586,32 +593,38 @@ pub struct _lldiv_t {
 }
 pub type lldiv_t = _lldiv_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _LDOUBLE {
     pub ld: [::core::ffi::c_uchar; 10usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _CRT_DOUBLE {
     pub x: f64,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _CRT_FLOAT {
     pub f: f32,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _LONGDOUBLE {
     pub x: f64,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _LDBL12 {
     pub ld12: [::core::ffi::c_uchar; 12usize],
 }
 #[repr(i32)]
 #[doc = " hipJitOption"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitOption {
     #[doc = "< CUDA Only Maximum registers may be used in a thread,\n< passed to compiler"]
@@ -681,6 +694,7 @@ pub enum hipJitOption {
 }
 #[repr(i32)]
 #[doc = " hipJitInputType"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitInputType {
     #[doc = "< Cuda only Input cubin"]
@@ -710,6 +724,7 @@ pub enum hipJitInputType {
 }
 #[repr(i32)]
 #[doc = " hipJitCacheMode"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitCacheMode {
     hipJitCacheOptionNone = 0,
@@ -718,12 +733,14 @@ pub enum hipJitCacheMode {
 }
 #[repr(i32)]
 #[doc = " hipJitFallback"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitFallback {
     hipJitPreferPTX = 0,
     hipJitPreferBinary = 1,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLibraryOption_e {
     hipLibraryHostUniversalFunctionAndDataTable = 0,
@@ -736,6 +753,7 @@ pub const HIP_ERROR_NOT_INITIALIZED: _bindgen_ty_1 = _bindgen_ty_1::HIP_ERROR_NO
 pub const HIP_ERROR_LAUNCH_OUT_OF_RESOURCES: _bindgen_ty_1 =
     _bindgen_ty_1::HIP_ERROR_LAUNCH_OUT_OF_RESOURCES;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum _bindgen_ty_1 {
     HIP_SUCCESS = 0,
@@ -745,6 +763,7 @@ pub enum _bindgen_ty_1 {
 }
 #[doc = " @defgroup GlobalDefs Global enum and defines\n @{\n\n/\n/**\n hipDeviceArch_t\n"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDeviceArch_t {
     pub _bindgen_align: [u32; 0],
@@ -1448,6 +1467,7 @@ impl hipDeviceArch_t {
     }
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipUUID_t {
     pub bytes: [::core::ffi::c_char; 16usize],
@@ -1467,6 +1487,7 @@ impl hipError_t {
 }
 #[repr(u32)]
 #[doc = " HIP error type\n"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipError_t {
     #[doc = "< Successful completion."]
@@ -1620,6 +1641,7 @@ pub type hipDeviceProp_t = hipDeviceProp_tR0600;
 #[cfg(not(any(rocm_ver = "6.0", feature = "dynamic-loading")))]
 pub type hipDeviceProp_t = hipDeviceProp_tR0000;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDeviceProp_tR0000 {
     /// Device name.
@@ -1818,6 +1840,7 @@ pub struct hipDeviceProp_tR0000 {
     pub pageableMemoryAccessUsesHostPageTables: ::core::ffi::c_int,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDeviceProp_tR0600 {
     /// Name of the device.
@@ -2178,6 +2201,7 @@ pub struct hipDeviceProp_tR0600 {
 }
 #[repr(i32)]
 #[doc = " hipMemoryType (for pointer attributes)\n\n @note hipMemoryType enum values are combination of cudaMemoryType and cuMemoryType and AMD\n specific enum values.\n"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemoryType {
     #[doc = "< Unregistered memory"]
@@ -2195,6 +2219,7 @@ pub enum hipMemoryType {
 }
 #[doc = " Pointer attributes"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipPointerAttribute_t {
     pub type_: hipMemoryType,
@@ -2218,6 +2243,7 @@ impl hipDeviceAttribute_t {
 }
 #[repr(i32)]
 #[doc = " hipDeviceAttribute_t\n hipDeviceAttributeUnused number: 5"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDeviceAttribute_t {
     hipDeviceAttributeCudaCompatibleBegin = 0,
@@ -2469,6 +2495,7 @@ pub enum hipDeviceAttribute_t {
     hipDeviceAttributeVendorSpecificBegin = 20000,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDriverProcAddressQueryResult {
     HIP_GET_PROC_ADDRESS_SUCCESS = 0,
@@ -2476,6 +2503,7 @@ pub enum hipDriverProcAddressQueryResult {
     HIP_GET_PROC_ADDRESS_VERSION_NOT_SUFFICIENT = 2,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipComputeMode {
     hipComputeModeDefault = 0,
@@ -2484,12 +2512,14 @@ pub enum hipComputeMode {
     hipComputeModeExclusiveProcess = 3,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFlushGPUDirectRDMAWritesOptions {
     hipFlushGPUDirectRDMAWritesOptionHost = 1,
     hipFlushGPUDirectRDMAWritesOptionMemOps = 2,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGPUDirectRDMAWritesOrdering {
     hipGPUDirectRDMAWritesOrderingNone = 0,
@@ -2498,6 +2528,7 @@ pub enum hipGPUDirectRDMAWritesOrdering {
 }
 #[repr(i32)]
 #[doc = " The target of a hipDeviceFlushGPUDirectRDMAWrites operation."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFlushGPUDirectRDMAWritesTarget {
     #[doc = "< Memory of the current HIP device"]
@@ -2505,6 +2536,7 @@ pub enum hipFlushGPUDirectRDMAWritesTarget {
 }
 #[repr(i32)]
 #[doc = " The scope at which hipDeviceFlushGPUDirectRDMAWrites makes pending remote writes visible.\n\n The enumerator values match hipGPUDirectRDMAWritesOrdering, so a device whose\n hipDeviceAttributeGPUDirectRDMAWritesOrdering is greater than or equal to the requested\n scope already orders those writes and needs no explicit flush."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFlushGPUDirectRDMAWritesScope {
     #[doc = "< Visible to the device owning the memory"]
@@ -2516,6 +2548,7 @@ pub enum hipFlushGPUDirectRDMAWritesScope {
 pub type hipDeviceptr_t = *mut ::core::ffi::c_void;
 #[repr(i32)]
 #[doc = " HIP channel format kinds"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipChannelFormatKind {
     #[doc = "< Signed channel format"]
@@ -2529,6 +2562,7 @@ pub enum hipChannelFormatKind {
 }
 #[doc = " HIP channel format descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipChannelFormatDesc {
     pub x: ::core::ffi::c_int,
@@ -2539,6 +2573,7 @@ pub struct hipChannelFormatDesc {
     pub f: hipChannelFormatKind,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct hipArray {
     _unused: [u8; 0],
@@ -2547,6 +2582,7 @@ pub type hipArray_t = *mut hipArray;
 pub type hipArray_const_t = *const hipArray;
 #[repr(i32)]
 #[doc = " HIP array format"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipArray_Format {
     #[doc = "< Unsigned 8-bit array format"]
@@ -2568,6 +2604,7 @@ pub enum hipArray_Format {
 }
 #[doc = " HIP array descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_ARRAY_DESCRIPTOR {
     #[doc = "< Width of the array"]
@@ -2581,6 +2618,7 @@ pub struct HIP_ARRAY_DESCRIPTOR {
 }
 #[doc = " HIP 3D array descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_ARRAY3D_DESCRIPTOR {
     #[doc = "< Width of the array"]
@@ -2598,6 +2636,7 @@ pub struct HIP_ARRAY3D_DESCRIPTOR {
 }
 #[doc = " HIP 2D memory copy parameters"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hip_Memcpy2D {
     #[doc = "< Source width in bytes"]
@@ -2635,6 +2674,7 @@ pub struct hip_Memcpy2D {
 }
 #[doc = " HIP mipmapped array"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMipmappedArray {
     #[doc = "< Data pointer of the mipmapped array"]
@@ -2666,6 +2706,7 @@ pub type hipmipmappedArray = hipMipmappedArray_t;
 pub type hipMipmappedArray_const_t = *const hipMipmappedArray;
 #[repr(i32)]
 #[doc = " HIP resource types"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipResourceType {
     #[doc = "< Array resource"]
@@ -2678,6 +2719,7 @@ pub enum hipResourceType {
     hipResourceTypePitch2D = 3,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPresourcetype_enum {
     #[doc = "< Array resource"]
@@ -2693,6 +2735,7 @@ pub use self::HIPresourcetype_enum as HIPresourcetype;
 pub use self::HIPresourcetype_enum as hipResourcetype;
 #[repr(i32)]
 #[doc = " HIP texture address modes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPaddress_mode_enum {
     #[doc = "< Wrap address mode"]
@@ -2708,6 +2751,7 @@ pub enum HIPaddress_mode_enum {
 pub use self::HIPaddress_mode_enum as HIPaddress_mode;
 #[repr(i32)]
 #[doc = " HIP filter modes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPfilter_mode_enum {
     #[doc = "< Filter mode point"]
@@ -2719,6 +2763,7 @@ pub enum HIPfilter_mode_enum {
 pub use self::HIPfilter_mode_enum as HIPfilter_mode;
 #[doc = " HIP texture descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_TEXTURE_DESC_st {
     #[doc = "< Address modes"]
@@ -2745,6 +2790,7 @@ pub struct HIP_TEXTURE_DESC_st {
 pub type HIP_TEXTURE_DESC = HIP_TEXTURE_DESC_st;
 #[repr(i32)]
 #[doc = " HIP texture resource view formats"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipResourceViewFormat {
     #[doc = "< No resource view format (use underlying resource format)"]
@@ -2820,6 +2866,7 @@ pub enum hipResourceViewFormat {
 }
 #[repr(i32)]
 #[doc = " HIP texture resource view formats"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPresourceViewFormat_enum {
     #[doc = "< No resource view format (use underlying resource format)"]
@@ -2897,6 +2944,7 @@ pub enum HIPresourceViewFormat_enum {
 pub use self::HIPresourceViewFormat_enum as HIPresourceViewFormat;
 #[doc = " HIP resource descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipResourceDesc {
     #[doc = "< Resource type"]
@@ -2904,6 +2952,7 @@ pub struct hipResourceDesc {
     pub res: hipResourceDesc__bindgen_ty_1,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipResourceDesc__bindgen_ty_1 {
     pub array: hipResourceDesc__bindgen_ty_1__bindgen_ty_1,
@@ -2912,18 +2961,21 @@ pub union hipResourceDesc__bindgen_ty_1 {
     pub pitch2D: hipResourceDesc__bindgen_ty_1__bindgen_ty_4,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_1 {
     #[doc = "< HIP array"]
     pub array: hipArray_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_2 {
     #[doc = "< HIP mipmapped array"]
     pub mipmap: hipMipmappedArray_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_3 {
     #[doc = "< Device pointer"]
@@ -2934,6 +2986,7 @@ pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_3 {
     pub sizeInBytes: usize,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_4 {
     #[doc = "< Device pointer"]
@@ -2949,6 +3002,7 @@ pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_4 {
 }
 #[doc = " HIP resource view descriptor struct"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st {
     #[doc = "< Resource type"]
@@ -2958,6 +3012,7 @@ pub struct HIP_RESOURCE_DESC_st {
     pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union HIP_RESOURCE_DESC_st__bindgen_ty_1 {
     pub array: HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_1,
@@ -2967,18 +3022,21 @@ pub union HIP_RESOURCE_DESC_st__bindgen_ty_1 {
     pub reserved: HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_5,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_1 {
     #[doc = "< HIP array"]
     pub hArray: hipArray_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_2 {
     #[doc = "< HIP mipmapped array"]
     pub hMipmappedArray: hipMipmappedArray_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_3 {
     #[doc = "< Device pointer"]
@@ -2991,6 +3049,7 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_3 {
     pub sizeInBytes: usize,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_4 {
     #[doc = "< Device pointer"]
@@ -3007,6 +3066,7 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_4 {
     pub pitchInBytes: usize,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_5 {
     pub reserved: [::core::ffi::c_int; 32usize],
@@ -3015,6 +3075,7 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_5 {
 pub type HIP_RESOURCE_DESC = HIP_RESOURCE_DESC_st;
 #[doc = " HIP resource view descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceViewDesc {
     #[doc = "< Resource view format"]
@@ -3036,6 +3097,7 @@ pub struct hipResourceViewDesc {
 }
 #[doc = " Resource view descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_VIEW_DESC_st {
     #[doc = "< Resource view format"]
@@ -3059,6 +3121,7 @@ pub struct HIP_RESOURCE_VIEW_DESC_st {
 #[doc = " Resource view descriptor"]
 pub type HIP_RESOURCE_VIEW_DESC = HIP_RESOURCE_VIEW_DESC_st;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpyKind {
     #[doc = "< Host-to-Host Copy"]
@@ -3076,6 +3139,7 @@ pub enum hipMemcpyKind {
 }
 #[doc = " HIP pithed pointer"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipPitchedPtr {
     #[doc = "< Pointer to the allocated memory"]
@@ -3089,6 +3153,7 @@ pub struct hipPitchedPtr {
 }
 #[doc = " HIP extent"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtent {
     pub width: usize,
@@ -3097,6 +3162,7 @@ pub struct hipExtent {
 }
 #[doc = "  HIP position"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipPos {
     #[doc = "< X coordinate"]
@@ -3108,6 +3174,7 @@ pub struct hipPos {
 }
 #[doc = " HIP 3D memory copy parameters"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DParms {
     #[doc = "< Source array"]
@@ -3129,6 +3196,7 @@ pub struct hipMemcpy3DParms {
 }
 #[doc = " HIP 3D memory copy"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_MEMCPY3D {
     #[doc = "< Source X in bytes"]
@@ -3184,6 +3252,7 @@ impl hipMemLocationType {
 }
 #[repr(i32)]
 #[doc = " Specifies the type of location"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemLocationType {
     hipMemLocationTypeInvalid = 0,
@@ -3197,6 +3266,7 @@ pub enum hipMemLocationType {
 }
 #[doc = " Specifies a memory location.\n\n To specify a gpu, set type = @p hipMemLocationTypeDevice and set id = the gpu's device ID"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemLocation {
     #[doc = "< Specifies the location type, which describes the meaning of id"]
@@ -3206,6 +3276,7 @@ pub struct hipMemLocation {
 }
 #[repr(i32)]
 #[doc = " Flags to specify for copies within a batch. Used with hipMemcpyBatchAsync"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpyFlags {
     #[doc = "< Default flag"]
@@ -3229,6 +3300,7 @@ pub enum hipMemcpyFlags {
 }
 #[repr(i32)]
 #[doc = " Comparison function for a per-entry wait in hipExtMemcpyBatchAsync.\n Numbered to match the underlying HSA wait function."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtMemcpyWaitOp {
     #[doc = "< No wait; addr must be NULL"]
@@ -3248,6 +3320,7 @@ pub enum hipExtMemcpyWaitOp {
 }
 #[doc = " Per-entry wait condition for hipExtMemcpyBatchAsync. Reserved for future use;\n layout may change before support is enabled."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtMemcpyWait {
     #[doc = "< GPU address to poll; NULL iff compareOp is None"]
@@ -3265,6 +3338,7 @@ pub struct hipExtMemcpyWait {
 }
 #[repr(i32)]
 #[doc = " Atomic operation for a per-entry signal in hipExtMemcpyBatchAsync."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtMemcpySignalOp {
     #[doc = "< No signal; addr must be NULL"]
@@ -3278,6 +3352,7 @@ pub enum hipExtMemcpySignalOp {
 }
 #[doc = " Per-entry signal-after-copy for hipExtMemcpyBatchAsync. Reserved for future use;\n layout may change before support is enabled."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtMemcpySignal {
     #[doc = "< GPU address to signal; NULL iff signalOp is None"]
@@ -3293,6 +3368,7 @@ pub struct hipExtMemcpySignal {
 }
 #[repr(i32)]
 #[doc = " Flags to specify order in which source pointer is accessed by Batch memcpy"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpySrcAccessOrder {
     #[doc = "< Default Invalid."]
@@ -3305,6 +3381,7 @@ pub enum hipMemcpySrcAccessOrder {
 }
 #[doc = " Attributes for copies within a batch."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpyAttributes {
     #[doc = "< Source access ordering to be observed for copies with this attribute."]
@@ -3318,6 +3395,7 @@ pub struct hipMemcpyAttributes {
 }
 #[doc = " Attributes for copies within a batch submitted through hipExtMemcpyBatchAsync.\n hipMemcpyAttributes plus a reserved tail; do not cast between the two."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtMemcpyAttributes {
     #[doc = "< Source access ordering; see hipMemcpySrcAccessOrder."]
@@ -3333,6 +3411,7 @@ pub struct hipExtMemcpyAttributes {
 }
 #[repr(i32)]
 #[doc = " Operand types for individual copies within a batch"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpy3DOperandType {
     #[doc = "< Mempcy operand is a valid pointer."]
@@ -3343,6 +3422,7 @@ pub enum hipMemcpy3DOperandType {
 }
 #[doc = " Struct representing offset into a hipArray_t in elements."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipOffset3D {
     pub x: usize,
@@ -3351,18 +3431,21 @@ pub struct hipOffset3D {
 }
 #[doc = "  Struct representing an operand for copy with hipMemcpy3DBatchAsync."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipMemcpy3DOperand {
     pub type_: hipMemcpy3DOperandType,
     pub op: hipMemcpy3DOperand__bindgen_ty_1,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipMemcpy3DOperand__bindgen_ty_1 {
     pub ptr: hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_1,
     pub array: hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_2,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_1 {
     pub ptr: *mut ::core::ffi::c_void,
@@ -3374,6 +3457,7 @@ pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_1 {
     pub locHint: hipMemLocation,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_2 {
     #[doc = "< Array struct for hipMemcpyOperandTypeArray."]
@@ -3383,6 +3467,7 @@ pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_2 {
 }
 #[doc = " HIP 3D Batch Op"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipMemcpy3DBatchOp {
     pub src: hipMemcpy3DOperand,
@@ -3392,6 +3477,7 @@ pub struct hipMemcpy3DBatchOp {
     pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DPeerParms {
     #[doc = "< Source memory address"]
@@ -3414,6 +3500,7 @@ pub struct hipMemcpy3DPeerParms {
     pub extent: hipExtent,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFunction_attribute {
     #[doc = "< The maximum number of threads per block. Depends\n< on function and device."]
@@ -3451,6 +3538,7 @@ pub enum hipFunction_attribute {
     HIP_FUNC_ATTRIBUTE_MAX = 16,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipPointer_attribute {
     #[doc = "< The context on which a pointer was allocated\n< @warning This attribute is not supported in HIP"]
@@ -3490,6 +3578,7 @@ pub enum hipPointer_attribute {
 }
 #[doc = " An opaque value that represents a hip texture object"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct __hip_texture {
     _unused: [u8; 0],
@@ -3497,6 +3586,7 @@ pub struct __hip_texture {
 pub type hipTextureObject_t = *mut __hip_texture;
 #[repr(i32)]
 #[doc = " hip texture address modes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipTextureAddressMode {
     hipAddressModeWrap = 0,
@@ -3506,6 +3596,7 @@ pub enum hipTextureAddressMode {
 }
 #[repr(i32)]
 #[doc = " hip texture filter modes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipTextureFilterMode {
     hipFilterModePoint = 0,
@@ -3513,6 +3604,7 @@ pub enum hipTextureFilterMode {
 }
 #[repr(i32)]
 #[doc = " hip texture read modes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipTextureReadMode {
     hipReadModeElementType = 0,
@@ -3520,6 +3612,7 @@ pub enum hipTextureReadMode {
 }
 #[doc = " hip texture reference"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct textureReference {
     pub normalized: ::core::ffi::c_int,
@@ -3539,6 +3632,7 @@ pub struct textureReference {
 }
 #[doc = " hip texture descriptor"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipTextureDesc {
     pub addressMode: [hipTextureAddressMode; 3usize],
@@ -3555,6 +3649,7 @@ pub struct hipTextureDesc {
 }
 #[doc = " An opaque value that represents a hip surface object"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct __hip_surface {
     _unused: [u8; 0],
@@ -3562,12 +3657,14 @@ pub struct __hip_surface {
 pub type hipSurfaceObject_t = *mut __hip_surface;
 #[doc = " hip surface reference"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct surfaceReference {
     pub surfaceObject: hipSurfaceObject_t,
 }
 #[repr(i32)]
 #[doc = " hip surface boundary modes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipSurfaceBoundaryMode {
     hipBoundaryModeZero = 0,
@@ -3575,24 +3672,28 @@ pub enum hipSurfaceBoundaryMode {
     hipBoundaryModeClamp = 2,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipCtx_t {
     _unused: [u8; 0],
 }
 pub type hipCtx_t = *mut ihipCtx_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipExecutionCtx_t {
     _unused: [u8; 0],
 }
 pub type hipExecutionCtx_t = *mut ihipExecutionCtx_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipDevResourceDesc_t {
     _unused: [u8; 0],
 }
 pub type hipDevResourceDesc_t = *mut ihipDevResourceDesc_t;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDevResourceType {
     hipDevResourceTypeInvalid = 0,
@@ -3601,24 +3702,28 @@ pub enum hipDevResourceType {
     hipDevResourceTypeWorkqueue = 10000,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDevSmResourceGroup_flags {
     hipDevSmResourceGroupDefault = 0,
     hipDevSmResourceGroupBackfill = 1,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDevSmResourceSplitByCount_flags {
     hipDevSmResourceSplitIgnoreSmCoscheduling = 1,
     hipDevSmResourceSplitMaxPotentialClusterSize = 2,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDevWorkqueueConfigScope {
     hipDevWorkqueueConfigScopeDeviceCtx = 0,
     hipDevWorkqueueConfigScopeGreenCtxBalanced = 1,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDevSmResource {
     pub smCount: ::core::ffi::c_uint,
@@ -3627,6 +3732,7 @@ pub struct hipDevSmResource {
     pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDevWorkqueueConfigResource {
     pub device: ::core::ffi::c_int,
@@ -3634,11 +3740,13 @@ pub struct hipDevWorkqueueConfigResource {
     pub sharingScope: hipDevWorkqueueConfigScope,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDevWorkqueueResource {
     pub reserved: [::core::ffi::c_uchar; 40usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipDevResource_st {
     pub type_: hipDevResourceType,
@@ -3647,6 +3755,7 @@ pub struct hipDevResource_st {
     pub nextResource: *mut hipDevResource_st,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipDevResource_st__bindgen_ty_1 {
     pub sm: hipDevSmResource,
@@ -3656,6 +3765,7 @@ pub union hipDevResource_st__bindgen_ty_1 {
 }
 pub type hipDevResource = hipDevResource_st;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipDevSmResourceGroupParams_st {
     pub smCount: ::core::ffi::c_uint,
@@ -3667,6 +3777,7 @@ pub struct hipDevSmResourceGroupParams_st {
 pub type hipDevSmResourceGroupParams = hipDevSmResourceGroupParams_st;
 pub type hipDevice_t = ::core::ffi::c_int;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDeviceP2PAttr {
     hipDevP2PAttrPerformanceRank = 0,
@@ -3675,6 +3786,7 @@ pub enum hipDeviceP2PAttr {
     hipDevP2PAttrHipArrayAccessSupported = 3,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDriverEntryPointQueryResult {
     hipDriverEntryPointSuccess = 0,
@@ -3682,60 +3794,70 @@ pub enum hipDriverEntryPointQueryResult {
     hipDriverEntryPointVersionNotSufficent = 2,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipStream_t {
     _unused: [u8; 0],
 }
 pub type hipStream_t = *mut ihipStream_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipIpcMemHandle_st {
     pub reserved: [::core::ffi::c_char; 64usize],
 }
 pub type hipIpcMemHandle_t = hipIpcMemHandle_st;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipIpcEventHandle_st {
     pub reserved: [::core::ffi::c_char; 64usize],
 }
 pub type hipIpcEventHandle_t = hipIpcEventHandle_st;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemFabricHandle_st {
     pub data: [::core::ffi::c_uchar; 64usize],
 }
 pub type hipMemFabricHandle_t = hipMemFabricHandle_st;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipModule_t {
     _unused: [u8; 0],
 }
 pub type hipModule_t = *mut ihipModule_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipModuleSymbol_t {
     _unused: [u8; 0],
 }
 pub type hipFunction_t = *mut ihipModuleSymbol_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipLinkState_t {
     _unused: [u8; 0],
 }
 pub type hipLinkState_t = *mut ihipLinkState_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipLibrary_t {
     _unused: [u8; 0],
 }
 pub type hipLibrary_t = *mut ihipLibrary_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipKernel_t {
     _unused: [u8; 0],
 }
 pub type hipKernel_t = *mut ihipKernel_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipMemPoolHandle_t {
     _unused: [u8; 0],
@@ -3743,6 +3865,7 @@ pub struct ihipMemPoolHandle_t {
 #[doc = " HIP memory pool"]
 pub type hipMemPool_t = *mut ihipMemPoolHandle_t;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipFuncAttributes {
     pub binaryVersion: ::core::ffi::c_int,
@@ -3757,6 +3880,7 @@ pub struct hipFuncAttributes {
     pub sharedSizeBytes: usize,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipEvent_t {
     _unused: [u8; 0],
@@ -3764,6 +3888,7 @@ pub struct ihipEvent_t {
 pub type hipEvent_t = *mut ihipEvent_t;
 #[repr(i32)]
 #[doc = " hipLimit\n\n @note In HIP device limit-related APIs, any input limit value other than those defined in the\n enum is treated as \"UnsupportedLimit\" by default."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLimit_t {
     #[doc = "< Limit of stack size in bytes on the current device, per\n< thread. The size is in units of 256 dwords, up to the\n< limit of (128K - 16)"]
@@ -3785,6 +3910,7 @@ pub enum hipLimit_t {
 }
 #[repr(i32)]
 #[doc = " Operations for hipStreamBatchMemOp"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamBatchMemOpType {
     hipStreamMemOpWaitValue32 = 1,
@@ -3798,6 +3924,7 @@ pub enum hipStreamBatchMemOpType {
 }
 #[doc = " @brief Union representing batch memory operation parameters for HIP streams.\n\n hipStreamBatchMemOpParams is used to specify the parameters for batch memory\n operations in a HIP stream. This union supports various operations including\n waiting for a specific value, writing a value, and different flags for wait conditions.\n\n @details\n The union includes fields for different types of operations defined in the\n enum hipStreamBatchMemOpType:\n - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.\n - hipStreamMemOpWriteValue32: Write a 32-bit value.\n - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.\n - hipStreamMemOpWriteValue64: Write a 64-bit value.\n\n Each operation type includes an address, the value to wait for or write, flags, and an\n optional alias that is not relevant on AMD GPUs. Flags can be used to specify different\n wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.\n\n Example usage:\n @code\n hipStreamBatchMemOpParams myArray[2];\n myArray[0].operation = hipStreamMemOpWaitValue32;\n myArray[0].waitValue.address = waitAddr1;\n myArray[0].waitValue.value = 0x1;\n myArray[0].waitValue.flags = CU_STREAM_WAIT_VALUE_EQ;\n\n myArray[1].operation = hipStreamMemOpWriteValue32;\n myArray[1].writeValue.address = writeAddr1;\n myArray[1].writeValue.value = 0x1;\n myArray[1].writeValue.flags = 0x0;\n\n result = hipStreamBatchMemOp(stream, 2, myArray, 0);\n @endcode"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipStreamBatchMemOpParams_union {
     pub operation: hipStreamBatchMemOpType,
@@ -3810,6 +3937,7 @@ pub union hipStreamBatchMemOpParams_union {
     pub pad: [u64; 6usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t {
     pub operation: hipStreamBatchMemOpType,
@@ -3821,12 +3949,14 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t {
     pub alias: hipDeviceptr_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t__bindgen_ty_1 {
     pub value: u32,
     pub value64: u64,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t {
     pub operation: hipStreamBatchMemOpType,
@@ -3838,18 +3968,21 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t {
     pub alias: hipDeviceptr_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t__bindgen_ty_1 {
     pub value: u32,
     pub value64: u64,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpFlushRemoteWritesParams_t {
     pub operation: hipStreamBatchMemOpType,
     pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
     pub operation: hipStreamBatchMemOpType,
@@ -3859,6 +3992,7 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
 pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
 #[doc = " @brief Structure representing node parameters for batch memory operations in HIP graphs.\n\n hipBatchMemOpNodeParams is used to specify the parameters for batch memory\n operations in HIP graphs. This struct includes the context to use for the operations, the\n number of operations, and an array of hipStreamBatchMemOpParams that describe the operations.\n\n @details\n The structure includes the following fields:\n - ctx: The HIP context to use for the operations.\n - count: The number of operations in the paramArray.\n - paramArray: A pointer to an array of hipStreamBatchMemOpParams.\n - flags: Flags to control the node.\n\n Example usage:\n @code\n hipBatchMemOpNodeParams nodeParams;\n nodeParams.ctx = context;\n nodeParams.count = ARRAY_SIZE;\n nodeParams.paramArray = myArray;\n nodeParams.flags = 0;\n\n Pass nodeParams to a HIP graph APIs hipGraphAddBatchMemOpNode, hipGraphBatchMemOpNodeGetParams,\n hipGraphBatchMemOpNodeSetParams, hipGraphExecBatchMemOpNodeSetParams\n @endcode"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipBatchMemOpNodeParams {
     pub ctx: hipCtx_t,
@@ -3868,6 +4002,7 @@ pub struct hipBatchMemOpNodeParams {
 }
 #[repr(i32)]
 #[doc = " HIP Memory Advise values\n\n @note This memory advise enumeration is used on Linux, not Windows."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemoryAdvise {
     #[doc = "< Data will mostly be read and only occassionally\n< be written to"]
@@ -3889,6 +4024,7 @@ pub enum hipMemoryAdvise {
 }
 #[repr(i32)]
 #[doc = " HIP Coherency Mode"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeCoherencyMode {
     #[doc = "< Updates to memory with this attribute can be\n< done coherently from all devices"]
@@ -3900,6 +4036,7 @@ pub enum hipMemRangeCoherencyMode {
 }
 #[repr(i32)]
 #[doc = " HIP range attributes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeAttribute {
     #[doc = "< Whether the range will mostly be read and\n< only occassionally be written to"]
@@ -3915,6 +4052,7 @@ pub enum hipMemRangeAttribute {
 }
 #[repr(i32)]
 #[doc = " HIP memory pool attributes"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemPoolAttr {
     #[doc = " (value type = int)\n Allow @p hipMemAllocAsync to use memory asynchronously freed\n in another streams as long as a stream ordering dependency\n of the allocating stream on the free action exists.\n hip events and null stream interactions can create the required\n stream ordered dependencies. (default enabled)"]
@@ -3936,6 +4074,7 @@ pub enum hipMemPoolAttr {
 }
 #[repr(i32)]
 #[doc = " Specifies the memory protection flags for mapping\n"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAccessFlags {
     #[doc = "< Default, make the address range not accessible"]
@@ -3947,6 +4086,7 @@ pub enum hipMemAccessFlags {
 }
 #[doc = " Memory access descriptor structure is used to specify memory access\n permissions for a virtual memory region in Virtual Memory Management API.\n This structure changes read, and write permissions for\n specific memory regions."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAccessDesc {
     #[doc = "< Location on which the accessibility has to change"]
@@ -3956,6 +4096,7 @@ pub struct hipMemAccessDesc {
 }
 #[repr(i32)]
 #[doc = " Defines the allocation types"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAllocationType {
     hipMemAllocationTypeInvalid = 0,
@@ -3970,6 +4111,7 @@ pub enum hipMemAllocationType {
 }
 #[repr(i32)]
 #[doc = " Flags for specifying handle types for memory pool allocations\n"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAllocationHandleType {
     #[doc = "< Does not allow any export mechanism"]
@@ -3984,6 +4126,7 @@ pub enum hipMemAllocationHandleType {
 }
 #[doc = " Specifies the properties of allocations made from the pool."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemPoolProps {
     #[doc = "< Allocation type. Currently must be specified as @p hipMemAllocationTypePinned"]
@@ -4001,12 +4144,14 @@ pub struct hipMemPoolProps {
 }
 #[doc = " Opaque data structure for exporting a pool allocation"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemPoolPtrExportData {
     pub reserved: [::core::ffi::c_uchar; 64usize],
 }
 #[repr(i32)]
 #[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFuncAttribute {
     #[doc = "< The maximum number of bytes requested for dynamically allocated shared memory"]
@@ -4029,6 +4174,7 @@ pub enum hipFuncAttribute {
 }
 #[repr(i32)]
 #[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFuncCache_t {
     #[doc = "< no preference for shared memory or L1 (default)"]
@@ -4042,6 +4188,7 @@ pub enum hipFuncCache_t {
 }
 #[repr(i32)]
 #[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipSharedMemConfig {
     #[doc = "< The compiler selects a device-specific value for the banking."]
@@ -4053,6 +4200,7 @@ pub enum hipSharedMemConfig {
 }
 #[doc = " Struct for data in 3D"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct dim3 {
     #[doc = "< x"]
@@ -4064,6 +4212,7 @@ pub struct dim3 {
 }
 #[doc = " struct hipLaunchParams_t"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchParams_t {
     #[doc = "< Device function symbol"]
@@ -4083,6 +4232,7 @@ pub struct hipLaunchParams_t {
 pub type hipLaunchParams = hipLaunchParams_t;
 #[doc = " struct hipFunctionLaunchParams_t"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipFunctionLaunchParams_t {
     #[doc = "< Kernel to launch"]
@@ -4109,6 +4259,7 @@ pub struct hipFunctionLaunchParams_t {
 #[doc = " struct hipFunctionLaunchParams_t"]
 pub type hipFunctionLaunchParams = hipFunctionLaunchParams_t;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExternalMemoryHandleType_enum {
     hipExternalMemoryHandleTypeOpaqueFd = 1,
@@ -4122,6 +4273,7 @@ pub enum hipExternalMemoryHandleType_enum {
 }
 pub use self::hipExternalMemoryHandleType_enum as hipExternalMemoryHandleType;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipExternalMemoryHandleDesc_st {
     pub type_: hipExternalMemoryHandleType,
@@ -4131,6 +4283,7 @@ pub struct hipExternalMemoryHandleDesc_st {
     pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipExternalMemoryHandleDesc_st__bindgen_ty_1 {
     pub fd: ::core::ffi::c_int,
@@ -4138,6 +4291,7 @@ pub union hipExternalMemoryHandleDesc_st__bindgen_ty_1 {
     pub nvSciBufObject: *const ::core::ffi::c_void,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalMemoryHandleDesc_st__bindgen_ty_1__bindgen_ty_1 {
     pub handle: *mut ::core::ffi::c_void,
@@ -4145,6 +4299,7 @@ pub struct hipExternalMemoryHandleDesc_st__bindgen_ty_1__bindgen_ty_1 {
 }
 pub type hipExternalMemoryHandleDesc = hipExternalMemoryHandleDesc_st;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalMemoryBufferDesc_st {
     pub offset: ::core::ffi::c_ulonglong,
@@ -4154,6 +4309,7 @@ pub struct hipExternalMemoryBufferDesc_st {
 }
 pub type hipExternalMemoryBufferDesc = hipExternalMemoryBufferDesc_st;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalMemoryMipmappedArrayDesc_st {
     pub offset: ::core::ffi::c_ulonglong,
@@ -4165,6 +4321,7 @@ pub struct hipExternalMemoryMipmappedArrayDesc_st {
 pub type hipExternalMemoryMipmappedArrayDesc = hipExternalMemoryMipmappedArrayDesc_st;
 pub type hipExternalMemory_t = *mut ::core::ffi::c_void;
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExternalSemaphoreHandleType_enum {
     hipExternalSemaphoreHandleTypeOpaqueFd = 1,
@@ -4180,6 +4337,7 @@ pub enum hipExternalSemaphoreHandleType_enum {
 }
 pub use self::hipExternalSemaphoreHandleType_enum as hipExternalSemaphoreHandleType;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreHandleDesc_st {
     pub type_: hipExternalSemaphoreHandleType,
@@ -4188,6 +4346,7 @@ pub struct hipExternalSemaphoreHandleDesc_st {
     pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipExternalSemaphoreHandleDesc_st__bindgen_ty_1 {
     pub fd: ::core::ffi::c_int,
@@ -4195,6 +4354,7 @@ pub union hipExternalSemaphoreHandleDesc_st__bindgen_ty_1 {
     pub NvSciSyncObj: *const ::core::ffi::c_void,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreHandleDesc_st__bindgen_ty_1__bindgen_ty_1 {
     pub handle: *mut ::core::ffi::c_void,
@@ -4203,6 +4363,7 @@ pub struct hipExternalSemaphoreHandleDesc_st__bindgen_ty_1__bindgen_ty_1 {
 pub type hipExternalSemaphoreHandleDesc = hipExternalSemaphoreHandleDesc_st;
 pub type hipExternalSemaphore_t = *mut ::core::ffi::c_void;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st {
     pub params: hipExternalSemaphoreSignalParams_st__bindgen_ty_1,
@@ -4210,6 +4371,7 @@ pub struct hipExternalSemaphoreSignalParams_st {
     pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1 {
     pub fence: hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_1,
@@ -4218,17 +4380,20 @@ pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1 {
     pub reserved: [::core::ffi::c_uint; 12usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_1 {
     pub value: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_2 {
     pub fence: *mut ::core::ffi::c_void,
     pub reserved: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_3 {
     pub key: ::core::ffi::c_ulonglong,
@@ -4236,6 +4401,7 @@ pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_3 {
 pub type hipExternalSemaphoreSignalParams = hipExternalSemaphoreSignalParams_st;
 #[doc = " External semaphore wait parameters, compatible with driver type"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st {
     pub params: hipExternalSemaphoreWaitParams_st__bindgen_ty_1,
@@ -4243,6 +4409,7 @@ pub struct hipExternalSemaphoreWaitParams_st {
     pub reserved: [::core::ffi::c_uint; 16usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1 {
     pub fence: hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_1,
@@ -4251,17 +4418,20 @@ pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1 {
     pub reserved: [::core::ffi::c_uint; 10usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_1 {
     pub value: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_2 {
     pub fence: *mut ::core::ffi::c_void,
     pub reserved: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_3 {
     pub key: ::core::ffi::c_ulonglong,
@@ -4271,6 +4441,7 @@ pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_3 {
 pub type hipExternalSemaphoreWaitParams = hipExternalSemaphoreWaitParams_st;
 #[repr(i32)]
 #[doc = " HIP Access falgs for Interop resources."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphicsRegisterFlags {
     hipGraphicsRegisterFlagsNone = 0,
@@ -4282,6 +4453,7 @@ pub enum hipGraphicsRegisterFlags {
     hipGraphicsRegisterFlagsTextureGather = 8,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct _hipGraphicsResource {
     _unused: [u8; 0],
@@ -4289,6 +4461,7 @@ pub struct _hipGraphicsResource {
 pub type hipGraphicsResource = _hipGraphicsResource;
 pub type hipGraphicsResource_t = *mut hipGraphicsResource;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipGraph {
     _unused: [u8; 0],
@@ -4296,6 +4469,7 @@ pub struct ihipGraph {
 #[doc = " An opaque value that represents a hip graph"]
 pub type hipGraph_t = *mut ihipGraph;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct hipGraphNode {
     _unused: [u8; 0],
@@ -4303,6 +4477,7 @@ pub struct hipGraphNode {
 #[doc = " An opaque value that represents a hip graph node"]
 pub type hipGraphNode_t = *mut hipGraphNode;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct hipGraphExec {
     _unused: [u8; 0],
@@ -4310,6 +4485,7 @@ pub struct hipGraphExec {
 #[doc = " An opaque value that represents a hip graph Exec"]
 pub type hipGraphExec_t = *mut hipGraphExec;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct hipUserObject {
     _unused: [u8; 0],
@@ -4318,6 +4494,7 @@ pub struct hipUserObject {
 pub type hipUserObject_t = *mut hipUserObject;
 #[repr(i32)]
 #[doc = " hipGraphNodeType"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphNodeType {
     #[doc = "< GPU kernel node"]
@@ -4355,12 +4532,14 @@ pub enum hipGraphNodeType {
 pub type hipHostFn_t =
     ::std::option::Option<unsafe extern "C" fn(userData: *mut ::core::ffi::c_void)>;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipHostNodeParams {
     pub fn_: hipHostFn_t,
     pub userData: *mut ::core::ffi::c_void,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipKernelNodeParams {
     pub blockDim: dim3,
@@ -4371,6 +4550,7 @@ pub struct hipKernelNodeParams {
     pub sharedMemBytes: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemsetParams {
     pub dst: *mut ::core::ffi::c_void,
@@ -4381,6 +4561,7 @@ pub struct hipMemsetParams {
     pub width: usize,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAllocNodeParams {
     #[doc = "< Pool properties, which contain where\n< the location should reside"]
@@ -4396,6 +4577,7 @@ pub struct hipMemAllocNodeParams {
 }
 #[repr(i32)]
 #[doc = " Specifies performance hint with hipAccessPolicyWindow"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipAccessProperty {
     #[doc = "< Normal cache persistence."]
@@ -4407,6 +4589,7 @@ pub enum hipAccessProperty {
 }
 #[doc = " Specifies access policy for a window, a contiguous extent of memory\n beginning at base_ptr and ending at base_ptr + num_bytes."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipAccessPolicyWindow {
     #[doc = "< Starting address of the access policy window"]
@@ -4422,6 +4605,7 @@ pub struct hipAccessPolicyWindow {
 }
 #[doc = " Memory Synchronization Domain map"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchMemSyncDomainMap {
     #[doc = "< The default domain ID to use for designated kernels"]
@@ -4431,6 +4615,7 @@ pub struct hipLaunchMemSyncDomainMap {
 }
 #[repr(i32)]
 #[doc = " Memory Synchronization Domain"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLaunchMemSyncDomain {
     #[doc = "< Launch kernels in the default domain"]
@@ -4440,6 +4625,7 @@ pub enum hipLaunchMemSyncDomain {
 }
 #[repr(i32)]
 #[doc = " Stream Synchronization Policy.\n Can be set with hipStreamSetAttribute"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipSynchronizationPolicy {
     #[doc = "< Default Synchronization Policy. Host thread waits actively"]
@@ -4452,6 +4638,7 @@ pub enum hipSynchronizationPolicy {
     hipSyncPolicyBlockingSync = 4,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipClusterSchedulingPolicy {
     #[doc = "< the default scheduling policy"]
@@ -4462,6 +4649,7 @@ pub enum hipClusterSchedulingPolicy {
 }
 #[repr(i32)]
 #[doc = " @brief Temporal locality hint for dynamic data prefetch."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtDynDataPrefetchTemporal {
     #[doc = "< Regular temporal locality"]
@@ -4471,6 +4659,7 @@ pub enum hipExtDynDataPrefetchTemporal {
 }
 #[doc = " @brief Describes one 2D memory region to prefetch into L2 cache.\n\n @p address must be aligned to the device's L2 cache line size.\n @p width is measured in bytes and must be a multiple of the cache line size.\n @p height is the number of rows to prefetch.\n @p stride is the byte stride between the start of consecutive rows."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtDynDataPrefetchRegion {
     #[doc = "< Base address (must be cache-line aligned)"]
@@ -4484,6 +4673,7 @@ pub struct hipExtDynDataPrefetchRegion {
 }
 #[doc = " @brief Configuration for dynamic data prefetch.\n\n Pointed to by a launch attribute via @ref hipLaunchAttributeExtDynDataPrefetch.\n @p numRegions must not exceed the device limit queried via\n @ref hipDeviceAttributeMaxDynDataPrefetchRegions (use @ref hipDeviceGetAttribute).\n\n Cooperative prefetch is always enabled internally; the user only controls\n the temporal policy."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtDynDataPrefetchConfig {
     #[doc = "< Number of valid regions (1-max)"]
@@ -4495,6 +4685,7 @@ pub struct hipExtDynDataPrefetchConfig {
 }
 #[repr(i32)]
 #[doc = "  Launch Attribute ID"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLaunchAttributeID {
     #[doc = "< Ignored entry"]
@@ -4522,6 +4713,7 @@ pub enum hipLaunchAttributeID {
 pub type hipStreamAttrID = hipLaunchAttributeID;
 #[doc = "  Launch Attribute Value"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipLaunchAttributeValue {
     #[doc = "< 64 byte padding"]
@@ -4546,6 +4738,7 @@ pub union hipLaunchAttributeValue {
 }
 #[doc = " @brief Specifies the desired cluster dimensions for a kernel launch.\n\n This opaque type is used as the value for the launch attribute\n ::hipLaunchAttributeClusterDimension. It defines the dimensions of the\n compute cluster in terms of blocks, where each field must evenly divide\n the corresponding grid dimension:\n\n  - \\p x: Number of blocks along the X-axis.\n  - \\p y: Number of blocks along the Y-axis.\n  - \\p z: Number of blocks along the Z-axis."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchAttributeValue__bindgen_ty_1 {
     pub x: ::core::ffi::c_uint,
@@ -4554,6 +4747,7 @@ pub struct hipLaunchAttributeValue__bindgen_ty_1 {
 }
 #[repr(i32)]
 #[doc = " Graph execution update result"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphExecUpdateResult {
     #[doc = "< The update succeeded"]
@@ -4570,6 +4764,7 @@ pub enum hipGraphExecUpdateResult {
     hipGraphExecUpdateErrorUnsupportedFunctionChange = 7,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamCaptureMode {
     hipStreamCaptureModeGlobal = 0,
@@ -4577,6 +4772,7 @@ pub enum hipStreamCaptureMode {
     hipStreamCaptureModeRelaxed = 2,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamCaptureStatus {
     #[doc = "< Stream is not capturing"]
@@ -4587,6 +4783,7 @@ pub enum hipStreamCaptureStatus {
     hipStreamCaptureStatusInvalidated = 2,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamUpdateCaptureDependenciesFlags {
     #[doc = "< Add new nodes to the dependency set"]
@@ -4595,6 +4792,7 @@ pub enum hipStreamUpdateCaptureDependenciesFlags {
     hipStreamSetCaptureDependencies = 1,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphMemAttributeType {
     hipGraphMemAttrUsedMemCurrent = 0,
@@ -4606,18 +4804,21 @@ pub enum hipGraphMemAttributeType {
     hipGraphMemAttrReservedMemHigh = 3,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipUserObjectFlags {
     #[doc = "< Destructor execution is not synchronized."]
     hipUserObjectNoDestructorSync = 1,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipUserObjectRetainFlags {
     #[doc = "< Add new reference or retain."]
     hipGraphUserObjectMove = 1,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphInstantiateFlags {
     hipGraphInstantiateFlagAutoFreeOnLaunch = 1,
@@ -4627,6 +4828,7 @@ pub enum hipGraphInstantiateFlags {
     hipGraphInstantiateFlagUseNodePriority = 8,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphDebugDotFlags {
     hipGraphDebugDotFlagsVerbose = 1,
@@ -4646,6 +4848,7 @@ pub enum hipGraphDebugDotFlags {
 }
 #[repr(i32)]
 #[doc = " hipGraphInstantiateWithParams results"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphInstantiateResult {
     #[doc = "< Instantiation Success"]
@@ -4661,6 +4864,7 @@ pub enum hipGraphInstantiateResult {
 }
 #[doc = " Graph Instantiation parameters"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipGraphInstantiateParams {
     #[doc = "< The node which caused instantiation to fail, if any"]
@@ -4674,6 +4878,7 @@ pub struct hipGraphInstantiateParams {
 }
 #[doc = " Memory allocation properties"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipMemAllocationProp {
     #[doc = "< Memory allocation type"]
@@ -4686,6 +4891,7 @@ pub struct hipMemAllocationProp {
     pub allocFlags: hipMemAllocationProp__bindgen_ty_2,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipMemAllocationProp__bindgen_ty_1 {
     #[doc = "< Requested handle type"]
@@ -4694,6 +4900,7 @@ pub union hipMemAllocationProp__bindgen_ty_1 {
     pub requestedHandleTypes: hipMemAllocationHandleType,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAllocationProp__bindgen_ty_2 {
     #[doc = "< Compression type"]
@@ -4705,6 +4912,7 @@ pub struct hipMemAllocationProp__bindgen_ty_2 {
 }
 #[doc = " External semaphore signal node parameters"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreSignalNodeParams {
     pub extSemArray: *mut hipExternalSemaphore_t,
@@ -4713,6 +4921,7 @@ pub struct hipExternalSemaphoreSignalNodeParams {
 }
 #[doc = " External semaphore wait node parameters"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExternalSemaphoreWaitNodeParams {
     pub extSemArray: *mut hipExternalSemaphore_t,
@@ -4720,6 +4929,7 @@ pub struct hipExternalSemaphoreWaitNodeParams {
     pub numExtSems: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct ihipMemGenericAllocationHandle {
     _unused: [u8; 0],
@@ -4728,6 +4938,7 @@ pub struct ihipMemGenericAllocationHandle {
 pub type hipMemGenericAllocationHandle_t = *mut ihipMemGenericAllocationHandle;
 #[repr(i32)]
 #[doc = " Flags for granularity"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAllocationGranularity_flags {
     #[doc = "< Minimum granularity"]
@@ -4737,6 +4948,7 @@ pub enum hipMemAllocationGranularity_flags {
 }
 #[repr(i32)]
 #[doc = " Memory handle type"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemHandleType {
     #[doc = "< Generic handle type"]
@@ -4744,6 +4956,7 @@ pub enum hipMemHandleType {
 }
 #[repr(i32)]
 #[doc = " Memory operation types"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemOperationType {
     #[doc = "< Map operation"]
@@ -4753,6 +4966,7 @@ pub enum hipMemOperationType {
 }
 #[repr(i32)]
 #[doc = " Subresource types for sparse arrays"]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipArraySparseSubresourceType {
     #[doc = "< Sparse level"]
@@ -4762,6 +4976,7 @@ pub enum hipArraySparseSubresourceType {
 }
 #[doc = " Map info for arrays"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipArrayMapInfo {
     #[doc = "< Resource type"]
@@ -4785,18 +5000,21 @@ pub struct hipArrayMapInfo {
     pub reserved: [::core::ffi::c_uint; 2usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipArrayMapInfo__bindgen_ty_1 {
     pub mipmap: hipMipmappedArray,
     pub array: hipArray_t,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipArrayMapInfo__bindgen_ty_2 {
     pub sparseLevel: hipArrayMapInfo__bindgen_ty_2__bindgen_ty_1,
     pub miptail: hipArrayMapInfo__bindgen_ty_2__bindgen_ty_2,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_1 {
     #[doc = "< For mipmapped arrays must be a valid mipmap level. For arrays must be zero"]
@@ -4817,6 +5035,7 @@ pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_1 {
     pub extentDepth: ::core::ffi::c_uint,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_2 {
     #[doc = "< For layered arrays must be a valid layer index. Otherwise, must be zero"]
@@ -4827,12 +5046,14 @@ pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_2 {
     pub size: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipArrayMapInfo__bindgen_ty_3 {
     pub memHandle: hipMemGenericAllocationHandle_t,
 }
 #[doc = " Memcpy node params"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpyNodeParams {
     #[doc = "< Must be zero."]
@@ -4844,6 +5065,7 @@ pub struct hipMemcpyNodeParams {
 }
 #[doc = " Child graph node params"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipChildGraphNodeParams {
     #[doc = "< Either the child graph to clone into the node, or\n< a handle to the graph possesed by the node used during query"]
@@ -4851,6 +5073,7 @@ pub struct hipChildGraphNodeParams {
 }
 #[doc = " Event record node params"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipEventWaitNodeParams {
     #[doc = "< Event to wait on"]
@@ -4858,6 +5081,7 @@ pub struct hipEventWaitNodeParams {
 }
 #[doc = " Event record node params"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipEventRecordNodeParams {
     #[doc = "< The event to be recorded when node executes"]
@@ -4865,6 +5089,7 @@ pub struct hipEventRecordNodeParams {
 }
 #[doc = " Memory free node params"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemFreeNodeParams {
     #[doc = "< the pointer to be freed"]
@@ -4872,6 +5097,7 @@ pub struct hipMemFreeNodeParams {
 }
 #[doc = " Params for different graph nodes"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipGraphNodeParams {
     pub type_: hipGraphNodeType,
@@ -4880,6 +5106,7 @@ pub struct hipGraphNodeParams {
     pub reserved2: ::core::ffi::c_longlong,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipGraphNodeParams__bindgen_ty_1 {
     pub reserved1: [::core::ffi::c_longlong; 29usize],
@@ -4896,12 +5123,14 @@ pub union hipGraphNodeParams__bindgen_ty_1 {
     pub free: hipMemFreeNodeParams,
 }
 #[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphDependencyType {
     hipGraphDependencyTypeDefault = 0,
     hipGraphDependencyTypeProgrammatic = 1,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipGraphEdgeData {
     #[doc = "< This indicates when the dependency is triggered from the upstream node on the\n< edge. The meaning is specfic to the node type. A value of 0 in all cases\n< means full completion of the upstream node, with memory visibility to the\n< downstream node or portion thereof (indicated by to_port). Only kernel nodes\n< define non-zero ports. A kernel node can use the following output port types:\n< hipGraphKernelNodePortDefault, hipGraphKernelNodePortProgrammatic, or\n< hipGraphKernelNodePortLaunchCompletion."]
@@ -4915,6 +5144,7 @@ pub struct hipGraphEdgeData {
 }
 #[doc = " Used to specify custom attributes for launching kernels"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipLaunchAttribute_st {
     #[doc = "< Identifier of the launch attribute"]
@@ -4924,6 +5154,7 @@ pub struct hipLaunchAttribute_st {
     pub __bindgen_anon_1: hipLaunchAttribute_st__bindgen_ty_1,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipLaunchAttribute_st__bindgen_ty_1 {
     #[doc = "< Value associated with the launch attribute"]
@@ -4935,6 +5166,7 @@ pub union hipLaunchAttribute_st__bindgen_ty_1 {
 pub type hipLaunchAttribute = hipLaunchAttribute_st;
 #[doc = " HIP extensible launch configuration"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchConfig_st {
     #[doc = "< Grid dimensions"]
@@ -4954,6 +5186,7 @@ pub struct hipLaunchConfig_st {
 pub type hipLaunchConfig_t = hipLaunchConfig_st;
 #[doc = " HIP driver extensible launch configuration"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_LAUNCH_CONFIG_st {
     #[doc = "< Grid width in blocks"]
@@ -4981,6 +5214,7 @@ pub struct HIP_LAUNCH_CONFIG_st {
 pub type HIP_LAUNCH_CONFIG = HIP_LAUNCH_CONFIG_st;
 #[doc = " Struct representing array memory requirements."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMemoryRequirements {
     pub alignment: usize,
@@ -4988,6 +5222,7 @@ pub struct hipArrayMemoryRequirements {
 }
 #[repr(i32)]
 #[doc = " Requested handle type for address range."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeHandleType {
     hipMemRangeHandleTypeDmaBufFd = 1,
@@ -4995,6 +5230,7 @@ pub enum hipMemRangeHandleType {
 }
 #[repr(i32)]
 #[doc = " Mem Range Flags used in hipMemGetHandleForAddressRange."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeFlags {
     hipMemRangeFlagDmaBufMappingTypePcie = 1,
@@ -5009,11 +5245,13 @@ pub type hipStreamCallback_t = ::std::option::Option<
     ),
 >;
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct __crt_locale_data {
     pub _address: u8,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct __crt_multibyte_data {
     pub _address: u8,

@@ -15,6 +15,7 @@ use rocm_sys::hip::{
 use crate::hip::{HipError, gfx::GfxVersion, memory::MemPool};
 
 #[repr(transparent)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Device {
     dev: hipDevice_t,
@@ -191,6 +192,7 @@ pub fn set_flags(flags: u32) -> Result<(), HipError> {
 pub type DeviceProp = hipDeviceProp_t;
 
 #[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum DeviceLimit {
     StackSize = 0,
@@ -203,6 +205,7 @@ pub enum DeviceLimit {
 }
 
 #[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum DeviceAttr {
     CudaCompatibleBegin = 0,

@@ -7,6 +7,7 @@ use rocm_sys::hip::{hipFree, hipMalloc, hipMemsetD8};
 
 /// Handle to an allocation on the GPU
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct Buffer {
     pub(crate) ptr: *mut u8,

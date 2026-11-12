@@ -17,6 +17,7 @@ use crate::hip::{
 };
 
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
 pub struct HipStream {
     pub(crate) raw: hipStream_t,

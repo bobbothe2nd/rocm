@@ -21,6 +21,7 @@ pub mod module;
 use rocm_sys::hip::hipError_t;
 
 #[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum HipError {
     InvalidValue = 1,

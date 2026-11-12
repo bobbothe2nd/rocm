@@ -15,6 +15,7 @@ macro_rules! try_err {
     };
 }
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone)]
 pub struct RocBlas {
     pub(crate) raw: rocblas_handle,
@@ -48,32 +49,33 @@ impl RocBlas {
 }
 
 #[repr(i32)]
-// rocBLAS status codes definition.
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+/// rocBLAS status codes definition.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum RocblasError {
-    // Handle is uninitialized, invalid, or null.
+    /// Handle is uninitialized, invalid, or null.
     RocblasStatusInvalidHandle = 1,
-    // Function is not implemented.
+    /// Function is not implemented.
     RocblasStatusNotImplemented = 2,
-    // Invalid pointer argument.
+    /// Invalid pointer argument.
     RocblasStatusInvalidPointer = 3,
-    // Invalid size argument.
+    /// Invalid size argument.
     RocblasStatusInvalidSize = 4,
-    // Failed internal memory allocation, copy, or dealloc.
+    /// Failed internal memory allocation, copy, or dealloc.
     RocblasStatusMemoryError = 5,
-    // Other internal library failure.
+    /// Other internal library failure.
     RocblasStatusInternalError = 6,
-    // Performance degraded due to low device memory.
+    /// Performance degraded due to low device memory.
     RocblasStatusPerfDegraded = 7,
-    // Unmatched start/stop size query.
+    /// Unmatched start/stop size query.
     RocblasStatusSizeQueryMismatch = 8,
-    // Queried device memory size increased.
+    /// Queried device memory size increased.
     RocblasStatusSizeIncreased = 9,
-    // Queried device memory size unchanged.
+    /// Queried device memory size unchanged.
     RocblasStatusSizeUnchanged = 10,
-    // Passed argument not valid.
+    /// Passed argument not valid.
     RocblasStatusInvalidValue = 11,
-    // Nothing preventing function from proceeding.
+    /// Nothing preventing function from proceeding.
     RocblasStatusContinue = 12,
     RocblasStatusCheckNumericsFail = 13,
     RocblasStatusExcludedFromBuild = 14,

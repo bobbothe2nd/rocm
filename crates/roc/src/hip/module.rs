@@ -12,10 +12,11 @@ use crate::{
     hiprtc::program::Hsaco,
 };
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Clone)]
 #[repr(transparent)]
 pub struct Module {
-    inner: Arc<ModuleInner>,
+    inner: Arc<private::ModuleInner>,
 }
 
 impl Module {
@@ -69,26 +70,32 @@ mod hiprtc {
                 ))
             };
 
-            let inner = Arc::new(ModuleInner { raw: module? });
+            let inner = Arc::new(private::ModuleInner { raw: module? });
 
             Ok(Module { inner })
         }
     }
 }
 
-struct ModuleInner {
-    raw: hipModule_t,
-}
+mod private {
+    use super::*;
 
-unsafe impl Send for ModuleInner {}
-unsafe impl Sync for ModuleInner {}
+    #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+    pub struct ModuleInner {
+        pub(super) raw: hipModule_t,
+    }
 
-impl Drop for ModuleInner {
-    fn drop(&mut self) {
-        log_if_err!("failed to unload Module": HipError::wrap(unsafe { hipModuleUnload(self.raw) }));
+    unsafe impl Send for ModuleInner {}
+    unsafe impl Sync for ModuleInner {}
+
+    impl Drop for ModuleInner {
+        fn drop(&mut self) {
+            log_if_err!("failed to unload Module": HipError::wrap(unsafe { hipModuleUnload(self.raw) }));
+        }
     }
 }
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Clone)]
 pub struct Func {
     pub(crate) raw: hipFunction_t,
@@ -144,6 +151,7 @@ impl HipStream {
     }
 }
 
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone)]
 pub struct LaunchConfig {
     pub grid: [u32; 3],

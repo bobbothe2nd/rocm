@@ -8,6 +8,7 @@ use rocm_sys::hip::{
 use crate::hip::{HipError, stream::HipStream};
 
 #[repr(transparent)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Clone)]
 pub struct HipEvent {
     raw: hipEvent_t,

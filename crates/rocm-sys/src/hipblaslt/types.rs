@@ -2,6 +2,7 @@
 pub type hipblasLtFloat = f32;
 #[doc = " \\brief Structure definition for hipblasLtHalf"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _hipblasLtHalf {
     pub data: u16,
@@ -13,6 +14,7 @@ pub type hipblasLtInt8 = i8;
 pub type hipblasLtInt32 = i32;
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Specifies the enumeration type to set the postprocessing options for the epilogue."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtEpilogue_t {
     #[doc = "<No special postprocessing. Scale and quantize the results if necessary."]
@@ -63,6 +65,7 @@ pub enum hipblasLtEpilogue_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Specify the batch mode of the matrices."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtBatchMode_t {
     HIPBLASLT_BATCH_MODE_STRIDED = 0,
@@ -72,6 +75,7 @@ pub enum hipblasLtBatchMode_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Specifies the attributes that define the details of the matrix."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtMatrixLayoutAttribute_t {
     #[doc = "<Number of batches of this matrix. Default value is 1. Data type: ``int32_t``."]
@@ -105,6 +109,7 @@ pub enum hipblasLtMatrixLayoutAttribute_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Width of the integers in the dimension arrays of a grouped matrix layout."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtIntegerWidth_t {
     #[doc = "<32-bit integers (``int32_t``)."]
@@ -114,6 +119,7 @@ pub enum hipblasLtIntegerWidth_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Pointer mode to use for alpha."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtPointerMode_t {
     #[doc = "<Targets host memory."]
@@ -125,6 +131,7 @@ pub enum hipblasLtPointerMode_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Block scale mode for A and B."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtMatmulMatrixScale_t {
     #[doc = "<Scaling factors are single-precision scalars applied to the whole tensors (this mode is the default for ``fp8``)."]
@@ -177,6 +184,7 @@ pub enum hipblasLtMatmulMatrixScale_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Encoding of the int4 weights in matrix A on the w4a16 path; independent of the\n  scale mode."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtInt4Encoding_t {
     #[doc = " Two's-complement int4 in ``[-8, 7]``, nibbles in K order: element ``2n``\n  in the low nibble of byte ``n``. Default."]
@@ -188,6 +196,7 @@ pub enum hipblasLtInt4Encoding_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Mode values for the ``HIPBLASLT_MATMUL_DESC_STREAMK_TILE_SCHEDULING_EXT``\n  attribute and the C++ ext ``GemmPreference::setStreamKTileSchedulingMode``.\n\n  The attribute storage stays ``int32_t``; values outside ``{0, 1, 2}`` are\n  rejected by the setter with ``HIPBLAS_STATUS_INVALID_VALUE``."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtStreamKTileSchedulingMode_t {
     #[doc = "< Default hybrid assignment policy: StaticGrid unless the CU-budget heuristic runs. When ``HIPBLASLT_MATMUL_DESC_SM_COUNT_TARGET`` is positive the library heuristic still runs per launch to pick SK4 when appropriate."]
@@ -199,6 +208,7 @@ pub enum hipblasLtStreamKTileSchedulingMode_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Specifies the attributes that define the specifics of the matrix multiply operation."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtMatmulDescAttributes_t {
     #[doc = "<Specifies the type of transformation operation that should be performed on matrix A. Default value is ``HIPBLAS_OP_N`` (for example, non-transpose operation). See ``hipblasOperation_t``. Data type: ``int32_t``."]
@@ -263,6 +273,7 @@ pub enum hipblasLtMatmulDescAttributes_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief This is an enumerated type used to apply algorithm search preferences while fine-tuning the heuristic function."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtMatmulPreferenceAttributes_t {
     #[doc = "<Search mode. Data type: ``uint32_t``."]
@@ -289,6 +300,7 @@ pub enum hipblasLtMatmulPreferenceAttributes_t {
 }
 #[repr(i32)]
 #[doc = " \\ingroup types_module\n  \\brief Enumeration for data ordering."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtOrder_t {
     #[doc = " Column-major.\n\n Leading dimension is the stride (in elements) to the beginning of the next column in memory."]
@@ -308,6 +320,7 @@ pub enum hipblasLtOrder_t {
 }
 #[repr(i32)]
 #[doc = " Matrix transform descriptor attributes to define details of the operation."]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipblasLtMatrixTransformDescAttributes_t {
     #[doc = " Scale type, see hipDataType. Inputs are converted to scale type for scaling and summation and results are then\n converted to output type to store in memory.\n\n int32_t"]
@@ -320,22 +333,26 @@ pub enum hipblasLtMatrixTransformDescAttributes_t {
     HIPBLASLT_MATRIX_TRANSFORM_DESC_TRANSB = 3,
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipblasLtMatmulDescOpaque_t {
     pub data: [u64; 4usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipblasLtMatrixLayoutOpaque_t {
     pub data: [u64; 4usize],
 }
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipblasLtMatmulPreferenceOpaque_t {
     pub data: [u64; 5usize],
 }
 #[doc = " Semi-opaque descriptor for hipblasLtMatrixTransform() operation details"]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipblasLtMatrixTransformDescOpaque_t {
     pub data: [u64; 8usize],
@@ -352,6 +369,7 @@ pub type hipblasLtMatrixLayout_t = *mut hipblasLtMatrixLayoutOpaque_t;
 pub type hipblasLtMatmulPreference_t = *mut hipblasLtMatmulPreferenceOpaque_t;
 #[doc = " \\ingroup types_module\n  \\struct hipblasLtMatmulAlgo_t\n  \\brief Description of the matrix multiplication algorithm.\n\n  \\details\n  This is an opaque structure holding the description of the matrix multiplication algorithm.\n  This structure can be trivially serialized and later restored for use with the same version of the hipBLASLt library to save compute time when selecting the right configuration again."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _hipblasLtMatmulAlgo_t {
     pub data: [u8; 16usize],
@@ -361,6 +379,7 @@ pub struct _hipblasLtMatmulAlgo_t {
 pub type hipblasLtMatmulAlgo_t = _hipblasLtMatmulAlgo_t;
 #[doc = " \\ingroup types_module\n  \\struct hipblasLtMatmulHeuristicResult_t\n  \\brief Description of the matrix multiplication algorithm.\n\n  \\details\n  This is a descriptor that holds the configured matrix multiplication algorithm descriptor and its runtime properties.\n  This structure can be trivially serialized and later restored for use with the same version of the hipBLASLt library to save compute time when selecting the right configuration again.\n  @param algo \\ref hipblasLtMatmulAlgo_t struct.\n  @param workspaceSize Actual size of workspace memory required.\n  @param state Result status. The other fields are valid only if, after a call to hipblasLtMatmulAlgoGetHeuristic(), this member is set to ``HIPBLAS_STATUS_SUCCESS``."]
 #[repr(C)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct _hipblasLtMatmulHeuristicResult_t {
     #[doc = "<Algo struct"]
