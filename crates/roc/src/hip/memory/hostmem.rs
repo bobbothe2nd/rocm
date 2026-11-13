@@ -1,4 +1,4 @@
-use crate::hip::{HipError, event::HipEvent, memory::{CopyTo, DevPtr, StreamBound}, stream::HipStream};
+use crate::hip::{HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, StreamBound}, stream::HipStream};
 use alloc::sync::Arc;
 use core::{
     cell::UnsafeCell,
@@ -44,14 +44,6 @@ impl<'a> HostSlice<'a> {
             stream,
             _marker: PhantomData,
         })
-    }
-
-    pub fn latesync(&self) -> Result<(), HipError> {
-        self.event.record(&self.stream)
-    }
-
-    pub fn sync(&self) -> Result<(), HipError> {
-        self.event.sync()
     }
 
     #[inline(always)]
@@ -181,6 +173,16 @@ impl Deref for HostSlice<'_> {
     }
 }
 
+impl EventSync for HostSlice<'_> {
+    fn latesync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.record(&self.stream)
+    }
+
+    fn sync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.sync()
+    }
+}
+
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -215,14 +217,6 @@ impl<'a> HostSliceMut<'a> {
             stream,
             _marker: PhantomData,
         })
-    }
-
-    pub fn latesync(&self) -> Result<(), HipError> {
-        self.event.record(&self.stream)
-    }
-
-    pub fn sync(&self) -> Result<(), HipError> {
-        self.event.sync()
     }
 
     #[inline(always)]
@@ -364,6 +358,16 @@ impl DerefMut for HostSliceMut<'_> {
     }
 }
 
+impl EventSync for HostSliceMut<'_> {
+    fn latesync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.record(&self.stream)
+    }
+
+    fn sync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.sync()
+    }
+}
+
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -429,14 +433,6 @@ impl HipStream {
 }
 
 impl HostBuffer {
-    pub fn latesync(&self) -> Result<(), HipError> {
-        self.event.record(&self.stream)
-    }
-
-    pub fn sync(&self) -> Result<(), HipError> {
-        self.event.sync()
-    }
-
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
         ptr: *mut u8,
@@ -517,6 +513,16 @@ impl DerefMut for HostBuffer {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { slice::from_raw_parts_mut(self.ptr, self.size as usize) }
+    }
+}
+
+impl EventSync for HostBuffer {
+    fn latesync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.record(&self.stream)
+    }
+
+    fn sync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.sync()
     }
 }
 

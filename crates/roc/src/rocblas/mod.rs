@@ -4,7 +4,7 @@ use rocm_sys::rocblas::{
     rocblas_set_stream, rocblas_status,
 };
 
-use crate::hip::stream::HipStream;
+use crate::{RocHandle, hip::stream::HipStream};
 
 macro_rules! try_err {
     ($func:expr$(, $sucess:expr)?$(,)?) => {
@@ -46,6 +46,10 @@ impl RocBlas {
     pub fn set_pointer_mode(&self, pointer_mode: rocblas_pointer_mode) -> Result<(), RocblasError> {
         unsafe { try_err!(rocblas_set_pointer_mode(self.raw, pointer_mode), Ok(())) }
     }
+}
+
+impl RocHandle for RocBlas {
+    type Error = RocblasError;
 }
 
 #[repr(i32)]

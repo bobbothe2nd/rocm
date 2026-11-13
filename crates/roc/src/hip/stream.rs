@@ -10,10 +10,13 @@ use rocm_sys::hip::{
     hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
 };
 
-use crate::hip::{
-    HipError,
-    device::{Device, DeviceAttr},
-    memory::{Buffer, HostSlice, HostSliceMut},
+use crate::{
+    RocHandle,
+    hip::{
+        HipError,
+        device::{Device, DeviceAttr},
+        memory::{Buffer, HostSlice, HostSliceMut},
+    },
 };
 
 #[repr(C)]
@@ -243,6 +246,10 @@ impl HipStream {
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipStreamDestroy(self.raw), Ok(())) }
     }
+}
+
+impl RocHandle for HipStream {
+    type Error = HipError;
 }
 
 impl Drop for HipStream {

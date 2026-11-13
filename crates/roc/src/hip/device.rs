@@ -12,7 +12,7 @@ use rocm_sys::hip::{
     hipGetDevicePropertiesR0600, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
 };
 
-use crate::hip::{HipError, gfx::GfxVersion, memory::MemPool};
+use crate::{RocHandle, hip::{HipError, gfx::GfxVersion, memory::MemPool}};
 
 #[repr(transparent)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -146,6 +146,10 @@ impl Device {
         self.set_default()?;
         set_flags(val)
     }
+}
+
+impl RocHandle for Device {
+    type Error = HipError;
 }
 
 /// Synchronizes the current default device

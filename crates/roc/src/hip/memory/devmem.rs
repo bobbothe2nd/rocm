@@ -1,5 +1,5 @@
 use crate::hip::{
-    HipError, event::HipEvent, memory::{CopyTo, DevPtr, Memset, StreamBound}, stream::HipStream,
+    HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound}, stream::HipStream,
 };
 use alloc::sync::Arc;
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, };
@@ -67,40 +67,6 @@ impl HipStream {
 }
 
 impl Buffer {
-    /// Records a synchronization checkpoint for the buffer, or a logical buffer usage.
-    pub fn latesync(&self) -> Result<(), HipError> {
-        self.event.record(&self.stream)
-    }
-
-    /// Synchronizes the buffer up to it's last `latesync` or usage.
-    ///
-    /// These are logically equivalent (other than edge cases and errors):
-    /// 
-    /// ```no_run
-    /// # #[cfg(feature = "dynamic-loading")] {
-    /// # use roc::hip::*;
-    /// # let stream = stream::HipStream::create().unwrap();
-    /// # let buf = stream.alloc(128).unwrap();
-    /// buf.latesync().unwrap();
-    /// buf.sync().unwrap();
-    /// # }
-    /// ```
-    ///
-    /// and
-    /// 
-    /// ```no_run
-    /// # #[cfg(feature = "dynamic-loading")] {
-    /// # use roc::hip::*;
-    /// # let stream = stream::HipStream::create().unwrap();
-    /// stream.sync().unwrap();
-    /// # }
-    /// ```
-    /// 
-    /// assuming `buf` was allocated on `stream`.
-    pub fn sync(&self) -> Result<(), HipError> {
-        self.event.sync()
-    }
-
     /// Constructs a GPU buffer from a raw pointer, size, stream, and event
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
@@ -245,6 +211,16 @@ impl Buffer {
         self.latesync()?;
 
         Ok(())
+    }
+}
+
+impl EventSync for Buffer {
+    fn latesync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.record(&self.stream)
+    }
+
+    fn sync(&self) -> Result<(), crate::hip::HipError> {
+        self.event.sync()
     }
 }
 

@@ -73,6 +73,10 @@ macro_rules! err_ty {
     };
 }
 
+pub trait RocHandle {
+    type Error;
+}
+
 #[cfg(feature = "blas")]
 pub mod blas;
 

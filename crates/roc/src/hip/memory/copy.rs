@@ -1,6 +1,6 @@
 use rocm_sys::hip::{hipMemcpyDtoD, hipMemcpyDtoDAsync, hipMemcpyDtoH, hipMemcpyDtoHAsync, hipMemcpyHtoD, hipMemcpyHtoDAsync};
 
-use crate::hip::{HipError, device::Device, memory::{Buffer, HostBuffer, HostSlice, HostSliceMut}, stream::HipStream};
+use crate::hip::{HipError, device::Device, memory::{Buffer, EventSync, HostBuffer, HostSlice, HostSliceMut}, stream::HipStream};
 
 #[inline]
 pub fn copy<Src, Dst>(
