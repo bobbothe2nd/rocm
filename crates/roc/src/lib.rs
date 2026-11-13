@@ -73,6 +73,12 @@ macro_rules! err_ty {
     };
 }
 
+#[cfg(feature = "blas")]
+pub mod blas;
+
+#[cfg(feature = "fft")]
+pub mod fft;
+
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
 pub mod hip;
 
@@ -92,7 +98,7 @@ pub mod rocblas;
 pub use rocm_sys::is_rocblas_present;
 
 #[cfg(all(feature = "hipblas", any(feature = "dynamic-loading", hipblas)))]
-pub use hipblas;
+pub mod hipblas;
 
 #[cfg(all(feature = "hipblas", any(feature = "dynamic-loading", hipblas)))]
 pub use rocm_sys::is_hipblas_present;

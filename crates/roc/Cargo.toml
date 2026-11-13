@@ -20,15 +20,16 @@ stable_auto = { version = "0.2", optional = true }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["rocblas", "dynamic-loading", "hiprtc", "log", "stable_auto"]
+default = ["rocblas", "dynamic-loading", "hipblas"]
 
+# ROCm libraries
 hip = ["rocm-sys/hip"]
 hiprtc = ["rocm-sys/hiprtc"]
 
-hipblas = ["rocm-sys/hipblas", "hip"]
+hipblas = ["rocm-sys/hipblas", "hip", "blas"]
 hipblaslt = ["rocm-sys/hipblaslt", "hipblas"]
 hipdnn = ["rocm-sys/hipdnn", "hip"]
-hipfft = ["rocm-sys/hipfft", "hip"]
+hipfft = ["rocm-sys/hipfft", "hip", "fft"]
 hiprand = ["rocm-sys/hiprand", "hip"]
 hipsolver = ["rocm-sys/hipsolver", "hip"]
 hipsparse = ["rocm-sys/hipsparse", "hip"]
@@ -36,16 +37,22 @@ hipsparselt = ["rocm-sys/hipsparselt", "hip"]
 hiptensor = ["rocm-sys/hiptensor", "hip"]
 
 rocalution = ["rocm-sys/rocalution", "hip"]
-rocblas = ["rocm-sys/rocblas", "hip"]
-rocfft = ["rocm-sys/rocfft", "hip"]
+rocblas = ["rocm-sys/rocblas", "hip", "blas"]
+rocfft = ["rocm-sys/rocfft", "hip", "fft"]
 rocrand = ["rocm-sys/rocrand", "hip"]
 rocsolver = ["rocm-sys/rocsolver", "hip"]
 rocsparse = ["rocm-sys/rocsparse", "hip"]
 
 miopen = ["rocm-sys/miopen", "hip"]
 
+# internal libraries
+blas = []
+fft = []
+
+# internal crate features
 dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
 
+# external libraries
 std = ["rocm-include/std"]
 log = ["dep:log"]
 stable_auto = ["rocm-sys/stable_auto", "dep:stable_auto"]

@@ -26,12 +26,12 @@ unsafe impl Send for RocBlas {}
 unsafe impl Sync for RocBlas {}
 
 impl RocBlas {
-    pub fn new(stream: Arc<HipStream>) -> Result<Self, RocblasError> {
+    pub fn new(stream: &Arc<HipStream>) -> Result<Self, RocblasError> {
         let raw: Result<*mut rocm_sys::rocblas::_rocblas_handle, RocblasError> =
             unsafe { wrap_sys_res!(|handle| rocblas_create_handle(handle.as_mut_ptr())) };
         let raw = raw?;
         unsafe { try_err!(rocblas_set_stream(raw, stream.raw)) };
-        Ok(Self { raw, stream })
+        Ok(Self { raw, stream: stream.clone() })
     }
 
     pub fn as_raw(&self) -> rocblas_handle {
