@@ -42,7 +42,7 @@ rocsparse = ["hip"]
 miopen = ["hip"]
 
 # link options
-dynamic-loading = ["dep:libloading", "rocm-include/std"]
+dynamic-loading = ["dep:libloading", "rocm-include/std", "stable_auto?/std"]
 
 # include symbols that might not be in shared library
 deprecated = []

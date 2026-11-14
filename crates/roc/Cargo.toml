@@ -14,7 +14,7 @@ bitflags = "2"
 log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.7" }
 rocm-include = { path = "../rocm-include", version = "0.2" }
-stable_auto = { version = "0.2", optional = true }
+stable_auto = { version = "0.3", optional = true, features = ["alloc"] }
 
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
@@ -53,7 +53,7 @@ fft = []
 dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
 
 # external libraries
-std = ["rocm-include/std"]
+std = ["rocm-include/std", "stable_auto?/std"]
 log = ["dep:log"]
 stable_auto = ["rocm-sys/stable_auto", "dep:stable_auto"]
 
