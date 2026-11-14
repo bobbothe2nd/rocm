@@ -101,4 +101,11 @@ pub enum HipError {
     Tbd = 1054,
 }
 
+impl HipError {
+    #[inline(always)]
+    pub fn get_last() -> Self {
+        unsafe { rocm_sys::hip::hipGetLastError().into() }
+    }
+}
+
 err_ty!(type HipError = hipError_t is !hipSuccess from rocm_sys::hip::hipGetErrorString;);
