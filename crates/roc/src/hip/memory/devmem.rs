@@ -5,7 +5,12 @@ use crate::hip::{
     stream::HipStream,
 };
 use alloc::sync::Arc;
-use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::{Bound, RangeBounds}};
+use core::{
+    cell::UnsafeCell,
+    marker::PhantomData,
+    mem::ManuallyDrop,
+    ops::{Bound, RangeBounds},
+};
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemsetD8};
 
 #[repr(C)]
@@ -16,8 +21,7 @@ pub struct HipSlice<'a> {
     pub(crate) size: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
-    _marker0: PhantomData<UnsafeCell<()>>,
-    _marker1: PhantomData<&'a [u8]>,
+    _marker: PhantomData<&'a UnsafeCell<[u8]>>,
 }
 
 unsafe impl Send for HipSlice<'_> {}
@@ -35,14 +39,9 @@ impl HipSlice<'_> {
         Self {
             ptr,
             size,
-            event: ManuallyDrop::new(unsafe {
-                core::ptr::read(event)
-            }),
-            stream: ManuallyDrop::new(unsafe {
-                core::ptr::read(stream)
-            }),
-            _marker0: PhantomData,
-            _marker1: PhantomData,
+            event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
+            stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
+            _marker: PhantomData,
         }
     }
 
@@ -103,8 +102,7 @@ pub struct HipSliceMut<'a> {
     pub(crate) size: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
-    _marker0: PhantomData<UnsafeCell<()>>,
-    _marker1: PhantomData<&'a mut [u8]>,
+    _marker: PhantomData<&'a mut UnsafeCell<[u8]>>,
 }
 
 unsafe impl Send for HipSliceMut<'_> {}
@@ -122,14 +120,9 @@ impl HipSliceMut<'_> {
         Self {
             ptr,
             size,
-            event: ManuallyDrop::new(unsafe {
-                core::ptr::read(event)
-            }),
-            stream: ManuallyDrop::new(unsafe {
-                core::ptr::read(stream)
-            }),
-            _marker0: PhantomData,
-            _marker1: PhantomData,
+            event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
+            stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
+            _marker: PhantomData,
         }
     }
 
@@ -246,7 +239,7 @@ pub struct HipBuffer {
     pub(crate) size: usize,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
-    _marker: PhantomData<UnsafeCell<()>>,
+    _marker: PhantomData<UnsafeCell<[u8]>>,
 }
 
 unsafe impl Send for HipBuffer {}
@@ -341,9 +334,7 @@ impl HipBuffer {
         };
         let size = end - start;
 
-        unsafe {
-            HipSlice::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event)
-        }
+        unsafe { HipSlice::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event) }
     }
 
     pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> HipSliceMut<'_> {
@@ -359,9 +350,7 @@ impl HipBuffer {
         };
         let size = end - start;
 
-        unsafe {
-            HipSliceMut::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event)
-        }
+        unsafe { HipSliceMut::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event) }
     }
 
     /// Deallocates a buffer

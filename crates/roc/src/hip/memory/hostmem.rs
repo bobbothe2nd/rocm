@@ -6,7 +6,12 @@ use crate::hip::{
 };
 use alloc::sync::Arc;
 use core::{
-    cell::UnsafeCell, hint::unreachable_unchecked, marker::PhantomData, mem::ManuallyDrop, ops::{Bound, Deref, DerefMut, RangeBounds}, slice,
+    cell::UnsafeCell,
+    hint::unreachable_unchecked,
+    marker::PhantomData,
+    mem::ManuallyDrop,
+    ops::{Bound, Deref, DerefMut, RangeBounds},
+    slice,
 };
 use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister};
 
@@ -20,7 +25,7 @@ pub struct HostSlice<'a> {
     pub(crate) premapped: bool,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
-    _marker: PhantomData<&'a HostBuffer>,
+    _marker: PhantomData<&'a UnsafeCell<[u8]>>,
 }
 
 unsafe impl Send for HostSlice<'_> {}
@@ -41,9 +46,7 @@ impl<'a> HostSlice<'a> {
             size: ptr.len() as usize,
             premapped,
             event: ManuallyDrop::new(HipEvent::create(None)?),
-            stream: ManuallyDrop::new(unsafe {
-                core::ptr::read(stream)
-            }),
+            stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             _marker: PhantomData,
         })
     }
@@ -59,12 +62,8 @@ impl<'a> HostSlice<'a> {
         Self {
             ptr,
             size,
-            event: ManuallyDrop::new(unsafe {
-                core::ptr::read(event)
-            }),
-            stream: ManuallyDrop::new(unsafe {
-                core::ptr::read(stream)
-            }),
+            event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
+            stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             premapped,
             _marker: PhantomData,
         }
@@ -194,7 +193,7 @@ pub struct HostSliceMut<'a> {
     pub(crate) premapped: bool,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
-    _marker: PhantomData<&'a HostBuffer>,
+    _marker: PhantomData<&'a mut UnsafeCell<[u8]>>,
 }
 
 unsafe impl Send for HostSliceMut<'_> {}
@@ -215,9 +214,7 @@ impl<'a> HostSliceMut<'a> {
             size: ptr.len() as usize,
             premapped,
             event: ManuallyDrop::new(HipEvent::create(None)?),
-            stream: ManuallyDrop::new(unsafe {
-                core::ptr::read(stream)
-            }),
+            stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             _marker: PhantomData,
         })
     }
@@ -234,12 +231,8 @@ impl<'a> HostSliceMut<'a> {
             ptr,
             size,
             premapped,
-            event: ManuallyDrop::new(unsafe {
-                core::ptr::read(event)
-            }),
-            stream: ManuallyDrop::new(unsafe {
-                core::ptr::read(stream)
-            }),
+            event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
+            stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             _marker: PhantomData,
         }
     }
@@ -380,7 +373,7 @@ pub struct HostBuffer {
     pub(crate) is_mapped: bool,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
-    _marker: PhantomData<UnsafeCell<()>>,
+    _marker: PhantomData<UnsafeCell<[u8]>>,
 }
 
 unsafe impl Send for HostBuffer {}
@@ -481,7 +474,13 @@ impl HostBuffer {
         let size = end - start;
 
         unsafe {
-            HostSlice::from_raw_parts(self.ptr.add(start), size, self.is_mapped, &self.stream, &self.event)
+            HostSlice::from_raw_parts(
+                self.ptr.add(start),
+                size,
+                self.is_mapped,
+                &self.stream,
+                &self.event,
+            )
         }
     }
 
@@ -499,7 +498,13 @@ impl HostBuffer {
         let size = end - start;
 
         unsafe {
-            HostSliceMut::from_raw_parts(self.ptr.add(start), size, self.is_mapped, &self.stream, &self.event)
+            HostSliceMut::from_raw_parts(
+                self.ptr.add(start),
+                size,
+                self.is_mapped,
+                &self.stream,
+                &self.event,
+            )
         }
     }
 

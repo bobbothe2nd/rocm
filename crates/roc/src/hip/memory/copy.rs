@@ -1,5 +1,10 @@
 use crate::hip::{
-    HipError, memory::{DevPtr, EventSync, HipBuffer, HipSlice, HipSliceMut, HostBuffer, HostSlice, HostSliceMut, StreamBound}, stream::HipStream,
+    HipError,
+    memory::{
+        DevPtr, EventSync, HipBuffer, HipSlice, HipSliceMut, HostBuffer, HostSlice, HostSliceMut,
+        StreamBound,
+    },
+    stream::HipStream,
 };
 
 #[inline]
