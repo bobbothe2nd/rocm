@@ -499,13 +499,13 @@ pub const HIP_GET_PROC_ADDRESS_LEGACY_STREAM: u32 = 1;
 /// Search for all symbols including the per-thread versions. If a per-thread version cannot be
 /// found, returns the legacy version.
 pub const HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM: u32 = 2;
-/// @brief The hipTexRefSetArray function flags parameter override format value
+/// The hipTexRefSetArray function flags parameter override format value
 pub const HIP_TRSA_OVERRIDE_FORMAT: u32 = 1;
-/// @brief The hipTexRefSetFlags function flags parameter read as integer value
+/// The hipTexRefSetFlags function flags parameter read as integer value
 pub const HIP_TRSF_READ_AS_INTEGER: u32 = 1;
-/// @brief The hipTexRefSetFlags function flags parameter normalized coordinate value
+/// The hipTexRefSetFlags function flags parameter normalized coordinate value
 pub const HIP_TRSF_NORMALIZED_COORDINATES: u32 = 2;
-/// @brief The hipTexRefSetFlags function flags parameter srgb value
+/// The hipTexRefSetFlags function flags parameter srgb value
 pub const HIP_TRSF_SRGB: u32 = 16;
 pub const hipTextureType1D: u32 = 1;
 pub const hipTextureType2D: u32 = 2;
@@ -694,7 +694,7 @@ pub const hipGraphKernelNodePortProgrammatic: u32 = 1;
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitOption {
     /// CUDA Only Maximum registers may be used in a thread,
-    ///< passed to compiler
+    /// passed to compiler
     hipJitOptionMaxRegisters = 0,
     /// CUDA Only Number of thread per block
     hipJitOptionThreadsPerBlock = 1,
@@ -707,10 +707,10 @@ pub enum hipJitOption {
     /// CUDA Only Pointer to the buffer with logged error(s)
     hipJitOptionErrorLogBuffer = 5,
     /// CUDA Only Size of the buffer in bytes for logged
-    ///< error(s)
+    /// error(s)
     hipJitOptionErrorLogBufferSizeBytes = 6,
     /// Value of optimization level for generated codes, acceptable
-    ///< options -O0, -O1, -O2, -O3
+    /// options -O0, -O1, -O2, -O3
     hipJitOptionOptimizationLevel = 7,
     /// CUDA Only The target context, which is the default
     hipJitOptionTargetFromContext = 8,
@@ -731,10 +731,10 @@ pub enum hipJitOption {
     /// CUDA Only Set fast compile
     hipJitOptionFastCompile = 16,
     /// CUDA Only Array of device symbol names to be relocated to the
-    ///< host
+    /// host
     hipJitOptionGlobalSymbolNames = 17,
     /// CUDA Only Array of host addresses to be relocated to the
-    ///< device
+    /// device
     hipJitOptionGlobalSymbolAddresses = 18,
     /// CUDA Only Number of symbol count.
     hipJitOptionGlobalSymbolCount = 19,
@@ -743,17 +743,17 @@ pub enum hipJitOption {
     /// @deprecated CUDA Only Set single-precision denormals.
     hipJitOptionFtz = 21,
     /// @deprecated CUDA Only Set single-precision floating-point division
-    ///< and reciprocals
+    /// and reciprocals
     hipJitOptionPrecDiv = 22,
     /// @deprecated CUDA Only Set single-precision floating-point square root
     hipJitOptionPrecSqrt = 23,
     /// @deprecated CUDA Only Enable floating-point multiplies and
-    ///< adds/subtracts operations
+    /// adds/subtracts operations
     hipJitOptionFma = 24,
     /// CUDA Only Generates Position Independent code
     hipJitOptionPositionIndependentCode = 25,
     /// CUDA Only Hints to JIT compiler the minimum number of CTAs frin
-    ///< kernel's grid to be mapped to SM
+    /// kernel's grid to be mapped to SM
     hipJitOptionMinCTAPerSM = 26,
     /// CUDA only Maximum number of threads in a thread block
     hipJitOptionMaxThreadsPerBlock = 27,
@@ -780,10 +780,10 @@ pub enum hipJitInputType {
     /// Cuda Only Host Object with embedded device code
     hipJitInputObject = 3,
     /// Cuda Only Archive of Host Objects with embedded
-    ///< device code
+    /// device code
     hipJitInputLibrary = 4,
     /// @deprecated Cuda only High Level intermediate
-    ///< code for LTO
+    /// code for LTO
     hipJitInputNvvm = 5,
     /// Count of Legacy Input Types
     hipJitNumLegacyInputTypes = 6,
@@ -837,12 +837,6 @@ pub enum _bindgen_ty_15 {
     HIP_ERROR_NOT_INITIALIZED = 2,
     HIP_ERROR_LAUNCH_OUT_OF_RESOURCES = 3,
 }
-/// @defgroup GlobalDefs Global enum and defines
-/// @{
-////
-////**
-/// hipDeviceArch_t
-///
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -1575,7 +1569,7 @@ pub enum hipError_t {
     /// Successful completion.
     hipSuccess = 0,
     /// One or more of the parameters passed to the API call is NULL
-    ///< or not in an acceptable range.
+    /// or not in an acceptable range.
     hipErrorInvalidValue = 1,
     /// out of memory range.
     hipErrorOutOfMemory = 2,
@@ -1645,9 +1639,9 @@ pub enum hipError_t {
     /// Not found
     hipErrorNotFound = 500,
     /// Indicates that asynchronous operations enqueued earlier are not
-    ///< ready.  This is not actually an error, but is used to distinguish
-    ///< from hipSuccess (which indicates completion).  APIs that return
-    ///< this error include hipEventQuery and hipStreamQuery.
+    /// ready.  This is not actually an error, but is used to distinguish
+    /// from hipSuccess (which indicates completion).  APIs that return
+    /// this error include hipEventQuery and hipStreamQuery.
     hipErrorNotReady = 600,
     hipErrorIllegalAddress = 700,
     /// Out of resources error.
@@ -1655,7 +1649,7 @@ pub enum hipError_t {
     /// Timeout for the launch.
     hipErrorLaunchTimeOut = 702,
     /// Peer access was already enabled from the current
-    ///< device.
+    /// device.
     hipErrorPeerAccessAlreadyEnabled = 704,
     /// Peer access was never enabled from the current device.
     hipErrorPeerAccessNotEnabled = 705,
@@ -1666,59 +1660,59 @@ pub enum hipError_t {
     /// Produced when the kernel calls assert.
     hipErrorAssert = 710,
     /// Produced when trying to lock a page-locked
-    ///< memory.
+    /// memory.
     hipErrorHostMemoryAlreadyRegistered = 712,
     /// Produced when trying to unlock a non-page-locked
-    ///< memory.
+    /// memory.
     hipErrorHostMemoryNotRegistered = 713,
     /// An exception occurred on the device while executing a kernel.
     hipErrorLaunchFailure = 719,
     /// This error indicates that the number of blocks
-    ///< launched per grid for a kernel that was launched
-    ///< via cooperative launch APIs exceeds the maximum
-    ///< number of allowed blocks for the current device.
+    /// launched per grid for a kernel that was launched
+    /// via cooperative launch APIs exceeds the maximum
+    /// number of allowed blocks for the current device.
     hipErrorCooperativeLaunchTooLarge = 720,
     /// The attempted operation is not permitted, typically because the
-    ///< resource is owned by another object that is responsible for
-    ///< releasing it.
+    /// resource is owned by another object that is responsible for
+    /// releasing it.
     hipErrorNotPermitted = 800,
     /// Produced when the hip API is not supported/implemented
     hipErrorNotSupported = 801,
     /// The operation is not permitted when the stream
-    ///< is capturing.
+    /// is capturing.
     hipErrorStreamCaptureUnsupported = 900,
     /// The current capture sequence on the stream
-    ///< has been invalidated due to a previous error.
+    /// has been invalidated due to a previous error.
     hipErrorStreamCaptureInvalidated = 901,
     /// The operation would have resulted in a merge of
-    ///< two independent capture sequences.
+    /// two independent capture sequences.
     hipErrorStreamCaptureMerge = 902,
     /// The capture was not initiated in this stream.
     hipErrorStreamCaptureUnmatched = 903,
     /// The capture sequence contains a fork that was not
-    ///< joined to the primary stream.
+    /// joined to the primary stream.
     hipErrorStreamCaptureUnjoined = 904,
     /// A dependency would have been created which crosses
-    ///< the capture sequence boundary. Only implicit
-    ///< in-stream ordering dependencies  are allowed
-    ///< to cross the boundary
+    /// the capture sequence boundary. Only implicit
+    /// in-stream ordering dependencies  are allowed
+    /// to cross the boundary
     hipErrorStreamCaptureIsolation = 905,
     /// The operation would have resulted in a disallowed
-    ///< implicit dependency on a current capture sequence
-    ///< from hipStreamLegacy.
+    /// implicit dependency on a current capture sequence
+    /// from hipStreamLegacy.
     hipErrorStreamCaptureImplicit = 906,
     /// The operation is not permitted on an event which was last
-    ///< recorded in a capturing stream.
+    /// recorded in a capturing stream.
     hipErrorCapturedEvent = 907,
     /// A stream capture sequence not initiated with
-    ///< the hipStreamCaptureModeRelaxed argument to
-    ///< hipStreamBeginCapture was passed to
-    ///< hipStreamEndCapture in a different thread.
+    /// the hipStreamCaptureModeRelaxed argument to
+    /// hipStreamBeginCapture was passed to
+    /// hipStreamEndCapture in a different thread.
     hipErrorStreamCaptureWrongThread = 908,
     /// This error indicates that the graph update
-    ///< not performed because it included changes which
-    ///< violated constraintsspecific to instantiated graph
-    ///< update.
+    /// not performed because it included changes which
+    /// violated constraintsspecific to instantiated graph
+    /// update.
     hipErrorGraphExecUpdateFailure = 910,
     /// Invalid channel descriptor.
     hipErrorInvalidChannelDescriptor = 911,
@@ -1727,21 +1721,21 @@ pub enum hipError_t {
     /// Resource type is not valid for the operation.
     hipErrorInvalidResourceType = 914,
     /// Resource configuration is not valid for
-    ///< the operation.
+    /// the operation.
     hipErrorInvalidResourceConfiguration = 915,
     /// The stream is detached.
     hipErrorStreamDetached = 916,
     /// Unknown error.
     hipErrorUnknown = 999,
     /// HSA runtime memory call returned error.  Typically not seen
-    ///< in production systems.
+    /// in production systems.
     hipErrorRuntimeMemory = 1052,
     /// HSA runtime call other than memory returned error.  Typically
-    ///< not seen in production systems.
+    /// not seen in production systems.
     hipErrorRuntimeOther = 1053,
     /// The specified cluster size is invalid, for instance
-    ///< when passing launch configurations to occupancy
-    ///< calculations
+    /// when passing launch configurations to occupancy
+    /// calculations
     hipErrorInvalidClusterSize = 1054,
     /// Marker that more error codes are needed.
     hipErrorTbd = 1055,
@@ -2327,14 +2321,14 @@ pub enum hipMemoryType {
     /// Memory is physically located on host
     hipMemoryTypeHost = 1,
     /// Memory is physically located on device. (see deviceId for
-    ///< specific device)
+    /// specific device)
     hipMemoryTypeDevice = 2,
     /// Managed memory, automaticallly managed by the unified
-    ///< memory system
-    ///< place holder for new values.
+    /// memory system
+    /// place holder for new values.
     hipMemoryTypeManaged = 3,
     /// Array memory, physically located on device. (see deviceId for
-    ///< specific device)
+    /// specific device)
     hipMemoryTypeArray = 10,
     /// unified address space
     hipMemoryTypeUnified = 11,
@@ -2371,16 +2365,16 @@ impl hipDeviceAttribute_t {
 pub enum hipDeviceAttribute_t {
     hipDeviceAttributeCudaCompatibleBegin = 0,
     /// Cuda only. The maximum size of the window
-    ///< policy in bytes.
+    /// policy in bytes.
     hipDeviceAttributeAccessPolicyMaxWindowSize = 1,
     /// Asynchronous engines number.
     hipDeviceAttributeAsyncEngineCount = 2,
     /// Whether host memory can be mapped into device address
-    ///< space
+    /// space
     hipDeviceAttributeCanMapHostMemory = 3,
     /// Device can access host registered
-    ///< memory at the same virtual address as
-    ///< the CPU
+    /// memory at the same virtual address as
+    /// the CPU
     hipDeviceAttributeCanUseHostPointerForRegisteredMem = 4,
     /// Peak clock frequency in kilohertz.
     hipDeviceAttributeClockRate = 5,
@@ -2389,26 +2383,26 @@ pub enum hipDeviceAttribute_t {
     /// Device supports Compute Preemption.
     hipDeviceAttributeComputePreemptionSupported = 7,
     /// Device can possibly execute multiple kernels
-    ///< concurrently.
+    /// concurrently.
     hipDeviceAttributeConcurrentKernels = 8,
     /// Device can coherently access managed memory
-    ///< concurrently with the CPU
+    /// concurrently with the CPU
     hipDeviceAttributeConcurrentManagedAccess = 9,
     /// Support cooperative launch
     hipDeviceAttributeCooperativeLaunch = 10,
     /// Support cooperative launch on multiple
-    ///< devices
+    /// devices
     hipDeviceAttributeCooperativeMultiDeviceLaunch = 11,
     /// Device can concurrently copy memory and execute a kernel.
-    ///< Deprecated. Use instead asyncEngineCount.
+    /// Deprecated. Use instead asyncEngineCount.
     hipDeviceAttributeDeviceOverlap = 12,
     /// Host can directly access managed memory on
-    ///< the device without migration
+    /// the device without migration
     hipDeviceAttributeDirectManagedMemAccessFromHost = 13,
     /// Device supports caching globals in L1
     hipDeviceAttributeGlobalL1CacheSupported = 14,
     /// Link between the device and the host supports
-    ///< native atomic operations
+    /// native atomic operations
     hipDeviceAttributeHostNativeAtomicSupported = 15,
     /// Device is integrated GPU
     hipDeviceAttributeIntegrated = 16,
@@ -2417,15 +2411,15 @@ pub enum hipDeviceAttribute_t {
     /// Run time limit for kernels executed on the device
     hipDeviceAttributeKernelExecTimeout = 18,
     /// Size of L2 cache in bytes. 0 if the device doesn't have L2
-    ///< cache.
+    /// cache.
     hipDeviceAttributeL2CacheSize = 19,
     /// caching locals in L1 is supported
     hipDeviceAttributeLocalL1CacheSupported = 20,
     /// 8-byte locally unique identifier in 8 bytes. Undefined on TCC and
-    ///< non-Windows platforms
+    /// non-Windows platforms
     hipDeviceAttributeLuid = 21,
     /// Luid device node mask. Undefined on TCC and
-    ///< non-Windows platforms
+    /// non-Windows platforms
     hipDeviceAttributeLuidDeviceNodeMask = 22,
     /// Major compute capability version number.
     hipDeviceAttributeComputeCapabilityMajor = 23,
@@ -2458,15 +2452,15 @@ pub enum hipDeviceAttribute_t {
     /// Cuda only. Maximum dimensions of Cubemap surface.
     hipDeviceAttributeMaxSurfaceCubemap = 37,
     /// Cuda only. Maximum dimension of Cubemap layered
-    ///< surface.
+    /// surface.
     hipDeviceAttributeMaxSurfaceCubemapLayered = 38,
     /// Maximum size of 1D texture.
     hipDeviceAttributeMaxTexture1DWidth = 39,
     /// Maximum dimensions of 1D layered texture.
     hipDeviceAttributeMaxTexture1DLayered = 40,
     /// Maximum number of elements allocatable in a 1D linear
-    ///< texture. Use cudaDeviceGetTexture1DLinearMaxWidth()
-    ///< instead on Cuda.
+    /// texture. Use cudaDeviceGetTexture1DLinearMaxWidth()
+    /// instead on Cuda.
     hipDeviceAttributeMaxTexture1DLinear = 41,
     /// Maximum size of 1D mipmapped texture.
     hipDeviceAttributeMaxTexture1DMipmap = 42,
@@ -2475,12 +2469,12 @@ pub enum hipDeviceAttribute_t {
     /// Maximum dimension hight of 2D texture.
     hipDeviceAttributeMaxTexture2DHeight = 44,
     /// Maximum dimensions of 2D texture if gather operations
-    ///< performed.
+    /// performed.
     hipDeviceAttributeMaxTexture2DGather = 45,
     /// Maximum dimensions of 2D layered texture.
     hipDeviceAttributeMaxTexture2DLayered = 46,
     /// Maximum dimensions (width, height, pitch) of 2D
-    ///< textures bound to pitched memory.
+    /// textures bound to pitched memory.
     hipDeviceAttributeMaxTexture2DLinear = 47,
     /// Maximum dimensions of 2D mipmapped texture.
     hipDeviceAttributeMaxTexture2DMipmap = 48,
@@ -2511,20 +2505,20 @@ pub enum hipDeviceAttribute_t {
     /// Minor compute capability version number.
     hipDeviceAttributeComputeCapabilityMinor = 61,
     /// Unique ID of device group on the same multi-GPU
-    ///< board
+    /// board
     hipDeviceAttributeMultiGpuBoardGroupID = 62,
     /// Number of multi-processors. When the GPU works in Compute
-    ///< Unit (CU) mode, this value equals the number of CUs;
-    ///< when in Workgroup Processor (WGP) mode, this value equels
-    ///< half of CUs, because a single WGP contains two CUs.
+    /// Unit (CU) mode, this value equals the number of CUs;
+    /// when in Workgroup Processor (WGP) mode, this value equels
+    /// half of CUs, because a single WGP contains two CUs.
     hipDeviceAttributeMultiprocessorCount = 63,
     /// Previously hipDeviceAttributeName
     hipDeviceAttributeUnused1 = 64,
     /// Device supports coherently accessing pageable memory
-    ///< without calling hipHostRegister on it
+    /// without calling hipHostRegister on it
     hipDeviceAttributePageableMemoryAccess = 65,
     /// Device accesses pageable memory
-    ///< via the host's page tables
+    /// via the host's page tables
     hipDeviceAttributePageableMemoryAccessUsesHostPageTables = 66,
     /// PCI Bus ID.
     hipDeviceAttributePciBusId = 67,
@@ -2535,24 +2529,24 @@ pub enum hipDeviceAttribute_t {
     /// Maximum l2 persisting lines capacity in bytes
     hipDeviceAttributePersistingL2CacheMaxSize = 70,
     /// 32-bit registers available to a thread block. This
-    ///< number is shared by all thread blocks simultaneously
-    ///< resident on a multiprocessor.
+    /// number is shared by all thread blocks simultaneously
+    /// resident on a multiprocessor.
     hipDeviceAttributeMaxRegistersPerBlock = 71,
     /// 32-bit registers available per block.
     hipDeviceAttributeMaxRegistersPerMultiprocessor = 72,
     /// Shared memory reserved by CUDA driver per
-    ///< block.
+    /// block.
     hipDeviceAttributeReservedSharedMemPerBlock = 73,
     /// Maximum shared memory available per block in
-    ///< bytes.
+    /// bytes.
     hipDeviceAttributeMaxSharedMemoryPerBlock = 74,
     /// Maximum shared memory per block usable by special
-    ///< opt in.
+    /// opt in.
     hipDeviceAttributeSharedMemPerBlockOptin = 75,
     /// Shared memory available per multiprocessor.
     hipDeviceAttributeSharedMemPerMultiprocessor = 76,
     /// Cuda only. Performance ratio of single
-    ///< precision to double precision.
+    /// precision to double precision.
     hipDeviceAttributeSingleToDoublePrecisionPerfRatio = 77,
     /// Whether to support stream priorities.
     hipDeviceAttributeStreamPrioritiesSupported = 78,
@@ -2563,14 +2557,14 @@ pub enum hipDeviceAttribute_t {
     /// Alignment requirement for textures
     hipDeviceAttributeTextureAlignment = 81,
     /// Pitch alignment requirement for 2D texture
-    ///< references bound to pitched memory;
+    /// references bound to pitched memory;
     hipDeviceAttributeTexturePitchAlignment = 82,
     /// Constant memory size in bytes.
     hipDeviceAttributeTotalConstantMemory = 83,
     /// Global memory available on devicice.
     hipDeviceAttributeTotalGlobalMem = 84,
     /// Cuda only. An unified address space shared with the
-    ///< host.
+    /// host.
     hipDeviceAttributeUnifiedAddressing = 85,
     /// Previously hipDeviceAttributeUuid
     hipDeviceAttributeUnused2 = 86,
@@ -2579,22 +2573,22 @@ pub enum hipDeviceAttribute_t {
     /// Device supports HIP Stream Ordered Memory Allocator
     hipDeviceAttributeMemoryPoolsSupported = 88,
     /// Device supports HIP virtual memory
-    ///< management
+    /// management
     hipDeviceAttributeVirtualMemoryManagementSupported = 89,
     /// Can device support host memory registration via
-    ///< hipHostRegister
+    /// hipHostRegister
     hipDeviceAttributeHostRegisterSupported = 90,
     /// Supported handle mask for HIP Stream
-    ///< Ordered Memory Allocator
+    /// Ordered Memory Allocator
     hipDeviceAttributeMemoryPoolSupportedHandleTypes = 91,
     /// NUMA ID of the cpu node closest to the device,
-    ///< or -1 when NUMA isn't supported
+    /// or -1 when NUMA isn't supported
     hipDeviceAttributeHostNumaId = 92,
     /// Device supports DMABuf buffer sharing
     hipDeviceAttributeDmaBufSupported = 93,
     /// GPU Direct RDMA with HIP VMM is supported
-    ///< (requires DMA-Buf and HIP virtual memory
-    ///< management)
+    /// (requires DMA-Buf and HIP virtual memory
+    /// management)
     hipDeviceAttributeGPUDirectRDMAWithHipVMMSupported = 94,
     /// Device supports exporting memory to a fabric handle
     hipDeviceAttributeHandleTypeFabricSupported = 95,
@@ -2603,14 +2597,14 @@ pub enum hipDeviceAttribute_t {
     /// Device supports GPUDirect RDMA APIs
     hipDeviceAttributeGPUDirectRDMASupported = 97,
     /// Bitmask of
-    ///< hipFlushGPUDirectRDMAWritesOptions
-    ///< describing the flush paths the device
-    ///< supports
+    /// hipFlushGPUDirectRDMAWritesOptions
+    /// describing the flush paths the device
+    /// supports
     hipDeviceAttributeGPUDirectRDMAFlushWritesOptions = 98,
     /// A hipGPUDirectRDMAWritesOrdering value
-    ///< giving the scope at which GPUDirect RDMA
-    ///< writes are naturally ordered, i.e. visible
-    ///< without an explicit flush
+    /// giving the scope at which GPUDirect RDMA
+    /// writes are naturally ordered, i.e. visible
+    /// without an explicit flush
     hipDeviceAttributeGPUDirectRDMAWritesOrdering = 99,
     hipDeviceAttributeCudaCompatibleEnd = 9999,
     hipDeviceAttributeAmdSpecificBegin = 10000,
@@ -2627,56 +2621,56 @@ pub enum hipDeviceAttribute_t {
     /// Address of the HDP_REG_COHERENCY_FLUSH_CNTL register
     hipDeviceAttributeHdpRegFlushCntl = 10006,
     /// Supports cooperative launch on
-    ///< multiple devices with unmatched
-    ///< functions
+    /// multiple devices with unmatched
+    /// functions
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedFunc = 10007,
     /// Supports cooperative launch on
-    ///< multiple devices with unmatched
-    ///< grid dimensions
+    /// multiple devices with unmatched
+    /// grid dimensions
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedGridDim = 10008,
     /// Supports cooperative launch on
-    ///< multiple devices with unmatched
-    ///< block dimensions
+    /// multiple devices with unmatched
+    /// block dimensions
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedBlockDim = 10009,
     /// Supports cooperative launch on
-    ///< multiple devices with unmatched
-    ///< shared memories
+    /// multiple devices with unmatched
+    /// shared memories
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedSharedMem = 10010,
     /// Whether it is LargeBar
     hipDeviceAttributeIsLargeBar = 10011,
     /// Revision of the GPU in this device
     hipDeviceAttributeAsicRevision = 10012,
     /// '1' if Device supports hipStreamWaitValue32() and
-    ///< hipStreamWaitValue64(), '0' otherwise.
+    /// hipStreamWaitValue64(), '0' otherwise.
     hipDeviceAttributeCanUseStreamWaitValue = 10013,
     /// '1' if Device supports image, '0' otherwise.
     hipDeviceAttributeImageSupport = 10014,
     /// All available physical compute
-    ///< units for the device
+    /// units for the device
     hipDeviceAttributePhysicalMultiProcessorCount = 10015,
     /// '1' if Device supports fine grain, '0' otherwise
     hipDeviceAttributeFineGrainSupport = 10016,
     /// Constant frequency of wall clock in kilohertz.
     hipDeviceAttributeWallClockRate = 10017,
     /// Number of XCC(s) in the device’s current
-    ///< compute partition(XCP).
-    ///< An XCC is AMD’s fundamental GPU compute tile.
-    ///< Devices like MI300X include multiple XCCs
-    ///< per package. Value varies by boot‑time
-    ///< partition mode(compute or memory).
-    ///< Partition modes can be set using amd‑smi.
+    /// compute partition(XCP).
+    /// An XCC is AMD’s fundamental GPU compute tile.
+    /// Devices like MI300X include multiple XCCs
+    /// per package. Value varies by boot‑time
+    /// partition mode(compute or memory).
+    /// Partition modes can be set using amd‑smi.
     hipDeviceAttributeNumberOfXccs = 10018,
     /// Max number of available (directly or
-    ///< indirectly addressable) VGPRs per thread in
-    ///< DWORDs.
+    /// indirectly addressable) VGPRs per thread in
+    /// DWORDs.
     hipDeviceAttributeMaxAvailableVgprsPerThread = 10019,
     /// GPU Manufacturer device id
     hipDeviceAttributePciChipId = 10020,
     /// '1' if Device supports expert scheduling mode,
-    ///< '0' otherwise.
+    /// '0' otherwise.
     hipDeviceAttributeExpertSchedMode = 10021,
     /// Maximum number of dynamic data prefetch regions
-    ///< per kernel launch (0 if unsupported).
+    /// per kernel launch (0 if unsupported).
     hipDeviceAttributeMaxDynDataPrefetchRegions = 10022,
     hipDeviceAttributeAmdSpecificEnd = 19999,
     hipDeviceAttributeVendorSpecificBegin = 20000,
@@ -3326,7 +3320,7 @@ pub enum hipMemcpyKind {
     /// Device-to-Device Copy
     hipMemcpyDeviceToDevice = 3,
     /// Runtime will automatically determine
-    ///< copy-kind based on virtual addresses.
+    /// copy-kind based on virtual addresses.
     hipMemcpyDefault = 4,
     /// Device-to-Device Copy without using compute units
     hipMemcpyDeviceToDeviceNoCU = 1024,
@@ -3483,21 +3477,21 @@ pub enum hipMemcpyFlags {
     /// Swap contents of src and dst.
     hipMemcpyFlagExtOpSwap = 512,
     /// The src pointer holds the address of the real
-    ///< source pointer, read when the copy runs rather
-    ///< than when it is submitted.
+    /// source pointer, read when the copy runs rather
+    /// than when it is submitted.
     hipMemcpyFlagExtOpIndirectSrc = 1024,
     /// Same as IndirectSrc, but for the dst pointer.
     hipMemcpyFlagExtOpIndirectDst = 2048,
     /// Prefer compute engine over copy engine.
-    ///< Linear copies only.
-    ///< hipExtMemcpyBatchAsync only.
+    /// Linear copies only.
+    /// hipExtMemcpyBatchAsync only.
     hipMemcpyFlagExtPreferComputeEngine = 4096,
     /// Prefer issuing each copy individually.
-    ///< hipExtMemcpyBatchAsync only.
+    /// hipExtMemcpyBatchAsync only.
     hipMemcpyFlagExtPreferLinear = 8192,
     /// Prefer one broadcast for copies with the same
-    ///< src and size. Linear copies only.
-    ///< hipExtMemcpyBatchAsync only.
+    /// src and size. Linear copies only.
+    /// hipExtMemcpyBatchAsync only.
     hipMemcpyFlagExtPreferBroadcast = 16384,
 }
 #[repr(i32)]
@@ -3710,16 +3704,16 @@ pub struct hipMemcpy3DPeerParms {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFunction_attribute {
     /// The maximum number of threads per block. Depends
-    ///< on function and device.
+    /// on function and device.
     HIP_FUNC_ATTRIBUTE_MAX_THREADS_PER_BLOCK = 0,
     /// The statically allocated shared memory size in bytes
-    ///< per block required by the function.
+    /// per block required by the function.
     HIP_FUNC_ATTRIBUTE_SHARED_SIZE_BYTES = 1,
     /// The user-allocated constant memory by the function in
-    ///< bytes.
+    /// bytes.
     HIP_FUNC_ATTRIBUTE_CONST_SIZE_BYTES = 2,
     /// The local memory usage of each thread by this function
-    ///< in bytes.
+    /// in bytes.
     HIP_FUNC_ATTRIBUTE_LOCAL_SIZE_BYTES = 3,
     /// The number of registers used by each thread of this function.
     HIP_FUNC_ATTRIBUTE_NUM_REGS = 4,
@@ -3730,11 +3724,11 @@ pub enum hipFunction_attribute {
     /// Cache mode
     HIP_FUNC_ATTRIBUTE_CACHE_MODE_CA = 7,
     /// The maximum dynamic shared memory per
-    ///< block for this function in bytes.
+    /// block for this function in bytes.
     HIP_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES = 8,
     /// The shared memory carveout preference
-    ///< in percent of the maximum shared
-    ///< memory.
+    /// in percent of the maximum shared
+    /// memory.
     HIP_FUNC_ATTRIBUTE_PREFERRED_SHARED_MEMORY_CARVEOUT = 9,
     /// the kernel must launch with a valid cluster size specified.
     HIP_FUNC_ATTRIBUTE_CLUSTER_DIM_MUST_BE_SET = 10,
@@ -3755,56 +3749,56 @@ pub enum hipFunction_attribute {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipPointer_attribute {
     /// The context on which a pointer was allocated
-    ///< @warning This attribute is not supported in HIP
+    /// @warning This attribute is not supported in HIP
     HIP_POINTER_ATTRIBUTE_CONTEXT = 1,
     /// memory type describing the location of a pointer
     HIP_POINTER_ATTRIBUTE_MEMORY_TYPE = 2,
     /// address at which the pointer is allocated on the
-    ///< device
+    /// device
     HIP_POINTER_ATTRIBUTE_DEVICE_POINTER = 3,
     /// address at which the pointer is allocated on the host
     HIP_POINTER_ATTRIBUTE_HOST_POINTER = 4,
     /// A pair of tokens for use with Linux kernel interface
-    ///< @warning This attribute is not supported in HIP
+    /// @warning This attribute is not supported in HIP
     HIP_POINTER_ATTRIBUTE_P2P_TOKENS = 5,
     /// Synchronize every synchronous memory operation
-    ///< initiated on this region
+    /// initiated on this region
     HIP_POINTER_ATTRIBUTE_SYNC_MEMOPS = 6,
     /// Unique ID for an allocated memory region
     HIP_POINTER_ATTRIBUTE_BUFFER_ID = 7,
     /// Indicates if the pointer points to managed memory
     HIP_POINTER_ATTRIBUTE_IS_MANAGED = 8,
     /// device ordinal of a device on which a pointer
-    ///< was allocated or registered
+    /// was allocated or registered
     HIP_POINTER_ATTRIBUTE_DEVICE_ORDINAL = 9,
     /// if this pointer maps to an allocation
-    ///< that is suitable for hipIpcGetMemHandle
-    ///< @warning This attribute is not supported in
-    ///< HIP
+    /// that is suitable for hipIpcGetMemHandle
+    /// @warning This attribute is not supported in
+    /// HIP
     HIP_POINTER_ATTRIBUTE_IS_LEGACY_HIP_IPC_CAPABLE = 10,
     /// Starting address for this requested pointer
     HIP_POINTER_ATTRIBUTE_RANGE_START_ADDR = 11,
     /// Size of the address range for this requested pointer
     HIP_POINTER_ATTRIBUTE_RANGE_SIZE = 12,
     /// tells if this pointer is in a valid address range
-    ///< that is mapped to a backing allocation
+    /// that is mapped to a backing allocation
     HIP_POINTER_ATTRIBUTE_MAPPED = 13,
     /// Bitmask of allowed hipmemAllocationHandleType
-    ///< for this allocation @warning This attribute is
-    ///< not supported in HIP
+    /// for this allocation @warning This attribute is
+    /// not supported in HIP
     HIP_POINTER_ATTRIBUTE_ALLOWED_HANDLE_TYPES = 14,
     /// returns if the memory referenced by
-    ///< this pointer can be used with the
-    ///< GPUDirect RDMA API
-    ///< @warning This attribute is not supported
-    ///< in HIP
+    /// this pointer can be used with the
+    /// GPUDirect RDMA API
+    /// @warning This attribute is not supported
+    /// in HIP
     HIP_POINTER_ATTRIBUTE_IS_GPU_DIRECT_RDMA_CAPABLE = 15,
     /// Returns the access flags the device associated with
-    ///< for the corresponding memory referenced by the ptr
+    /// for the corresponding memory referenced by the ptr
     HIP_POINTER_ATTRIBUTE_ACCESS_FLAGS = 16,
     /// Returns the mempool handle for the allocation if
-    ///< it was allocated from a mempool
-    ///< @warning This attribute is not supported in HIP
+    /// it was allocated from a mempool
+    /// @warning This attribute is not supported in HIP
     HIP_POINTER_ATTRIBUTE_MEMPOOL_HANDLE = 17,
 }
 /// An opaque value that represents a hip texture object
@@ -4126,29 +4120,29 @@ pub type hipEvent_t = *mut ihipEvent_t;
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLimit_t {
     /// Limit of stack size in bytes on the current device, per
-    ///< thread. The size is in units of 256 dwords, up to the
-    ///< limit of (128K - 16)
+    /// thread. The size is in units of 256 dwords, up to the
+    /// limit of (128K - 16)
     hipLimitStackSize = 0,
     /// Size limit in bytes of fifo used by printf call on the
-    ///< device. Currently not supported
+    /// device. Currently not supported
     hipLimitPrintfFifoSize = 1,
     /// Limit of heap size in bytes on the current device, should
-    ///< be less than the global memory size on the device
+    /// be less than the global memory size on the device
     hipLimitMallocHeapSize = 2,
     /// Requested persisting L2 cache size in bytes for the
-    ///< current device. This size can be set to a value up to
-    ///< persistingL2CacheMaxSize reported in hipDeviceProp_t.
+    /// current device. This size can be set to a value up to
+    /// persistingL2CacheMaxSize reported in hipDeviceProp_t.
     hipLimitPersistingL2CacheSize = 3,
     /// Minimum allowed value in bytes for scratch limit on this
-    ///< device. Valid only on Rocm device. This is read only.
+    /// device. Valid only on Rocm device. This is read only.
     hipExtLimitScratchMin = 4096,
     /// Maximum allowed value in bytes for scratch limit on this
-    ///< device. Valid only on Rocm device. This is read only.
+    /// device. Valid only on Rocm device. This is read only.
     hipExtLimitScratchMax = 4097,
     /// Current scratch limit threshold in bytes on this
-    ///< device. Must be between hipExtLimitScratchMin and
-    ///< hipExtLimitScratchMaxValid values. Valid only on Rocm
-    ///< device. This can be modified.
+    /// device. Must be between hipExtLimitScratchMin and
+    /// hipExtLimitScratchMaxValid values. Valid only on Rocm
+    /// device. This can be modified.
     hipExtLimitScratchCurrent = 4098,
     /// Supported limit range
     hipLimitRange = 4099,
@@ -4167,22 +4161,25 @@ pub enum hipStreamBatchMemOpType {
     /// Currently not supported
     hipStreamMemOpFlushRemoteWrites = 3,
 }
-/// @brief Union representing batch memory operation parameters for HIP streams.
+/// Union representing batch memory operation parameters for HIP streams.
 /// hipStreamBatchMemOpParams is used to specify the parameters for batch memory
 /// operations in a HIP stream. This union supports various operations including
 /// waiting for a specific value, writing a value, and different flags for wait conditions.
-/// @details
+///
 /// The union includes fields for different types of operations defined in the
 /// enum hipStreamBatchMemOpType:
+///
 /// - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.
 /// - hipStreamMemOpWriteValue32: Write a 32-bit value.
 /// - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.
 /// - hipStreamMemOpWriteValue64: Write a 64-bit value.
+///
 /// Each operation type includes an address, the value to wait for or write, flags, and an
 /// optional alias that is not relevant on AMD GPUs. Flags can be used to specify different
 /// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
+///
 /// Example usage:
-/// @code
+///
 /// hipStreamBatchMemOpParams myArray[2];
 /// myArray[0].operation = hipStreamMemOpWaitValue32;
 /// myArray[0].waitValue.address = waitAddr1;
@@ -4193,7 +4190,6 @@ pub enum hipStreamBatchMemOpType {
 /// myArray[1].writeValue.value = 0x1;
 /// myArray[1].writeValue.flags = 0x0;
 /// result = hipStreamBatchMemOp(stream, 2, myArray, 0);
-/// @endcode
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
@@ -4259,22 +4255,26 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
     pub operation: hipStreamBatchMemOpType,
     pub flags: ::core::ffi::c_uint,
 }
-/// @brief Union representing batch memory operation parameters for HIP streams.
+/// Union representing batch memory operation parameters for HIP streams.
 /// hipStreamBatchMemOpParams is used to specify the parameters for batch memory
 /// operations in a HIP stream. This union supports various operations including
 /// waiting for a specific value, writing a value, and different flags for wait conditions.
-/// @details
+///
 /// The union includes fields for different types of operations defined in the
 /// enum hipStreamBatchMemOpType:
+///
 /// - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.
 /// - hipStreamMemOpWriteValue32: Write a 32-bit value.
 /// - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.
 /// - hipStreamMemOpWriteValue64: Write a 64-bit value.
+///
 /// Each operation type includes an address, the value to wait for or write, flags, and an
 /// optional alias that is not relevant on AMD GPUs. Flags can be used to specify different
 /// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
+///
 /// Example usage:
-/// @code
+///
+/// ```c
 /// hipStreamBatchMemOpParams myArray[2];
 /// myArray[0].operation = hipStreamMemOpWaitValue32;
 /// myArray[0].waitValue.address = waitAddr1;
@@ -4285,28 +4285,31 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
 /// myArray[1].writeValue.value = 0x1;
 /// myArray[1].writeValue.flags = 0x0;
 /// result = hipStreamBatchMemOp(stream, 2, myArray, 0);
-/// @endcode
+/// ```
 pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
-/// @brief Structure representing node parameters for batch memory operations in HIP graphs.
+/// Structure representing node parameters for batch memory operations in HIP graphs.
 /// hipBatchMemOpNodeParams is used to specify the parameters for batch memory
 /// operations in HIP graphs. This struct includes the context to use for the operations, the
 /// number of operations, and an array of hipStreamBatchMemOpParams that describe the operations.
-/// @details
+///
 /// The structure includes the following fields:
-/// - ctx: The HIP context to use for the operations.
-/// - count: The number of operations in the paramArray.
-/// - paramArray: A pointer to an array of hipStreamBatchMemOpParams.
-/// - flags: Flags to control the node.
+///
+/// - `ctx`: The HIP context to use for the operations.
+/// - `count`: The number of operations in the `paramArray`.
+/// - `paramArray`: A pointer to an array of hipStreamBatchMemOpParams.
+/// - `flags`: Flags to control the node.
+///
 /// Example usage:
-/// @code
+///
+/// ```c
 /// hipBatchMemOpNodeParams nodeParams;
 /// nodeParams.ctx = context;
 /// nodeParams.count = ARRAY_SIZE;
 /// nodeParams.paramArray = myArray;
 /// nodeParams.flags = 0;
-/// Pass nodeParams to a HIP graph APIs hipGraphAddBatchMemOpNode, hipGraphBatchMemOpNodeGetParams,
-/// hipGraphBatchMemOpNodeSetParams, hipGraphExecBatchMemOpNodeSetParams
-/// @endcode
+/// ```
+/// Pass `nodeParams` to a HIP graph APIs `hipGraphAddBatchMemOpNode`, `hipGraphBatchMemOpNodeGetParams`,
+/// `hipGraphBatchMemOpNodeSetParams`, `hipGraphExecBatchMemOpNodeSetParams`
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -4323,26 +4326,26 @@ pub struct hipBatchMemOpNodeParams {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemoryAdvise {
     /// Data will mostly be read and only occassionally
-    ///< be written to
+    /// be written to
     hipMemAdviseSetReadMostly = 1,
     /// Undo the effect of hipMemAdviseSetReadMostly
     hipMemAdviseUnsetReadMostly = 2,
     /// Set the preferred location for the data as
-    ///< the specified device
+    /// the specified device
     hipMemAdviseSetPreferredLocation = 3,
     /// Clear the preferred location for the data
     hipMemAdviseUnsetPreferredLocation = 4,
     /// Data will be accessed by the specified device
-    ///< so prevent page faults as much as possible
+    /// so prevent page faults as much as possible
     hipMemAdviseSetAccessedBy = 5,
     /// Let HIP to decide on the page faulting policy
-    ///< for the specified device
+    /// for the specified device
     hipMemAdviseUnsetAccessedBy = 6,
     /// The default memory model is fine-grain. That allows
-    ///< coherent operations between host and device, while
-    ///< executing kernels. The coarse-grain can be used
-    ///< for data that only needs to be coherent at dispatch
-    ///< boundaries for better performance
+    /// coherent operations between host and device, while
+    /// executing kernels. The coarse-grain can be used
+    /// for data that only needs to be coherent at dispatch
+    /// boundaries for better performance
     hipMemAdviseSetCoarseGrain = 100,
     /// Restores cache coherency policy back to fine-grain
     hipMemAdviseUnsetCoarseGrain = 101,
@@ -4353,14 +4356,14 @@ pub enum hipMemoryAdvise {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeCoherencyMode {
     /// Updates to memory with this attribute can be
-    ///< done coherently from all devices
+    /// done coherently from all devices
     hipMemRangeCoherencyModeFineGrain = 0,
     /// Writes to memory with this attribute can be
-    ///< performed by a single device at a time
+    /// performed by a single device at a time
     hipMemRangeCoherencyModeCoarseGrain = 1,
     /// Memory region queried contains subregions with
-    ///< both hipMemRangeCoherencyModeFineGrain and
-    ///< hipMemRangeCoherencyModeCoarseGrain attributes
+    /// both hipMemRangeCoherencyModeFineGrain and
+    /// hipMemRangeCoherencyModeCoarseGrain attributes
     hipMemRangeCoherencyModeIndeterminate = 2,
 }
 #[repr(i32)]
@@ -4369,18 +4372,18 @@ pub enum hipMemRangeCoherencyMode {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeAttribute {
     /// Whether the range will mostly be read and
-    ///< only occassionally be written to
+    /// only occassionally be written to
     hipMemRangeAttributeReadMostly = 1,
     /// The preferred location of the range
     hipMemRangeAttributePreferredLocation = 2,
     /// Memory range has hipMemAdviseSetAccessedBy
-    ///< set for the specified device
+    /// set for the specified device
     hipMemRangeAttributeAccessedBy = 3,
     /// The last location to where the range was
-    ///< prefetched
+    /// prefetched
     hipMemRangeAttributeLastPrefetchLocation = 4,
     /// Returns coherency mode
-    ///< @ref hipMemRangeCoherencyMode for the range
+    /// @ref hipMemRangeCoherencyMode for the range
     hipMemRangeAttributeCoherencyMode = 100,
 }
 #[repr(i32)]
@@ -4557,10 +4560,10 @@ pub enum hipSharedMemConfig {
     /// The compiler selects a device-specific value for the banking.
     hipSharedMemBankSizeDefault = 0,
     /// Shared mem is banked at 4-bytes intervals and performs best
-    ///< when adjacent threads access data 4 bytes apart.
+    /// when adjacent threads access data 4 bytes apart.
     hipSharedMemBankSizeFourByte = 1,
     /// Shared mem is banked at 8-byte intervals and performs best
-    ///< when adjacent threads access data 4 bytes apart.
+    /// when adjacent threads access data 4 bytes apart.
     hipSharedMemBankSizeEightByte = 2,
 }
 /// Struct for data in 3D
@@ -4930,12 +4933,12 @@ pub struct hipMemsetParams {
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAllocNodeParams {
     /// Pool properties, which contain where
-    ///< the location should reside
+    /// the location should reside
     pub poolProps: hipMemPoolProps,
     /// The number of memory access descriptors.
     pub accessDescs: *const hipMemAccessDesc,
     /// The number of access descriptors.
-    ///< Must not be bigger than the number of GPUs
+    /// Must not be bigger than the number of GPUs
     pub accessDescCount: usize,
     /// The size of the requested allocation in bytes
     pub bytesize: usize,
@@ -5017,7 +5020,7 @@ pub enum hipClusterSchedulingPolicy {
     hipClusterSchedulingPolicyLoadBalancing = 2,
 }
 #[repr(i32)]
-/// @brief Temporal locality hint for dynamic data prefetch.
+/// Temporal locality hint for dynamic data prefetch.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtDynDataPrefetchTemporal {
@@ -5026,7 +5029,7 @@ pub enum hipExtDynDataPrefetchTemporal {
     /// High temporal locality (prefer caching)
     hipExtDynDataPrefetchTemporalHigh = 1,
 }
-/// @brief Describes one 2D memory region to prefetch into L2 cache.
+/// Describes one 2D memory region to prefetch into L2 cache.
 /// @p address must be aligned to the device's L2 cache line size.
 /// @p width is measured in bytes and must be a multiple of the cache line size.
 /// @p height is the number of rows to prefetch.
@@ -5044,7 +5047,7 @@ pub struct hipExtDynDataPrefetchRegion {
     /// Number of rows to prefetch
     pub height: usize,
 }
-/// @brief Configuration for dynamic data prefetch.
+/// Configuration for dynamic data prefetch.
 /// Pointed to by a launch attribute via @ref hipLaunchAttributeExtDynDataPrefetch.
 /// @p numRegions must not exceed the device limit queried via
 /// @ref hipDeviceAttributeMaxDynDataPrefetchRegions (use @ref hipDeviceGetAttribute).
@@ -5099,13 +5102,13 @@ pub union hipLaunchAttributeValue {
     /// Value of launch attribute ::hipLaunchAttributeAccessPolicyWindow.
     pub accessPolicyWindow: hipAccessPolicyWindow,
     /// Value of launch attribute ::hipLaunchAttributeCooperative. Indicates
-    ///< whether the kernel is cooperative.
+    /// whether the kernel is cooperative.
     pub cooperative: ::core::ffi::c_int,
     /// Value of launch attribute :: hipLaunchAttributePriority. Execution priority of
-    ///< kernel
+    /// kernel
     pub priority: ::core::ffi::c_int,
     /// Value of launch attribute :: hipLaunchAttributeSynchronizationPolicy. Used
-    ///< to work queued up in stream
+    /// to work queued up in stream
     pub syncPolicy: hipSynchronizationPolicy,
     /// Value of launch attribute hipLaunchAttributeMemSyncDomainMap
     pub memSyncDomainMap: hipLaunchMemSyncDomainMap,
@@ -5113,12 +5116,12 @@ pub union hipLaunchAttributeValue {
     pub memSyncDomain: hipLaunchMemSyncDomain,
     pub clusterDim: hipLaunchAttributeValue__bindgen_ty_1,
     /// Value of launch attribute :: hipLaunchAttributeClusterSchedulingPolicyPreference
-    ///< determines the preferred strategy for distributing blocks within a compute cluster
+    /// determines the preferred strategy for distributing blocks within a compute cluster
     pub clusterSchedulingPolicyPreference: hipClusterSchedulingPolicy,
     /// Value of launch attribute ::hipLaunchAttributeExtDynDataPrefetch
     pub dynDataPrefetch: *const hipExtDynDataPrefetchConfig,
 }
-/// @brief Specifies the desired cluster dimensions for a kernel launch.
+/// Specifies the desired cluster dimensions for a kernel launch.
 /// This opaque type is used as the value for the launch attribute
 /// ::hipLaunchAttributeClusterDimension. It defines the dimensions of the
 /// compute cluster in terms of blocks, where each field must evenly divide
@@ -5142,7 +5145,7 @@ pub enum hipGraphExecUpdateResult {
     /// The update succeeded
     hipGraphExecUpdateSuccess = 0,
     /// The update failed for an unexpected reason which is described
-    ///< in the return value of the function
+    /// in the return value of the function
     hipGraphExecUpdateError = 1,
     /// The update failed because the topology changed
     hipGraphExecUpdateErrorTopologyChanged = 2,
@@ -5170,7 +5173,7 @@ pub enum hipStreamCaptureStatus {
     /// Stream is actively capturing
     hipStreamCaptureStatusActive = 1,
     /// Stream is part of a capture sequence that has been
-    ///< invalidated, but not terminated
+    /// invalidated, but not terminated
     hipStreamCaptureStatusInvalidated = 2,
 }
 #[repr(i32)]
@@ -5188,13 +5191,13 @@ pub enum hipStreamUpdateCaptureDependenciesFlags {
 pub enum hipGraphMemAttributeType {
     hipGraphMemAttrUsedMemCurrent = 0,
     /// High watermark of memory, in bytes, associated with graphs since
-    ///< the last time.
+    /// the last time.
     hipGraphMemAttrUsedMemHigh = 1,
     /// Amount of memory, in bytes, currently allocated for
-    ///< graphs.
+    /// graphs.
     hipGraphMemAttrReservedMemCurrent = 2,
     /// High watermark of memory, in bytes, currently allocated for
-    ///< graphs
+    /// graphs
     hipGraphMemAttrReservedMemHigh = 3,
 }
 #[repr(i32)]
@@ -5226,13 +5229,13 @@ pub enum hipGraphInstantiateFlags {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphDebugDotFlags {
     hipGraphDebugDotFlagsVerbose = 1,
-    /// Adds hipKernelNodeParams to output
+    /// Adds `hipKernelNodeParams` to output
     hipGraphDebugDotFlagsKernelNodeParams = 4,
-    /// Adds hipMemcpy3DParms to output
+    /// Adds `hipMemcpy3DParms` to output
     hipGraphDebugDotFlagsMemcpyNodeParams = 8,
-    /// Adds hipMemsetParams to output
+    /// Adds `hipMemsetParams` to output
     hipGraphDebugDotFlagsMemsetNodeParams = 16,
-    /// Adds hipHostNodeParams to output
+    /// Adds `hipHostNodeParams` to output
     hipGraphDebugDotFlagsHostNodeParams = 32,
     hipGraphDebugDotFlagsEventNodeParams = 64,
     hipGraphDebugDotFlagsExtSemasSignalNodeParams = 128,
@@ -5468,7 +5471,7 @@ pub struct hipMemcpyNodeParams {
 #[derive(Debug, Copy, Clone)]
 pub struct hipChildGraphNodeParams {
     /// Either the child graph to clone into the node, or
-    ///< a handle to the graph possesed by the node used during query
+    /// a handle to the graph possesed by the node used during query
     pub graph: hipGraph_t,
 }
 /// Event record node params
@@ -5534,12 +5537,12 @@ pub enum hipGraphDependencyType {
 #[derive(Debug, Copy, Clone)]
 pub struct hipGraphEdgeData {
     /// This indicates when the dependency is triggered from the upstream node on the
-    ///< edge. The meaning is specfic to the node type. A value of 0 in all cases
-    ///< means full completion of the upstream node, with memory visibility to the
-    ///< downstream node or portion thereof (indicated by to_port). Only kernel nodes
-    ///< define non-zero ports. A kernel node can use the following output port types:
-    ///< hipGraphKernelNodePortDefault, hipGraphKernelNodePortProgrammatic, or
-    ///< hipGraphKernelNodePortLaunchCompletion.
+    /// edge. The meaning is specfic to the node type. A value of 0 in all cases
+    /// means full completion of the upstream node, with memory visibility to the
+    /// downstream node or portion thereof (indicated by to_port). Only kernel nodes
+    /// define non-zero ports. A kernel node can use the following output port types:
+    /// hipGraphKernelNodePortDefault, hipGraphKernelNodePortProgrammatic, or
+    /// hipGraphKernelNodePortLaunchCompletion.
     pub from_port: ::core::ffi::c_uchar,
     /// These bytes are unused and must be zeroed
     pub reserved: [::core::ffi::c_uchar; 5usize],
