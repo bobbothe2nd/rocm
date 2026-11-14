@@ -5,7 +5,7 @@ use roc::{
         device::Device,
         graph::{GraphInstantiateFlags, StreamCaptureMode},
         module::LaunchConfig,
-        stream::HipStream,
+        stream::{HipStream, StreamKind},
     },
     hiprtc::program::{CompileOptions, Hsaco},
 };
@@ -44,7 +44,7 @@ fn main() {
         module.get_func_c(c"vec_add").unwrap()
     };
 
-    let stream = HipStream::create().unwrap();
+    let stream = HipStream::create(StreamKind::Default).unwrap();
 
     let mut out = stream.alloc(BYTES).unwrap();
     let mut a = stream.alloc(BYTES).unwrap();

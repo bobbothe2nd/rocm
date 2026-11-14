@@ -12,7 +12,7 @@ use rocm_sys::hip::{hipFree, hipMalloc, hipMemsetD8};
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
-pub struct Buffer {
+pub struct HipBuffer {
     pub(crate) ptr: *mut u8,
     pub(crate) size: usize,
     pub(crate) event: HipEvent,
@@ -20,13 +20,13 @@ pub struct Buffer {
     _marker: PhantomData<UnsafeCell<()>>,
 }
 
-unsafe impl Send for Buffer {}
-unsafe impl Sync for Buffer {}
+unsafe impl Send for HipBuffer {}
+unsafe impl Sync for HipBuffer {}
 
 impl HipStream {
     /// Allocates `size` bytes on the default device
-    pub fn alloc(self: &Arc<Self>, size: usize) -> Result<Buffer, HipError> {
-        let event = HipEvent::create()?;
+    pub fn alloc(self: &Arc<Self>, size: usize) -> Result<HipBuffer, HipError> {
+        let event = HipEvent::create(None)?;
 
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size)) };
@@ -36,7 +36,7 @@ impl HipStream {
             return Err(HipError::InvalidValue);
         }
 
-        Ok(Buffer {
+        Ok(HipBuffer {
             ptr,
             size,
             stream: self.clone(),
@@ -46,7 +46,7 @@ impl HipStream {
     }
 
     /// Allocates `size` zeroed bytes on the default device
-    pub fn alloc_zeroed(self: &Arc<Self>, size: usize) -> Result<Buffer, HipError> {
+    pub fn alloc_zeroed(self: &Arc<Self>, size: usize) -> Result<HipBuffer, HipError> {
         let ptr: Result<*mut u8, HipError> =
             unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), size)) };
         let ptr = ptr?;
@@ -59,17 +59,17 @@ impl HipStream {
             try_err!(hipMemsetD8(ptr.cast(), 0, size as usize));
         }
 
-        Ok(Buffer {
+        Ok(HipBuffer {
             ptr,
             size,
             stream: self.clone(),
-            event: HipEvent::create()?,
+            event: HipEvent::create(None)?,
             _marker: PhantomData,
         })
     }
 }
 
-impl Buffer {
+impl HipBuffer {
     /// Constructs a GPU buffer from a raw pointer, size, stream, and event
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
@@ -135,9 +135,9 @@ impl Buffer {
     pub fn copy_from_sync<Src>(
         &mut self,
         src: &Src,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError>
     where
         Src: CopyTo<Self>,
@@ -149,9 +149,9 @@ impl Buffer {
     pub fn copy_to_sync<Dst>(
         &self,
         dst: &mut Dst,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError>
     where
         Self: CopyTo<Dst>,
@@ -164,9 +164,9 @@ impl Buffer {
     pub fn copy_from_async<Src>(
         &mut self,
         src: &Src,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError>
     where
         Src: CopyTo<Self> + StreamBound,
@@ -178,9 +178,9 @@ impl Buffer {
     pub fn copy_to_async<Dst>(
         &self,
         dst: &mut Dst,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError>
     where
         Self: CopyTo<Dst>,
@@ -217,9 +217,9 @@ impl Buffer {
     }
 }
 
-impl EventSync for Buffer {
+impl EventSync for HipBuffer {
     fn latesync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.record(&self.stream)
+        self.event.record(&self.stream, None)
     }
 
     fn sync(&self) -> Result<(), crate::hip::HipError> {
@@ -227,16 +227,16 @@ impl EventSync for Buffer {
     }
 }
 
-impl Drop for Buffer {
+impl Drop for HipBuffer {
     fn drop(&mut self) {
         if self.stream.has_async_alloc {
             unsafe {
-                log_if_err!("failed to deallocate Buffer": self.stream.free_unchecked(self));
+                log_if_err!("failed to deallocate HipBuffer": self.stream.free_unchecked(self));
             }
         } else {
-            log_if_err!("failed to deallocate Buffer": self.event.sync());
+            log_if_err!("failed to deallocate HipBuffer": self.event.sync());
             unsafe {
-                log_if_err!("failed to deallocate Buffer": self.dealloc_unchecked());
+                log_if_err!("failed to deallocate HipBuffer": self.dealloc_unchecked());
             }
         }
     }

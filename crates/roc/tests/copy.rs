@@ -1,13 +1,16 @@
 #[test]
 #[cfg(any(feature = "dynamic-loading", hip))]
 fn htod_copy_preserves_bytes_outside_requested_range() {
-    use roc::{hip::stream::HipStream, is_amdhip64_present};
+    use roc::{
+        hip::stream::{HipStream, StreamKind},
+        is_amdhip64_present,
+    };
 
     if !is_amdhip64_present() {
         return;
     }
 
-    let stream = HipStream::create().unwrap();
+    let stream = HipStream::create(StreamKind::Default).unwrap();
 
     let src_bytes: Vec<u8> = (0..64).collect();
     let initial_dst = [0xAA_u8; 64];

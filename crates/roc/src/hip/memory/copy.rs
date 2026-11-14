@@ -6,7 +6,7 @@ use rocm_sys::hip::{
 use crate::hip::{
     HipError,
     device::Device,
-    memory::{Buffer, EventSync, HostBuffer, HostSlice, HostSliceMut},
+    memory::{EventSync, HipBuffer, HostBuffer, HostSlice, HostSliceMut},
     stream::HipStream,
 };
 
@@ -14,9 +14,9 @@ use crate::hip::{
 pub fn copy<Src, Dst>(
     src: &Src,
     dst: &mut Dst,
-    src_off: u32,
-    dst_off: u32,
-    len: u32,
+    src_off: usize,
+    dst_off: usize,
+    len: usize,
 ) -> Result<(), HipError>
 where
     Src: CopyTo<Dst>,
@@ -24,10 +24,10 @@ where
 {
     if src_off
         .checked_add(len)
-        .is_none_or(|end| end > src.size() as u32)
+        .is_none_or(|end| end > src.size() as usize)
         || dst_off
             .checked_add(len)
-            .is_none_or(|end| end > dst.size() as u32)
+            .is_none_or(|end| end > dst.size() as usize)
         || core::ptr::eq(src.as_ptr(), dst.as_ptr())
     {
         return Err(HipError::InvalidValue);
@@ -40,9 +40,9 @@ where
 pub fn copy_async<Src, Dst>(
     src: &Src,
     dst: &mut Dst,
-    src_off: u32,
-    dst_off: u32,
-    len: u32,
+    src_off: usize,
+    dst_off: usize,
+    len: usize,
 ) -> Result<(), HipError>
 where
     Src: CopyTo<Dst> + StreamBound,
@@ -53,10 +53,10 @@ where
     if !stream.same_as(dst.stream())
         || src_off
             .checked_add(len)
-            .is_none_or(|end| end > src.size() as u32)
+            .is_none_or(|end| end > src.size() as usize)
         || dst_off
             .checked_add(len)
-            .is_none_or(|end| end > dst.size() as u32)
+            .is_none_or(|end| end > dst.size() as usize)
         || core::ptr::eq(src.as_ptr(), dst.as_ptr())
     {
         return Err(HipError::InvalidValue);
@@ -73,7 +73,7 @@ pub trait StreamBound {
     fn stream(&self) -> &HipStream;
 }
 
-impl StreamBound for Buffer {
+impl StreamBound for HipBuffer {
     #[inline(always)]
     fn stream(&self) -> &HipStream {
         &self.stream
@@ -107,7 +107,7 @@ pub trait DevPtr {
     fn dev(&self) -> Device;
 }
 
-impl DevPtr for Buffer {
+impl DevPtr for HipBuffer {
     #[inline(always)]
     fn as_ptr(&self) -> *const u8 {
         self.ptr.cast()
@@ -187,17 +187,17 @@ pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
     unsafe fn copy(
         src: &Self,
         dst: &mut Dst,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError>;
 
     unsafe fn copy_async(
         src: &Self,
         dst: &mut Dst,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError>
     where
@@ -205,14 +205,14 @@ pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
         Dst: StreamBound;
 }
 
-unsafe impl CopyTo<Buffer> for HostSlice<'_> {
+unsafe impl CopyTo<HipBuffer> for HostSlice<'_> {
     #[inline(always)]
     unsafe fn copy(
         src: &Self,
-        dst: &mut Buffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        dst: &mut HipBuffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -229,10 +229,10 @@ unsafe impl CopyTo<Buffer> for HostSlice<'_> {
     #[inline(always)]
     unsafe fn copy_async(
         src: &Self,
-        dst: &mut Buffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        dst: &mut HipBuffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
@@ -251,14 +251,14 @@ unsafe impl CopyTo<Buffer> for HostSlice<'_> {
     }
 }
 
-unsafe impl CopyTo<Buffer> for HostSliceMut<'_> {
+unsafe impl CopyTo<HipBuffer> for HostSliceMut<'_> {
     #[inline(always)]
     unsafe fn copy(
         src: &Self,
-        dst: &mut Buffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        dst: &mut HipBuffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -275,10 +275,10 @@ unsafe impl CopyTo<Buffer> for HostSliceMut<'_> {
     #[inline(always)]
     unsafe fn copy_async(
         src: &Self,
-        dst: &mut Buffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        dst: &mut HipBuffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
@@ -297,14 +297,14 @@ unsafe impl CopyTo<Buffer> for HostSliceMut<'_> {
     }
 }
 
-unsafe impl CopyTo<Buffer> for HostBuffer {
+unsafe impl CopyTo<HipBuffer> for HostBuffer {
     #[inline(always)]
     unsafe fn copy(
         src: &Self,
-        dst: &mut Buffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        dst: &mut HipBuffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -321,10 +321,10 @@ unsafe impl CopyTo<Buffer> for HostBuffer {
     #[inline(always)]
     unsafe fn copy_async(
         src: &Self,
-        dst: &mut Buffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        dst: &mut HipBuffer,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
@@ -343,14 +343,14 @@ unsafe impl CopyTo<Buffer> for HostBuffer {
     }
 }
 
-unsafe impl CopyTo<HostSliceMut<'_>> for Buffer {
+unsafe impl CopyTo<HostSliceMut<'_>> for HipBuffer {
     #[inline(always)]
     unsafe fn copy(
         src: &Self,
         dst: &mut HostSliceMut,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -368,9 +368,9 @@ unsafe impl CopyTo<HostSliceMut<'_>> for Buffer {
     unsafe fn copy_async(
         src: &Self,
         dst: &mut HostSliceMut,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
@@ -389,14 +389,14 @@ unsafe impl CopyTo<HostSliceMut<'_>> for Buffer {
     }
 }
 
-unsafe impl CopyTo<HostBuffer> for Buffer {
+unsafe impl CopyTo<HostBuffer> for HipBuffer {
     #[inline(always)]
     unsafe fn copy(
         src: &Self,
         dst: &mut HostBuffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -414,9 +414,9 @@ unsafe impl CopyTo<HostBuffer> for Buffer {
     unsafe fn copy_async(
         src: &Self,
         dst: &mut HostBuffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
@@ -435,14 +435,14 @@ unsafe impl CopyTo<HostBuffer> for Buffer {
     }
 }
 
-unsafe impl CopyTo<Self> for Buffer {
+unsafe impl CopyTo<Self> for HipBuffer {
     #[inline(always)]
     unsafe fn copy(
         src: &Self,
         dst: &mut Self,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
     ) -> Result<(), HipError> {
         unsafe {
             try_err!(
@@ -460,9 +460,9 @@ unsafe impl CopyTo<Self> for Buffer {
     unsafe fn copy_async(
         src: &Self,
         dst: &mut Self,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {

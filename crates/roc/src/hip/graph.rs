@@ -28,7 +28,7 @@ unsafe impl Send for Graph {}
 unsafe impl Sync for Graph {}
 
 impl Graph {
-    pub fn new(flags: GraphInstantiateFlags) -> Result<Self, HipError> {
+    pub fn create(flags: GraphInstantiateFlags) -> Result<Self, HipError> {
         let raw: Result<hipGraph_t, HipError> = unsafe {
             wrap_sys_res!(|graph| hipGraphCreate(graph.as_mut_ptr(), flags.bits() as c_uint))
         };
@@ -333,6 +333,7 @@ pub enum NodeType {
 }
 
 bitflags::bitflags! {
+    #[repr(transparent)]
     #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct GraphInstantiateFlags: u32 {

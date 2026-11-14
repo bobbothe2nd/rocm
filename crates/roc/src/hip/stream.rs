@@ -6,8 +6,8 @@ use core::{
 };
 use rocm_sys::hip::{
     hipError_t, hipFreeAsync, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync,
-    hipStream_t, hipStreamCreate, hipStreamDestroy, hipStreamGetDevice, hipStreamGetId,
-    hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
+    hipStream_t, hipStreamCreateWithFlags, hipStreamCreateWithPriority, hipStreamDestroy,
+    hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
 };
 
 use crate::{
@@ -15,7 +15,7 @@ use crate::{
     hip::{
         HipError,
         device::{Device, DeviceAttr},
-        memory::{Buffer, HostSlice, HostSliceMut},
+        memory::{HipBuffer, HostSlice, HostSliceMut},
     },
 };
 
@@ -31,9 +31,24 @@ unsafe impl Send for HipStream {}
 unsafe impl Sync for HipStream {}
 
 impl HipStream {
-    pub fn create() -> Result<Arc<Self>, HipError> {
+    pub fn create(flags: StreamKind) -> Result<Arc<Self>, HipError> {
         let raw: Result<hipStream_t, HipError> = unsafe {
-            wrap_sys_res!(|stream: hipStream_t| hipStreamCreate(stream.as_mut_ptr().cast()))
+            wrap_sys_res!(|stream: hipStream_t| hipStreamCreateWithFlags(
+                stream.as_mut_ptr().cast(),
+                flags as u32
+            ))
+        };
+        unsafe { Self::from_raw(raw?) }
+    }
+
+    /// lower value = higher priority
+    pub fn create_with_prio(flags: StreamKind, prio: i32) -> Result<Arc<Self>, HipError> {
+        let raw: Result<hipStream_t, HipError> = unsafe {
+            wrap_sys_res!(|stream: hipStream_t| hipStreamCreateWithPriority(
+                stream.as_mut_ptr().cast(),
+                flags as u32,
+                prio
+            ))
         };
         unsafe { Self::from_raw(raw?) }
     }
@@ -65,7 +80,7 @@ impl HipStream {
     pub unsafe fn copy_htod(
         &self,
         src: &HostSlice<'_>,
-        dst: &Buffer,
+        dst: &HipBuffer,
         src_off: u32,
         dst_off: u32,
         len: u32,
@@ -87,7 +102,7 @@ impl HipStream {
     pub unsafe fn copy_htod_unchecked(
         &self,
         src: &HostSlice<'_>,
-        dst: &Buffer,
+        dst: &HipBuffer,
         src_off: u32,
         dst_off: u32,
         len: u32,
@@ -107,7 +122,7 @@ impl HipStream {
 
     pub unsafe fn copy_dtoh(
         &self,
-        src: &Buffer,
+        src: &HipBuffer,
         dst: &HostSliceMut<'_>,
         src_off: u32,
         dst_off: u32,
@@ -129,7 +144,7 @@ impl HipStream {
     #[inline(always)]
     pub unsafe fn copy_dtoh_unchecked(
         &self,
-        src: &Buffer,
+        src: &HipBuffer,
         dst: &HostSliceMut<'_>,
         src_off: u32,
         dst_off: u32,
@@ -150,8 +165,8 @@ impl HipStream {
 
     pub unsafe fn copy_dtod(
         &self,
-        src: &Buffer,
-        dst: &Buffer,
+        src: &HipBuffer,
+        dst: &HipBuffer,
         src_off: u32,
         dst_off: u32,
         len: u32,
@@ -173,8 +188,8 @@ impl HipStream {
     #[inline(always)]
     pub unsafe fn copy_dtod_unchecked(
         &self,
-        src: &Buffer,
-        dst: &Buffer,
+        src: &HipBuffer,
+        dst: &HipBuffer,
         src_off: u32,
         dst_off: u32,
         len: u32,
@@ -198,7 +213,7 @@ impl HipStream {
     ///
     /// The buffer must not be dropped or freed again
     #[inline(always)]
-    pub unsafe fn free_unchecked(&self, buf: &Buffer) -> Result<(), HipError> {
+    pub unsafe fn free_unchecked(&self, buf: &HipBuffer) -> Result<(), HipError> {
         unsafe { try_err!(hipFreeAsync(buf.ptr.cast(), self.raw,), Ok(())) }
     }
 
@@ -257,4 +272,14 @@ impl Drop for HipStream {
     fn drop(&mut self) {
         log_if_err!("failed to destroy HipStream": unsafe { self.destroy_unchecked() });
     }
+}
+
+#[repr(u32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[derive(Debug, Clone)]
+pub enum StreamKind {
+    /// Default stream creation flags. These are used with `hipStreamCreate()`.
+    Default = 0,
+    /// Stream does not implicitly synchronize with null stream.
+    NonBlocking = 1,
 }
