@@ -88,7 +88,7 @@ impl GfxVersion {
     }
 }
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct MatrixCapabilities {
     pub kind: MatrixKind,

@@ -12,7 +12,7 @@ use crate::{
     hiprtc::program::Hsaco,
 };
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Clone)]
 #[repr(transparent)]
 pub struct Module {
@@ -80,7 +80,7 @@ mod hiprtc {
 mod private {
     use super::*;
 
-    #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+    #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
     pub struct ModuleInner {
         pub(super) raw: hipModule_t,
     }
@@ -95,7 +95,7 @@ mod private {
     }
 }
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Clone)]
 pub struct Func {
     pub(crate) raw: hipFunction_t,
@@ -151,7 +151,7 @@ impl HipStream {
     }
 }
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone)]
 pub struct LaunchConfig {
     pub grid: [u32; 3],

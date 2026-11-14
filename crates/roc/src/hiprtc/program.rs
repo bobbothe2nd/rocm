@@ -13,7 +13,7 @@ use rocm_sys::hiprtc::{
 use crate::{hip::gfx::GfxVersion, hiprtc::HiprtcError};
 
 /// Represents a compiled HSACO binary. (like CUBIN)
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 pub struct Hsaco {
     pub(crate) code: Arc<[u8]>,
 }
@@ -114,7 +114,7 @@ impl Hsaco {
     }
 }
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct CompileOptions<'a> {
     pub opt_level: Option<u8>,

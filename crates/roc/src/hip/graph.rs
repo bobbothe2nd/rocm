@@ -17,7 +17,7 @@ use rocm_sys::hip::{
 
 use crate::hip::{HipError, stream::HipStream};
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 #[repr(transparent)]
 pub struct Graph {
@@ -101,7 +101,7 @@ impl Drop for Graph {
     }
 }
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 #[repr(transparent)]
 pub struct ExecGraph {
@@ -212,7 +212,7 @@ pub enum StreamCaptureMode {
 }
 
 #[repr(transparent)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone)]
 pub struct Node {
     raw: hipGraphNode_t,
@@ -230,7 +230,7 @@ impl Node {
 }
 
 #[repr(transparent)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Clone)]
 pub struct KernelParams {
     raw: hipKernelNodeParams,
@@ -259,7 +259,7 @@ impl KernelParams {
 }
 
 #[repr(transparent)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Clone)]
 pub struct GraphParams {
     raw: hipGraphNodeParams,

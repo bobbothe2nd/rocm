@@ -14,7 +14,7 @@ use core::{
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemsetD8};
 
 #[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct HipSlice<'a> {
     pub(crate) ptr: *const u8,
@@ -95,7 +95,7 @@ impl Drop for HipSlice<'_> {
 }
 
 #[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct HipSliceMut<'a> {
     pub(crate) ptr: *mut u8,
@@ -232,7 +232,7 @@ impl Drop for HipSliceMut<'_> {
 
 /// Handle to an allocation on the GPU
 #[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct HipBuffer {
     pub(crate) ptr: *mut u8,

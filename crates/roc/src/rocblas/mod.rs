@@ -15,7 +15,7 @@ macro_rules! try_err {
     };
 }
 
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone)]
 pub struct RocBlas {
     pub(crate) raw: rocblas_handle,
