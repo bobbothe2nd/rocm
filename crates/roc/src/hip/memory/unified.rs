@@ -34,6 +34,9 @@ pub struct UnifiedSlice<'a> {
     pub(crate) marker: PhantomData<&'a UnsafeCell<[u8]>>,
 }
 
+unsafe impl Send for UnifiedSlice<'_> {}
+unsafe impl Sync for UnifiedSlice<'_> {}
+
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
@@ -47,6 +50,9 @@ pub struct UnifiedSliceMut<'a> {
     pub(crate) marker: PhantomData<&'a mut UnsafeCell<[u8]>>,
 }
 
+unsafe impl Send for UnifiedSliceMut<'_> {}
+unsafe impl Sync for UnifiedSliceMut<'_> {}
+
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
@@ -59,3 +65,6 @@ pub struct UnifiedBuffer {
     pub(crate) concurrent_managed_access: bool,
     pub(crate) marker: PhantomData<UnsafeCell<[u8]>>,
 }
+
+unsafe impl Send for UnifiedBuffer {}
+unsafe impl Sync for UnifiedBuffer {}

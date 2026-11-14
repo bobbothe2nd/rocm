@@ -415,7 +415,7 @@ impl HipStream {
 
     /// Borrows bytes and makes it accessible from all HIP devices
     pub fn host_slice<'a>(self: &Arc<Self>, ptr: &'a [u8]) -> Result<HostSlice<'a>, HipError> {
-        HostSlice::new(ptr, &self)
+        HostSlice::new(ptr, self)
     }
 
     /// Borrows bytes and makes it accessible from all HIP devices
@@ -423,7 +423,7 @@ impl HipStream {
         self: &Arc<Self>,
         ptr: &'a mut [u8],
     ) -> Result<HostSliceMut<'a>, HipError> {
-        HostSliceMut::new(ptr, &self)
+        HostSliceMut::new(ptr, self)
     }
 }
 
