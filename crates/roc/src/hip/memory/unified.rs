@@ -26,9 +26,9 @@ pub enum MemAttachFlags {
 #[derive(Debug)]
 pub struct UnifiedSlice<'a> {
     pub(crate) ptr: *const u8,
-    pub(crate) len: usize,
-    pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
+    pub(crate) size: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
+    pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     pub(crate) attach_mode: MemAttachFlags,
     pub(crate) concurrent_managed_access: bool,
     pub(crate) marker: PhantomData<&'a UnsafeCell<[u8]>>,
@@ -42,9 +42,9 @@ unsafe impl Sync for UnifiedSlice<'_> {}
 #[derive(Debug)]
 pub struct UnifiedSliceMut<'a> {
     pub(crate) ptr: *mut u8,
-    pub(crate) len: usize,
-    pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
+    pub(crate) size: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
+    pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     pub(crate) attach_mode: MemAttachFlags,
     pub(crate) concurrent_managed_access: bool,
     pub(crate) marker: PhantomData<&'a mut UnsafeCell<[u8]>>,
@@ -58,9 +58,9 @@ unsafe impl Sync for UnifiedSliceMut<'_> {}
 #[derive(Debug)]
 pub struct UnifiedBuffer {
     pub(crate) ptr: *mut u8,
-    pub(crate) len: usize,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) size: usize,
     pub(crate) event: HipEvent,
+    pub(crate) stream: Arc<HipStream>,
     pub(crate) attach_mode: MemAttachFlags,
     pub(crate) concurrent_managed_access: bool,
     pub(crate) marker: PhantomData<UnsafeCell<[u8]>>,
@@ -68,3 +68,38 @@ pub struct UnifiedBuffer {
 
 unsafe impl Send for UnifiedBuffer {}
 unsafe impl Sync for UnifiedBuffer {}
+
+impl<'a> AsRef<UnifiedSlice<'a>> for UnifiedBuffer {
+    #[inline(always)]
+    fn as_ref(&self) -> &UnifiedSlice<'a> {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a> AsRef<UnifiedSlice<'a>> for UnifiedSliceMut<'a> {
+    #[inline(always)]
+    fn as_ref(&self) -> &UnifiedSlice<'a> {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a> AsMut<UnifiedSliceMut<'a>> for UnifiedBuffer {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut UnifiedSliceMut<'a> {
+        unsafe { &mut *(self as *mut Self).cast() }
+    }
+}
+
+impl AsRef<Self> for UnifiedSlice<'_> {
+    #[inline(always)]
+    fn as_ref(&self) -> &Self {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl AsMut<Self> for UnifiedSliceMut<'_> {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut Self {
+        unsafe { &mut *(self as *mut Self).cast() }
+    }
+}

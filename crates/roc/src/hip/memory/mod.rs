@@ -71,6 +71,7 @@ macro_rules! impl_buf {
         impl EventSync for $ty {
             #[inline(always)]
             fn latesync(&self) -> Result<(), crate::hip::HipError> {
+                if self.stream.dev.has_async_alloc { return Ok(()); }
                 self.event.record(&self.stream, None)
             }
 
@@ -104,4 +105,5 @@ macro_rules! impl_buf {
 impl_buf!(
     HipBuffer HipSlice<'_> HipSliceMut<'_>
     HostBuffer HostSlice<'_> HostSliceMut<'_>
+    UnifiedBuffer UnifiedSlice<'_> UnifiedSliceMut<'_>
 );

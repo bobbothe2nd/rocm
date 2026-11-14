@@ -17,17 +17,19 @@ use crate::{
     hip::{HipError, gfx::GfxVersion, memory::MemPool},
 };
 
-#[repr(transparent)]
+#[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Device {
     dev: hipDevice_t,
+    pub(crate) has_async_alloc: bool,
 }
 
 impl Device {
     /// Recreates the current device
     pub fn current() -> Result<Self, HipError> {
-        unsafe { wrap_sys_res!(|dev: Device| hipGetDevice(dev.as_mut_ptr().cast())) }
+        let raw: Result<_, HipError> = unsafe { wrap_sys_res!(|dev: hipDevice_t| hipGetDevice(dev.as_mut_ptr().cast())) };
+        Self::create(raw?)
     }
 
     /// Creates a device from the ID
@@ -39,7 +41,9 @@ impl Device {
             return Err(HipError::InvalidDevice);
         }
 
-        Ok(Self { dev })
+        unsafe {
+            Self::from_raw(dev)
+        }
     }
 
     /// Converts the device into the raw one used by `rocm-sys`.
@@ -56,8 +60,11 @@ impl Device {
 
     /// Constructs a safe device from the raw one used by `rocm-sys`.
     #[inline(always)]
-    pub unsafe fn from_raw(dev: hipDevice_t) -> Self {
-        Self { dev }
+    pub unsafe fn from_raw(dev: hipDevice_t) -> Result<Self, HipError> {
+        let async_alloc_attr: Result<i32, HipError> = unsafe { wrap_sys_res!(|val| hipDeviceGetAttribute(val.as_mut_ptr(), hipDeviceAttribute_t::hipDeviceAttributeMemoryPoolsSupported, dev)) };
+        let has_async_alloc = async_alloc_attr.is_ok_and(|x| x > 0);
+
+        Ok(Self { dev, has_async_alloc })
     }
 
     /// Sets the current default device

@@ -14,7 +14,7 @@ use crate::{
     RocHandle,
     hip::{
         HipError,
-        device::{Device, DeviceAttr},
+        device::Device,
         memory::{HipBuffer, HostSlice, HostSliceMut},
     },
 };
@@ -24,7 +24,7 @@ use crate::{
 #[derive(Debug)]
 pub struct HipStream {
     pub(crate) raw: hipStream_t,
-    pub(crate) has_async_alloc: bool,
+    pub(crate) dev: Device,
 }
 
 unsafe impl Send for HipStream {}
@@ -67,13 +67,10 @@ impl HipStream {
     pub unsafe fn from_raw(raw: hipStream_t) -> Result<Arc<Self>, HipError> {
         let dev_raw: Result<i32, HipError> =
             unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(raw, dev.as_mut_ptr())) };
-        let dev = unsafe { Device::from_raw(dev_raw?) };
-        let has_async_alloc = dev
-            .get_attr(DeviceAttr::MemoryPoolsSupported)
-            .is_ok_and(|x| x > 0);
+        let dev = unsafe { Device::from_raw(dev_raw?)? };
         Ok(Arc::new(Self {
             raw,
-            has_async_alloc,
+            dev,
         }))
     }
 

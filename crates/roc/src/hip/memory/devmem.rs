@@ -461,7 +461,7 @@ impl HipBuffer {
 
 impl Drop for HipBuffer {
     fn drop(&mut self) {
-        if self.stream.has_async_alloc {
+        if self.stream.dev.has_async_alloc {
             unsafe {
                 log_if_err!("failed to deallocate HipBuffer": self.stream.free_unchecked(self));
             }
