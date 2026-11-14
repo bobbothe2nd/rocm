@@ -80,7 +80,7 @@ impl HipEvent {
 impl Drop for HipEvent {
     fn drop(&mut self) {
         unsafe {
-            let _ = self.destroy_unchecked();
+            log_if_err!("failed to destroy HipEvent": self.destroy_unchecked());
         }
     }
 }

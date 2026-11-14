@@ -1,13 +1,5 @@
-use rocm_sys::hip::{
-    hipMemcpyDtoD, hipMemcpyDtoDAsync, hipMemcpyDtoH, hipMemcpyDtoHAsync, hipMemcpyHtoD,
-    hipMemcpyHtoDAsync,
-};
-
 use crate::hip::{
-    HipError,
-    device::Device,
-    memory::{EventSync, HipBuffer, HostBuffer, HostSlice, HostSliceMut},
-    stream::HipStream,
+    HipError, memory::{DevPtr, EventSync, HipBuffer, HipSlice, HipSliceMut, HostBuffer, HostSlice, HostSliceMut, StreamBound}, stream::HipStream,
 };
 
 #[inline]
@@ -69,120 +61,6 @@ where
     Ok(())
 }
 
-pub trait StreamBound {
-    fn stream(&self) -> &HipStream;
-}
-
-impl StreamBound for HipBuffer {
-    #[inline(always)]
-    fn stream(&self) -> &HipStream {
-        &self.stream
-    }
-}
-
-impl StreamBound for HostBuffer {
-    #[inline(always)]
-    fn stream(&self) -> &HipStream {
-        &self.stream
-    }
-}
-
-impl StreamBound for HostSlice<'_> {
-    #[inline(always)]
-    fn stream(&self) -> &HipStream {
-        &self.stream
-    }
-}
-
-impl StreamBound for HostSliceMut<'_> {
-    #[inline(always)]
-    fn stream(&self) -> &HipStream {
-        &self.stream
-    }
-}
-
-pub trait DevPtr {
-    fn as_ptr(&self) -> *const u8;
-    fn size(&self) -> usize;
-    fn dev(&self) -> Device;
-}
-
-impl DevPtr for HipBuffer {
-    #[inline(always)]
-    fn as_ptr(&self) -> *const u8 {
-        self.ptr.cast()
-    }
-
-    #[inline(always)]
-    fn size(&self) -> usize {
-        self.size
-    }
-
-    #[inline(always)]
-    fn dev(&self) -> Device {
-        self.stream
-            .get_dev()
-            .expect("valid Stream should have device")
-    }
-}
-
-impl DevPtr for HostBuffer {
-    #[inline(always)]
-    fn as_ptr(&self) -> *const u8 {
-        self.ptr
-    }
-
-    #[inline(always)]
-    fn size(&self) -> usize {
-        self.len()
-    }
-
-    #[inline(always)]
-    fn dev(&self) -> Device {
-        self.stream
-            .get_dev()
-            .expect("valid Stream should have device")
-    }
-}
-
-impl DevPtr for HostSlice<'_> {
-    #[inline(always)]
-    fn as_ptr(&self) -> *const u8 {
-        self.ptr
-    }
-
-    #[inline(always)]
-    fn size(&self) -> usize {
-        self.len()
-    }
-
-    #[inline(always)]
-    fn dev(&self) -> Device {
-        self.stream
-            .get_dev()
-            .expect("valid Stream should have device")
-    }
-}
-
-impl DevPtr for HostSliceMut<'_> {
-    #[inline(always)]
-    fn as_ptr(&self) -> *const u8 {
-        self.ptr
-    }
-
-    #[inline(always)]
-    fn size(&self) -> usize {
-        self.len()
-    }
-
-    #[inline(always)]
-    fn dev(&self) -> Device {
-        self.stream
-            .get_dev()
-            .expect("valid Stream should have device")
-    }
-}
-
 pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
     unsafe fn copy(
         src: &Self,
@@ -205,278 +83,74 @@ pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
         Dst: StreamBound;
 }
 
-unsafe impl CopyTo<HipBuffer> for HostSlice<'_> {
-    #[inline(always)]
-    unsafe fn copy(
-        src: &Self,
-        dst: &mut HipBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyHtoD(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
+macro_rules! impl_copy {
+    ($($src:ty > ($sync:ident | $async:ident) > $dst:ty),*$(,)?) => {$(
+        unsafe impl CopyTo<$dst> for $src {
+            #[inline(always)]
+            unsafe fn copy(
+                src: &Self,
+                dst: &mut $dst,
+                src_off: usize,
+                dst_off: usize,
+                len: usize,
+            ) -> Result<(), HipError> {
+                unsafe {
+                    try_err!(
+                        rocm_sys::hip::$sync(
+                            dst.ptr.byte_add(dst_off as usize) as *mut _,
+                            src.ptr.byte_add(src_off as usize) as *mut _,
+                            len as usize,
+                        ),
+                        Ok(())
+                    )
+                }
+            }
+
+            #[inline(always)]
+            unsafe fn copy_async(
+                src: &Self,
+                dst: &mut $dst,
+                src_off: usize,
+                dst_off: usize,
+                len: usize,
+                stream: &HipStream,
+            ) -> Result<(), HipError> {
+                unsafe {
+                    try_err!(
+                        rocm_sys::hip::$async(
+                            dst.ptr.byte_add(dst_off as usize) as *mut _,
+                            src.ptr.byte_add(src_off as usize) as *mut _,
+                            len as usize,
+                            stream.raw,
+                        )
+                    );
+                }
+                src.latesync()?;
+                dst.latesync()
+            }
         }
-    }
-
-    #[inline(always)]
-    unsafe fn copy_async(
-        src: &Self,
-        dst: &mut HipBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-        stream: &HipStream,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(hipMemcpyHtoDAsync(
-                dst.ptr.byte_add(dst_off as usize).cast(),
-                src.ptr.byte_add(src_off as usize).cast(),
-                len as usize,
-                stream.raw,
-            ),)
-        }
-
-        dst.latesync()?;
-        src.latesync()?;
-
-        Ok(())
-    }
+    )*};
 }
 
-unsafe impl CopyTo<HipBuffer> for HostSliceMut<'_> {
-    #[inline(always)]
-    unsafe fn copy(
-        src: &Self,
-        dst: &mut HipBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyHtoD(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
-    }
+impl_copy!(
+    HipBuffer > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > Self,
+    HipBuffer > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipSliceMut<'_>,
+    HipSlice<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipBuffer,
+    HipSlice<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipSliceMut<'_>,
+    HipSliceMut<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipBuffer,
+    HipSliceMut<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > Self,
 
-    #[inline(always)]
-    unsafe fn copy_async(
-        src: &Self,
-        dst: &mut HipBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-        stream: &HipStream,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(hipMemcpyHtoDAsync(
-                dst.ptr.byte_add(dst_off as usize).cast(),
-                src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                len as usize,
-                stream.raw,
-            ),)
-        }
+    HipBuffer > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer,
+    HipBuffer > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_>,
+    HipSlice<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer,
+    HipSlice<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_>,
+    HipSliceMut<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer,
+    HipSliceMut<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_>,
 
-        dst.latesync()?;
-        src.latesync()?;
-
-        Ok(())
-    }
-}
-
-unsafe impl CopyTo<HipBuffer> for HostBuffer {
-    #[inline(always)]
-    unsafe fn copy(
-        src: &Self,
-        dst: &mut HipBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyHtoD(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    #[inline(always)]
-    unsafe fn copy_async(
-        src: &Self,
-        dst: &mut HipBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-        stream: &HipStream,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(hipMemcpyHtoDAsync(
-                dst.ptr.byte_add(dst_off as usize).cast(),
-                src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                len as usize,
-                stream.raw,
-            ),)
-        }
-
-        dst.latesync()?;
-        src.latesync()?;
-
-        Ok(())
-    }
-}
-
-unsafe impl CopyTo<HostSliceMut<'_>> for HipBuffer {
-    #[inline(always)]
-    unsafe fn copy(
-        src: &Self,
-        dst: &mut HostSliceMut,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyDtoH(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    #[inline(always)]
-    unsafe fn copy_async(
-        src: &Self,
-        dst: &mut HostSliceMut,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-        stream: &HipStream,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(hipMemcpyDtoHAsync(
-                dst.ptr.byte_add(dst_off as usize).cast(),
-                src.ptr.byte_add(src_off as usize).cast(),
-                len as usize,
-                stream.raw,
-            ),)
-        }
-
-        dst.latesync()?;
-        src.latesync()?;
-
-        Ok(())
-    }
-}
-
-unsafe impl CopyTo<HostBuffer> for HipBuffer {
-    #[inline(always)]
-    unsafe fn copy(
-        src: &Self,
-        dst: &mut HostBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyDtoH(
-                    dst.as_mut().ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    #[inline(always)]
-    unsafe fn copy_async(
-        src: &Self,
-        dst: &mut HostBuffer,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-        stream: &HipStream,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(hipMemcpyDtoHAsync(
-                dst.as_mut().ptr.byte_add(dst_off as usize).cast(),
-                src.ptr.byte_add(src_off as usize).cast(),
-                len as usize,
-                stream.raw,
-            ),)
-        }
-
-        dst.latesync()?;
-        src.latesync()?;
-
-        Ok(())
-    }
-}
-
-unsafe impl CopyTo<Self> for HipBuffer {
-    #[inline(always)]
-    unsafe fn copy(
-        src: &Self,
-        dst: &mut Self,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyDtoD(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    #[inline(always)]
-    unsafe fn copy_async(
-        src: &Self,
-        dst: &mut Self,
-        src_off: usize,
-        dst_off: usize,
-        len: usize,
-        stream: &HipStream,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(hipMemcpyDtoDAsync(
-                dst.ptr.byte_add(dst_off as usize).cast(),
-                src.ptr.byte_add(src_off as usize).cast(),
-                len as usize,
-                stream.raw,
-            ),)
-        }
-
-        dst.latesync()?;
-        src.latesync()?;
-
-        Ok(())
-    }
-}
+    HostBuffer > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer,
+    HostBuffer > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_>,
+    HostSlice<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer,
+    HostSlice<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_>,
+    HostSliceMut<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer,
+    HostSliceMut<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_>,
+);

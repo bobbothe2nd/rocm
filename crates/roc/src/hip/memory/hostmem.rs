@@ -1,17 +1,12 @@
 use crate::hip::{
     HipError,
     event::HipEvent,
-    memory::{CopyTo, DevPtr, EventSync, StreamBound},
+    memory::{CopyTo, DevPtr, StreamBound},
     stream::HipStream,
 };
 use alloc::sync::Arc;
 use core::{
-    cell::UnsafeCell,
-    hint::unreachable_unchecked,
-    marker::PhantomData,
-    mem::ManuallyDrop,
-    ops::{Deref, DerefMut},
-    slice,
+    cell::UnsafeCell, hint::unreachable_unchecked, marker::PhantomData, mem::ManuallyDrop, ops::{Bound, Deref, DerefMut, RangeBounds}, slice,
 };
 use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister};
 
@@ -23,8 +18,8 @@ pub struct HostSlice<'a> {
     pub(crate) ptr: *const u8,
     pub(crate) size: usize,
     pub(crate) premapped: bool,
-    pub(crate) event: HipEvent,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) event: ManuallyDrop<HipEvent>,
+    pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     _marker: PhantomData<&'a HostBuffer>,
 }
 
@@ -33,7 +28,7 @@ unsafe impl Sync for HostSlice<'_> {}
 
 impl<'a> HostSlice<'a> {
     /// Maps the ptr and return a handle
-    pub fn new(ptr: &'a [u8], stream: Arc<HipStream>) -> Result<Self, HipError> {
+    pub fn new(ptr: &'a [u8], stream: &Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_ptr() as *mut _, ptr.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -45,8 +40,10 @@ impl<'a> HostSlice<'a> {
             ptr: ptr.as_ptr(),
             size: ptr.len() as usize,
             premapped,
-            event: HipEvent::create(None)?,
-            stream,
+            event: ManuallyDrop::new(HipEvent::create(None)?),
+            stream: ManuallyDrop::new(unsafe {
+                core::ptr::read(stream)
+            }),
             _marker: PhantomData,
         })
     }
@@ -56,14 +53,18 @@ impl<'a> HostSlice<'a> {
         ptr: *mut u8,
         size: usize,
         premapped: bool,
-        stream: Arc<HipStream>,
-        event: HipEvent,
+        stream: &Arc<HipStream>,
+        event: &HipEvent,
     ) -> Self {
         Self {
             ptr,
             size,
-            event,
-            stream,
+            event: ManuallyDrop::new(unsafe {
+                core::ptr::read(event)
+            }),
+            stream: ManuallyDrop::new(unsafe {
+                core::ptr::read(stream)
+            }),
             premapped,
             _marker: PhantomData,
         }
@@ -183,18 +184,6 @@ impl Deref for HostSlice<'_> {
     }
 }
 
-impl EventSync for HostSlice<'_> {
-    #[inline(always)]
-    fn latesync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.record(&self.stream, None)
-    }
-
-    #[inline(always)]
-    fn sync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.sync()
-    }
-}
-
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -203,8 +192,8 @@ pub struct HostSliceMut<'a> {
     pub(crate) ptr: *mut u8,
     pub(crate) size: usize,
     pub(crate) premapped: bool,
-    pub(crate) event: HipEvent,
-    pub(crate) stream: Arc<HipStream>,
+    pub(crate) event: ManuallyDrop<HipEvent>,
+    pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     _marker: PhantomData<&'a HostBuffer>,
 }
 
@@ -213,7 +202,7 @@ unsafe impl Sync for HostSliceMut<'_> {}
 
 impl<'a> HostSliceMut<'a> {
     /// Maps the ptr and return a handle
-    pub fn new(ptr: &'a mut [u8], stream: Arc<HipStream>) -> Result<Self, HipError> {
+    pub fn new(ptr: &'a mut [u8], stream: &Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_mut_ptr().cast(), ptr.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -225,8 +214,10 @@ impl<'a> HostSliceMut<'a> {
             ptr: ptr.as_mut_ptr(),
             size: ptr.len() as usize,
             premapped,
-            event: HipEvent::create(None)?,
-            stream,
+            event: ManuallyDrop::new(HipEvent::create(None)?),
+            stream: ManuallyDrop::new(unsafe {
+                core::ptr::read(stream)
+            }),
             _marker: PhantomData,
         })
     }
@@ -236,15 +227,19 @@ impl<'a> HostSliceMut<'a> {
         ptr: *mut u8,
         size: usize,
         premapped: bool,
-        stream: Arc<HipStream>,
-        event: HipEvent,
+        stream: &Arc<HipStream>,
+        event: &HipEvent,
     ) -> Self {
         Self {
             ptr,
             size,
             premapped,
-            event,
-            stream,
+            event: ManuallyDrop::new(unsafe {
+                core::ptr::read(event)
+            }),
+            stream: ManuallyDrop::new(unsafe {
+                core::ptr::read(stream)
+            }),
             _marker: PhantomData,
         }
     }
@@ -375,18 +370,6 @@ impl DerefMut for HostSliceMut<'_> {
     }
 }
 
-impl EventSync for HostSliceMut<'_> {
-    #[inline(always)]
-    fn latesync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.record(&self.stream, None)
-    }
-
-    #[inline(always)]
-    fn sync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.sync()
-    }
-}
-
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -439,7 +422,7 @@ impl HipStream {
 
     /// Borrows bytes and makes it accessible from all HIP devices
     pub fn host_slice<'a>(self: &Arc<Self>, ptr: &'a [u8]) -> Result<HostSlice<'a>, HipError> {
-        HostSlice::new(ptr, self.clone())
+        HostSlice::new(ptr, &self)
     }
 
     /// Borrows bytes and makes it accessible from all HIP devices
@@ -447,7 +430,7 @@ impl HipStream {
         self: &Arc<Self>,
         ptr: &'a mut [u8],
     ) -> Result<HostSliceMut<'a>, HipError> {
-        HostSliceMut::new(ptr, self.clone())
+        HostSliceMut::new(ptr, &self)
     }
 }
 
@@ -482,6 +465,42 @@ impl HostBuffer {
     pub fn as_mut_slice(&mut self) -> &mut [u8] {
         log_if_err!("failed to synchronize HostBuffer": self.event.sync());
         unsafe { slice::from_raw_parts_mut(self.ptr, self.size as usize) }
+    }
+
+    pub fn slice(&self, range: impl RangeBounds<usize>) -> HostSlice<'_> {
+        let start = match range.start_bound() {
+            Bound::Unbounded => 0,
+            Bound::Excluded(start) => start + 1,
+            Bound::Included(start) => *start,
+        };
+        let end = match range.end_bound() {
+            Bound::Unbounded => self.size,
+            Bound::Excluded(end) => end - 1,
+            Bound::Included(end) => *end,
+        };
+        let size = end - start;
+
+        unsafe {
+            HostSlice::from_raw_parts(self.ptr.add(start), size, self.is_mapped, &self.stream, &self.event)
+        }
+    }
+
+    pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> HostSliceMut<'_> {
+        let start = match range.start_bound() {
+            Bound::Unbounded => 0,
+            Bound::Excluded(start) => start + 1,
+            Bound::Included(start) => *start,
+        };
+        let end = match range.end_bound() {
+            Bound::Unbounded => self.size,
+            Bound::Excluded(end) => end - 1,
+            Bound::Included(end) => *end,
+        };
+        let size = end - start;
+
+        unsafe {
+            HostSliceMut::from_raw_parts(self.ptr.add(start), size, self.is_mapped, &self.stream, &self.event)
+        }
     }
 
     #[inline(always)]
@@ -532,18 +551,6 @@ impl DerefMut for HostBuffer {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut_slice()
-    }
-}
-
-impl EventSync for HostBuffer {
-    #[inline(always)]
-    fn latesync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.record(&self.stream, None)
-    }
-
-    #[inline(always)]
-    fn sync(&self) -> Result<(), crate::hip::HipError> {
-        self.event.sync()
     }
 }
 

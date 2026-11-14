@@ -4,7 +4,7 @@ use rocm_sys::hip::{
 
 use crate::hip::{HipError, stream::HipStream};
 
-pub trait Memset {
+pub unsafe trait Memset {
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError>;
     unsafe fn memset_async(
         dst: *mut Self,
@@ -14,7 +14,7 @@ pub trait Memset {
     ) -> Result<(), HipError>;
 }
 
-impl Memset for u8 {
+unsafe impl Memset for u8 {
     unsafe fn memset_async(
         dst: *mut Self,
         value: Self,
@@ -34,7 +34,7 @@ impl Memset for u8 {
     }
 }
 
-impl Memset for u16 {
+unsafe impl Memset for u16 {
     unsafe fn memset_async(
         dst: *mut Self,
         value: Self,
@@ -54,7 +54,7 @@ impl Memset for u16 {
     }
 }
 
-impl Memset for i32 {
+unsafe impl Memset for i32 {
     unsafe fn memset_async(
         dst: *mut Self,
         value: Self,
