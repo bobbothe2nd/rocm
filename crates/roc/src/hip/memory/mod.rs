@@ -4,11 +4,13 @@ mod copy;
 mod devmem;
 mod hostmem;
 mod memset;
+mod unified;
 
 pub use copy::*;
 pub use devmem::*;
 pub use hostmem::*;
 pub use memset::*;
+pub use unified::*;
 
 #[repr(transparent)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
