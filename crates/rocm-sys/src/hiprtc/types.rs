@@ -14,35 +14,35 @@ pub type hipLibraryOption = crate::hip::hipLibraryOption;
 )]
 pub type hipLibraryOption_e = crate::hip::hipLibraryOption_e;
 #[repr(u32)]
-#[doc = " @addtogroup GlobalDefs\n @{\n\n/\n/**\n hiprtc error code"]
+/// hiprtc error code
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hiprtcResult {
-    #[doc = "< Success"]
+    /// Success
     HIPRTC_SUCCESS = 0,
-    #[doc = "< Out of memory"]
+    /// Out of memory
     HIPRTC_ERROR_OUT_OF_MEMORY = 1,
-    #[doc = "< Failed to create program"]
+    /// Failed to create program
     HIPRTC_ERROR_PROGRAM_CREATION_FAILURE = 2,
-    #[doc = "< Invalid input"]
+    /// Invalid input
     HIPRTC_ERROR_INVALID_INPUT = 3,
-    #[doc = "< Invalid program"]
+    /// Invalid program
     HIPRTC_ERROR_INVALID_PROGRAM = 4,
-    #[doc = "< Invalid option"]
+    /// Invalid option
     HIPRTC_ERROR_INVALID_OPTION = 5,
-    #[doc = "< Compilation error"]
+    /// Compilation error
     HIPRTC_ERROR_COMPILATION = 6,
-    #[doc = "< Failed in builtin operation"]
+    /// Failed in builtin operation
     HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE = 7,
-    #[doc = "< No name expression after compilation"]
+    /// No name expression after compilation
     HIPRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION = 8,
-    #[doc = "< No lowered names before compilation"]
+    /// No lowered names before compilation
     HIPRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION = 9,
-    #[doc = "< Invalid name expression"]
+    /// Invalid name expression
     HIPRTC_ERROR_NAME_EXPRESSION_NOT_VALID = 10,
-    #[doc = "< Internal error"]
+    /// Internal error
     HIPRTC_ERROR_INTERNAL_ERROR = 11,
-    #[doc = "< Error in linking"]
+    /// Error in linking
     HIPRTC_ERROR_LINKING = 100,
 }
 #[repr(C)]
@@ -51,7 +51,9 @@ pub enum hiprtcResult {
 pub struct ihiprtcLinkState {
     _unused: [u8; 0],
 }
-#[doc = "  hiprtc link state\n"]
+/// hiprtc link state
+///
+///
 pub type hiprtcLinkState = *mut ihiprtcLinkState;
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -59,5 +61,7 @@ pub type hiprtcLinkState = *mut ihiprtcLinkState;
 pub struct _hiprtcProgram {
     _unused: [u8; 0],
 }
-#[doc = "  hiprtc program\n"]
+/// hiprtc program
+///
+///
 pub type hiprtcProgram = *mut _hiprtcProgram;

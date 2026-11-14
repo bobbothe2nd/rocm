@@ -211,11 +211,11 @@ where
         }
     }
 }
-#[doc = " Const-generic methods for efficient bitfield access when offset and width"]
-#[doc = " are known at compile time."]
+/// Const-generic methods for efficient bitfield access when offset and width
+/// are known at compile time.
 impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
-    #[doc = " Get a field using const generics for compile-time optimization."]
-    #[doc = " Uses native word size operations when the field fits in usize."]
+    /// Get a field using const generics for compile-time optimization.
+    /// Uses native word size operations when the field fits in usize.
     #[inline]
     pub const fn get_const<const BIT_OFFSET: usize, const BIT_WIDTH: u8>(&self) -> u64 {
         debug_assert!(BIT_WIDTH <= 64);
@@ -275,8 +275,8 @@ impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
             val
         }
     }
-    #[doc = " Set a field using const generics for compile-time optimization."]
-    #[doc = " Uses native word size operations when the field fits in usize."]
+    /// Set a field using const generics for compile-time optimization.
+    /// Uses native word size operations when the field fits in usize.
     #[inline]
     pub fn set_const<const BIT_OFFSET: usize, const BIT_WIDTH: u8>(&mut self, val: u64) {
         debug_assert!(BIT_WIDTH <= 64);
@@ -346,8 +346,8 @@ impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
             }
         }
     }
-    #[doc = " Raw pointer get using const generics for compile-time optimization."]
-    #[doc = " Uses native word size operations when the field fits in usize."]
+    /// Raw pointer get using const generics for compile-time optimization.
+    /// Uses native word size operations when the field fits in usize.
     #[inline]
     pub const unsafe fn raw_get_const<const BIT_OFFSET: usize, const BIT_WIDTH: u8>(
         this: *const Self,
@@ -414,8 +414,8 @@ impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
             val
         }
     }
-    #[doc = " Raw pointer set using const generics for compile-time optimization."]
-    #[doc = " Uses native word size operations when the field fits in usize."]
+    /// Raw pointer set using const generics for compile-time optimization.
+    /// Uses native word size operations when the field fits in usize.
     #[inline]
     pub unsafe fn raw_set_const<const BIT_OFFSET: usize, const BIT_WIDTH: u8>(
         this: *mut Self,
@@ -490,19 +490,22 @@ impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
         }
     }
 }
-#[doc = " Default flag. Equivalent to HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM if compiled with\n  -fgpu-default-stream=per-thread flag or HIP_API_PER_THREAD_DEFAULT_STREAM macro is\n defined."]
+/// Default flag. Equivalent to HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM if compiled with
+/// ///  -fgpu-default-stream=per-thread flag or HIP_API_PER_THREAD_DEFAULT_STREAM macro is
+/// /// defined.
 pub const HIP_GET_PROC_ADDRESS_DEFAULT: u32 = 0;
-#[doc = " Search for all symbols except the corresponding per-thread versions."]
+/// Search for all symbols except the corresponding per-thread versions.
 pub const HIP_GET_PROC_ADDRESS_LEGACY_STREAM: u32 = 1;
-#[doc = " Search for all symbols including the per-thread versions. If a per-thread version cannot be\n found, returns the legacy version."]
+/// Search for all symbols including the per-thread versions. If a per-thread version cannot be
+/// found, returns the legacy version.
 pub const HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM: u32 = 2;
-#[doc = " @brief The hipTexRefSetArray function flags parameter override format value"]
+/// @brief The hipTexRefSetArray function flags parameter override format value
 pub const HIP_TRSA_OVERRIDE_FORMAT: u32 = 1;
-#[doc = " @brief The hipTexRefSetFlags function flags parameter read as integer value"]
+/// @brief The hipTexRefSetFlags function flags parameter read as integer value
 pub const HIP_TRSF_READ_AS_INTEGER: u32 = 1;
-#[doc = " @brief The hipTexRefSetFlags function flags parameter normalized coordinate value"]
+/// @brief The hipTexRefSetFlags function flags parameter normalized coordinate value
 pub const HIP_TRSF_NORMALIZED_COORDINATES: u32 = 2;
-#[doc = " @brief The hipTexRefSetFlags function flags parameter srgb value"]
+/// @brief The hipTexRefSetFlags function flags parameter srgb value
 pub const HIP_TRSF_SRGB: u32 = 16;
 pub const hipTextureType1D: u32 = 1;
 pub const hipTextureType2D: u32 = 2;
@@ -511,7 +514,7 @@ pub const hipTextureTypeCubemap: u32 = 12;
 pub const hipTextureType1DLayered: u32 = 241;
 pub const hipTextureType2DLayered: u32 = 242;
 pub const hipTextureTypeCubemapLayered: u32 = 252;
-#[doc = " Should be same as HSA_IMAGE_OBJECT_SIZE_DWORD/HSA_SAMPLER_OBJECT_SIZE_DWORD"]
+/// Should be same as HSA_IMAGE_OBJECT_SIZE_DWORD/HSA_SAMPLER_OBJECT_SIZE_DWORD
 pub const HIP_IMAGE_OBJECT_SIZE_DWORD: u32 = 12;
 pub const HIP_SAMPLER_OBJECT_SIZE_DWORD: u32 = 8;
 pub const HIP_SAMPLER_OBJECT_OFFSET_DWORD: u32 = 12;
@@ -520,105 +523,140 @@ pub const HIP_DEPRECATED_MSG : & [u8 ; 189] = b"This API is marked as deprecated
 pub const HIP_RESOURCE_ABI_BYTES: u32 = 40;
 pub const hipIpcMemLazyEnablePeerAccess: u32 = 1;
 pub const HIP_IPC_HANDLE_SIZE: u32 = 64;
-#[doc = " Default stream creation flags. These are used with hipStreamCreate()."]
+/// Default stream creation flags. These are used with hipStreamCreate().
 pub const hipStreamDefault: u32 = 0;
-#[doc = " Stream does not implicitly synchronize with null stream."]
+/// Stream does not implicitly synchronize with null stream.
 pub const hipStreamNonBlocking: u32 = 1;
-#[doc = " Default flags."]
+/// Default flags.
 pub const hipEventDefault: u32 = 0;
-#[doc = " Waiting will yield CPU. Power-friendly and usage-friendly but may increase latency."]
+/// Waiting will yield CPU. Power-friendly and usage-friendly but may increase latency.
 pub const hipEventBlockingSync: u32 = 1;
-#[doc = " Disable event's capability to record timing information. May improve performance."]
+/// Disable event's capability to record timing information. May improve performance.
 pub const hipEventDisableTiming: u32 = 2;
-#[doc = " Event can support IPC. hipEventDisableTiming also must be set."]
+/// Event can support IPC. hipEventDisableTiming also must be set.
 pub const hipEventInterprocess: u32 = 4;
-#[doc = " Default flag."]
+/// Default flag.
 pub const hipEventRecordDefault: u32 = 0;
-#[doc = " Event is captured in the graph as an external event node when performing stream capture."]
+/// Event is captured in the graph as an external event node when performing stream capture.
 pub const hipEventRecordExternal: u32 = 1;
-#[doc = " Default flag."]
+/// Default flag.
 pub const hipEventWaitDefault: u32 = 0;
-#[doc = " Wait is captured in the graph as an external event node when performing stream capture."]
+/// Wait is captured in the graph as an external event node when performing stream capture.
 pub const hipEventWaitExternal: u32 = 1;
-#[doc = " Disable performing a system scope sequentially consistent memory fence when the event\n transitions from recording to recorded.  This can be used for events that are only being\n used to measure timing, and do not require the event inspection operations\n (see ::hipEventSynchronize, ::hipEventQuery, and ::hipEventElapsedTime) to synchronize-with\n the work on which the recorded event (see ::hipEventRecord) is waiting.\n On some AMD GPU devices this can improve the accuracy of timing measurements by avoiding the\n cost of cache writeback and invalidation, and the performance impact of those actions on the\n execution of following work."]
+/// Disable performing a system scope sequentially consistent memory fence when the event
+/// transitions from recording to recorded.  This can be used for events that are only being
+/// used to measure timing, and do not require the event inspection operations
+/// (see ::hipEventSynchronize, ::hipEventQuery, and ::hipEventElapsedTime) to synchronize-with
+/// the work on which the recorded event (see ::hipEventRecord) is waiting.
+/// On some AMD GPU devices this can improve the accuracy of timing measurements by avoiding the
+/// cost of cache writeback and invalidation, and the performance impact of those actions on the
+/// execution of following work.
 pub const hipEventDisableSystemFence: u32 = 536870912;
-#[doc = " Use a device-scope release when recording this event. This flag is useful to obtain more\n precise timings of commands between events.  The flag is a no-op on CUDA platforms."]
+/// Use a device-scope release when recording this event. This flag is useful to obtain more
+/// precise timings of commands between events.  The flag is a no-op on CUDA platforms.
 pub const hipEventReleaseToDevice: u32 = 1073741824;
-#[doc = " Use a system-scope release when recording this event. This flag is useful to make\n non-coherent host memory visible to the host. The flag is a no-op on CUDA platforms."]
+/// Use a system-scope release when recording this event. This flag is useful to make
+/// non-coherent host memory visible to the host. The flag is a no-op on CUDA platforms.
 pub const hipEventReleaseToSystem: u32 = 2147483648;
-#[doc = " Default flag. Equivalent to hipEnablePerThreadDefaultStream if compiled with\n  -fgpu-default-stream=per-thread flag or HIP_API_PER_THREAD_DEFAULT_STREAM macro is\n defined."]
+/// Default flag. Equivalent to hipEnablePerThreadDefaultStream if compiled with
+///  -fgpu-default-stream=per-thread flag or HIP_API_PER_THREAD_DEFAULT_STREAM macro is
+/// defined.
 pub const hipEnableDefault: u32 = 0;
-#[doc = " Search for all symbols except the corresponding per-thread versions."]
+/// Search for all symbols except the corresponding per-thread versions.
 pub const hipEnableLegacyStream: u32 = 1;
-#[doc = " Search for all symbols including the per-thread versions. If a per-thread version cannot be\n found, returns the legacy version."]
+/// Search for all symbols including the per-thread versions. If a per-thread version cannot be
+/// found, returns the legacy version.
 pub const hipEnablePerThreadDefaultStream: u32 = 2;
-#[doc = " Default pinned memory allocation on the host."]
+/// Default pinned memory allocation on the host.
 pub const hipHostAllocDefault: u32 = 0;
-#[doc = " Default pinned memory allocation on the host.\n @note This is the same definition as #hipHostAllocPortable."]
+/// Default pinned memory allocation on the host.
+/// This is the same definition as #hipHostAllocDefault.
 pub const hipHostMallocDefault: u32 = 0;
-#[doc = " Memory is considered allocated by all contexts."]
+/// Memory is considered allocated by all contexts.
 pub const hipHostAllocPortable: u32 = 1;
-#[doc = " Memory is considered allocated by all contexts.\n @note This is the same definition as #hipHostAllocPortable."]
+/// Memory is considered allocated by all contexts.
+/// This is the same definition as #hipHostAllocPortable.
 pub const hipHostMallocPortable: u32 = 1;
-#[doc = " Map the allocation into the address space for the current device. The device pointer\n can be obtained with #hipHostGetDevicePointer."]
+/// Map the allocation into the address space for the current device. The device pointer
+/// can be obtained with #hipHostGetDevicePointer.
 pub const hipHostAllocMapped: u32 = 2;
-#[doc = " Map the allocation into the address space for the current device. The device pointer\n can be obtained with #hipHostGetDevicePointer.\n @note This is the same #hipHostMallocMapped."]
+/// Map the allocation into the address space for the current device. The device pointer
+/// can be obtained with #hipHostGetDevicePointer.
+/// This is the same #hipHostMallocMapped.
 pub const hipHostMallocMapped: u32 = 2;
-#[doc = " Allocates the memory as write-combined. On some system configurations, write-combined allocation\n may be transferred faster across the PCI Express bus, however, could have low read efficiency by\n most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.\n @note  This flag is only for CUDA source compatibility but not functional within HIP runtime,\n because the allocation path is currently not supported on the AMD platform."]
+/// Allocates the memory as write-combined. On some system configurations, write-combined allocation
+/// may be transferred faster across the PCI Express bus, however, could have low read efficiency by
+/// most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.
+///  This flag is only for CUDA source compatibility but not functional within HIP runtime,
+/// because the allocation path is currently not supported on the AMD platform.
 pub const hipHostAllocWriteCombined: u32 = 4;
-#[doc = " Allocates the memory as write-combined. On some system configurations, write-combined allocation\n may be transferred faster across the PCI Express bus, however, could have low read efficiency by\n most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.\n @note  This flag is the same definition as #hipHostAllocWriteCombined which is equivalent to\n cudaHostAllocWriteCombined. It is only for CUDA source compatibility but not functional within\n HIP runtime, because the allocation path is currently not supported on the AMD platform."]
+/// Allocates the memory as write-combined. On some system configurations, write-combined allocation
+/// may be transferred faster across the PCI Express bus, however, could have low read efficiency by
+/// most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.
+///  This flag is the same definition as #hipHostAllocWriteCombined which is equivalent to
+/// cudaHostAllocWriteCombined. It is only for CUDA source compatibility but not functional within
+/// HIP runtime, because the allocation path is currently not supported on the AMD platform.
 pub const hipHostMallocWriteCombined: u32 = 4;
-#[doc = " Host memory will be forcedly allocated on extended fine grained system memory\n pool which is with MTYPE_UC.\n @note  This allocation flag is applicable on AMD devices, except for Navi4X, in Linux only."]
+/// Host memory will be forcedly allocated on extended fine grained system memory
+/// pool which is with MTYPE_UC.
+///  This allocation flag is applicable on AMD devices, except for Navi4X, in Linux only.
 pub const hipHostMallocUncached: u32 = 268435456;
 pub const hipHostAllocUncached: u32 = 268435456;
-#[doc = " Host memory allocation will follow numa policy set by user.\n @note  This numa allocation flag is applicable on Linux, under development on Windows."]
+/// Host memory allocation will follow numa policy set by user.
+///  This numa allocation flag is applicable on Linux, under development on Windows.
 pub const hipHostMallocNumaUser: u32 = 536870912;
-#[doc = " Allocate coherent memory. Overrides HIP_HOST_COHERENT for specific allocation."]
+/// Allocate coherent memory. Overrides HIP_HOST_COHERENT for specific allocation.
 pub const hipHostMallocCoherent: u32 = 1073741824;
-#[doc = " Allocate non-coherent memory. Overrides HIP_HOST_COHERENT for specific allocation."]
+/// Allocate non-coherent memory. Overrides HIP_HOST_COHERENT for specific allocation.
 pub const hipHostMallocNonCoherent: u32 = 2147483648;
-#[doc = " Memory can be accessed by any stream on any device"]
+/// Memory can be accessed by any stream on any device
 pub const hipMemAttachGlobal: u32 = 1;
-#[doc = " Memory cannot be accessed by any stream on any device."]
+/// Memory cannot be accessed by any stream on any device.
 pub const hipMemAttachHost: u32 = 2;
-#[doc = " Memory can only be accessed by a single stream on the associated device."]
+/// Memory can only be accessed by a single stream on the associated device.
 pub const hipMemAttachSingle: u32 = 4;
 pub const hipDeviceMallocDefault: u32 = 0;
-#[doc = " Memory is allocated in fine grained region of device."]
+/// Memory is allocated in fine grained region of device.
 pub const hipDeviceMallocFinegrained: u32 = 1;
-#[doc = " Memory represents a HSA signal."]
+/// Memory represents a HSA signal.
 pub const hipMallocSignalMemory: u32 = 2;
-#[doc = " Memory allocated will be uncached."]
+/// Memory allocated will be uncached.
 pub const hipDeviceMallocUncached: u32 = 3;
-#[doc = " Memory allocated will be contiguous."]
+/// Memory allocated will be contiguous.
 pub const hipDeviceMallocContiguous: u32 = 4;
-#[doc = " Memory is Mapped and Portable."]
+/// Memory is Mapped and Portable.
 pub const hipHostRegisterDefault: u32 = 0;
-#[doc = " Memory is considered registered by all contexts."]
+/// Memory is considered registered by all contexts.
 pub const hipHostRegisterPortable: u32 = 1;
-#[doc = " Map the allocation into the address space for the current device. The device pointer\n can be obtained with #hipHostGetDevicePointer."]
+/// Map the allocation into the address space for the current device. The device pointer
+/// can be obtained with #hipHostGetDevicePointer.
 pub const hipHostRegisterMapped: u32 = 2;
-#[doc = " The passed memory pointer is treated as pointing to some memory-mapped I/O space, e.g.\n belonging to a third-party PCIe device, and it will be marked as non cache-coherent and\n contiguous."]
+/// The passed memory pointer is treated as pointing to some memory-mapped I/O space, e.g.
+/// belonging to a third-party PCIe device, and it will be marked as non cache-coherent and
+/// contiguous.
 pub const hipHostRegisterIoMemory: u32 = 4;
-#[doc = " This flag is ignored On AMD devices."]
+/// This flag is ignored On AMD devices.
 pub const hipHostRegisterReadOnly: u32 = 8;
-#[doc = " Coarse Grained host memory lock."]
+/// Coarse Grained host memory lock.
 pub const hipExtHostRegisterCoarseGrained: u32 = 8;
-#[doc = " Map host memory onto extended fine grained access host memory pool when enabled.\n It is applicable on AMD devices, except for Navi4X, in Linux only."]
+/// Map host memory onto extended fine grained access host memory pool when enabled.
+/// It is applicable on AMD devices, except for Navi4X, in Linux only.
 pub const hipExtHostRegisterUncached: u32 = 2147483648;
-#[doc = " Automatically select between Spin and Yield."]
+/// Automatically select between Spin and Yield.
 pub const hipDeviceScheduleAuto: u32 = 0;
-#[doc = " Dedicate a CPU core to spin-wait. Provides lowest latency, but burns a CPU core and may\n consume more power."]
+/// Dedicate a CPU core to spin-wait. Provides lowest latency, but burns a CPU core and may
+/// consume more power.
 pub const hipDeviceScheduleSpin: u32 = 1;
-#[doc = " Yield the CPU to the operating system when waiting. May increase latency, but lowers power\n and is friendlier to other threads in the system."]
+/// Yield the CPU to the operating system when waiting. May increase latency, but lowers power
+/// and is friendlier to other threads in the system.
 pub const hipDeviceScheduleYield: u32 = 2;
 pub const hipDeviceScheduleBlockingSync: u32 = 4;
 pub const hipDeviceScheduleMask: u32 = 7;
 pub const hipDeviceMapHost: u32 = 8;
 pub const hipDeviceLmemResizeToMax: u32 = 16;
-#[doc = " Indicates that the deviceFlags passed to hipInitDevice() are valid and should be applied."]
+/// Indicates that the deviceFlags passed to hipInitDevice() are valid and should be applied.
 pub const hipInitDeviceFlagsAreValid: u32 = 1;
-#[doc = " Default HIP array allocation flag."]
+/// Default HIP array allocation flag.
 pub const hipArrayDefault: u32 = 0;
 pub const hipArrayLayered: u32 = 1;
 pub const hipArraySurfaceLoadStore: u32 = 2;
@@ -628,7 +666,7 @@ pub const hipOccupancyDefault: u32 = 0;
 pub const hipOccupancyDisableCachingOverride: u32 = 1;
 pub const hipCooperativeLaunchMultiDeviceNoPreSync: u32 = 1;
 pub const hipCooperativeLaunchMultiDeviceNoPostSync: u32 = 2;
-#[doc = " AnyOrderLaunch of kernels."]
+/// AnyOrderLaunch of kernels.
 pub const hipExtAnyOrderLaunch: u32 = 1;
 pub const hipStreamWaitValueGte: u32 = 0;
 pub const hipStreamWaitValueEq: u32 = 1;
@@ -638,116 +676,130 @@ pub const hipStreamWriteValueDefault: u32 = 0;
 pub const hipExtStreamWriteValueIncrement: u32 = 4096;
 pub const hipExtStreamWriteValueDecrement: u32 = 4097;
 pub const hipExternalMemoryDedicated: u32 = 1;
-#[doc = " Compile-time upper bound for the number of prefetch regions in\n @ref hipExtDynDataPrefetchConfig.  The actual device limit is queried at\n runtime via @ref hipDeviceAttributeMaxDynDataPrefetchRegions."]
+/// Compile-time upper bound for the number of prefetch regions in
+/// @ref hipExtDynDataPrefetchConfig.  The actual device limit is queried at
+/// runtime via @ref hipDeviceAttributeMaxDynDataPrefetchRegions.
 pub const HIP_EXT_DYN_DATA_PREFETCH_MAX_REGIONS: u32 = 2;
-#[doc = " This port activates when the kernel has finished executing."]
+/// This port activates when the kernel has finished executing.
 pub const hipGraphKernelNodePortDefault: u32 = 0;
-#[doc = " This port activates when all blocks of the kernel have begun execution."]
+/// This port activates when all blocks of the kernel have begun execution.
 pub const hipGraphKernelNodePortLaunchCompletion: u32 = 2;
-#[doc = " This port activates when all blocks of the kernel have performed\n hipTriggerProgrammaticLaunchCompletion() or have terminated.\n It must be used with edge type hipGraphDependencyTypeProgrammatic."]
+/// This port activates when all blocks of the kernel have performed
+/// hipTriggerProgrammaticLaunchCompletion() or have terminated.
+/// It must be used with edge type hipGraphDependencyTypeProgrammatic.
 pub const hipGraphKernelNodePortProgrammatic: u32 = 1;
 #[repr(i32)]
-#[doc = " hipJitOption"]
+/// hipJitOption
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitOption {
-    #[doc = "< CUDA Only Maximum registers may be used in a thread,\n< passed to compiler"]
+    /// CUDA Only Maximum registers may be used in a thread,
+    ///< passed to compiler
     hipJitOptionMaxRegisters = 0,
-    #[doc = "< CUDA Only Number of thread per block"]
+    /// CUDA Only Number of thread per block
     hipJitOptionThreadsPerBlock = 1,
-    #[doc = "< CUDA Only Value for total wall clock time"]
+    /// CUDA Only Value for total wall clock time
     hipJitOptionWallTime = 2,
-    #[doc = "< CUDA Only Pointer to the buffer with logged information"]
+    /// CUDA Only Pointer to the buffer with logged information
     hipJitOptionInfoLogBuffer = 3,
-    #[doc = "< CUDA Only Size of the buffer in bytes for logged info"]
+    /// CUDA Only Size of the buffer in bytes for logged info
     hipJitOptionInfoLogBufferSizeBytes = 4,
-    #[doc = "< CUDA Only Pointer to the buffer with logged error(s)"]
+    /// CUDA Only Pointer to the buffer with logged error(s)
     hipJitOptionErrorLogBuffer = 5,
-    #[doc = "< CUDA Only Size of the buffer in bytes for logged\n< error(s)"]
+    /// CUDA Only Size of the buffer in bytes for logged
+    ///< error(s)
     hipJitOptionErrorLogBufferSizeBytes = 6,
-    #[doc = "< Value of optimization level for generated codes, acceptable\n< options -O0, -O1, -O2, -O3"]
+    /// Value of optimization level for generated codes, acceptable
+    ///< options -O0, -O1, -O2, -O3
     hipJitOptionOptimizationLevel = 7,
-    #[doc = "< CUDA Only The target context, which is the default"]
+    /// CUDA Only The target context, which is the default
     hipJitOptionTargetFromContext = 8,
-    #[doc = "< CUDA Only JIT target"]
+    /// CUDA Only JIT target
     hipJitOptionTarget = 9,
-    #[doc = "< CUDA Only Fallback strategy"]
+    /// CUDA Only Fallback strategy
     hipJitOptionFallbackStrategy = 10,
-    #[doc = "< CUDA Only Generate debug information"]
+    /// CUDA Only Generate debug information
     hipJitOptionGenerateDebugInfo = 11,
-    #[doc = "< CUDA Only Generate log verbose"]
+    /// CUDA Only Generate log verbose
     hipJitOptionLogVerbose = 12,
-    #[doc = "< CUDA Only Generate line number information"]
+    /// CUDA Only Generate line number information
     hipJitOptionGenerateLineInfo = 13,
-    #[doc = "< CUDA Only Set cache mode"]
+    /// CUDA Only Set cache mode
     hipJitOptionCacheMode = 14,
-    #[doc = "< @deprecated CUDA Only New SM3X option."]
+    /// @deprecated CUDA Only New SM3X option.
     hipJitOptionSm3xOpt = 15,
-    #[doc = "< CUDA Only Set fast compile"]
+    /// CUDA Only Set fast compile
     hipJitOptionFastCompile = 16,
-    #[doc = "< CUDA Only Array of device symbol names to be relocated to the\n< host"]
+    /// CUDA Only Array of device symbol names to be relocated to the
+    ///< host
     hipJitOptionGlobalSymbolNames = 17,
-    #[doc = "< CUDA Only Array of host addresses to be relocated to the\n< device"]
+    /// CUDA Only Array of host addresses to be relocated to the
+    ///< device
     hipJitOptionGlobalSymbolAddresses = 18,
-    #[doc = "< CUDA Only Number of symbol count."]
+    /// CUDA Only Number of symbol count.
     hipJitOptionGlobalSymbolCount = 19,
-    #[doc = "< @deprecated CUDA Only Enable link-time optimization for device code"]
+    /// @deprecated CUDA Only Enable link-time optimization for device code
     hipJitOptionLto = 20,
-    #[doc = "< @deprecated CUDA Only Set single-precision denormals."]
+    /// @deprecated CUDA Only Set single-precision denormals.
     hipJitOptionFtz = 21,
-    #[doc = "< @deprecated CUDA Only Set single-precision floating-point division\n< and reciprocals"]
+    /// @deprecated CUDA Only Set single-precision floating-point division
+    ///< and reciprocals
     hipJitOptionPrecDiv = 22,
-    #[doc = "< @deprecated CUDA Only Set single-precision floating-point square root"]
+    /// @deprecated CUDA Only Set single-precision floating-point square root
     hipJitOptionPrecSqrt = 23,
-    #[doc = "< @deprecated CUDA Only Enable floating-point multiplies and\n< adds/subtracts operations"]
+    /// @deprecated CUDA Only Enable floating-point multiplies and
+    ///< adds/subtracts operations
     hipJitOptionFma = 24,
-    #[doc = "< CUDA Only Generates Position Independent code"]
+    /// CUDA Only Generates Position Independent code
     hipJitOptionPositionIndependentCode = 25,
-    #[doc = "< CUDA Only Hints to JIT compiler the minimum number of CTAs frin\n< kernel's grid to be mapped to SM"]
+    /// CUDA Only Hints to JIT compiler the minimum number of CTAs frin
+    ///< kernel's grid to be mapped to SM
     hipJitOptionMinCTAPerSM = 26,
-    #[doc = "< CUDA only Maximum number of threads in a thread block"]
+    /// CUDA only Maximum number of threads in a thread block
     hipJitOptionMaxThreadsPerBlock = 27,
-    #[doc = "< Cuda only Override Directive values"]
+    /// Cuda only Override Directive values
     hipJitOptionOverrideDirectiveValues = 28,
-    #[doc = "< Number of options"]
+    /// Number of options
     hipJitOptionNumOptions = 29,
-    #[doc = "< Hip Only Linker options to be passed on to compiler"]
+    /// Hip Only Linker options to be passed on to compiler
     hipJitOptionIRtoISAOptExt = 10000,
-    #[doc = "< Hip Only Count of linker options to be passed on to compiler"]
+    /// Hip Only Count of linker options to be passed on to compiler
     hipJitOptionIRtoISAOptCountExt = 10001,
 }
 #[repr(i32)]
-#[doc = " hipJitInputType"]
+/// hipJitInputType
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitInputType {
-    #[doc = "< Cuda only Input cubin"]
+    /// Cuda only Input cubin
     hipJitInputCubin = 0,
-    #[doc = "< Cuda only Input PTX"]
+    /// Cuda only Input PTX
     hipJitInputPtx = 1,
-    #[doc = "< Cuda Only Input FAT Binary"]
+    /// Cuda Only Input FAT Binary
     hipJitInputFatBinary = 2,
-    #[doc = "< Cuda Only Host Object with embedded device code"]
+    /// Cuda Only Host Object with embedded device code
     hipJitInputObject = 3,
-    #[doc = "< Cuda Only Archive of Host Objects with embedded\n< device code"]
+    /// Cuda Only Archive of Host Objects with embedded
+    ///< device code
     hipJitInputLibrary = 4,
-    #[doc = "< @deprecated Cuda only High Level intermediate\n< code for LTO"]
+    /// @deprecated Cuda only High Level intermediate
+    ///< code for LTO
     hipJitInputNvvm = 5,
-    #[doc = "< Count of Legacy Input Types"]
+    /// Count of Legacy Input Types
     hipJitNumLegacyInputTypes = 6,
-    #[doc = "< HIP Only LLVM Bitcode or IR assembly"]
+    /// HIP Only LLVM Bitcode or IR assembly
     hipJitInputLLVMBitcode = 100,
-    #[doc = "< HIP Only LLVM Clang Bundled Code"]
+    /// HIP Only LLVM Clang Bundled Code
     hipJitInputLLVMBundledBitcode = 101,
-    #[doc = "< HIP Only LLVM Archive of Bundled Bitcode"]
+    /// HIP Only LLVM Archive of Bundled Bitcode
     hipJitInputLLVMArchivesOfBundledBitcode = 102,
-    #[doc = "< HIP Only SPIRV Code Object"]
+    /// HIP Only SPIRV Code Object
     hipJitInputSpirv = 103,
-    #[doc = "< Count of Input Types"]
+    /// Count of Input Types
     hipJitNumInputTypes = 10,
 }
 #[repr(i32)]
-#[doc = " hipJitCacheMode"]
+/// hipJitCacheMode
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitCacheMode {
@@ -756,7 +808,7 @@ pub enum hipJitCacheMode {
     hipJitCacheOptionCA = 2,
 }
 #[repr(i32)]
-#[doc = " hipJitFallback"]
+/// hipJitFallback
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipJitFallback {
@@ -785,7 +837,12 @@ pub enum _bindgen_ty_15 {
     HIP_ERROR_NOT_INITIALIZED = 2,
     HIP_ERROR_LAUNCH_OUT_OF_RESOURCES = 3,
 }
-#[doc = " @defgroup GlobalDefs Global enum and defines\n @{\n\n/\n/**\n hipDeviceArch_t\n"]
+/// @defgroup GlobalDefs Global enum and defines
+/// @{
+////
+////**
+/// hipDeviceArch_t
+///
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -1510,46 +1567,48 @@ impl hipError_t {
     pub const hipErrorInvalidResourceHandle: hipError_t = hipError_t::hipErrorInvalidHandle;
 }
 #[repr(u32)]
-#[doc = " HIP error type\n"]
+/// HIP error type
+///
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipError_t {
-    #[doc = "< Successful completion."]
+    /// Successful completion.
     hipSuccess = 0,
-    #[doc = "< One or more of the parameters passed to the API call is NULL\n< or not in an acceptable range."]
+    /// One or more of the parameters passed to the API call is NULL
+    ///< or not in an acceptable range.
     hipErrorInvalidValue = 1,
-    #[doc = "< out of memory range."]
+    /// out of memory range.
     hipErrorOutOfMemory = 2,
-    #[doc = "< Invalid not initialized"]
+    /// Invalid not initialized
     hipErrorNotInitialized = 3,
-    #[doc = "< Deinitialized"]
+    /// Deinitialized
     hipErrorDeinitialized = 4,
     hipErrorProfilerDisabled = 5,
     hipErrorProfilerNotInitialized = 6,
     hipErrorProfilerAlreadyStarted = 7,
     hipErrorProfilerAlreadyStopped = 8,
-    #[doc = "< Invalide configuration"]
+    /// Invalide configuration
     hipErrorInvalidConfiguration = 9,
-    #[doc = "< Invalid pitch value"]
+    /// Invalid pitch value
     hipErrorInvalidPitchValue = 12,
-    #[doc = "< Invalid symbol"]
+    /// Invalid symbol
     hipErrorInvalidSymbol = 13,
-    #[doc = "< Invalid Device Pointer"]
+    /// Invalid Device Pointer
     hipErrorInvalidDevicePointer = 17,
-    #[doc = "< Invalid memory copy direction"]
+    /// Invalid memory copy direction
     hipErrorInvalidMemcpyDirection = 21,
     hipErrorInsufficientDriver = 35,
     hipErrorMissingConfiguration = 52,
     hipErrorPriorLaunchFailure = 53,
-    #[doc = "< Invalid device function"]
+    /// Invalid device function
     hipErrorInvalidDeviceFunction = 98,
-    #[doc = "< Call to hipGetDeviceCount returned 0 devices"]
+    /// Call to hipGetDeviceCount returned 0 devices
     hipErrorNoDevice = 100,
-    #[doc = "< DeviceID must be in range from 0 to compute-devices."]
+    /// DeviceID must be in range from 0 to compute-devices.
     hipErrorInvalidDevice = 101,
-    #[doc = "< Invalid image"]
+    /// Invalid image
     hipErrorInvalidImage = 200,
-    #[doc = "< Produced when input context is invalid."]
+    /// Produced when input context is invalid.
     hipErrorInvalidContext = 201,
     hipErrorContextAlreadyCurrent = 202,
     hipErrorMapFailed = 205,
@@ -1562,97 +1621,129 @@ pub enum hipError_t {
     hipErrorNotMappedAsArray = 212,
     hipErrorNotMappedAsPointer = 213,
     hipErrorECCNotCorrectable = 214,
-    #[doc = "< Unsupported limit"]
+    /// Unsupported limit
     hipErrorUnsupportedLimit = 215,
-    #[doc = "< The context is already in use"]
+    /// The context is already in use
     hipErrorContextAlreadyInUse = 216,
     hipErrorPeerAccessUnsupported = 217,
-    #[doc = "< In CUDA DRV, it is CUDA_ERROR_INVALID_PTX"]
+    /// In CUDA DRV, it is CUDA_ERROR_INVALID_PTX
     hipErrorInvalidKernelFile = 218,
     hipErrorInvalidGraphicsContext = 219,
-    #[doc = "< Invalid source."]
+    /// Invalid source.
     hipErrorInvalidSource = 300,
-    #[doc = "< the file is not found."]
+    /// the file is not found.
     hipErrorFileNotFound = 301,
     hipErrorSharedObjectSymbolNotFound = 302,
-    #[doc = "< Failed to initialize shared object."]
+    /// Failed to initialize shared object.
     hipErrorSharedObjectInitFailed = 303,
-    #[doc = "< Not the correct operating system"]
+    /// Not the correct operating system
     hipErrorOperatingSystem = 304,
-    #[doc = "< Invalide handle"]
+    /// Invalide handle
     hipErrorInvalidHandle = 400,
-    #[doc = "< Resource required is not in a valid state to perform operation."]
+    /// Resource required is not in a valid state to perform operation.
     hipErrorIllegalState = 401,
-    #[doc = "< Not found"]
+    /// Not found
     hipErrorNotFound = 500,
-    #[doc = "< Indicates that asynchronous operations enqueued earlier are not\n< ready.  This is not actually an error, but is used to distinguish\n< from hipSuccess (which indicates completion).  APIs that return\n< this error include hipEventQuery and hipStreamQuery."]
+    /// Indicates that asynchronous operations enqueued earlier are not
+    ///< ready.  This is not actually an error, but is used to distinguish
+    ///< from hipSuccess (which indicates completion).  APIs that return
+    ///< this error include hipEventQuery and hipStreamQuery.
     hipErrorNotReady = 600,
     hipErrorIllegalAddress = 700,
-    #[doc = "< Out of resources error."]
+    /// Out of resources error.
     hipErrorLaunchOutOfResources = 701,
-    #[doc = "< Timeout for the launch."]
+    /// Timeout for the launch.
     hipErrorLaunchTimeOut = 702,
-    #[doc = "< Peer access was already enabled from the current\n< device."]
+    /// Peer access was already enabled from the current
+    ///< device.
     hipErrorPeerAccessAlreadyEnabled = 704,
-    #[doc = "< Peer access was never enabled from the current device."]
+    /// Peer access was never enabled from the current device.
     hipErrorPeerAccessNotEnabled = 705,
-    #[doc = "< The process is active."]
+    /// The process is active.
     hipErrorSetOnActiveProcess = 708,
-    #[doc = "< The context is already destroyed"]
+    /// The context is already destroyed
     hipErrorContextIsDestroyed = 709,
-    #[doc = "< Produced when the kernel calls assert."]
+    /// Produced when the kernel calls assert.
     hipErrorAssert = 710,
-    #[doc = "< Produced when trying to lock a page-locked\n< memory."]
+    /// Produced when trying to lock a page-locked
+    ///< memory.
     hipErrorHostMemoryAlreadyRegistered = 712,
-    #[doc = "< Produced when trying to unlock a non-page-locked\n< memory."]
+    /// Produced when trying to unlock a non-page-locked
+    ///< memory.
     hipErrorHostMemoryNotRegistered = 713,
-    #[doc = "< An exception occurred on the device while executing a kernel."]
+    /// An exception occurred on the device while executing a kernel.
     hipErrorLaunchFailure = 719,
-    #[doc = "< This error indicates that the number of blocks\n< launched per grid for a kernel that was launched\n< via cooperative launch APIs exceeds the maximum\n< number of allowed blocks for the current device."]
+    /// This error indicates that the number of blocks
+    ///< launched per grid for a kernel that was launched
+    ///< via cooperative launch APIs exceeds the maximum
+    ///< number of allowed blocks for the current device.
     hipErrorCooperativeLaunchTooLarge = 720,
-    #[doc = "< The attempted operation is not permitted, typically because the\n< resource is owned by another object that is responsible for\n< releasing it."]
+    /// The attempted operation is not permitted, typically because the
+    ///< resource is owned by another object that is responsible for
+    ///< releasing it.
     hipErrorNotPermitted = 800,
-    #[doc = "< Produced when the hip API is not supported/implemented"]
+    /// Produced when the hip API is not supported/implemented
     hipErrorNotSupported = 801,
-    #[doc = "< The operation is not permitted when the stream\n< is capturing."]
+    /// The operation is not permitted when the stream
+    ///< is capturing.
     hipErrorStreamCaptureUnsupported = 900,
-    #[doc = "< The current capture sequence on the stream\n< has been invalidated due to a previous error."]
+    /// The current capture sequence on the stream
+    ///< has been invalidated due to a previous error.
     hipErrorStreamCaptureInvalidated = 901,
-    #[doc = "< The operation would have resulted in a merge of\n< two independent capture sequences."]
+    /// The operation would have resulted in a merge of
+    ///< two independent capture sequences.
     hipErrorStreamCaptureMerge = 902,
-    #[doc = "< The capture was not initiated in this stream."]
+    /// The capture was not initiated in this stream.
     hipErrorStreamCaptureUnmatched = 903,
-    #[doc = "< The capture sequence contains a fork that was not\n< joined to the primary stream."]
+    /// The capture sequence contains a fork that was not
+    ///< joined to the primary stream.
     hipErrorStreamCaptureUnjoined = 904,
-    #[doc = "< A dependency would have been created which crosses\n< the capture sequence boundary. Only implicit\n< in-stream ordering dependencies  are allowed\n< to cross the boundary"]
+    /// A dependency would have been created which crosses
+    ///< the capture sequence boundary. Only implicit
+    ///< in-stream ordering dependencies  are allowed
+    ///< to cross the boundary
     hipErrorStreamCaptureIsolation = 905,
-    #[doc = "< The operation would have resulted in a disallowed\n< implicit dependency on a current capture sequence\n< from hipStreamLegacy."]
+    /// The operation would have resulted in a disallowed
+    ///< implicit dependency on a current capture sequence
+    ///< from hipStreamLegacy.
     hipErrorStreamCaptureImplicit = 906,
-    #[doc = "< The operation is not permitted on an event which was last\n< recorded in a capturing stream."]
+    /// The operation is not permitted on an event which was last
+    ///< recorded in a capturing stream.
     hipErrorCapturedEvent = 907,
-    #[doc = "< A stream capture sequence not initiated with\n< the hipStreamCaptureModeRelaxed argument to\n< hipStreamBeginCapture was passed to\n< hipStreamEndCapture in a different thread."]
+    /// A stream capture sequence not initiated with
+    ///< the hipStreamCaptureModeRelaxed argument to
+    ///< hipStreamBeginCapture was passed to
+    ///< hipStreamEndCapture in a different thread.
     hipErrorStreamCaptureWrongThread = 908,
-    #[doc = "< This error indicates that the graph update\n< not performed because it included changes which\n< violated constraintsspecific to instantiated graph\n< update."]
+    /// This error indicates that the graph update
+    ///< not performed because it included changes which
+    ///< violated constraintsspecific to instantiated graph
+    ///< update.
     hipErrorGraphExecUpdateFailure = 910,
-    #[doc = "< Invalid channel descriptor."]
+    /// Invalid channel descriptor.
     hipErrorInvalidChannelDescriptor = 911,
-    #[doc = "< Invalid texture."]
+    /// Invalid texture.
     hipErrorInvalidTexture = 912,
-    #[doc = "< Resource type is not valid for the operation."]
+    /// Resource type is not valid for the operation.
     hipErrorInvalidResourceType = 914,
-    #[doc = "< Resource configuration is not valid for\n< the operation."]
+    /// Resource configuration is not valid for
+    ///< the operation.
     hipErrorInvalidResourceConfiguration = 915,
-    #[doc = "< The stream is detached."]
+    /// The stream is detached.
     hipErrorStreamDetached = 916,
-    #[doc = "< Unknown error."]
+    /// Unknown error.
     hipErrorUnknown = 999,
-    #[doc = "< HSA runtime memory call returned error.  Typically not seen\n< in production systems."]
+    /// HSA runtime memory call returned error.  Typically not seen
+    ///< in production systems.
     hipErrorRuntimeMemory = 1052,
-    #[doc = "< HSA runtime call other than memory returned error.  Typically\n< not seen in production systems."]
+    /// HSA runtime call other than memory returned error.  Typically
+    ///< not seen in production systems.
     hipErrorRuntimeOther = 1053,
-    #[doc = "< The specified cluster size is invalid, for instance\n< when passing launch configurations to occupancy\n< calculations"]
+    /// The specified cluster size is invalid, for instance
+    ///< when passing launch configurations to occupancy
+    ///< calculations
     hipErrorInvalidClusterSize = 1054,
-    #[doc = "< Marker that more error codes are needed."]
+    /// Marker that more error codes are needed.
     hipErrorTbd = 1055,
 }
 impl hipError_t {
@@ -2224,24 +2315,31 @@ pub struct hipDeviceProp_tR0600 {
     pub asicRevision: ::core::ffi::c_int,
 }
 #[repr(i32)]
-#[doc = " hipMemoryType (for pointer attributes)\n\n @note hipMemoryType enum values are combination of cudaMemoryType and cuMemoryType and AMD\n specific enum values.\n"]
+/// hipMemoryType (for pointer attributes)
+/// hipMemoryType enum values are combination of cudaMemoryType and cuMemoryType and AMD
+/// specific enum values.
+///
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemoryType {
-    #[doc = "< Unregistered memory"]
+    /// Unregistered memory
     hipMemoryTypeUnregistered = 0,
-    #[doc = "< Memory is physically located on host"]
+    /// Memory is physically located on host
     hipMemoryTypeHost = 1,
-    #[doc = "< Memory is physically located on device. (see deviceId for\n< specific device)"]
+    /// Memory is physically located on device. (see deviceId for
+    ///< specific device)
     hipMemoryTypeDevice = 2,
-    #[doc = "< Managed memory, automaticallly managed by the unified\n< memory system\n< place holder for new values."]
+    /// Managed memory, automaticallly managed by the unified
+    ///< memory system
+    ///< place holder for new values.
     hipMemoryTypeManaged = 3,
-    #[doc = "< Array memory, physically located on device. (see deviceId for\n< specific device)"]
+    /// Array memory, physically located on device. (see deviceId for
+    ///< specific device)
     hipMemoryTypeArray = 10,
-    #[doc = "< unified address space"]
+    /// unified address space
     hipMemoryTypeUnified = 11,
 }
-#[doc = " Pointer attributes"]
+/// Pointer attributes
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -2266,254 +2364,319 @@ impl hipDeviceAttribute_t {
         hipDeviceAttribute_t::hipDeviceAttributeAmdSpecificBegin;
 }
 #[repr(i32)]
-#[doc = " hipDeviceAttribute_t\n hipDeviceAttributeUnused number: 5"]
+/// hipDeviceAttribute_t
+/// hipDeviceAttributeUnused number: 5
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipDeviceAttribute_t {
     hipDeviceAttributeCudaCompatibleBegin = 0,
-    #[doc = "< Cuda only. The maximum size of the window\n< policy in bytes."]
+    /// Cuda only. The maximum size of the window
+    ///< policy in bytes.
     hipDeviceAttributeAccessPolicyMaxWindowSize = 1,
-    #[doc = "< Asynchronous engines number."]
+    /// Asynchronous engines number.
     hipDeviceAttributeAsyncEngineCount = 2,
-    #[doc = "< Whether host memory can be mapped into device address\n< space"]
+    /// Whether host memory can be mapped into device address
+    ///< space
     hipDeviceAttributeCanMapHostMemory = 3,
-    #[doc = "< Device can access host registered\n< memory at the same virtual address as\n< the CPU"]
+    /// Device can access host registered
+    ///< memory at the same virtual address as
+    ///< the CPU
     hipDeviceAttributeCanUseHostPointerForRegisteredMem = 4,
-    #[doc = "< Peak clock frequency in kilohertz."]
+    /// Peak clock frequency in kilohertz.
     hipDeviceAttributeClockRate = 5,
-    #[doc = "< Compute mode that device is currently in."]
+    /// Compute mode that device is currently in.
     hipDeviceAttributeComputeMode = 6,
-    #[doc = "< Device supports Compute Preemption."]
+    /// Device supports Compute Preemption.
     hipDeviceAttributeComputePreemptionSupported = 7,
-    #[doc = "< Device can possibly execute multiple kernels\n< concurrently."]
+    /// Device can possibly execute multiple kernels
+    ///< concurrently.
     hipDeviceAttributeConcurrentKernels = 8,
-    #[doc = "< Device can coherently access managed memory\n< concurrently with the CPU"]
+    /// Device can coherently access managed memory
+    ///< concurrently with the CPU
     hipDeviceAttributeConcurrentManagedAccess = 9,
-    #[doc = "< Support cooperative launch"]
+    /// Support cooperative launch
     hipDeviceAttributeCooperativeLaunch = 10,
-    #[doc = "< Support cooperative launch on multiple\n< devices"]
+    /// Support cooperative launch on multiple
+    ///< devices
     hipDeviceAttributeCooperativeMultiDeviceLaunch = 11,
-    #[doc = "< Device can concurrently copy memory and execute a kernel.\n< Deprecated. Use instead asyncEngineCount."]
+    /// Device can concurrently copy memory and execute a kernel.
+    ///< Deprecated. Use instead asyncEngineCount.
     hipDeviceAttributeDeviceOverlap = 12,
-    #[doc = "< Host can directly access managed memory on\n< the device without migration"]
+    /// Host can directly access managed memory on
+    ///< the device without migration
     hipDeviceAttributeDirectManagedMemAccessFromHost = 13,
-    #[doc = "< Device supports caching globals in L1"]
+    /// Device supports caching globals in L1
     hipDeviceAttributeGlobalL1CacheSupported = 14,
-    #[doc = "< Link between the device and the host supports\n< native atomic operations"]
+    /// Link between the device and the host supports
+    ///< native atomic operations
     hipDeviceAttributeHostNativeAtomicSupported = 15,
-    #[doc = "< Device is integrated GPU"]
+    /// Device is integrated GPU
     hipDeviceAttributeIntegrated = 16,
-    #[doc = "< Multiple GPU devices."]
+    /// Multiple GPU devices.
     hipDeviceAttributeIsMultiGpuBoard = 17,
-    #[doc = "< Run time limit for kernels executed on the device"]
+    /// Run time limit for kernels executed on the device
     hipDeviceAttributeKernelExecTimeout = 18,
-    #[doc = "< Size of L2 cache in bytes. 0 if the device doesn't have L2\n< cache."]
+    /// Size of L2 cache in bytes. 0 if the device doesn't have L2
+    ///< cache.
     hipDeviceAttributeL2CacheSize = 19,
-    #[doc = "< caching locals in L1 is supported"]
+    /// caching locals in L1 is supported
     hipDeviceAttributeLocalL1CacheSupported = 20,
-    #[doc = "< 8-byte locally unique identifier in 8 bytes. Undefined on TCC and\n< non-Windows platforms"]
+    /// 8-byte locally unique identifier in 8 bytes. Undefined on TCC and
+    ///< non-Windows platforms
     hipDeviceAttributeLuid = 21,
-    #[doc = "< Luid device node mask. Undefined on TCC and\n< non-Windows platforms"]
+    /// Luid device node mask. Undefined on TCC and
+    ///< non-Windows platforms
     hipDeviceAttributeLuidDeviceNodeMask = 22,
-    #[doc = "< Major compute capability version number."]
+    /// Major compute capability version number.
     hipDeviceAttributeComputeCapabilityMajor = 23,
-    #[doc = "< Device supports allocating managed memory on this system"]
+    /// Device supports allocating managed memory on this system
     hipDeviceAttributeManagedMemory = 24,
-    #[doc = "< Max block size per multiprocessor"]
+    /// Max block size per multiprocessor
     hipDeviceAttributeMaxBlocksPerMultiProcessor = 25,
-    #[doc = "< Max block size in width."]
+    /// Max block size in width.
     hipDeviceAttributeMaxBlockDimX = 26,
-    #[doc = "< Max block size in height."]
+    /// Max block size in height.
     hipDeviceAttributeMaxBlockDimY = 27,
-    #[doc = "< Max block size in depth."]
+    /// Max block size in depth.
     hipDeviceAttributeMaxBlockDimZ = 28,
-    #[doc = "< Max grid size  in width."]
+    /// Max grid size  in width.
     hipDeviceAttributeMaxGridDimX = 29,
-    #[doc = "< Max grid size  in height."]
+    /// Max grid size  in height.
     hipDeviceAttributeMaxGridDimY = 30,
-    #[doc = "< Max grid size  in depth."]
+    /// Max grid size  in depth.
     hipDeviceAttributeMaxGridDimZ = 31,
-    #[doc = "< Maximum size of 1D surface."]
+    /// Maximum size of 1D surface.
     hipDeviceAttributeMaxSurface1D = 32,
-    #[doc = "< Cuda only. Maximum dimensions of 1D layered surface."]
+    /// Cuda only. Maximum dimensions of 1D layered surface.
     hipDeviceAttributeMaxSurface1DLayered = 33,
-    #[doc = "< Maximum dimension (width, height) of 2D surface."]
+    /// Maximum dimension (width, height) of 2D surface.
     hipDeviceAttributeMaxSurface2D = 34,
-    #[doc = "< Cuda only. Maximum dimensions of 2D layered surface."]
+    /// Cuda only. Maximum dimensions of 2D layered surface.
     hipDeviceAttributeMaxSurface2DLayered = 35,
-    #[doc = "< Maximum dimension (width, height, depth) of 3D surface."]
+    /// Maximum dimension (width, height, depth) of 3D surface.
     hipDeviceAttributeMaxSurface3D = 36,
-    #[doc = "< Cuda only. Maximum dimensions of Cubemap surface."]
+    /// Cuda only. Maximum dimensions of Cubemap surface.
     hipDeviceAttributeMaxSurfaceCubemap = 37,
-    #[doc = "< Cuda only. Maximum dimension of Cubemap layered\n< surface."]
+    /// Cuda only. Maximum dimension of Cubemap layered
+    ///< surface.
     hipDeviceAttributeMaxSurfaceCubemapLayered = 38,
-    #[doc = "< Maximum size of 1D texture."]
+    /// Maximum size of 1D texture.
     hipDeviceAttributeMaxTexture1DWidth = 39,
-    #[doc = "< Maximum dimensions of 1D layered texture."]
+    /// Maximum dimensions of 1D layered texture.
     hipDeviceAttributeMaxTexture1DLayered = 40,
-    #[doc = "< Maximum number of elements allocatable in a 1D linear\n< texture. Use cudaDeviceGetTexture1DLinearMaxWidth()\n< instead on Cuda."]
+    /// Maximum number of elements allocatable in a 1D linear
+    ///< texture. Use cudaDeviceGetTexture1DLinearMaxWidth()
+    ///< instead on Cuda.
     hipDeviceAttributeMaxTexture1DLinear = 41,
-    #[doc = "< Maximum size of 1D mipmapped texture."]
+    /// Maximum size of 1D mipmapped texture.
     hipDeviceAttributeMaxTexture1DMipmap = 42,
-    #[doc = "< Maximum dimension width of 2D texture."]
+    /// Maximum dimension width of 2D texture.
     hipDeviceAttributeMaxTexture2DWidth = 43,
-    #[doc = "< Maximum dimension hight of 2D texture."]
+    /// Maximum dimension hight of 2D texture.
     hipDeviceAttributeMaxTexture2DHeight = 44,
-    #[doc = "< Maximum dimensions of 2D texture if gather operations\n< performed."]
+    /// Maximum dimensions of 2D texture if gather operations
+    ///< performed.
     hipDeviceAttributeMaxTexture2DGather = 45,
-    #[doc = "< Maximum dimensions of 2D layered texture."]
+    /// Maximum dimensions of 2D layered texture.
     hipDeviceAttributeMaxTexture2DLayered = 46,
-    #[doc = "< Maximum dimensions (width, height, pitch) of 2D\n< textures bound to pitched memory."]
+    /// Maximum dimensions (width, height, pitch) of 2D
+    ///< textures bound to pitched memory.
     hipDeviceAttributeMaxTexture2DLinear = 47,
-    #[doc = "< Maximum dimensions of 2D mipmapped texture."]
+    /// Maximum dimensions of 2D mipmapped texture.
     hipDeviceAttributeMaxTexture2DMipmap = 48,
-    #[doc = "< Maximum dimension width of 3D texture."]
+    /// Maximum dimension width of 3D texture.
     hipDeviceAttributeMaxTexture3DWidth = 49,
-    #[doc = "< Maximum dimension height of 3D texture."]
+    /// Maximum dimension height of 3D texture.
     hipDeviceAttributeMaxTexture3DHeight = 50,
-    #[doc = "< Maximum dimension depth of 3D texture."]
+    /// Maximum dimension depth of 3D texture.
     hipDeviceAttributeMaxTexture3DDepth = 51,
-    #[doc = "< Maximum dimensions of alternate 3D texture."]
+    /// Maximum dimensions of alternate 3D texture.
     hipDeviceAttributeMaxTexture3DAlt = 52,
-    #[doc = "< Maximum dimensions of Cubemap texture"]
+    /// Maximum dimensions of Cubemap texture
     hipDeviceAttributeMaxTextureCubemap = 53,
-    #[doc = "< Maximum dimensions of Cubemap layered texture."]
+    /// Maximum dimensions of Cubemap layered texture.
     hipDeviceAttributeMaxTextureCubemapLayered = 54,
-    #[doc = "< Maximum dimension of a block"]
+    /// Maximum dimension of a block
     hipDeviceAttributeMaxThreadsDim = 55,
-    #[doc = "< Maximum number of threads per block."]
+    /// Maximum number of threads per block.
     hipDeviceAttributeMaxThreadsPerBlock = 56,
-    #[doc = "< Maximum resident threads per multiprocessor."]
+    /// Maximum resident threads per multiprocessor.
     hipDeviceAttributeMaxThreadsPerMultiProcessor = 57,
-    #[doc = "< Maximum pitch in bytes allowed by memory copies"]
+    /// Maximum pitch in bytes allowed by memory copies
     hipDeviceAttributeMaxPitch = 58,
-    #[doc = "< Global memory bus width in bits."]
+    /// Global memory bus width in bits.
     hipDeviceAttributeMemoryBusWidth = 59,
-    #[doc = "< Peak memory clock frequency in kilohertz."]
+    /// Peak memory clock frequency in kilohertz.
     hipDeviceAttributeMemoryClockRate = 60,
-    #[doc = "< Minor compute capability version number."]
+    /// Minor compute capability version number.
     hipDeviceAttributeComputeCapabilityMinor = 61,
-    #[doc = "< Unique ID of device group on the same multi-GPU\n< board"]
+    /// Unique ID of device group on the same multi-GPU
+    ///< board
     hipDeviceAttributeMultiGpuBoardGroupID = 62,
-    #[doc = "< Number of multi-processors. When the GPU works in Compute\n< Unit (CU) mode, this value equals the number of CUs;\n< when in Workgroup Processor (WGP) mode, this value equels\n< half of CUs, because a single WGP contains two CUs."]
+    /// Number of multi-processors. When the GPU works in Compute
+    ///< Unit (CU) mode, this value equals the number of CUs;
+    ///< when in Workgroup Processor (WGP) mode, this value equels
+    ///< half of CUs, because a single WGP contains two CUs.
     hipDeviceAttributeMultiprocessorCount = 63,
-    #[doc = "< Previously hipDeviceAttributeName"]
+    /// Previously hipDeviceAttributeName
     hipDeviceAttributeUnused1 = 64,
-    #[doc = "< Device supports coherently accessing pageable memory\n< without calling hipHostRegister on it"]
+    /// Device supports coherently accessing pageable memory
+    ///< without calling hipHostRegister on it
     hipDeviceAttributePageableMemoryAccess = 65,
-    #[doc = "< Device accesses pageable memory\n< via the host's page tables"]
+    /// Device accesses pageable memory
+    ///< via the host's page tables
     hipDeviceAttributePageableMemoryAccessUsesHostPageTables = 66,
-    #[doc = "< PCI Bus ID."]
+    /// PCI Bus ID.
     hipDeviceAttributePciBusId = 67,
-    #[doc = "< PCI Device ID. Returns pcie slot id"]
+    /// PCI Device ID. Returns pcie slot id
     hipDeviceAttributePciDeviceId = 68,
-    #[doc = "< PCI Domain Id."]
+    /// PCI Domain Id.
     hipDeviceAttributePciDomainId = 69,
-    #[doc = "< Maximum l2 persisting lines capacity in bytes"]
+    /// Maximum l2 persisting lines capacity in bytes
     hipDeviceAttributePersistingL2CacheMaxSize = 70,
-    #[doc = "< 32-bit registers available to a thread block. This\n< number is shared by all thread blocks simultaneously\n< resident on a multiprocessor."]
+    /// 32-bit registers available to a thread block. This
+    ///< number is shared by all thread blocks simultaneously
+    ///< resident on a multiprocessor.
     hipDeviceAttributeMaxRegistersPerBlock = 71,
-    #[doc = "< 32-bit registers available per block."]
+    /// 32-bit registers available per block.
     hipDeviceAttributeMaxRegistersPerMultiprocessor = 72,
-    #[doc = "< Shared memory reserved by CUDA driver per\n< block."]
+    /// Shared memory reserved by CUDA driver per
+    ///< block.
     hipDeviceAttributeReservedSharedMemPerBlock = 73,
-    #[doc = "< Maximum shared memory available per block in\n< bytes."]
+    /// Maximum shared memory available per block in
+    ///< bytes.
     hipDeviceAttributeMaxSharedMemoryPerBlock = 74,
-    #[doc = "< Maximum shared memory per block usable by special\n< opt in."]
+    /// Maximum shared memory per block usable by special
+    ///< opt in.
     hipDeviceAttributeSharedMemPerBlockOptin = 75,
-    #[doc = "< Shared memory available per multiprocessor."]
+    /// Shared memory available per multiprocessor.
     hipDeviceAttributeSharedMemPerMultiprocessor = 76,
-    #[doc = "< Cuda only. Performance ratio of single\n< precision to double precision."]
+    /// Cuda only. Performance ratio of single
+    ///< precision to double precision.
     hipDeviceAttributeSingleToDoublePrecisionPerfRatio = 77,
-    #[doc = "< Whether to support stream priorities."]
+    /// Whether to support stream priorities.
     hipDeviceAttributeStreamPrioritiesSupported = 78,
-    #[doc = "< Alignment requirement for surfaces"]
+    /// Alignment requirement for surfaces
     hipDeviceAttributeSurfaceAlignment = 79,
-    #[doc = "< Cuda only. Whether device is a Tesla device using TCC driver"]
+    /// Cuda only. Whether device is a Tesla device using TCC driver
     hipDeviceAttributeTccDriver = 80,
-    #[doc = "< Alignment requirement for textures"]
+    /// Alignment requirement for textures
     hipDeviceAttributeTextureAlignment = 81,
-    #[doc = "< Pitch alignment requirement for 2D texture\n< references bound to pitched memory;"]
+    /// Pitch alignment requirement for 2D texture
+    ///< references bound to pitched memory;
     hipDeviceAttributeTexturePitchAlignment = 82,
-    #[doc = "< Constant memory size in bytes."]
+    /// Constant memory size in bytes.
     hipDeviceAttributeTotalConstantMemory = 83,
-    #[doc = "< Global memory available on devicice."]
+    /// Global memory available on devicice.
     hipDeviceAttributeTotalGlobalMem = 84,
-    #[doc = "< Cuda only. An unified address space shared with the\n< host."]
+    /// Cuda only. An unified address space shared with the
+    ///< host.
     hipDeviceAttributeUnifiedAddressing = 85,
-    #[doc = "< Previously hipDeviceAttributeUuid"]
+    /// Previously hipDeviceAttributeUuid
     hipDeviceAttributeUnused2 = 86,
-    #[doc = "< Warp size in threads."]
+    /// Warp size in threads.
     hipDeviceAttributeWarpSize = 87,
-    #[doc = "< Device supports HIP Stream Ordered Memory Allocator"]
+    /// Device supports HIP Stream Ordered Memory Allocator
     hipDeviceAttributeMemoryPoolsSupported = 88,
-    #[doc = "< Device supports HIP virtual memory\n< management"]
+    /// Device supports HIP virtual memory
+    ///< management
     hipDeviceAttributeVirtualMemoryManagementSupported = 89,
-    #[doc = "< Can device support host memory registration via\n< hipHostRegister"]
+    /// Can device support host memory registration via
+    ///< hipHostRegister
     hipDeviceAttributeHostRegisterSupported = 90,
-    #[doc = "< Supported handle mask for HIP Stream\n< Ordered Memory Allocator"]
+    /// Supported handle mask for HIP Stream
+    ///< Ordered Memory Allocator
     hipDeviceAttributeMemoryPoolSupportedHandleTypes = 91,
-    #[doc = "< NUMA ID of the cpu node closest to the device,\n< or -1 when NUMA isn't supported"]
+    /// NUMA ID of the cpu node closest to the device,
+    ///< or -1 when NUMA isn't supported
     hipDeviceAttributeHostNumaId = 92,
-    #[doc = "< Device supports DMABuf buffer sharing"]
+    /// Device supports DMABuf buffer sharing
     hipDeviceAttributeDmaBufSupported = 93,
-    #[doc = "< GPU Direct RDMA with HIP VMM is supported\n< (requires DMA-Buf and HIP virtual memory\n< management)"]
+    /// GPU Direct RDMA with HIP VMM is supported
+    ///< (requires DMA-Buf and HIP virtual memory
+    ///< management)
     hipDeviceAttributeGPUDirectRDMAWithHipVMMSupported = 94,
-    #[doc = "< Device supports exporting memory to a fabric handle"]
+    /// Device supports exporting memory to a fabric handle
     hipDeviceAttributeHandleTypeFabricSupported = 95,
-    #[doc = "< Device supports host-allocated DMABuf buffer sharing"]
+    /// Device supports host-allocated DMABuf buffer sharing
     hipDeviceAttributeHostAllocDmaBufSupported = 96,
-    #[doc = "< Device supports GPUDirect RDMA APIs"]
+    /// Device supports GPUDirect RDMA APIs
     hipDeviceAttributeGPUDirectRDMASupported = 97,
-    #[doc = "< Bitmask of\n< hipFlushGPUDirectRDMAWritesOptions\n< describing the flush paths the device\n< supports"]
+    /// Bitmask of
+    ///< hipFlushGPUDirectRDMAWritesOptions
+    ///< describing the flush paths the device
+    ///< supports
     hipDeviceAttributeGPUDirectRDMAFlushWritesOptions = 98,
-    #[doc = "< A hipGPUDirectRDMAWritesOrdering value\n< giving the scope at which GPUDirect RDMA\n< writes are naturally ordered, i.e. visible\n< without an explicit flush"]
+    /// A hipGPUDirectRDMAWritesOrdering value
+    ///< giving the scope at which GPUDirect RDMA
+    ///< writes are naturally ordered, i.e. visible
+    ///< without an explicit flush
     hipDeviceAttributeGPUDirectRDMAWritesOrdering = 99,
     hipDeviceAttributeCudaCompatibleEnd = 9999,
     hipDeviceAttributeAmdSpecificBegin = 10000,
-    #[doc = "< Previously hipDeviceAttributeArch"]
+    /// Previously hipDeviceAttributeArch
     hipDeviceAttributeUnused3 = 10001,
-    #[doc = "< Maximum Shared Memory PerMultiprocessor."]
+    /// Maximum Shared Memory PerMultiprocessor.
     hipDeviceAttributeMaxSharedMemoryPerMultiprocessor = 10002,
-    #[doc = "< Previously hipDeviceAttributeGcnArch"]
+    /// Previously hipDeviceAttributeGcnArch
     hipDeviceAttributeUnused4 = 10003,
-    #[doc = "< Previously hipDeviceAttributeGcnArchName"]
+    /// Previously hipDeviceAttributeGcnArchName
     hipDeviceAttributeUnused5 = 10004,
-    #[doc = "< Address of the HDP_MEM_COHERENCY_FLUSH_CNTL register"]
+    /// Address of the HDP_MEM_COHERENCY_FLUSH_CNTL register
     hipDeviceAttributeHdpMemFlushCntl = 10005,
-    #[doc = "< Address of the HDP_REG_COHERENCY_FLUSH_CNTL register"]
+    /// Address of the HDP_REG_COHERENCY_FLUSH_CNTL register
     hipDeviceAttributeHdpRegFlushCntl = 10006,
-    #[doc = "< Supports cooperative launch on\n< multiple devices with unmatched\n< functions"]
+    /// Supports cooperative launch on
+    ///< multiple devices with unmatched
+    ///< functions
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedFunc = 10007,
-    #[doc = "< Supports cooperative launch on\n< multiple devices with unmatched\n< grid dimensions"]
+    /// Supports cooperative launch on
+    ///< multiple devices with unmatched
+    ///< grid dimensions
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedGridDim = 10008,
-    #[doc = "< Supports cooperative launch on\n< multiple devices with unmatched\n< block dimensions"]
+    /// Supports cooperative launch on
+    ///< multiple devices with unmatched
+    ///< block dimensions
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedBlockDim = 10009,
-    #[doc = "< Supports cooperative launch on\n< multiple devices with unmatched\n< shared memories"]
+    /// Supports cooperative launch on
+    ///< multiple devices with unmatched
+    ///< shared memories
     hipDeviceAttributeCooperativeMultiDeviceUnmatchedSharedMem = 10010,
-    #[doc = "< Whether it is LargeBar"]
+    /// Whether it is LargeBar
     hipDeviceAttributeIsLargeBar = 10011,
-    #[doc = "< Revision of the GPU in this device"]
+    /// Revision of the GPU in this device
     hipDeviceAttributeAsicRevision = 10012,
-    #[doc = "< '1' if Device supports hipStreamWaitValue32() and\n< hipStreamWaitValue64(), '0' otherwise."]
+    /// '1' if Device supports hipStreamWaitValue32() and
+    ///< hipStreamWaitValue64(), '0' otherwise.
     hipDeviceAttributeCanUseStreamWaitValue = 10013,
-    #[doc = "< '1' if Device supports image, '0' otherwise."]
+    /// '1' if Device supports image, '0' otherwise.
     hipDeviceAttributeImageSupport = 10014,
-    #[doc = "< All available physical compute\n< units for the device"]
+    /// All available physical compute
+    ///< units for the device
     hipDeviceAttributePhysicalMultiProcessorCount = 10015,
-    #[doc = "< '1' if Device supports fine grain, '0' otherwise"]
+    /// '1' if Device supports fine grain, '0' otherwise
     hipDeviceAttributeFineGrainSupport = 10016,
-    #[doc = "< Constant frequency of wall clock in kilohertz."]
+    /// Constant frequency of wall clock in kilohertz.
     hipDeviceAttributeWallClockRate = 10017,
-    #[doc = "< Number of XCC(s) in the device’s current\n< compute partition(XCP).\n< An XCC is AMD’s fundamental GPU compute tile.\n< Devices like MI300X include multiple XCCs\n< per package. Value varies by boot‑time\n< partition mode(compute or memory).\n< Partition modes can be set using amd‑smi."]
+    /// Number of XCC(s) in the device’s current
+    ///< compute partition(XCP).
+    ///< An XCC is AMD’s fundamental GPU compute tile.
+    ///< Devices like MI300X include multiple XCCs
+    ///< per package. Value varies by boot‑time
+    ///< partition mode(compute or memory).
+    ///< Partition modes can be set using amd‑smi.
     hipDeviceAttributeNumberOfXccs = 10018,
-    #[doc = "< Max number of available (directly or\n< indirectly addressable) VGPRs per thread in\n< DWORDs."]
+    /// Max number of available (directly or
+    ///< indirectly addressable) VGPRs per thread in
+    ///< DWORDs.
     hipDeviceAttributeMaxAvailableVgprsPerThread = 10019,
-    #[doc = "< GPU Manufacturer device id"]
+    /// GPU Manufacturer device id
     hipDeviceAttributePciChipId = 10020,
-    #[doc = "< '1' if Device supports expert scheduling mode,\n< '0' otherwise."]
+    /// '1' if Device supports expert scheduling mode,
+    ///< '0' otherwise.
     hipDeviceAttributeExpertSchedMode = 10021,
-    #[doc = "< Maximum number of dynamic data prefetch regions\n< per kernel launch (0 if unsupported)."]
+    /// Maximum number of dynamic data prefetch regions
+    ///< per kernel launch (0 if unsupported).
     hipDeviceAttributeMaxDynDataPrefetchRegions = 10022,
     hipDeviceAttributeAmdSpecificEnd = 19999,
     hipDeviceAttributeVendorSpecificBegin = 20000,
@@ -2551,40 +2714,46 @@ pub enum hipGPUDirectRDMAWritesOrdering {
     hipGPUDirectRDMAWritesOrderingAllDevices = 200,
 }
 #[repr(i32)]
-#[doc = " The target of a hipDeviceFlushGPUDirectRDMAWrites operation."]
+/// The target of a hipDeviceFlushGPUDirectRDMAWrites operation.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFlushGPUDirectRDMAWritesTarget {
-    #[doc = "< Memory of the current HIP device"]
+    /// Memory of the current HIP device
     hipFlushGPUDirectRDMAWritesTargetCurrentDevice = 0,
 }
 #[repr(i32)]
-#[doc = " The scope at which hipDeviceFlushGPUDirectRDMAWrites makes pending remote writes visible.\n\n The enumerator values match hipGPUDirectRDMAWritesOrdering, so a device whose\n hipDeviceAttributeGPUDirectRDMAWritesOrdering is greater than or equal to the requested\n scope already orders those writes and needs no explicit flush."]
+/// The scope at which hipDeviceFlushGPUDirectRDMAWrites makes pending remote writes visible.
+/// The enumerator values match hipGPUDirectRDMAWritesOrdering, so a device whose
+/// hipDeviceAttributeGPUDirectRDMAWritesOrdering is greater than or equal to the requested
+/// scope already orders those writes and needs no explicit flush.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFlushGPUDirectRDMAWritesScope {
-    #[doc = "< Visible to the device owning the memory"]
+    /// Visible to the device owning the memory
     hipFlushGPUDirectRDMAWritesToOwner = 100,
-    #[doc = "< Visible to all HIP devices"]
+    /// Visible to all HIP devices
     hipFlushGPUDirectRDMAWritesToAllDevices = 200,
 }
-#[doc = "  @defgroup DriverTypes Driver Types\n  @{\n  This section describes the driver data types.\n"]
+///  @defgroup DriverTypes Driver Types
+///  @{
+///  This section describes the driver data types.
+///
 pub type hipDeviceptr_t = *mut ::core::ffi::c_void;
 #[repr(i32)]
-#[doc = " HIP channel format kinds"]
+/// HIP channel format kinds
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipChannelFormatKind {
-    #[doc = "< Signed channel format"]
+    /// Signed channel format
     hipChannelFormatKindSigned = 0,
-    #[doc = "< Unsigned channel format"]
+    /// Unsigned channel format
     hipChannelFormatKindUnsigned = 1,
-    #[doc = "< Float channel format"]
+    /// Float channel format
     hipChannelFormatKindFloat = 2,
-    #[doc = "< No channel format"]
+    /// No channel format
     hipChannelFormatKindNone = 3,
 }
-#[doc = " HIP channel format descriptor"]
+/// HIP channel format descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -2593,7 +2762,7 @@ pub struct hipChannelFormatDesc {
     pub y: ::core::ffi::c_int,
     pub z: ::core::ffi::c_int,
     pub w: ::core::ffi::c_int,
-    #[doc = "< Channel format kind"]
+    /// Channel format kind
     pub f: hipChannelFormatKind,
 }
 #[repr(C)]
@@ -2605,373 +2774,373 @@ pub struct hipArray {
 pub type hipArray_t = *mut hipArray;
 pub type hipArray_const_t = *const hipArray;
 #[repr(i32)]
-#[doc = " HIP array format"]
+/// HIP array format
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipArray_Format {
-    #[doc = "< Unsigned 8-bit array format"]
+    /// Unsigned 8-bit array format
     HIP_AD_FORMAT_UNSIGNED_INT8 = 1,
-    #[doc = "< Unsigned 16-bit array format"]
+    /// Unsigned 16-bit array format
     HIP_AD_FORMAT_UNSIGNED_INT16 = 2,
-    #[doc = "< Unsigned 32-bit array format"]
+    /// Unsigned 32-bit array format
     HIP_AD_FORMAT_UNSIGNED_INT32 = 3,
-    #[doc = "< Signed 8-bit array format"]
+    /// Signed 8-bit array format
     HIP_AD_FORMAT_SIGNED_INT8 = 8,
-    #[doc = "< Signed 16-bit array format"]
+    /// Signed 16-bit array format
     HIP_AD_FORMAT_SIGNED_INT16 = 9,
-    #[doc = "< Signed 32-bit array format"]
+    /// Signed 32-bit array format
     HIP_AD_FORMAT_SIGNED_INT32 = 10,
-    #[doc = "< Half array format"]
+    /// Half array format
     HIP_AD_FORMAT_HALF = 16,
-    #[doc = "< Float array format"]
+    /// Float array format
     HIP_AD_FORMAT_FLOAT = 32,
 }
-#[doc = " HIP array descriptor"]
+/// HIP array descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_ARRAY_DESCRIPTOR {
-    #[doc = "< Width of the array"]
+    /// Width of the array
     pub Width: usize,
-    #[doc = "< Height of the array"]
+    /// Height of the array
     pub Height: usize,
-    #[doc = "< Format of the array"]
+    /// Format of the array
     pub Format: hipArray_Format,
-    #[doc = "< Number of channels of the array"]
+    /// Number of channels of the array
     pub NumChannels: ::core::ffi::c_uint,
 }
-#[doc = " HIP 3D array descriptor"]
+/// HIP 3D array descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_ARRAY3D_DESCRIPTOR {
-    #[doc = "< Width of the array"]
+    /// Width of the array
     pub Width: usize,
-    #[doc = "< Height of the array"]
+    /// Height of the array
     pub Height: usize,
-    #[doc = "< Depth of the array"]
+    /// Depth of the array
     pub Depth: usize,
-    #[doc = "< Format of the array"]
+    /// Format of the array
     pub Format: hipArray_Format,
-    #[doc = "< Number of channels of the array"]
+    /// Number of channels of the array
     pub NumChannels: ::core::ffi::c_uint,
-    #[doc = "< Flags of the array"]
+    /// Flags of the array
     pub Flags: ::core::ffi::c_uint,
 }
-#[doc = " HIP 2D memory copy parameters"]
+/// HIP 2D memory copy parameters
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hip_Memcpy2D {
-    #[doc = "< Source width in bytes"]
+    /// Source width in bytes
     pub srcXInBytes: usize,
-    #[doc = "< Source height"]
+    /// Source height
     pub srcY: usize,
-    #[doc = "< Source memory type"]
+    /// Source memory type
     pub srcMemoryType: hipMemoryType,
-    #[doc = "< Source pointer"]
+    /// Source pointer
     pub srcHost: *const ::core::ffi::c_void,
-    #[doc = "< Source device"]
+    /// Source device
     pub srcDevice: hipDeviceptr_t,
-    #[doc = "< Source array"]
+    /// Source array
     pub srcArray: hipArray_t,
-    #[doc = "< Source pitch"]
+    /// Source pitch
     pub srcPitch: usize,
-    #[doc = "< Destination width in bytes"]
+    /// Destination width in bytes
     pub dstXInBytes: usize,
-    #[doc = "< Destination height"]
+    /// Destination height
     pub dstY: usize,
-    #[doc = "< Destination memory type"]
+    /// Destination memory type
     pub dstMemoryType: hipMemoryType,
-    #[doc = "< Destination pointer"]
+    /// Destination pointer
     pub dstHost: *mut ::core::ffi::c_void,
-    #[doc = "< Destination device"]
+    /// Destination device
     pub dstDevice: hipDeviceptr_t,
-    #[doc = "< Destination array"]
+    /// Destination array
     pub dstArray: hipArray_t,
-    #[doc = "< Destination pitch"]
+    /// Destination pitch
     pub dstPitch: usize,
-    #[doc = "< Width in bytes of the 2D memory copy"]
+    /// Width in bytes of the 2D memory copy
     pub WidthInBytes: usize,
-    #[doc = "< Height of the 2D memory copy"]
+    /// Height of the 2D memory copy
     pub Height: usize,
 }
-#[doc = " HIP mipmapped array"]
+/// HIP mipmapped array
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMipmappedArray {
-    #[doc = "< Data pointer of the mipmapped array"]
+    /// Data pointer of the mipmapped array
     pub data: *mut ::core::ffi::c_void,
-    #[doc = "< Description of the mipmapped array"]
+    /// Description of the mipmapped array
     pub desc: hipChannelFormatDesc,
-    #[doc = "< Type of the mipmapped array"]
+    /// Type of the mipmapped array
     pub type_: ::core::ffi::c_uint,
-    #[doc = "< Width of the mipmapped array"]
+    /// Width of the mipmapped array
     pub width: ::core::ffi::c_uint,
-    #[doc = "< Height of the mipmapped array"]
+    /// Height of the mipmapped array
     pub height: ::core::ffi::c_uint,
-    #[doc = "< Depth of the mipmapped array"]
+    /// Depth of the mipmapped array
     pub depth: ::core::ffi::c_uint,
-    #[doc = "< Minimum level of the mipmapped array"]
+    /// Minimum level of the mipmapped array
     pub min_mipmap_level: ::core::ffi::c_uint,
-    #[doc = "< Maximum level of the mipmapped array"]
+    /// Maximum level of the mipmapped array
     pub max_mipmap_level: ::core::ffi::c_uint,
-    #[doc = "< Flags of the mipmapped array"]
+    /// Flags of the mipmapped array
     pub flags: ::core::ffi::c_uint,
-    #[doc = "< Format of the mipmapped array"]
+    /// Format of the mipmapped array
     pub format: hipArray_Format,
-    #[doc = "< Number of channels of the mipmapped array"]
+    /// Number of channels of the mipmapped array
     pub num_channels: ::core::ffi::c_uint,
 }
-#[doc = " HIP mipmapped array pointer"]
+/// HIP mipmapped array pointer
 pub type hipMipmappedArray_t = *mut hipMipmappedArray;
 pub type hipmipmappedArray = hipMipmappedArray_t;
 pub type hipMipmappedArray_const_t = *const hipMipmappedArray;
 #[repr(i32)]
-#[doc = " HIP resource types"]
+/// HIP resource types
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipResourceType {
-    #[doc = "< Array resource"]
+    /// Array resource
     hipResourceTypeArray = 0,
-    #[doc = "< Mipmapped array resource"]
+    /// Mipmapped array resource
     hipResourceTypeMipmappedArray = 1,
-    #[doc = "< Linear resource"]
+    /// Linear resource
     hipResourceTypeLinear = 2,
-    #[doc = "< Pitch 2D resource"]
+    /// Pitch 2D resource
     hipResourceTypePitch2D = 3,
 }
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPresourcetype_enum {
-    #[doc = "< Array resource"]
+    /// Array resource
     HIP_RESOURCE_TYPE_ARRAY = 0,
-    #[doc = "< Mipmapped array resource"]
+    /// Mipmapped array resource
     HIP_RESOURCE_TYPE_MIPMAPPED_ARRAY = 1,
-    #[doc = "< Linear resource"]
+    /// Linear resource
     HIP_RESOURCE_TYPE_LINEAR = 2,
-    #[doc = "< Pitch 2D resource"]
+    /// Pitch 2D resource
     HIP_RESOURCE_TYPE_PITCH2D = 3,
 }
 pub use self::HIPresourcetype_enum as HIPresourcetype;
 pub use self::HIPresourcetype_enum as hipResourcetype;
 #[repr(i32)]
-#[doc = " HIP texture address modes"]
+/// HIP texture address modes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPaddress_mode_enum {
-    #[doc = "< Wrap address mode"]
+    /// Wrap address mode
     HIP_TR_ADDRESS_MODE_WRAP = 0,
-    #[doc = "< Clamp address mode"]
+    /// Clamp address mode
     HIP_TR_ADDRESS_MODE_CLAMP = 1,
-    #[doc = "< Mirror address mode"]
+    /// Mirror address mode
     HIP_TR_ADDRESS_MODE_MIRROR = 2,
-    #[doc = "< Border address mode"]
+    /// Border address mode
     HIP_TR_ADDRESS_MODE_BORDER = 3,
 }
-#[doc = " HIP texture address modes"]
+/// HIP texture address modes
 pub use self::HIPaddress_mode_enum as HIPaddress_mode;
 #[repr(i32)]
-#[doc = " HIP filter modes"]
+/// HIP filter modes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPfilter_mode_enum {
-    #[doc = "< Filter mode point"]
+    /// Filter mode point
     HIP_TR_FILTER_MODE_POINT = 0,
-    #[doc = "< Filter mode linear"]
+    /// Filter mode linear
     HIP_TR_FILTER_MODE_LINEAR = 1,
 }
-#[doc = " HIP filter modes"]
+/// HIP filter modes
 pub use self::HIPfilter_mode_enum as HIPfilter_mode;
-#[doc = " HIP texture descriptor"]
+/// HIP texture descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_TEXTURE_DESC_st {
-    #[doc = "< Address modes"]
+    /// Address modes
     pub addressMode: [HIPaddress_mode; 3usize],
-    #[doc = "< Filter mode"]
+    /// Filter mode
     pub filterMode: HIPfilter_mode,
-    #[doc = "< Flags"]
+    /// Flags
     pub flags: ::core::ffi::c_uint,
-    #[doc = "< Maximum anisotropy ratio"]
+    /// Maximum anisotropy ratio
     pub maxAnisotropy: ::core::ffi::c_uint,
-    #[doc = "< Mipmap filter mode"]
+    /// Mipmap filter mode
     pub mipmapFilterMode: HIPfilter_mode,
-    #[doc = "< Mipmap level bias"]
+    /// Mipmap level bias
     pub mipmapLevelBias: f32,
-    #[doc = "< Mipmap minimum level clamp"]
+    /// Mipmap minimum level clamp
     pub minMipmapLevelClamp: f32,
-    #[doc = "< Mipmap maximum level clamp"]
+    /// Mipmap maximum level clamp
     pub maxMipmapLevelClamp: f32,
-    #[doc = "< Border Color"]
+    /// Border Color
     pub borderColor: [f32; 4usize],
     pub reserved: [::core::ffi::c_int; 12usize],
 }
-#[doc = " HIP texture descriptor"]
+/// HIP texture descriptor
 pub type HIP_TEXTURE_DESC = HIP_TEXTURE_DESC_st;
 #[repr(i32)]
-#[doc = " HIP texture resource view formats"]
+/// HIP texture resource view formats
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipResourceViewFormat {
-    #[doc = "< No resource view format (use underlying resource format)"]
+    /// No resource view format (use underlying resource format)
     hipResViewFormatNone = 0,
-    #[doc = "< 1 channel, unsigned 8-bit integers"]
+    /// 1 channel, unsigned 8-bit integers
     hipResViewFormatUnsignedChar1 = 1,
-    #[doc = "< 2 channels, unsigned 8-bit integers"]
+    /// 2 channels, unsigned 8-bit integers
     hipResViewFormatUnsignedChar2 = 2,
-    #[doc = "< 4 channels, unsigned 8-bit integers"]
+    /// 4 channels, unsigned 8-bit integers
     hipResViewFormatUnsignedChar4 = 3,
-    #[doc = "< 1 channel, signed 8-bit integers"]
+    /// 1 channel, signed 8-bit integers
     hipResViewFormatSignedChar1 = 4,
-    #[doc = "< 2 channels, signed 8-bit integers"]
+    /// 2 channels, signed 8-bit integers
     hipResViewFormatSignedChar2 = 5,
-    #[doc = "< 4 channels, signed 8-bit integers"]
+    /// 4 channels, signed 8-bit integers
     hipResViewFormatSignedChar4 = 6,
-    #[doc = "< 1 channel, unsigned 16-bit integers"]
+    /// 1 channel, unsigned 16-bit integers
     hipResViewFormatUnsignedShort1 = 7,
-    #[doc = "< 2 channels, unsigned 16-bit integers"]
+    /// 2 channels, unsigned 16-bit integers
     hipResViewFormatUnsignedShort2 = 8,
-    #[doc = "< 4 channels, unsigned 16-bit integers"]
+    /// 4 channels, unsigned 16-bit integers
     hipResViewFormatUnsignedShort4 = 9,
-    #[doc = "< 1 channel, signed 16-bit integers"]
+    /// 1 channel, signed 16-bit integers
     hipResViewFormatSignedShort1 = 10,
-    #[doc = "< 2 channels, signed 16-bit integers"]
+    /// 2 channels, signed 16-bit integers
     hipResViewFormatSignedShort2 = 11,
-    #[doc = "< 4 channels, signed 16-bit integers"]
+    /// 4 channels, signed 16-bit integers
     hipResViewFormatSignedShort4 = 12,
-    #[doc = "< 1 channel, unsigned 32-bit integers"]
+    /// 1 channel, unsigned 32-bit integers
     hipResViewFormatUnsignedInt1 = 13,
-    #[doc = "< 2 channels, unsigned 32-bit integers"]
+    /// 2 channels, unsigned 32-bit integers
     hipResViewFormatUnsignedInt2 = 14,
-    #[doc = "< 4 channels, unsigned 32-bit integers"]
+    /// 4 channels, unsigned 32-bit integers
     hipResViewFormatUnsignedInt4 = 15,
-    #[doc = "< 1 channel, signed 32-bit integers"]
+    /// 1 channel, signed 32-bit integers
     hipResViewFormatSignedInt1 = 16,
-    #[doc = "< 2 channels, signed 32-bit integers"]
+    /// 2 channels, signed 32-bit integers
     hipResViewFormatSignedInt2 = 17,
-    #[doc = "< 4 channels, signed 32-bit integers"]
+    /// 4 channels, signed 32-bit integers
     hipResViewFormatSignedInt4 = 18,
-    #[doc = "< 1 channel, 16-bit floating point"]
+    /// 1 channel, 16-bit floating point
     hipResViewFormatHalf1 = 19,
-    #[doc = "< 2 channels, 16-bit floating point"]
+    /// 2 channels, 16-bit floating point
     hipResViewFormatHalf2 = 20,
-    #[doc = "< 4 channels, 16-bit floating point"]
+    /// 4 channels, 16-bit floating point
     hipResViewFormatHalf4 = 21,
-    #[doc = "< 1 channel, 32-bit floating point"]
+    /// 1 channel, 32-bit floating point
     hipResViewFormatFloat1 = 22,
-    #[doc = "< 2 channels, 32-bit floating point"]
+    /// 2 channels, 32-bit floating point
     hipResViewFormatFloat2 = 23,
-    #[doc = "< 4 channels, 32-bit floating point"]
+    /// 4 channels, 32-bit floating point
     hipResViewFormatFloat4 = 24,
-    #[doc = "< Block-compressed 1"]
+    /// Block-compressed 1
     hipResViewFormatUnsignedBlockCompressed1 = 25,
-    #[doc = "< Block-compressed 2"]
+    /// Block-compressed 2
     hipResViewFormatUnsignedBlockCompressed2 = 26,
-    #[doc = "< Block-compressed 3"]
+    /// Block-compressed 3
     hipResViewFormatUnsignedBlockCompressed3 = 27,
-    #[doc = "< Block-compressed 4 unsigned"]
+    /// Block-compressed 4 unsigned
     hipResViewFormatUnsignedBlockCompressed4 = 28,
-    #[doc = "< Block-compressed 4 signed"]
+    /// Block-compressed 4 signed
     hipResViewFormatSignedBlockCompressed4 = 29,
-    #[doc = "< Block-compressed 5 unsigned"]
+    /// Block-compressed 5 unsigned
     hipResViewFormatUnsignedBlockCompressed5 = 30,
-    #[doc = "< Block-compressed 5 signed"]
+    /// Block-compressed 5 signed
     hipResViewFormatSignedBlockCompressed5 = 31,
-    #[doc = "< Block-compressed 6 unsigned half-float"]
+    /// Block-compressed 6 unsigned half-float
     hipResViewFormatUnsignedBlockCompressed6H = 32,
-    #[doc = "< Block-compressed 6 signed half-float"]
+    /// Block-compressed 6 signed half-float
     hipResViewFormatSignedBlockCompressed6H = 33,
-    #[doc = "< Block-compressed 7"]
+    /// Block-compressed 7
     hipResViewFormatUnsignedBlockCompressed7 = 34,
 }
 #[repr(i32)]
-#[doc = " HIP texture resource view formats"]
+/// HIP texture resource view formats
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HIPresourceViewFormat_enum {
-    #[doc = "< No resource view format (use underlying resource format)"]
+    /// No resource view format (use underlying resource format)
     HIP_RES_VIEW_FORMAT_NONE = 0,
-    #[doc = "< 1 channel, unsigned 8-bit integers"]
+    /// 1 channel, unsigned 8-bit integers
     HIP_RES_VIEW_FORMAT_UINT_1X8 = 1,
-    #[doc = "< 2 channels, unsigned 8-bit integers"]
+    /// 2 channels, unsigned 8-bit integers
     HIP_RES_VIEW_FORMAT_UINT_2X8 = 2,
-    #[doc = "< 4 channels, unsigned 8-bit integers"]
+    /// 4 channels, unsigned 8-bit integers
     HIP_RES_VIEW_FORMAT_UINT_4X8 = 3,
-    #[doc = "< 1 channel, signed 8-bit integers"]
+    /// 1 channel, signed 8-bit integers
     HIP_RES_VIEW_FORMAT_SINT_1X8 = 4,
-    #[doc = "< 2 channels, signed 8-bit integers"]
+    /// 2 channels, signed 8-bit integers
     HIP_RES_VIEW_FORMAT_SINT_2X8 = 5,
-    #[doc = "< 4 channels, signed 8-bit integers"]
+    /// 4 channels, signed 8-bit integers
     HIP_RES_VIEW_FORMAT_SINT_4X8 = 6,
-    #[doc = "< 1 channel, unsigned 16-bit integers"]
+    /// 1 channel, unsigned 16-bit integers
     HIP_RES_VIEW_FORMAT_UINT_1X16 = 7,
-    #[doc = "< 2 channels, unsigned 16-bit integers"]
+    /// 2 channels, unsigned 16-bit integers
     HIP_RES_VIEW_FORMAT_UINT_2X16 = 8,
-    #[doc = "< 4 channels, unsigned 16-bit integers"]
+    /// 4 channels, unsigned 16-bit integers
     HIP_RES_VIEW_FORMAT_UINT_4X16 = 9,
-    #[doc = "< 1 channel, signed 16-bit integers"]
+    /// 1 channel, signed 16-bit integers
     HIP_RES_VIEW_FORMAT_SINT_1X16 = 10,
-    #[doc = "< 2 channels, signed 16-bit integers"]
+    /// 2 channels, signed 16-bit integers
     HIP_RES_VIEW_FORMAT_SINT_2X16 = 11,
-    #[doc = "< 4 channels, signed 16-bit integers"]
+    /// 4 channels, signed 16-bit integers
     HIP_RES_VIEW_FORMAT_SINT_4X16 = 12,
-    #[doc = "< 1 channel, unsigned 32-bit integers"]
+    /// 1 channel, unsigned 32-bit integers
     HIP_RES_VIEW_FORMAT_UINT_1X32 = 13,
-    #[doc = "< 2 channels, unsigned 32-bit integers"]
+    /// 2 channels, unsigned 32-bit integers
     HIP_RES_VIEW_FORMAT_UINT_2X32 = 14,
-    #[doc = "< 4 channels, unsigned 32-bit integers"]
+    /// 4 channels, unsigned 32-bit integers
     HIP_RES_VIEW_FORMAT_UINT_4X32 = 15,
-    #[doc = "< 1 channel, signed 32-bit integers"]
+    /// 1 channel, signed 32-bit integers
     HIP_RES_VIEW_FORMAT_SINT_1X32 = 16,
-    #[doc = "< 2 channels, signed 32-bit integers"]
+    /// 2 channels, signed 32-bit integers
     HIP_RES_VIEW_FORMAT_SINT_2X32 = 17,
-    #[doc = "< 4 channels, signed 32-bit integers"]
+    /// 4 channels, signed 32-bit integers
     HIP_RES_VIEW_FORMAT_SINT_4X32 = 18,
-    #[doc = "< 1 channel, 16-bit floating point"]
+    /// 1 channel, 16-bit floating point
     HIP_RES_VIEW_FORMAT_FLOAT_1X16 = 19,
-    #[doc = "< 2 channels, 16-bit floating point"]
+    /// 2 channels, 16-bit floating point
     HIP_RES_VIEW_FORMAT_FLOAT_2X16 = 20,
-    #[doc = "< 4 channels, 16-bit floating point"]
+    /// 4 channels, 16-bit floating point
     HIP_RES_VIEW_FORMAT_FLOAT_4X16 = 21,
-    #[doc = "< 1 channel, 32-bit floating point"]
+    /// 1 channel, 32-bit floating point
     HIP_RES_VIEW_FORMAT_FLOAT_1X32 = 22,
-    #[doc = "< 2 channels, 32-bit floating point"]
+    /// 2 channels, 32-bit floating point
     HIP_RES_VIEW_FORMAT_FLOAT_2X32 = 23,
-    #[doc = "< 4 channels, 32-bit floating point"]
+    /// 4 channels, 32-bit floating point
     HIP_RES_VIEW_FORMAT_FLOAT_4X32 = 24,
-    #[doc = "< Block-compressed 1"]
+    /// Block-compressed 1
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC1 = 25,
-    #[doc = "< Block-compressed 2"]
+    /// Block-compressed 2
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC2 = 26,
-    #[doc = "< Block-compressed 3"]
+    /// Block-compressed 3
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC3 = 27,
-    #[doc = "< Block-compressed 4 unsigned"]
+    /// Block-compressed 4 unsigned
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC4 = 28,
-    #[doc = "< Block-compressed 4 signed"]
+    /// Block-compressed 4 signed
     HIP_RES_VIEW_FORMAT_SIGNED_BC4 = 29,
-    #[doc = "< Block-compressed 5 unsigned"]
+    /// Block-compressed 5 unsigned
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC5 = 30,
-    #[doc = "< Block-compressed 5 signed"]
+    /// Block-compressed 5 signed
     HIP_RES_VIEW_FORMAT_SIGNED_BC5 = 31,
-    #[doc = "< Block-compressed 6 unsigned half-float"]
+    /// Block-compressed 6 unsigned half-float
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC6H = 32,
-    #[doc = "< Block-compressed 6 signed half-float"]
+    /// Block-compressed 6 signed half-float
     HIP_RES_VIEW_FORMAT_SIGNED_BC6H = 33,
-    #[doc = "< Block-compressed 7"]
+    /// Block-compressed 7
     HIP_RES_VIEW_FORMAT_UNSIGNED_BC7 = 34,
 }
-#[doc = " HIP texture resource view formats"]
+/// HIP texture resource view formats
 pub use self::HIPresourceViewFormat_enum as HIPresourceViewFormat;
-#[doc = " HIP resource descriptor"]
+/// HIP resource descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipResourceDesc {
-    #[doc = "< Resource type"]
+    /// Resource type
     pub resType: hipResourceType,
     pub res: hipResourceDesc__bindgen_ty_1,
 }
@@ -2988,51 +3157,51 @@ pub union hipResourceDesc__bindgen_ty_1 {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_1 {
-    #[doc = "< HIP array"]
+    /// HIP array
     pub array: hipArray_t,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_2 {
-    #[doc = "< HIP mipmapped array"]
+    /// HIP mipmapped array
     pub mipmap: hipMipmappedArray_t,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_3 {
-    #[doc = "< Device pointer"]
+    /// Device pointer
     pub devPtr: *mut ::core::ffi::c_void,
-    #[doc = "< Channel format description"]
+    /// Channel format description
     pub desc: hipChannelFormatDesc,
-    #[doc = "< Size in bytes"]
+    /// Size in bytes
     pub sizeInBytes: usize,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceDesc__bindgen_ty_1__bindgen_ty_4 {
-    #[doc = "< Device pointer"]
+    /// Device pointer
     pub devPtr: *mut ::core::ffi::c_void,
-    #[doc = "< Channel format description"]
+    /// Channel format description
     pub desc: hipChannelFormatDesc,
-    #[doc = "< Width of the array in elements"]
+    /// Width of the array in elements
     pub width: usize,
-    #[doc = "< Height of the array in elements"]
+    /// Height of the array in elements
     pub height: usize,
-    #[doc = "< Pitch between two rows in bytes"]
+    /// Pitch between two rows in bytes
     pub pitchInBytes: usize,
 }
-#[doc = " HIP resource view descriptor struct"]
+/// HIP resource view descriptor struct
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st {
-    #[doc = "< Resource type"]
+    /// Resource type
     pub resType: HIPresourcetype,
     pub res: HIP_RESOURCE_DESC_st__bindgen_ty_1,
-    #[doc = "< Flags (must be zero)"]
+    /// Flags (must be zero)
     pub flags: ::core::ffi::c_uint,
 }
 #[repr(C)]
@@ -3049,44 +3218,44 @@ pub union HIP_RESOURCE_DESC_st__bindgen_ty_1 {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_1 {
-    #[doc = "< HIP array"]
+    /// HIP array
     pub hArray: hipArray_t,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_2 {
-    #[doc = "< HIP mipmapped array"]
+    /// HIP mipmapped array
     pub hMipmappedArray: hipMipmappedArray_t,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_3 {
-    #[doc = "< Device pointer"]
+    /// Device pointer
     pub devPtr: hipDeviceptr_t,
-    #[doc = "< Array format"]
+    /// Array format
     pub format: hipArray_Format,
-    #[doc = "< Channels per array element"]
+    /// Channels per array element
     pub numChannels: ::core::ffi::c_uint,
-    #[doc = "< Size in bytes"]
+    /// Size in bytes
     pub sizeInBytes: usize,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_4 {
-    #[doc = "< Device pointer"]
+    /// Device pointer
     pub devPtr: hipDeviceptr_t,
-    #[doc = "< Array format"]
+    /// Array format
     pub format: hipArray_Format,
-    #[doc = "< Channels per array element"]
+    /// Channels per array element
     pub numChannels: ::core::ffi::c_uint,
-    #[doc = "< Width of the array in elements"]
+    /// Width of the array in elements
     pub width: usize,
-    #[doc = "< Height of the array in elements"]
+    /// Height of the array in elements
     pub height: usize,
-    #[doc = "< Pitch between two rows in bytes"]
+    /// Pitch between two rows in bytes
     pub pitchInBytes: usize,
 }
 #[repr(C)]
@@ -3095,87 +3264,88 @@ pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_4 {
 pub struct HIP_RESOURCE_DESC_st__bindgen_ty_1__bindgen_ty_5 {
     pub reserved: [::core::ffi::c_int; 32usize],
 }
-#[doc = " HIP resource view descriptor struct"]
+/// HIP resource view descriptor struct
 pub type HIP_RESOURCE_DESC = HIP_RESOURCE_DESC_st;
-#[doc = " HIP resource view descriptor"]
+/// HIP resource view descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipResourceViewDesc {
-    #[doc = "< Resource view format"]
+    /// Resource view format
     pub format: hipResourceViewFormat,
-    #[doc = "< Width of the resource view"]
+    /// Width of the resource view
     pub width: usize,
-    #[doc = "< Height of the resource view"]
+    /// Height of the resource view
     pub height: usize,
-    #[doc = "< Depth of the resource view"]
+    /// Depth of the resource view
     pub depth: usize,
-    #[doc = "< First defined mipmap level"]
+    /// First defined mipmap level
     pub firstMipmapLevel: ::core::ffi::c_uint,
-    #[doc = "< Last defined mipmap level"]
+    /// Last defined mipmap level
     pub lastMipmapLevel: ::core::ffi::c_uint,
-    #[doc = "< First layer index"]
+    /// First layer index
     pub firstLayer: ::core::ffi::c_uint,
-    #[doc = "< Last layer index"]
+    /// Last layer index
     pub lastLayer: ::core::ffi::c_uint,
 }
-#[doc = " Resource view descriptor"]
+/// Resource view descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_RESOURCE_VIEW_DESC_st {
-    #[doc = "< Resource view format"]
+    /// Resource view format
     pub format: HIPresourceViewFormat,
-    #[doc = "< Width of the resource view"]
+    /// Width of the resource view
     pub width: usize,
-    #[doc = "< Height of the resource view"]
+    /// Height of the resource view
     pub height: usize,
-    #[doc = "< Depth of the resource view"]
+    /// Depth of the resource view
     pub depth: usize,
-    #[doc = "< First defined mipmap level"]
+    /// First defined mipmap level
     pub firstMipmapLevel: ::core::ffi::c_uint,
-    #[doc = "< Last defined mipmap level"]
+    /// Last defined mipmap level
     pub lastMipmapLevel: ::core::ffi::c_uint,
-    #[doc = "< First layer index"]
+    /// First layer index
     pub firstLayer: ::core::ffi::c_uint,
-    #[doc = "< Last layer index"]
+    /// Last layer index
     pub lastLayer: ::core::ffi::c_uint,
     pub reserved: [::core::ffi::c_uint; 16usize],
 }
-#[doc = " Resource view descriptor"]
+/// Resource view descriptor
 pub type HIP_RESOURCE_VIEW_DESC = HIP_RESOURCE_VIEW_DESC_st;
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpyKind {
-    #[doc = "< Host-to-Host Copy"]
+    /// Host-to-Host Copy
     hipMemcpyHostToHost = 0,
-    #[doc = "< Host-to-Device Copy"]
+    /// Host-to-Device Copy
     hipMemcpyHostToDevice = 1,
-    #[doc = "< Device-to-Host Copy"]
+    /// Device-to-Host Copy
     hipMemcpyDeviceToHost = 2,
-    #[doc = "< Device-to-Device Copy"]
+    /// Device-to-Device Copy
     hipMemcpyDeviceToDevice = 3,
-    #[doc = "< Runtime will automatically determine\n< copy-kind based on virtual addresses."]
+    /// Runtime will automatically determine
+    ///< copy-kind based on virtual addresses.
     hipMemcpyDefault = 4,
-    #[doc = "< Device-to-Device Copy without using compute units"]
+    /// Device-to-Device Copy without using compute units
     hipMemcpyDeviceToDeviceNoCU = 1024,
 }
-#[doc = " HIP pithed pointer"]
+/// HIP pithed pointer
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipPitchedPtr {
-    #[doc = "< Pointer to the allocated memory"]
+    /// Pointer to the allocated memory
     pub ptr: *mut ::core::ffi::c_void,
-    #[doc = "< Pitch in bytes"]
+    /// Pitch in bytes
     pub pitch: usize,
-    #[doc = "< Logical size of the first dimension of allocation in elements"]
+    /// Logical size of the first dimension of allocation in elements
     pub xsize: usize,
-    #[doc = "< Logical size of the second dimension of allocation in elements"]
+    /// Logical size of the second dimension of allocation in elements
     pub ysize: usize,
 }
-#[doc = " HIP extent"]
+/// HIP extent
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -3184,90 +3354,90 @@ pub struct hipExtent {
     pub height: usize,
     pub depth: usize,
 }
-#[doc = "  HIP position"]
+///  HIP position
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipPos {
-    #[doc = "< X coordinate"]
+    /// X coordinate
     pub x: usize,
-    #[doc = "< Y coordinate"]
+    /// Y coordinate
     pub y: usize,
-    #[doc = "< Z coordinate"]
+    /// Z coordinate
     pub z: usize,
 }
-#[doc = " HIP 3D memory copy parameters"]
+/// HIP 3D memory copy parameters
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DParms {
-    #[doc = "< Source array"]
+    /// Source array
     pub srcArray: hipArray_t,
-    #[doc = "< Source position"]
+    /// Source position
     pub srcPos: hipPos,
-    #[doc = "< Source pointer"]
+    /// Source pointer
     pub srcPtr: hipPitchedPtr,
-    #[doc = "< Destination array"]
+    /// Destination array
     pub dstArray: hipArray_t,
-    #[doc = "< Destination position"]
+    /// Destination position
     pub dstPos: hipPos,
-    #[doc = "< Destination pointer"]
+    /// Destination pointer
     pub dstPtr: hipPitchedPtr,
-    #[doc = "< Extent of 3D memory copy"]
+    /// Extent of 3D memory copy
     pub extent: hipExtent,
-    #[doc = "< Kind of 3D memory copy"]
+    /// Kind of 3D memory copy
     pub kind: hipMemcpyKind,
 }
-#[doc = " HIP 3D memory copy"]
+/// HIP 3D memory copy
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_MEMCPY3D {
-    #[doc = "< Source X in bytes"]
+    /// Source X in bytes
     pub srcXInBytes: usize,
-    #[doc = "< Source Y"]
+    /// Source Y
     pub srcY: usize,
-    #[doc = "< Source Z"]
+    /// Source Z
     pub srcZ: usize,
-    #[doc = "< Source LOD"]
+    /// Source LOD
     pub srcLOD: usize,
-    #[doc = "< Source memory type"]
+    /// Source memory type
     pub srcMemoryType: hipMemoryType,
-    #[doc = "< Source host pointer"]
+    /// Source host pointer
     pub srcHost: *const ::core::ffi::c_void,
-    #[doc = "< Source device"]
+    /// Source device
     pub srcDevice: hipDeviceptr_t,
-    #[doc = "< Source array"]
+    /// Source array
     pub srcArray: hipArray_t,
-    #[doc = "< Source pitch"]
+    /// Source pitch
     pub srcPitch: usize,
-    #[doc = "< Source height"]
+    /// Source height
     pub srcHeight: usize,
-    #[doc = "< Destination X in bytes"]
+    /// Destination X in bytes
     pub dstXInBytes: usize,
-    #[doc = "< Destination Y"]
+    /// Destination Y
     pub dstY: usize,
-    #[doc = "< Destination Z"]
+    /// Destination Z
     pub dstZ: usize,
-    #[doc = "< Destination LOD"]
+    /// Destination LOD
     pub dstLOD: usize,
-    #[doc = "< Destination memory type"]
+    /// Destination memory type
     pub dstMemoryType: hipMemoryType,
-    #[doc = "< Destination host pointer"]
+    /// Destination host pointer
     pub dstHost: *mut ::core::ffi::c_void,
-    #[doc = "< Destination device"]
+    /// Destination device
     pub dstDevice: hipDeviceptr_t,
-    #[doc = "< Destination array"]
+    /// Destination array
     pub dstArray: hipArray_t,
-    #[doc = "< Destination pitch"]
+    /// Destination pitch
     pub dstPitch: usize,
-    #[doc = "< Destination height"]
+    /// Destination height
     pub dstHeight: usize,
-    #[doc = "< Width in bytes of 3D memory copy"]
+    /// Width in bytes of 3D memory copy
     pub WidthInBytes: usize,
-    #[doc = "< Height in bytes of 3D memory copy"]
+    /// Height in bytes of 3D memory copy
     pub Height: usize,
-    #[doc = "< Depth in bytes of 3D memory copy"]
+    /// Depth in bytes of 3D memory copy
     pub Depth: usize,
 }
 impl hipMemLocationType {
@@ -3275,176 +3445,188 @@ impl hipMemLocationType {
         hipMemLocationType::hipMemLocationTypeInvalid;
 }
 #[repr(i32)]
-#[doc = " Specifies the type of location"]
+/// Specifies the type of location
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemLocationType {
     hipMemLocationTypeInvalid = 0,
-    #[doc = "< Device location, thus it's HIP device ID"]
+    /// Device location, thus it's HIP device ID
     hipMemLocationTypeDevice = 1,
-    #[doc = "< Host location, id is ignored"]
+    /// Host location, id is ignored
     hipMemLocationTypeHost = 2,
-    #[doc = "< Host NUMA node location, id is host NUMA node id"]
+    /// Host NUMA node location, id is host NUMA node id
     hipMemLocationTypeHostNuma = 3,
     hipMemLocationTypeHostNumaCurrent = 4,
 }
-#[doc = " Specifies a memory location.\n\n To specify a gpu, set type = @p hipMemLocationTypeDevice and set id = the gpu's device ID"]
+/// Specifies a memory location.
+/// To specify a gpu, set type = @p hipMemLocationTypeDevice and set id = the gpu's device ID
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemLocation {
-    #[doc = "< Specifies the location type, which describes the meaning of id"]
+    /// Specifies the location type, which describes the meaning of id
     pub type_: hipMemLocationType,
-    #[doc = "< Identifier for the provided location type @p hipMemLocationType"]
+    /// Identifier for the provided location type @p hipMemLocationType
     pub id: ::core::ffi::c_int,
 }
 #[repr(i32)]
-#[doc = " Flags to specify for copies within a batch. Used with hipMemcpyBatchAsync"]
+/// Flags to specify for copies within a batch. Used with hipMemcpyBatchAsync
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpyFlags {
-    #[doc = "< Default flag"]
+    /// Default flag
     hipMemcpyFlagDefault = 0,
-    #[doc = "< Tries to overlap copy with compute work."]
+    /// Tries to overlap copy with compute work.
     hipMemcpyFlagPreferOverlapWithCompute = 1,
-    #[doc = "< Prefer copy engine over compute engine."]
+    /// Prefer copy engine over compute engine.
     hipMemcpyFlagExtPreferCE = 256,
-    #[doc = "< Swap contents of src and dst."]
+    /// Swap contents of src and dst.
     hipMemcpyFlagExtOpSwap = 512,
-    #[doc = "< The src pointer holds the address of the real\n< source pointer, read when the copy runs rather\n< than when it is submitted."]
+    /// The src pointer holds the address of the real
+    ///< source pointer, read when the copy runs rather
+    ///< than when it is submitted.
     hipMemcpyFlagExtOpIndirectSrc = 1024,
-    #[doc = "< Same as IndirectSrc, but for the dst pointer."]
+    /// Same as IndirectSrc, but for the dst pointer.
     hipMemcpyFlagExtOpIndirectDst = 2048,
-    #[doc = "< Prefer compute engine over copy engine.\n< Linear copies only.\n< hipExtMemcpyBatchAsync only."]
+    /// Prefer compute engine over copy engine.
+    ///< Linear copies only.
+    ///< hipExtMemcpyBatchAsync only.
     hipMemcpyFlagExtPreferComputeEngine = 4096,
-    #[doc = "< Prefer issuing each copy individually.\n< hipExtMemcpyBatchAsync only."]
+    /// Prefer issuing each copy individually.
+    ///< hipExtMemcpyBatchAsync only.
     hipMemcpyFlagExtPreferLinear = 8192,
-    #[doc = "< Prefer one broadcast for copies with the same\n< src and size. Linear copies only.\n< hipExtMemcpyBatchAsync only."]
+    /// Prefer one broadcast for copies with the same
+    ///< src and size. Linear copies only.
+    ///< hipExtMemcpyBatchAsync only.
     hipMemcpyFlagExtPreferBroadcast = 16384,
 }
 #[repr(i32)]
-#[doc = " Comparison function for a per-entry wait in hipExtMemcpyBatchAsync.\n Numbered to match the underlying HSA wait function."]
+/// Comparison function for a per-entry wait in hipExtMemcpyBatchAsync.
+/// Numbered to match the underlying HSA wait function.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtMemcpyWaitOp {
-    #[doc = "< No wait; addr must be NULL"]
+    /// No wait; addr must be NULL
     hipExtMemcpyWaitNone = 0,
-    #[doc = "< *addr <  value"]
+    /// *addr <  value
     hipExtMemcpyWaitLt = 1,
-    #[doc = "< *addr <= value"]
+    /// *addr <= value
     hipExtMemcpyWaitLe = 2,
-    #[doc = "< *addr == value"]
+    /// *addr == value
     hipExtMemcpyWaitEq = 3,
-    #[doc = "< *addr != value"]
+    /// *addr != value
     hipExtMemcpyWaitNe = 4,
-    #[doc = "< *addr >= value"]
+    /// *addr >= value
     hipExtMemcpyWaitGe = 5,
-    #[doc = "< *addr >  value"]
+    /// *addr >  value
     hipExtMemcpyWaitGt = 6,
 }
-#[doc = " Per-entry wait condition for hipExtMemcpyBatchAsync. Reserved for future use;\n layout may change before support is enabled."]
+/// Per-entry wait condition for hipExtMemcpyBatchAsync. Reserved for future use;
+/// layout may change before support is enabled.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtMemcpyWait {
-    #[doc = "< GPU address to poll; NULL iff compareOp is None"]
+    /// GPU address to poll; NULL iff compareOp is None
     pub addr: *mut ::core::ffi::c_void,
-    #[doc = "< Reference value for comparison"]
+    /// Reference value for comparison
     pub value: u64,
-    #[doc = "< AND mask applied before comparison (0 = full 64-bit word)"]
+    /// AND mask applied before comparison (0 = full 64-bit word)
     pub mask: u64,
-    #[doc = "< Comparison function; see hipExtMemcpyWaitOp"]
+    /// Comparison function; see hipExtMemcpyWaitOp
     pub compareOp: u32,
-    #[doc = "< Reserved; must be 0"]
+    /// Reserved; must be 0
     pub reserved0: u32,
-    #[doc = "< Reserved; must be 0 (future use)"]
+    /// Reserved; must be 0 (future use)
     pub reserved: [u64; 4usize],
 }
 #[repr(i32)]
-#[doc = " Atomic operation for a per-entry signal in hipExtMemcpyBatchAsync."]
+/// Atomic operation for a per-entry signal in hipExtMemcpyBatchAsync.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtMemcpySignalOp {
-    #[doc = "< No signal; addr must be NULL"]
+    /// No signal; addr must be NULL
     hipExtMemcpySignalNone = 0,
-    #[doc = "< *addr  = data"]
+    /// *addr  = data
     hipExtMemcpySignalWrite = 1,
-    #[doc = "< *addr += data"]
+    /// *addr += data
     hipExtMemcpySignalAdd = 2,
-    #[doc = "< *addr -= data"]
+    /// *addr -= data
     hipExtMemcpySignalSub = 3,
 }
-#[doc = " Per-entry signal-after-copy for hipExtMemcpyBatchAsync. Reserved for future use;\n layout may change before support is enabled."]
+/// Per-entry signal-after-copy for hipExtMemcpyBatchAsync. Reserved for future use;
+/// layout may change before support is enabled.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtMemcpySignal {
-    #[doc = "< GPU address to signal; NULL iff signalOp is None"]
+    /// GPU address to signal; NULL iff signalOp is None
     pub addr: *mut ::core::ffi::c_void,
-    #[doc = "< Data value for the atomic operation"]
+    /// Data value for the atomic operation
     pub data: u64,
-    #[doc = "< Atomic operation; see hipExtMemcpySignalOp"]
+    /// Atomic operation; see hipExtMemcpySignalOp
     pub signalOp: u32,
-    #[doc = "< Reserved; must be 0"]
+    /// Reserved; must be 0
     pub reserved0: u32,
-    #[doc = "< Reserved; must be 0 (future use)"]
+    /// Reserved; must be 0 (future use)
     pub reserved: [u64; 5usize],
 }
 #[repr(i32)]
-#[doc = " Flags to specify order in which source pointer is accessed by Batch memcpy"]
+/// Flags to specify order in which source pointer is accessed by Batch memcpy
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpySrcAccessOrder {
-    #[doc = "< Default Invalid."]
+    /// Default Invalid.
     hipMemcpySrcAccessOrderInvalid = 0,
-    #[doc = "< Access to source pointer must be in stream order."]
+    /// Access to source pointer must be in stream order.
     hipMemcpySrcAccessOrderStream = 1,
     hipMemcpySrcAccessOrderDuringApiCall = 2,
     hipMemcpySrcAccessOrderAny = 3,
     hipMemcpySrcAccessOrderMax = 2147483647,
 }
-#[doc = " Attributes for copies within a batch."]
+/// Attributes for copies within a batch.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpyAttributes {
-    #[doc = "< Source access ordering to be observed for copies with this attribute."]
+    /// Source access ordering to be observed for copies with this attribute.
     pub srcAccessOrder: hipMemcpySrcAccessOrder,
-    #[doc = "< Location hint for src operand."]
+    /// Location hint for src operand.
     pub srcLocHint: hipMemLocation,
-    #[doc = "< Location hint for destination operand."]
+    /// Location hint for destination operand.
     pub dstLocHint: hipMemLocation,
-    #[doc = "< Additional Flags for copies. See hipMemcpyFlags."]
+    /// Additional Flags for copies. See hipMemcpyFlags.
     pub flags: ::core::ffi::c_uint,
 }
-#[doc = " Attributes for copies within a batch submitted through hipExtMemcpyBatchAsync.\n hipMemcpyAttributes plus a reserved tail; do not cast between the two."]
+/// Attributes for copies within a batch submitted through hipExtMemcpyBatchAsync.
+/// hipMemcpyAttributes plus a reserved tail; do not cast between the two.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtMemcpyAttributes {
-    #[doc = "< Source access ordering; see hipMemcpySrcAccessOrder."]
+    /// Source access ordering; see hipMemcpySrcAccessOrder.
     pub srcAccessOrder: hipMemcpySrcAccessOrder,
-    #[doc = "< Location hint for src operand."]
+    /// Location hint for src operand.
     pub srcLocHint: hipMemLocation,
-    #[doc = "< Location hint for destination operand."]
+    /// Location hint for destination operand.
     pub dstLocHint: hipMemLocation,
-    #[doc = "< Op selection and hints; see hipMemcpyFlags."]
+    /// Op selection and hints; see hipMemcpyFlags.
     pub flags: ::core::ffi::c_uint,
-    #[doc = "< Reserved; must be 0 (future use)."]
+    /// Reserved; must be 0 (future use).
     pub reserved: [u32; 8usize],
 }
 #[repr(i32)]
-#[doc = " Operand types for individual copies within a batch"]
+/// Operand types for individual copies within a batch
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemcpy3DOperandType {
-    #[doc = "< Mempcy operand is a valid pointer."]
+    /// Mempcy operand is a valid pointer.
     hipMemcpyOperandTypePointer = 1,
-    #[doc = "< Memcpy operand is a valid hipArray."]
+    /// Memcpy operand is a valid hipArray.
     hipMemcpyOperandTypeArray = 2,
     hipMemcpyOperandTypeMax = 2147483647,
 }
-#[doc = " Struct representing offset into a hipArray_t in elements."]
+/// Struct representing offset into a hipArray_t in elements.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -3453,7 +3635,7 @@ pub struct hipOffset3D {
     pub y: usize,
     pub z: usize,
 }
-#[doc = "  Struct representing an operand for copy with hipMemcpy3DBatchAsync."]
+///  Struct representing an operand for copy with hipMemcpy3DBatchAsync.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
@@ -3473,23 +3655,23 @@ pub union hipMemcpy3DOperand__bindgen_ty_1 {
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_1 {
     pub ptr: *mut ::core::ffi::c_void,
-    #[doc = "< Length of each row in elements."]
+    /// Length of each row in elements.
     pub rowLength: usize,
-    #[doc = "< Height of each layer in elements."]
+    /// Height of each layer in elements.
     pub layerHeight: usize,
-    #[doc = "< Location Hint for the operand."]
+    /// Location Hint for the operand.
     pub locHint: hipMemLocation,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DOperand__bindgen_ty_1__bindgen_ty_2 {
-    #[doc = "< Array struct for hipMemcpyOperandTypeArray."]
+    /// Array struct for hipMemcpyOperandTypeArray.
     pub array: hipArray_t,
-    #[doc = "< Offset into array in elements."]
+    /// Offset into array in elements.
     pub offset: hipOffset3D,
 }
-#[doc = " HIP 3D Batch Op"]
+/// HIP 3D Batch Op
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
@@ -3504,60 +3686,67 @@ pub struct hipMemcpy3DBatchOp {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpy3DPeerParms {
-    #[doc = "< Source memory address"]
+    /// Source memory address
     pub srcArray: hipArray_t,
-    #[doc = "< Source position offset"]
+    /// Source position offset
     pub srcPos: hipPos,
-    #[doc = "< Pitched source memory address"]
+    /// Pitched source memory address
     pub srcPtr: hipPitchedPtr,
-    #[doc = "< Source device"]
+    /// Source device
     pub srcDevice: ::core::ffi::c_int,
-    #[doc = "< Destination memory address"]
+    /// Destination memory address
     pub dstArray: hipArray_t,
-    #[doc = "< Destination position offset"]
+    /// Destination position offset
     pub dstPos: hipPos,
-    #[doc = "< Pitched destination memory address"]
+    /// Pitched destination memory address
     pub dstPtr: hipPitchedPtr,
-    #[doc = "< Destination device"]
+    /// Destination device
     pub dstDevice: ::core::ffi::c_int,
-    #[doc = "< Requested memory copy size"]
+    /// Requested memory copy size
     pub extent: hipExtent,
 }
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFunction_attribute {
-    #[doc = "< The maximum number of threads per block. Depends\n< on function and device."]
+    /// The maximum number of threads per block. Depends
+    ///< on function and device.
     HIP_FUNC_ATTRIBUTE_MAX_THREADS_PER_BLOCK = 0,
-    #[doc = "< The statically allocated shared memory size in bytes\n< per block required by the function."]
+    /// The statically allocated shared memory size in bytes
+    ///< per block required by the function.
     HIP_FUNC_ATTRIBUTE_SHARED_SIZE_BYTES = 1,
-    #[doc = "< The user-allocated constant memory by the function in\n< bytes."]
+    /// The user-allocated constant memory by the function in
+    ///< bytes.
     HIP_FUNC_ATTRIBUTE_CONST_SIZE_BYTES = 2,
-    #[doc = "< The local memory usage of each thread by this function\n< in bytes."]
+    /// The local memory usage of each thread by this function
+    ///< in bytes.
     HIP_FUNC_ATTRIBUTE_LOCAL_SIZE_BYTES = 3,
-    #[doc = "< The number of registers used by each thread of this function."]
+    /// The number of registers used by each thread of this function.
     HIP_FUNC_ATTRIBUTE_NUM_REGS = 4,
-    #[doc = "< PTX version"]
+    /// PTX version
     HIP_FUNC_ATTRIBUTE_PTX_VERSION = 5,
-    #[doc = "< Binary version"]
+    /// Binary version
     HIP_FUNC_ATTRIBUTE_BINARY_VERSION = 6,
-    #[doc = "< Cache mode"]
+    /// Cache mode
     HIP_FUNC_ATTRIBUTE_CACHE_MODE_CA = 7,
-    #[doc = "< The maximum dynamic shared memory per\n< block for this function in bytes."]
+    /// The maximum dynamic shared memory per
+    ///< block for this function in bytes.
     HIP_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES = 8,
-    #[doc = "< The shared memory carveout preference\n< in percent of the maximum shared\n< memory."]
+    /// The shared memory carveout preference
+    ///< in percent of the maximum shared
+    ///< memory.
     HIP_FUNC_ATTRIBUTE_PREFERRED_SHARED_MEMORY_CARVEOUT = 9,
-    #[doc = "< the kernel must launch with a valid cluster size specified."]
+    /// the kernel must launch with a valid cluster size specified.
     HIP_FUNC_ATTRIBUTE_CLUSTER_DIM_MUST_BE_SET = 10,
-    #[doc = "< The required cluster width in blocks"]
+    /// The required cluster width in blocks
     HIP_FUNC_ATTRIBUTE_REQUIRED_CLUSTER_WIDTH = 11,
-    #[doc = "< The required cluster height in blocks"]
+    /// The required cluster height in blocks
     HIP_FUNC_ATTRIBUTE_REQUIRED_CLUSTER_HEIGHT = 12,
-    #[doc = "< The required cluster depth in blocks"]
+    /// The required cluster depth in blocks
     HIP_FUNC_ATTRIBUTE_REQUIRED_CLUSTER_DEPTH = 13,
-    #[doc = "< Is the function allowed to launch with non-portable cluster size."]
+    /// Is the function allowed to launch with non-portable cluster size.
     HIP_FUNC_ATTRIBUTE_NON_PORTABLE_CLUSTER_SIZE_ALLOWED = 14,
-    #[doc = "< The block scheduling policy of a function."]
+    /// The block scheduling policy of a function.
     HIP_FUNC_ATTRIBUTE_CLUSTER_SCHEDULING_POLICY_PREFERENCE = 15,
     HIP_FUNC_ATTRIBUTE_MAX = 16,
 }
@@ -3565,42 +3754,60 @@ pub enum hipFunction_attribute {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipPointer_attribute {
-    #[doc = "< The context on which a pointer was allocated\n< @warning This attribute is not supported in HIP"]
+    /// The context on which a pointer was allocated
+    ///< @warning This attribute is not supported in HIP
     HIP_POINTER_ATTRIBUTE_CONTEXT = 1,
-    #[doc = "< memory type describing the location of a pointer"]
+    /// memory type describing the location of a pointer
     HIP_POINTER_ATTRIBUTE_MEMORY_TYPE = 2,
-    #[doc = "< address at which the pointer is allocated on the\n< device"]
+    /// address at which the pointer is allocated on the
+    ///< device
     HIP_POINTER_ATTRIBUTE_DEVICE_POINTER = 3,
-    #[doc = "< address at which the pointer is allocated on the host"]
+    /// address at which the pointer is allocated on the host
     HIP_POINTER_ATTRIBUTE_HOST_POINTER = 4,
-    #[doc = "< A pair of tokens for use with Linux kernel interface\n< @warning This attribute is not supported in HIP"]
+    /// A pair of tokens for use with Linux kernel interface
+    ///< @warning This attribute is not supported in HIP
     HIP_POINTER_ATTRIBUTE_P2P_TOKENS = 5,
-    #[doc = "< Synchronize every synchronous memory operation\n< initiated on this region"]
+    /// Synchronize every synchronous memory operation
+    ///< initiated on this region
     HIP_POINTER_ATTRIBUTE_SYNC_MEMOPS = 6,
-    #[doc = "< Unique ID for an allocated memory region"]
+    /// Unique ID for an allocated memory region
     HIP_POINTER_ATTRIBUTE_BUFFER_ID = 7,
-    #[doc = "< Indicates if the pointer points to managed memory"]
+    /// Indicates if the pointer points to managed memory
     HIP_POINTER_ATTRIBUTE_IS_MANAGED = 8,
-    #[doc = "< device ordinal of a device on which a pointer\n< was allocated or registered"]
+    /// device ordinal of a device on which a pointer
+    ///< was allocated or registered
     HIP_POINTER_ATTRIBUTE_DEVICE_ORDINAL = 9,
-    #[doc = "< if this pointer maps to an allocation\n< that is suitable for hipIpcGetMemHandle\n< @warning This attribute is not supported in\n< HIP"]
+    /// if this pointer maps to an allocation
+    ///< that is suitable for hipIpcGetMemHandle
+    ///< @warning This attribute is not supported in
+    ///< HIP
     HIP_POINTER_ATTRIBUTE_IS_LEGACY_HIP_IPC_CAPABLE = 10,
-    #[doc = "< Starting address for this requested pointer"]
+    /// Starting address for this requested pointer
     HIP_POINTER_ATTRIBUTE_RANGE_START_ADDR = 11,
-    #[doc = "< Size of the address range for this requested pointer"]
+    /// Size of the address range for this requested pointer
     HIP_POINTER_ATTRIBUTE_RANGE_SIZE = 12,
-    #[doc = "< tells if this pointer is in a valid address range\n< that is mapped to a backing allocation"]
+    /// tells if this pointer is in a valid address range
+    ///< that is mapped to a backing allocation
     HIP_POINTER_ATTRIBUTE_MAPPED = 13,
-    #[doc = "< Bitmask of allowed hipmemAllocationHandleType\n< for this allocation @warning This attribute is\n< not supported in HIP"]
+    /// Bitmask of allowed hipmemAllocationHandleType
+    ///< for this allocation @warning This attribute is
+    ///< not supported in HIP
     HIP_POINTER_ATTRIBUTE_ALLOWED_HANDLE_TYPES = 14,
-    #[doc = "< returns if the memory referenced by\n< this pointer can be used with the\n< GPUDirect RDMA API\n< @warning This attribute is not supported\n< in HIP"]
+    /// returns if the memory referenced by
+    ///< this pointer can be used with the
+    ///< GPUDirect RDMA API
+    ///< @warning This attribute is not supported
+    ///< in HIP
     HIP_POINTER_ATTRIBUTE_IS_GPU_DIRECT_RDMA_CAPABLE = 15,
-    #[doc = "< Returns the access flags the device associated with\n< for the corresponding memory referenced by the ptr"]
+    /// Returns the access flags the device associated with
+    ///< for the corresponding memory referenced by the ptr
     HIP_POINTER_ATTRIBUTE_ACCESS_FLAGS = 16,
-    #[doc = "< Returns the mempool handle for the allocation if\n< it was allocated from a mempool\n< @warning This attribute is not supported in HIP"]
+    /// Returns the mempool handle for the allocation if
+    ///< it was allocated from a mempool
+    ///< @warning This attribute is not supported in HIP
     HIP_POINTER_ATTRIBUTE_MEMPOOL_HANDLE = 17,
 }
-#[doc = " An opaque value that represents a hip texture object"]
+/// An opaque value that represents a hip texture object
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
@@ -3609,7 +3816,7 @@ pub struct __hip_texture {
 }
 pub type hipTextureObject_t = *mut __hip_texture;
 #[repr(i32)]
-#[doc = " hip texture address modes"]
+/// hip texture address modes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipTextureAddressMode {
@@ -3619,7 +3826,7 @@ pub enum hipTextureAddressMode {
     hipAddressModeBorder = 3,
 }
 #[repr(i32)]
-#[doc = " hip texture filter modes"]
+/// hip texture filter modes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipTextureFilterMode {
@@ -3627,14 +3834,14 @@ pub enum hipTextureFilterMode {
     hipFilterModeLinear = 1,
 }
 #[repr(i32)]
-#[doc = " hip texture read modes"]
+/// hip texture read modes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipTextureReadMode {
     hipReadModeElementType = 0,
     hipReadModeNormalizedFloat = 1,
 }
-#[doc = " hip texture reference"]
+/// hip texture reference
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -3654,7 +3861,7 @@ pub struct textureReference {
     pub numChannels: ::core::ffi::c_int,
     pub format: hipArray_Format,
 }
-#[doc = " hip texture descriptor"]
+/// hip texture descriptor
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -3672,7 +3879,7 @@ pub struct hipTextureDesc {
     pub maxMipmapLevelClamp: f32,
 }
 pub type hipTexRef = *mut textureReference;
-#[doc = " An opaque value that represents a hip surface object"]
+/// An opaque value that represents a hip surface object
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug)]
@@ -3680,7 +3887,7 @@ pub struct __hip_surface {
     _unused: [u8; 0],
 }
 pub type hipSurfaceObject_t = *mut __hip_surface;
-#[doc = " hip surface reference"]
+/// hip surface reference
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -3688,7 +3895,7 @@ pub struct surfaceReference {
     pub surfaceObject: hipSurfaceObject_t,
 }
 #[repr(i32)]
-#[doc = " hip surface boundary modes"]
+/// hip surface boundary modes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipSurfaceBoundaryMode {
@@ -3887,7 +4094,7 @@ pub type hipKernel_t = *mut ihipKernel_t;
 pub struct ihipMemPoolHandle_t {
     _unused: [u8; 0],
 }
-#[doc = " HIP memory pool"]
+/// HIP memory pool
 pub type hipMemPool_t = *mut ihipMemPoolHandle_t;
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -3912,29 +4119,42 @@ pub struct ihipEvent_t {
 }
 pub type hipEvent_t = *mut ihipEvent_t;
 #[repr(i32)]
-#[doc = " hipLimit\n\n @note In HIP device limit-related APIs, any input limit value other than those defined in the\n enum is treated as \"UnsupportedLimit\" by default."]
+/// hipLimit
+/// In HIP device limit-related APIs, any input limit value other than those defined in the
+/// enum is treated as \"UnsupportedLimit\" by default.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLimit_t {
-    #[doc = "< Limit of stack size in bytes on the current device, per\n< thread. The size is in units of 256 dwords, up to the\n< limit of (128K - 16)"]
+    /// Limit of stack size in bytes on the current device, per
+    ///< thread. The size is in units of 256 dwords, up to the
+    ///< limit of (128K - 16)
     hipLimitStackSize = 0,
-    #[doc = "< Size limit in bytes of fifo used by printf call on the\n< device. Currently not supported"]
+    /// Size limit in bytes of fifo used by printf call on the
+    ///< device. Currently not supported
     hipLimitPrintfFifoSize = 1,
-    #[doc = "< Limit of heap size in bytes on the current device, should\n< be less than the global memory size on the device"]
+    /// Limit of heap size in bytes on the current device, should
+    ///< be less than the global memory size on the device
     hipLimitMallocHeapSize = 2,
-    #[doc = "< Requested persisting L2 cache size in bytes for the\n< current device. This size can be set to a value up to\n< persistingL2CacheMaxSize reported in hipDeviceProp_t."]
+    /// Requested persisting L2 cache size in bytes for the
+    ///< current device. This size can be set to a value up to
+    ///< persistingL2CacheMaxSize reported in hipDeviceProp_t.
     hipLimitPersistingL2CacheSize = 3,
-    #[doc = "< Minimum allowed value in bytes for scratch limit on this\n< device. Valid only on Rocm device. This is read only."]
+    /// Minimum allowed value in bytes for scratch limit on this
+    ///< device. Valid only on Rocm device. This is read only.
     hipExtLimitScratchMin = 4096,
-    #[doc = "< Maximum allowed value in bytes for scratch limit on this\n< device. Valid only on Rocm device. This is read only."]
+    /// Maximum allowed value in bytes for scratch limit on this
+    ///< device. Valid only on Rocm device. This is read only.
     hipExtLimitScratchMax = 4097,
-    #[doc = "< Current scratch limit threshold in bytes on this\n< device. Must be between hipExtLimitScratchMin and\n< hipExtLimitScratchMaxValid values. Valid only on Rocm\n< device. This can be modified."]
+    /// Current scratch limit threshold in bytes on this
+    ///< device. Must be between hipExtLimitScratchMin and
+    ///< hipExtLimitScratchMaxValid values. Valid only on Rocm
+    ///< device. This can be modified.
     hipExtLimitScratchCurrent = 4098,
-    #[doc = "< Supported limit range"]
+    /// Supported limit range
     hipLimitRange = 4099,
 }
 #[repr(i32)]
-#[doc = " Operations for hipStreamBatchMemOp"]
+/// Operations for hipStreamBatchMemOp
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamBatchMemOpType {
@@ -3942,12 +4162,38 @@ pub enum hipStreamBatchMemOpType {
     hipStreamMemOpWriteValue32 = 2,
     hipStreamMemOpWaitValue64 = 4,
     hipStreamMemOpWriteValue64 = 5,
-    #[doc = "< Currently not supported"]
+    /// Currently not supported
     hipStreamMemOpBarrier = 6,
-    #[doc = "< Currently not supported"]
+    /// Currently not supported
     hipStreamMemOpFlushRemoteWrites = 3,
 }
-#[doc = " @brief Union representing batch memory operation parameters for HIP streams.\n\n hipStreamBatchMemOpParams is used to specify the parameters for batch memory\n operations in a HIP stream. This union supports various operations including\n waiting for a specific value, writing a value, and different flags for wait conditions.\n\n @details\n The union includes fields for different types of operations defined in the\n enum hipStreamBatchMemOpType:\n - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.\n - hipStreamMemOpWriteValue32: Write a 32-bit value.\n - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.\n - hipStreamMemOpWriteValue64: Write a 64-bit value.\n\n Each operation type includes an address, the value to wait for or write, flags, and an\n optional alias that is not relevant on AMD GPUs. Flags can be used to specify different\n wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.\n\n Example usage:\n @code\n hipStreamBatchMemOpParams myArray[2];\n myArray[0].operation = hipStreamMemOpWaitValue32;\n myArray[0].waitValue.address = waitAddr1;\n myArray[0].waitValue.value = 0x1;\n myArray[0].waitValue.flags = CU_STREAM_WAIT_VALUE_EQ;\n\n myArray[1].operation = hipStreamMemOpWriteValue32;\n myArray[1].writeValue.address = writeAddr1;\n myArray[1].writeValue.value = 0x1;\n myArray[1].writeValue.flags = 0x0;\n\n result = hipStreamBatchMemOp(stream, 2, myArray, 0);\n @endcode"]
+/// @brief Union representing batch memory operation parameters for HIP streams.
+/// hipStreamBatchMemOpParams is used to specify the parameters for batch memory
+/// operations in a HIP stream. This union supports various operations including
+/// waiting for a specific value, writing a value, and different flags for wait conditions.
+/// @details
+/// The union includes fields for different types of operations defined in the
+/// enum hipStreamBatchMemOpType:
+/// - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.
+/// - hipStreamMemOpWriteValue32: Write a 32-bit value.
+/// - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.
+/// - hipStreamMemOpWriteValue64: Write a 64-bit value.
+/// Each operation type includes an address, the value to wait for or write, flags, and an
+/// optional alias that is not relevant on AMD GPUs. Flags can be used to specify different
+/// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
+/// Example usage:
+/// @code
+/// hipStreamBatchMemOpParams myArray[2];
+/// myArray[0].operation = hipStreamMemOpWaitValue32;
+/// myArray[0].waitValue.address = waitAddr1;
+/// myArray[0].waitValue.value = 0x1;
+/// myArray[0].waitValue.flags = CU_STREAM_WAIT_VALUE_EQ;
+/// myArray[1].operation = hipStreamMemOpWriteValue32;
+/// myArray[1].writeValue.address = writeAddr1;
+/// myArray[1].writeValue.value = 0x1;
+/// myArray[1].writeValue.flags = 0x0;
+/// result = hipStreamBatchMemOp(stream, 2, myArray, 0);
+/// @endcode
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
@@ -3955,9 +4201,9 @@ pub union hipStreamBatchMemOpParams_union {
     pub operation: hipStreamBatchMemOpType,
     pub waitValue: hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t,
     pub writeValue: hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t,
-    #[doc = "< Currently not supported on AMD"]
+    /// Currently not supported on AMD
     pub flushRemoteWrites: hipStreamBatchMemOpParams_union_hipStreamMemOpFlushRemoteWritesParams_t,
-    #[doc = "< Currently not supported on AMD"]
+    /// Currently not supported on AMD
     pub memoryBarrier: hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t,
     pub pad: [u64; 6usize],
 }
@@ -3970,7 +4216,7 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t {
     pub __bindgen_anon_1:
         hipStreamBatchMemOpParams_union_hipStreamMemOpWaitValueParams_t__bindgen_ty_1,
     pub flags: ::core::ffi::c_uint,
-    #[doc = "< Not valid for AMD backend. Initial value is unimportant"]
+    /// Not valid for AMD backend. Initial value is unimportant
     pub alias: hipDeviceptr_t,
 }
 #[repr(C)]
@@ -3989,7 +4235,7 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t {
     pub __bindgen_anon_1:
         hipStreamBatchMemOpParams_union_hipStreamMemOpWriteValueParams_t__bindgen_ty_1,
     pub flags: ::core::ffi::c_uint,
-    #[doc = "< Not valid for AMD backend. Initial value is unimportant"]
+    /// Not valid for AMD backend. Initial value is unimportant
     pub alias: hipDeviceptr_t,
 }
 #[repr(C)]
@@ -4013,9 +4259,54 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
     pub operation: hipStreamBatchMemOpType,
     pub flags: ::core::ffi::c_uint,
 }
-#[doc = " @brief Union representing batch memory operation parameters for HIP streams.\n\n hipStreamBatchMemOpParams is used to specify the parameters for batch memory\n operations in a HIP stream. This union supports various operations including\n waiting for a specific value, writing a value, and different flags for wait conditions.\n\n @details\n The union includes fields for different types of operations defined in the\n enum hipStreamBatchMemOpType:\n - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.\n - hipStreamMemOpWriteValue32: Write a 32-bit value.\n - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.\n - hipStreamMemOpWriteValue64: Write a 64-bit value.\n\n Each operation type includes an address, the value to wait for or write, flags, and an\n optional alias that is not relevant on AMD GPUs. Flags can be used to specify different\n wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.\n\n Example usage:\n @code\n hipStreamBatchMemOpParams myArray[2];\n myArray[0].operation = hipStreamMemOpWaitValue32;\n myArray[0].waitValue.address = waitAddr1;\n myArray[0].waitValue.value = 0x1;\n myArray[0].waitValue.flags = CU_STREAM_WAIT_VALUE_EQ;\n\n myArray[1].operation = hipStreamMemOpWriteValue32;\n myArray[1].writeValue.address = writeAddr1;\n myArray[1].writeValue.value = 0x1;\n myArray[1].writeValue.flags = 0x0;\n\n result = hipStreamBatchMemOp(stream, 2, myArray, 0);\n @endcode"]
+/// @brief Union representing batch memory operation parameters for HIP streams.
+/// hipStreamBatchMemOpParams is used to specify the parameters for batch memory
+/// operations in a HIP stream. This union supports various operations including
+/// waiting for a specific value, writing a value, and different flags for wait conditions.
+/// @details
+/// The union includes fields for different types of operations defined in the
+/// enum hipStreamBatchMemOpType:
+/// - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.
+/// - hipStreamMemOpWriteValue32: Write a 32-bit value.
+/// - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.
+/// - hipStreamMemOpWriteValue64: Write a 64-bit value.
+/// Each operation type includes an address, the value to wait for or write, flags, and an
+/// optional alias that is not relevant on AMD GPUs. Flags can be used to specify different
+/// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
+/// Example usage:
+/// @code
+/// hipStreamBatchMemOpParams myArray[2];
+/// myArray[0].operation = hipStreamMemOpWaitValue32;
+/// myArray[0].waitValue.address = waitAddr1;
+/// myArray[0].waitValue.value = 0x1;
+/// myArray[0].waitValue.flags = CU_STREAM_WAIT_VALUE_EQ;
+/// myArray[1].operation = hipStreamMemOpWriteValue32;
+/// myArray[1].writeValue.address = writeAddr1;
+/// myArray[1].writeValue.value = 0x1;
+/// myArray[1].writeValue.flags = 0x0;
+/// result = hipStreamBatchMemOp(stream, 2, myArray, 0);
+/// @endcode
 pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
-#[doc = " @brief Structure representing node parameters for batch memory operations in HIP graphs.\n\n hipBatchMemOpNodeParams is used to specify the parameters for batch memory\n operations in HIP graphs. This struct includes the context to use for the operations, the\n number of operations, and an array of hipStreamBatchMemOpParams that describe the operations.\n\n @details\n The structure includes the following fields:\n - ctx: The HIP context to use for the operations.\n - count: The number of operations in the paramArray.\n - paramArray: A pointer to an array of hipStreamBatchMemOpParams.\n - flags: Flags to control the node.\n\n Example usage:\n @code\n hipBatchMemOpNodeParams nodeParams;\n nodeParams.ctx = context;\n nodeParams.count = ARRAY_SIZE;\n nodeParams.paramArray = myArray;\n nodeParams.flags = 0;\n\n Pass nodeParams to a HIP graph APIs hipGraphAddBatchMemOpNode, hipGraphBatchMemOpNodeGetParams,\n hipGraphBatchMemOpNodeSetParams, hipGraphExecBatchMemOpNodeSetParams\n @endcode"]
+/// @brief Structure representing node parameters for batch memory operations in HIP graphs.
+/// hipBatchMemOpNodeParams is used to specify the parameters for batch memory
+/// operations in HIP graphs. This struct includes the context to use for the operations, the
+/// number of operations, and an array of hipStreamBatchMemOpParams that describe the operations.
+/// @details
+/// The structure includes the following fields:
+/// - ctx: The HIP context to use for the operations.
+/// - count: The number of operations in the paramArray.
+/// - paramArray: A pointer to an array of hipStreamBatchMemOpParams.
+/// - flags: Flags to control the node.
+/// Example usage:
+/// @code
+/// hipBatchMemOpNodeParams nodeParams;
+/// nodeParams.ctx = context;
+/// nodeParams.count = ARRAY_SIZE;
+/// nodeParams.paramArray = myArray;
+/// nodeParams.flags = 0;
+/// Pass nodeParams to a HIP graph APIs hipGraphAddBatchMemOpNode, hipGraphBatchMemOpNodeGetParams,
+/// hipGraphBatchMemOpNodeSetParams, hipGraphExecBatchMemOpNodeSetParams
+/// @endcode
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -4026,148 +4317,195 @@ pub struct hipBatchMemOpNodeParams {
     pub flags: ::core::ffi::c_uint,
 }
 #[repr(i32)]
-#[doc = " HIP Memory Advise values\n\n @note This memory advise enumeration is used on Linux, not Windows."]
+/// HIP Memory Advise values
+/// This memory advise enumeration is used on Linux, not Windows.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemoryAdvise {
-    #[doc = "< Data will mostly be read and only occassionally\n< be written to"]
+    /// Data will mostly be read and only occassionally
+    ///< be written to
     hipMemAdviseSetReadMostly = 1,
-    #[doc = "< Undo the effect of hipMemAdviseSetReadMostly"]
+    /// Undo the effect of hipMemAdviseSetReadMostly
     hipMemAdviseUnsetReadMostly = 2,
-    #[doc = "< Set the preferred location for the data as\n< the specified device"]
+    /// Set the preferred location for the data as
+    ///< the specified device
     hipMemAdviseSetPreferredLocation = 3,
-    #[doc = "< Clear the preferred location for the data"]
+    /// Clear the preferred location for the data
     hipMemAdviseUnsetPreferredLocation = 4,
-    #[doc = "< Data will be accessed by the specified device\n< so prevent page faults as much as possible"]
+    /// Data will be accessed by the specified device
+    ///< so prevent page faults as much as possible
     hipMemAdviseSetAccessedBy = 5,
-    #[doc = "< Let HIP to decide on the page faulting policy\n< for the specified device"]
+    /// Let HIP to decide on the page faulting policy
+    ///< for the specified device
     hipMemAdviseUnsetAccessedBy = 6,
-    #[doc = "< The default memory model is fine-grain. That allows\n< coherent operations between host and device, while\n< executing kernels. The coarse-grain can be used\n< for data that only needs to be coherent at dispatch\n< boundaries for better performance"]
+    /// The default memory model is fine-grain. That allows
+    ///< coherent operations between host and device, while
+    ///< executing kernels. The coarse-grain can be used
+    ///< for data that only needs to be coherent at dispatch
+    ///< boundaries for better performance
     hipMemAdviseSetCoarseGrain = 100,
-    #[doc = "< Restores cache coherency policy back to fine-grain"]
+    /// Restores cache coherency policy back to fine-grain
     hipMemAdviseUnsetCoarseGrain = 101,
 }
 #[repr(i32)]
-#[doc = " HIP Coherency Mode"]
+/// HIP Coherency Mode
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeCoherencyMode {
-    #[doc = "< Updates to memory with this attribute can be\n< done coherently from all devices"]
+    /// Updates to memory with this attribute can be
+    ///< done coherently from all devices
     hipMemRangeCoherencyModeFineGrain = 0,
-    #[doc = "< Writes to memory with this attribute can be\n< performed by a single device at a time"]
+    /// Writes to memory with this attribute can be
+    ///< performed by a single device at a time
     hipMemRangeCoherencyModeCoarseGrain = 1,
-    #[doc = "< Memory region queried contains subregions with\n< both hipMemRangeCoherencyModeFineGrain and\n< hipMemRangeCoherencyModeCoarseGrain attributes"]
+    /// Memory region queried contains subregions with
+    ///< both hipMemRangeCoherencyModeFineGrain and
+    ///< hipMemRangeCoherencyModeCoarseGrain attributes
     hipMemRangeCoherencyModeIndeterminate = 2,
 }
 #[repr(i32)]
-#[doc = " HIP range attributes"]
+/// HIP range attributes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeAttribute {
-    #[doc = "< Whether the range will mostly be read and\n< only occassionally be written to"]
+    /// Whether the range will mostly be read and
+    ///< only occassionally be written to
     hipMemRangeAttributeReadMostly = 1,
-    #[doc = "< The preferred location of the range"]
+    /// The preferred location of the range
     hipMemRangeAttributePreferredLocation = 2,
-    #[doc = "< Memory range has hipMemAdviseSetAccessedBy\n< set for the specified device"]
+    /// Memory range has hipMemAdviseSetAccessedBy
+    ///< set for the specified device
     hipMemRangeAttributeAccessedBy = 3,
-    #[doc = "< The last location to where the range was\n< prefetched"]
+    /// The last location to where the range was
+    ///< prefetched
     hipMemRangeAttributeLastPrefetchLocation = 4,
-    #[doc = "< Returns coherency mode\n< @ref hipMemRangeCoherencyMode for the range"]
+    /// Returns coherency mode
+    ///< @ref hipMemRangeCoherencyMode for the range
     hipMemRangeAttributeCoherencyMode = 100,
 }
 #[repr(i32)]
-#[doc = " HIP memory pool attributes"]
+/// HIP memory pool attributes
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemPoolAttr {
-    #[doc = " (value type = int)\n Allow @p hipMemAllocAsync to use memory asynchronously freed\n in another streams as long as a stream ordering dependency\n of the allocating stream on the free action exists.\n hip events and null stream interactions can create the required\n stream ordered dependencies. (default enabled)"]
+    /// (value type = int)
+    /// Allow @p hipMemAllocAsync to use memory asynchronously freed
+    /// in another streams as long as a stream ordering dependency
+    /// of the allocating stream on the free action exists.
+    /// hip events and null stream interactions can create the required
+    /// stream ordered dependencies. (default enabled)
     hipMemPoolReuseFollowEventDependencies = 1,
-    #[doc = " (value type = int)\n Allow reuse of already completed frees when there is no dependency\n between the free and allocation. (default enabled)"]
+    /// (value type = int)
+    /// Allow reuse of already completed frees when there is no dependency
+    /// between the free and allocation. (default enabled)
     hipMemPoolReuseAllowOpportunistic = 2,
-    #[doc = " (value type = int)\n Allow @p hipMemAllocAsync to insert new stream dependencies\n in order to establish the stream ordering required to reuse\n a piece of memory released by cuFreeAsync (default enabled)."]
+    /// (value type = int)
+    /// Allow @p hipMemAllocAsync to insert new stream dependencies
+    /// in order to establish the stream ordering required to reuse
+    /// a piece of memory released by cuFreeAsync (default enabled).
     hipMemPoolReuseAllowInternalDependencies = 3,
-    #[doc = " (value type = uint64_t)\n Amount of reserved memory in bytes to hold onto before trying\n to release memory back to the OS. When more than the release\n threshold bytes of memory are held by the memory pool, the\n allocator will try to release memory back to the OS on the\n next call to stream, event or context synchronize. (default 0)"]
+    /// (value type = uint64_t)
+    /// Amount of reserved memory in bytes to hold onto before trying
+    /// to release memory back to the OS. When more than the release
+    /// threshold bytes of memory are held by the memory pool, the
+    /// allocator will try to release memory back to the OS on the
+    /// next call to stream, event or context synchronize. (default 0)
     hipMemPoolAttrReleaseThreshold = 4,
-    #[doc = " (value type = uint64_t)\n Amount of backing memory currently allocated for the mempool."]
+    /// (value type = uint64_t)
+    /// Amount of backing memory currently allocated for the mempool.
     hipMemPoolAttrReservedMemCurrent = 5,
-    #[doc = " (value type = uint64_t)\n High watermark of backing memory allocated for the mempool since the\n last time it was reset. High watermark can only be reset to zero."]
+    /// (value type = uint64_t)
+    /// High watermark of backing memory allocated for the mempool since the
+    /// last time it was reset. High watermark can only be reset to zero.
     hipMemPoolAttrReservedMemHigh = 6,
-    #[doc = " (value type = uint64_t)\n Amount of memory from the pool that is currently in use by the application."]
+    /// (value type = uint64_t)
+    /// Amount of memory from the pool that is currently in use by the application.
     hipMemPoolAttrUsedMemCurrent = 7,
-    #[doc = " (value type = uint64_t)\n High watermark of the amount of memory from the pool that was in use by the application since\n the last time it was reset. High watermark can only be reset to zero."]
+    /// (value type = uint64_t)
+    /// High watermark of the amount of memory from the pool that was in use by the application since
+    /// the last time it was reset. High watermark can only be reset to zero.
     hipMemPoolAttrUsedMemHigh = 8,
 }
 #[repr(i32)]
-#[doc = " Specifies the memory protection flags for mapping\n"]
+/// Specifies the memory protection flags for mapping
+///
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAccessFlags {
-    #[doc = "< Default, make the address range not accessible"]
+    /// Default, make the address range not accessible
     hipMemAccessFlagsProtNone = 0,
-    #[doc = "< Set the address range read accessible"]
+    /// Set the address range read accessible
     hipMemAccessFlagsProtRead = 1,
-    #[doc = "< Set the address range read-write accessible"]
+    /// Set the address range read-write accessible
     hipMemAccessFlagsProtReadWrite = 3,
 }
-#[doc = " Memory access descriptor structure is used to specify memory access\n permissions for a virtual memory region in Virtual Memory Management API.\n This structure changes read, and write permissions for\n specific memory regions."]
+/// Memory access descriptor structure is used to specify memory access
+/// permissions for a virtual memory region in Virtual Memory Management API.
+/// This structure changes read, and write permissions for
+/// specific memory regions.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAccessDesc {
-    #[doc = "< Location on which the accessibility has to change"]
+    /// Location on which the accessibility has to change
     pub location: hipMemLocation,
-    #[doc = "< Accessibility flags to set"]
+    /// Accessibility flags to set
     pub flags: hipMemAccessFlags,
 }
 #[repr(i32)]
-#[doc = " Defines the allocation types"]
+/// Defines the allocation types
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAllocationType {
     hipMemAllocationTypeInvalid = 0,
-    #[doc = " This allocation type is 'pinned', i.e. cannot migrate from its current\n location while the application is actively using it"]
+    /// This allocation type is 'pinned', i.e. cannot migrate from its current
+    /// location while the application is actively using it
     hipMemAllocationTypePinned = 1,
-    #[doc = " This allocation type is 'pinned', i.e. cannot migrate from its current\n location while the application is actively using it"]
+    /// This allocation type is 'pinned', i.e. cannot migrate from its current
+    /// location while the application is actively using it
     hipMemAllocationTypeManaged = 2,
-    #[doc = " This allocation type is 'pinned', i.e. cannot migrate from its current\n location while the application is actively using it"]
+    /// This allocation type is 'pinned', i.e. cannot migrate from its current
+    /// location while the application is actively using it
     hipMemAllocationTypeUncached = 1073741824,
-    #[doc = " This allocation type is 'pinned', i.e. cannot migrate from its current\n location while the application is actively using it"]
+    /// This allocation type is 'pinned', i.e. cannot migrate from its current
+    /// location while the application is actively using it
     hipMemAllocationTypeMax = 2147483647,
 }
 #[repr(i32)]
-#[doc = " Flags for specifying handle types for memory pool allocations\n"]
+/// Flags for specifying handle types for memory pool allocations
+///
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAllocationHandleType {
-    #[doc = "< Does not allow any export mechanism"]
+    /// Does not allow any export mechanism
     hipMemHandleTypeNone = 0,
     hipMemHandleTypePosixFileDescriptor = 1,
-    #[doc = "< Allows a Win32 NT handle for exporting. (HANDLE)"]
+    /// Allows a Win32 NT handle for exporting. (HANDLE)
     hipMemHandleTypeWin32 = 2,
-    #[doc = "< Allows a Win32 KMT handle for exporting. (D3DKMT_HANDLE)"]
+    /// Allows a Win32 KMT handle for exporting. (D3DKMT_HANDLE)
     hipMemHandleTypeWin32Kmt = 4,
-    #[doc = "< Allows a fabric handle to be used for exporting."]
+    /// Allows a fabric handle to be used for exporting.
     hipMemHandleTypeFabric = 8,
 }
-#[doc = " Specifies the properties of allocations made from the pool."]
+/// Specifies the properties of allocations made from the pool.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemPoolProps {
-    #[doc = "< Allocation type. Currently must be specified as @p hipMemAllocationTypePinned"]
+    /// Allocation type. Currently must be specified as @p hipMemAllocationTypePinned
     pub allocType: hipMemAllocationType,
-    #[doc = "< Handle types that will be supported by allocations from the pool"]
+    /// Handle types that will be supported by allocations from the pool
     pub handleTypes: hipMemAllocationHandleType,
-    #[doc = "< Location where allocations should reside"]
+    /// Location where allocations should reside
     pub location: hipMemLocation,
-    #[doc = " Windows-specific LPSECURITYATTRIBUTES required when @p hipMemHandleTypeWin32 is specified"]
+    /// Windows-specific LPSECURITYATTRIBUTES required when @p hipMemHandleTypeWin32 is specified
     pub win32SecurityAttributes: *mut ::core::ffi::c_void,
-    #[doc = "< Maximum pool size. When set to 0, defaults to a system dependent value"]
+    /// Maximum pool size. When set to 0, defaults to a system dependent value
     pub maxSize: usize,
-    #[doc = "< Reserved for future use, must be 0"]
+    /// Reserved for future use, must be 0
     pub reserved: [::core::ffi::c_uchar; 56usize],
 }
-#[doc = " Opaque data structure for exporting a pool allocation"]
+/// Opaque data structure for exporting a pool allocation
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -4175,113 +4513,115 @@ pub struct hipMemPoolPtrExportData {
     pub reserved: [::core::ffi::c_uchar; 64usize],
 }
 #[repr(i32)]
-#[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
+/// @warning On AMD devices and some Nvidia devices, these hints and controls are ignored.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFuncAttribute {
-    #[doc = "< The maximum number of bytes requested for dynamically allocated shared memory"]
+    /// The maximum number of bytes requested for dynamically allocated shared memory
     hipFuncAttributeMaxDynamicSharedMemorySize = 8,
-    #[doc = "< Sets the percentage of total shared memory allocated as the shared memory carveout"]
+    /// Sets the percentage of total shared memory allocated as the shared memory carveout
     hipFuncAttributePreferredSharedMemoryCarveout = 9,
-    #[doc = "< The kernel must launch with a valid cluster size specified."]
+    /// The kernel must launch with a valid cluster size specified.
     hipFuncAttributeClusterDimMustBeSet = 10,
-    #[doc = "< The required cluster width in blocks"]
+    /// The required cluster width in blocks
     hipFuncAttributeRequiredClusterWidth = 11,
-    #[doc = "< The required cluster height in blocks"]
+    /// The required cluster height in blocks
     hipFuncAttributeRequiredClusterHeight = 12,
-    #[doc = "< The required cluster depth in blocks"]
+    /// The required cluster depth in blocks
     hipFuncAttributeRequiredClusterDepth = 13,
-    #[doc = "< Is the function allowed to launch with non-portable cluster size."]
+    /// Is the function allowed to launch with non-portable cluster size.
     hipFuncAttributeNonPortableClusterSizeAllowed = 14,
-    #[doc = "< The block scheduling policy of a function."]
+    /// The block scheduling policy of a function.
     hipFuncAttributeClusterSchedulingPolicyPreference = 15,
     hipFuncAttributeMax = 16,
 }
 #[repr(i32)]
-#[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
+/// @warning On AMD devices and some Nvidia devices, these hints and controls are ignored.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipFuncCache_t {
-    #[doc = "< no preference for shared memory or L1 (default)"]
+    /// no preference for shared memory or L1 (default)
     hipFuncCachePreferNone = 0,
-    #[doc = "< prefer larger shared memory and smaller L1 cache"]
+    /// prefer larger shared memory and smaller L1 cache
     hipFuncCachePreferShared = 1,
-    #[doc = "< prefer larger L1 cache and smaller shared memory"]
+    /// prefer larger L1 cache and smaller shared memory
     hipFuncCachePreferL1 = 2,
-    #[doc = "< prefer equal size L1 cache and shared memory"]
+    /// prefer equal size L1 cache and shared memory
     hipFuncCachePreferEqual = 3,
 }
 #[repr(i32)]
-#[doc = " @warning On AMD devices and some Nvidia devices, these hints and controls are ignored."]
+/// @warning On AMD devices and some Nvidia devices, these hints and controls are ignored.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipSharedMemConfig {
-    #[doc = "< The compiler selects a device-specific value for the banking."]
+    /// The compiler selects a device-specific value for the banking.
     hipSharedMemBankSizeDefault = 0,
-    #[doc = "< Shared mem is banked at 4-bytes intervals and performs best\n< when adjacent threads access data 4 bytes apart."]
+    /// Shared mem is banked at 4-bytes intervals and performs best
+    ///< when adjacent threads access data 4 bytes apart.
     hipSharedMemBankSizeFourByte = 1,
-    #[doc = "< Shared mem is banked at 8-byte intervals and performs best\n< when adjacent threads access data 4 bytes apart."]
+    /// Shared mem is banked at 8-byte intervals and performs best
+    ///< when adjacent threads access data 4 bytes apart.
     hipSharedMemBankSizeEightByte = 2,
 }
-#[doc = " Struct for data in 3D"]
+/// Struct for data in 3D
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct dim3 {
-    #[doc = "< x"]
+    /// x
     pub x: u32,
-    #[doc = "< y"]
+    /// y
     pub y: u32,
-    #[doc = "< z"]
+    /// z
     pub z: u32,
 }
-#[doc = " struct hipLaunchParams_t"]
+/// struct hipLaunchParams_t
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchParams_t {
-    #[doc = "< Device function symbol"]
+    /// Device function symbol
     pub func: *mut ::core::ffi::c_void,
-    #[doc = "< Grid dimensions"]
+    /// Grid dimensions
     pub gridDim: dim3,
-    #[doc = "< Block dimensions"]
+    /// Block dimensions
     pub blockDim: dim3,
-    #[doc = "< Arguments"]
+    /// Arguments
     pub args: *mut *mut ::core::ffi::c_void,
-    #[doc = "< Shared memory"]
+    /// Shared memory
     pub sharedMem: usize,
-    #[doc = "< Stream identifier"]
+    /// Stream identifier
     pub stream: hipStream_t,
 }
-#[doc = " struct hipLaunchParams_t"]
+/// struct hipLaunchParams_t
 pub type hipLaunchParams = hipLaunchParams_t;
-#[doc = " struct hipFunctionLaunchParams_t"]
+/// struct hipFunctionLaunchParams_t
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipFunctionLaunchParams_t {
-    #[doc = "< Kernel to launch"]
+    /// Kernel to launch
     pub function: hipFunction_t,
-    #[doc = "< Width(X) of grid in blocks"]
+    /// Width(X) of grid in blocks
     pub gridDimX: ::core::ffi::c_uint,
-    #[doc = "< Height(Y) of grid in blocks"]
+    /// Height(Y) of grid in blocks
     pub gridDimY: ::core::ffi::c_uint,
-    #[doc = "< Depth(Z) of grid in blocks"]
+    /// Depth(Z) of grid in blocks
     pub gridDimZ: ::core::ffi::c_uint,
-    #[doc = "< X dimension of each thread block"]
+    /// X dimension of each thread block
     pub blockDimX: ::core::ffi::c_uint,
-    #[doc = "< Y dimension of each thread block"]
+    /// Y dimension of each thread block
     pub blockDimY: ::core::ffi::c_uint,
-    #[doc = "< Z dimension of each thread block"]
+    /// Z dimension of each thread block
     pub blockDimZ: ::core::ffi::c_uint,
-    #[doc = "< Shared memory"]
+    /// Shared memory
     pub sharedMemBytes: ::core::ffi::c_uint,
-    #[doc = "< Stream identifier"]
+    /// Stream identifier
     pub hStream: hipStream_t,
-    #[doc = "< Kernel parameters"]
+    /// Kernel parameters
     pub kernelParams: *mut *mut ::core::ffi::c_void,
 }
-#[doc = " struct hipFunctionLaunchParams_t"]
+/// struct hipFunctionLaunchParams_t
 pub type hipFunctionLaunchParams = hipFunctionLaunchParams_t;
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -4424,7 +4764,7 @@ pub struct hipExternalSemaphoreSignalParams_st__bindgen_ty_1__bindgen_ty_3 {
     pub key: ::core::ffi::c_ulonglong,
 }
 pub type hipExternalSemaphoreSignalParams = hipExternalSemaphoreSignalParams_st;
-#[doc = " External semaphore wait parameters, compatible with driver type"]
+/// External semaphore wait parameters, compatible with driver type
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
@@ -4462,18 +4802,18 @@ pub struct hipExternalSemaphoreWaitParams_st__bindgen_ty_1__bindgen_ty_3 {
     pub key: ::core::ffi::c_ulonglong,
     pub timeoutMs: ::core::ffi::c_uint,
 }
-#[doc = " External semaphore wait parameters, compatible with driver type"]
+/// External semaphore wait parameters, compatible with driver type
 pub type hipExternalSemaphoreWaitParams = hipExternalSemaphoreWaitParams_st;
 #[repr(i32)]
-#[doc = " HIP Access falgs for Interop resources."]
+/// HIP Access falgs for Interop resources.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphicsRegisterFlags {
     hipGraphicsRegisterFlagsNone = 0,
-    #[doc = "< HIP will not write to this registered resource, read only"]
+    /// HIP will not write to this registered resource, read only
     hipGraphicsRegisterFlagsReadOnly = 1,
     hipGraphicsRegisterFlagsWriteDiscard = 2,
-    #[doc = "< HIP will bind this resource to a surface, read and write"]
+    /// HIP will bind this resource to a surface, read and write
     hipGraphicsRegisterFlagsSurfaceLoadStore = 4,
     hipGraphicsRegisterFlagsTextureGather = 8,
 }
@@ -4491,7 +4831,7 @@ pub type hipGraphicsResource_t = *mut hipGraphicsResource;
 pub struct ihipGraph {
     _unused: [u8; 0],
 }
-#[doc = " An opaque value that represents a hip graph"]
+/// An opaque value that represents a hip graph
 pub type hipGraph_t = *mut ihipGraph;
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -4499,7 +4839,7 @@ pub type hipGraph_t = *mut ihipGraph;
 pub struct hipGraphNode {
     _unused: [u8; 0],
 }
-#[doc = " An opaque value that represents a hip graph node"]
+/// An opaque value that represents a hip graph node
 pub type hipGraphNode_t = *mut hipGraphNode;
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -4507,7 +4847,7 @@ pub type hipGraphNode_t = *mut hipGraphNode;
 pub struct hipGraphExec {
     _unused: [u8; 0],
 }
-#[doc = " An opaque value that represents a hip graph Exec"]
+/// An opaque value that represents a hip graph Exec
 pub type hipGraphExec_t = *mut hipGraphExec;
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -4515,42 +4855,42 @@ pub type hipGraphExec_t = *mut hipGraphExec;
 pub struct hipUserObject {
     _unused: [u8; 0],
 }
-#[doc = " An opaque value that represents a user obj"]
+/// An opaque value that represents a user obj
 pub type hipUserObject_t = *mut hipUserObject;
 #[repr(i32)]
-#[doc = " hipGraphNodeType"]
+/// hipGraphNodeType
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphNodeType {
-    #[doc = "< GPU kernel node"]
+    /// GPU kernel node
     hipGraphNodeTypeKernel = 0,
-    #[doc = "< Memcpy node"]
+    /// Memcpy node
     hipGraphNodeTypeMemcpy = 1,
-    #[doc = "< Memset node"]
+    /// Memset node
     hipGraphNodeTypeMemset = 2,
-    #[doc = "< Host (executable) node"]
+    /// Host (executable) node
     hipGraphNodeTypeHost = 3,
-    #[doc = "< Node which executes an embedded graph"]
+    /// Node which executes an embedded graph
     hipGraphNodeTypeGraph = 4,
-    #[doc = "< Empty (no-op) node"]
+    /// Empty (no-op) node
     hipGraphNodeTypeEmpty = 5,
-    #[doc = "< External event wait node"]
+    /// External event wait node
     hipGraphNodeTypeWaitEvent = 6,
-    #[doc = "< External event record node"]
+    /// External event record node
     hipGraphNodeTypeEventRecord = 7,
-    #[doc = "< External Semaphore signal node"]
+    /// External Semaphore signal node
     hipGraphNodeTypeExtSemaphoreSignal = 8,
-    #[doc = "< External Semaphore wait node"]
+    /// External Semaphore wait node
     hipGraphNodeTypeExtSemaphoreWait = 9,
-    #[doc = "< Memory alloc node"]
+    /// Memory alloc node
     hipGraphNodeTypeMemAlloc = 10,
-    #[doc = "< Memory free node"]
+    /// Memory free node
     hipGraphNodeTypeMemFree = 11,
-    #[doc = "< MemcpyFromSymbol node"]
+    /// MemcpyFromSymbol node
     hipGraphNodeTypeMemcpyFromSymbol = 12,
-    #[doc = "< MemcpyToSymbol node"]
+    /// MemcpyToSymbol node
     hipGraphNodeTypeMemcpyToSymbol = 13,
-    #[doc = "< BatchMemOp node"]
+    /// BatchMemOp node
     hipGraphNodeTypeBatchMemOp = 14,
     hipGraphNodeTypeCount = 15,
 }
@@ -4589,179 +4929,203 @@ pub struct hipMemsetParams {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAllocNodeParams {
-    #[doc = "< Pool properties, which contain where\n< the location should reside"]
+    /// Pool properties, which contain where
+    ///< the location should reside
     pub poolProps: hipMemPoolProps,
-    #[doc = "< The number of memory access descriptors."]
+    /// The number of memory access descriptors.
     pub accessDescs: *const hipMemAccessDesc,
-    #[doc = "< The number of access descriptors.\n< Must not be bigger than the number of GPUs"]
+    /// The number of access descriptors.
+    ///< Must not be bigger than the number of GPUs
     pub accessDescCount: usize,
-    #[doc = "< The size of the requested allocation in bytes"]
+    /// The size of the requested allocation in bytes
     pub bytesize: usize,
-    #[doc = "< Returned device address of the allocation"]
+    /// Returned device address of the allocation
     pub dptr: *mut ::core::ffi::c_void,
 }
 #[repr(i32)]
-#[doc = " Specifies performance hint with hipAccessPolicyWindow"]
+/// Specifies performance hint with hipAccessPolicyWindow
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipAccessProperty {
-    #[doc = "< Normal cache persistence."]
+    /// Normal cache persistence.
     hipAccessPropertyNormal = 0,
-    #[doc = "< Streaming access is less likely to persist from cache"]
+    /// Streaming access is less likely to persist from cache
     hipAccessPropertyStreaming = 1,
-    #[doc = "< Persisting access is more likely to persist in cache"]
+    /// Persisting access is more likely to persist in cache
     hipAccessPropertyPersisting = 2,
 }
-#[doc = " Specifies access policy for a window, a contiguous extent of memory\n beginning at base_ptr and ending at base_ptr + num_bytes."]
+/// Specifies access policy for a window, a contiguous extent of memory
+/// beginning at base_ptr and ending at base_ptr + num_bytes.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipAccessPolicyWindow {
-    #[doc = "< Starting address of the access policy window"]
+    /// Starting address of the access policy window
     pub base_ptr: *mut ::core::ffi::c_void,
-    #[doc = "< hipAccessProperty set for hit"]
+    /// hipAccessProperty set for hit
     pub hitProp: hipAccessProperty,
-    #[doc = "< hitRatio specifies percentage of lines assigned hitProp"]
+    /// hitRatio specifies percentage of lines assigned hitProp
     pub hitRatio: f32,
-    #[doc = "< hipAccessProperty set for miss"]
+    /// hipAccessProperty set for miss
     pub missProp: hipAccessProperty,
-    #[doc = "< Size in bytes of the window policy."]
+    /// Size in bytes of the window policy.
     pub num_bytes: usize,
 }
-#[doc = " Memory Synchronization Domain map"]
+/// Memory Synchronization Domain map
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchMemSyncDomainMap {
-    #[doc = "< The default domain ID to use for designated kernels"]
+    /// The default domain ID to use for designated kernels
     pub default_: ::core::ffi::c_uchar,
-    #[doc = "< The remote domain ID to use for designated kernels"]
+    /// The remote domain ID to use for designated kernels
     pub remote: ::core::ffi::c_uchar,
 }
 #[repr(i32)]
-#[doc = " Memory Synchronization Domain"]
+/// Memory Synchronization Domain
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLaunchMemSyncDomain {
-    #[doc = "< Launch kernels in the default domain"]
+    /// Launch kernels in the default domain
     hipLaunchMemSyncDomainDefault = 0,
-    #[doc = "< Launch kernels in the remote domain"]
+    /// Launch kernels in the remote domain
     hipLaunchMemSyncDomainRemote = 1,
 }
 #[repr(i32)]
-#[doc = " Stream Synchronization Policy.\n Can be set with hipStreamSetAttribute"]
+/// Stream Synchronization Policy.
+/// Can be set with hipStreamSetAttribute
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipSynchronizationPolicy {
-    #[doc = "< Default Synchronization Policy. Host thread waits actively"]
+    /// Default Synchronization Policy. Host thread waits actively
     hipSyncPolicyAuto = 1,
-    #[doc = "< Host thread spins in tight loop waiting for completition"]
+    /// Host thread spins in tight loop waiting for completition
     hipSyncPolicySpin = 2,
-    #[doc = "< Host spins but yields to other threads, reducing CPU usage"]
+    /// Host spins but yields to other threads, reducing CPU usage
     hipSyncPolicyYield = 3,
-    #[doc = "< Host thread blocks (sleeps) until the stream completes"]
+    /// Host thread blocks (sleeps) until the stream completes
     hipSyncPolicyBlockingSync = 4,
 }
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipClusterSchedulingPolicy {
-    #[doc = "< the default scheduling policy"]
+    /// the default scheduling policy
     hipClusterSchedulingPolicyDefault = 0,
-    #[doc = "< distribute blocks evenly across cluster's CUs"]
+    /// distribute blocks evenly across cluster's CUs
     hipClusterSchedulingPolicySpread = 1,
     hipClusterSchedulingPolicyLoadBalancing = 2,
 }
 #[repr(i32)]
-#[doc = " @brief Temporal locality hint for dynamic data prefetch."]
+/// @brief Temporal locality hint for dynamic data prefetch.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipExtDynDataPrefetchTemporal {
-    #[doc = "< Regular temporal locality"]
+    /// Regular temporal locality
     hipExtDynDataPrefetchTemporalRegular = 0,
-    #[doc = "< High temporal locality (prefer caching)"]
+    /// High temporal locality (prefer caching)
     hipExtDynDataPrefetchTemporalHigh = 1,
 }
-#[doc = " @brief Describes one 2D memory region to prefetch into L2 cache.\n\n @p address must be aligned to the device's L2 cache line size.\n @p width is measured in bytes and must be a multiple of the cache line size.\n @p height is the number of rows to prefetch.\n @p stride is the byte stride between the start of consecutive rows."]
+/// @brief Describes one 2D memory region to prefetch into L2 cache.
+/// @p address must be aligned to the device's L2 cache line size.
+/// @p width is measured in bytes and must be a multiple of the cache line size.
+/// @p height is the number of rows to prefetch.
+/// @p stride is the byte stride between the start of consecutive rows.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtDynDataPrefetchRegion {
-    #[doc = "< Base address (must be cache-line aligned)"]
+    /// Base address (must be cache-line aligned)
     pub address: *mut ::core::ffi::c_void,
-    #[doc = "< Stride between row starts in bytes"]
+    /// Stride between row starts in bytes
     pub stride: usize,
-    #[doc = "< Width of each row in bytes (must be a multiple of cache line size)"]
+    /// Width of each row in bytes (must be a multiple of cache line size)
     pub width: usize,
-    #[doc = "< Number of rows to prefetch"]
+    /// Number of rows to prefetch
     pub height: usize,
 }
-#[doc = " @brief Configuration for dynamic data prefetch.\n\n Pointed to by a launch attribute via @ref hipLaunchAttributeExtDynDataPrefetch.\n @p numRegions must not exceed the device limit queried via\n @ref hipDeviceAttributeMaxDynDataPrefetchRegions (use @ref hipDeviceGetAttribute).\n\n Cooperative prefetch is always enabled internally; the user only controls\n the temporal policy."]
+/// @brief Configuration for dynamic data prefetch.
+/// Pointed to by a launch attribute via @ref hipLaunchAttributeExtDynDataPrefetch.
+/// @p numRegions must not exceed the device limit queried via
+/// @ref hipDeviceAttributeMaxDynDataPrefetchRegions (use @ref hipDeviceGetAttribute).
+/// Cooperative prefetch is always enabled internally; the user only controls
+/// the temporal policy.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipExtDynDataPrefetchConfig {
-    #[doc = "< Number of valid regions (1-max)"]
+    /// Number of valid regions (1-max)
     pub numRegions: ::core::ffi::c_uint,
-    #[doc = "< Cache retention policy for prefetched data"]
+    /// Cache retention policy for prefetched data
     pub temporal: hipExtDynDataPrefetchTemporal,
-    #[doc = "< Prefetch regions"]
+    /// Prefetch regions
     pub regions: [hipExtDynDataPrefetchRegion; 2usize],
 }
 #[repr(i32)]
-#[doc = "  Launch Attribute ID"]
+///  Launch Attribute ID
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipLaunchAttributeID {
-    #[doc = "< Ignored entry"]
+    /// Ignored entry
     hipLaunchAttributeIgnore = 0,
-    #[doc = "< Valid for Streams, graph nodes, launches"]
+    /// Valid for Streams, graph nodes, launches
     hipLaunchAttributeAccessPolicyWindow = 1,
-    #[doc = "< Valid for graph nodes, launches"]
+    /// Valid for graph nodes, launches
     hipLaunchAttributeCooperative = 2,
-    #[doc = "< Valid for streams"]
+    /// Valid for streams
     hipLaunchAttributeSynchronizationPolicy = 3,
-    #[doc = "< Valid for graph nodes, launches"]
+    /// Valid for graph nodes, launches
     hipLaunchAttributeClusterDimension = 4,
-    #[doc = "< Valid for graph nodes, launches"]
+    /// Valid for graph nodes, launches
     hipLaunchAttributeClusterSchedulingPolicyPreference = 5,
-    #[doc = "< Valid for graph node, streams, launches"]
+    /// Valid for graph node, streams, launches
     hipLaunchAttributePriority = 8,
-    #[doc = "< Valid for streams, graph nodes, launches"]
+    /// Valid for streams, graph nodes, launches
     hipLaunchAttributeMemSyncDomainMap = 9,
-    #[doc = "< Valid for streams, graph nodes, launches"]
+    /// Valid for streams, graph nodes, launches
     hipLaunchAttributeMemSyncDomain = 10,
-    #[doc = "< Valid for launches. Prefetch data into L2 before kernel execution."]
+    /// Valid for launches. Prefetch data into L2 before kernel execution.
     hipLaunchAttributeExtDynDataPrefetch = 1024,
     hipLaunchAttributeMax = 1025,
 }
 pub type hipStreamAttrID = hipLaunchAttributeID;
-#[doc = "  Launch Attribute Value"]
+///  Launch Attribute Value
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipLaunchAttributeValue {
-    #[doc = "< 64 byte padding"]
+    /// 64 byte padding
     pub pad: [::core::ffi::c_char; 64usize],
-    #[doc = "< Value of launch attribute ::hipLaunchAttributeAccessPolicyWindow."]
+    /// Value of launch attribute ::hipLaunchAttributeAccessPolicyWindow.
     pub accessPolicyWindow: hipAccessPolicyWindow,
-    #[doc = "< Value of launch attribute ::hipLaunchAttributeCooperative. Indicates\n< whether the kernel is cooperative."]
+    /// Value of launch attribute ::hipLaunchAttributeCooperative. Indicates
+    ///< whether the kernel is cooperative.
     pub cooperative: ::core::ffi::c_int,
-    #[doc = "< Value of launch attribute :: hipLaunchAttributePriority. Execution priority of\n< kernel"]
+    /// Value of launch attribute :: hipLaunchAttributePriority. Execution priority of
+    ///< kernel
     pub priority: ::core::ffi::c_int,
-    #[doc = "< Value of launch attribute :: hipLaunchAttributeSynchronizationPolicy. Used\n< to work queued up in stream"]
+    /// Value of launch attribute :: hipLaunchAttributeSynchronizationPolicy. Used
+    ///< to work queued up in stream
     pub syncPolicy: hipSynchronizationPolicy,
-    #[doc = "< Value of launch attribute hipLaunchAttributeMemSyncDomainMap"]
+    /// Value of launch attribute hipLaunchAttributeMemSyncDomainMap
     pub memSyncDomainMap: hipLaunchMemSyncDomainMap,
-    #[doc = "< Value of launch attribute hipLaunchAttributeMemSyncDomain"]
+    /// Value of launch attribute hipLaunchAttributeMemSyncDomain
     pub memSyncDomain: hipLaunchMemSyncDomain,
     pub clusterDim: hipLaunchAttributeValue__bindgen_ty_1,
-    #[doc = "< Value of launch attribute :: hipLaunchAttributeClusterSchedulingPolicyPreference\n< determines the preferred strategy for distributing blocks within a compute cluster"]
+    /// Value of launch attribute :: hipLaunchAttributeClusterSchedulingPolicyPreference
+    ///< determines the preferred strategy for distributing blocks within a compute cluster
     pub clusterSchedulingPolicyPreference: hipClusterSchedulingPolicy,
-    #[doc = "< Value of launch attribute ::hipLaunchAttributeExtDynDataPrefetch"]
+    /// Value of launch attribute ::hipLaunchAttributeExtDynDataPrefetch
     pub dynDataPrefetch: *const hipExtDynDataPrefetchConfig,
 }
-#[doc = " @brief Specifies the desired cluster dimensions for a kernel launch.\n\n This opaque type is used as the value for the launch attribute\n ::hipLaunchAttributeClusterDimension. It defines the dimensions of the\n compute cluster in terms of blocks, where each field must evenly divide\n the corresponding grid dimension:\n\n  - \\p x: Number of blocks along the X-axis.\n  - \\p y: Number of blocks along the Y-axis.\n  - \\p z: Number of blocks along the Z-axis."]
+/// @brief Specifies the desired cluster dimensions for a kernel launch.
+/// This opaque type is used as the value for the launch attribute
+/// ::hipLaunchAttributeClusterDimension. It defines the dimensions of the
+/// compute cluster in terms of blocks, where each field must evenly divide
+/// the corresponding grid dimension:
+///  - \\p x: Number of blocks along the X-axis.
+///  - \\p y: Number of blocks along the Y-axis.
+///  - \\p z: Number of blocks along the Z-axis.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -4771,17 +5135,18 @@ pub struct hipLaunchAttributeValue__bindgen_ty_1 {
     pub z: ::core::ffi::c_uint,
 }
 #[repr(i32)]
-#[doc = " Graph execution update result"]
+/// Graph execution update result
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphExecUpdateResult {
-    #[doc = "< The update succeeded"]
+    /// The update succeeded
     hipGraphExecUpdateSuccess = 0,
-    #[doc = "< The update failed for an unexpected reason which is described\n< in the return value of the function"]
+    /// The update failed for an unexpected reason which is described
+    ///< in the return value of the function
     hipGraphExecUpdateError = 1,
-    #[doc = "< The update failed because the topology changed"]
+    /// The update failed because the topology changed
     hipGraphExecUpdateErrorTopologyChanged = 2,
-    #[doc = "< The update failed because a node type changed"]
+    /// The update failed because a node type changed
     hipGraphExecUpdateErrorNodeTypeChanged = 3,
     hipGraphExecUpdateErrorFunctionChanged = 4,
     hipGraphExecUpdateErrorParametersChanged = 5,
@@ -4800,20 +5165,21 @@ pub enum hipStreamCaptureMode {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamCaptureStatus {
-    #[doc = "< Stream is not capturing"]
+    /// Stream is not capturing
     hipStreamCaptureStatusNone = 0,
-    #[doc = "< Stream is actively capturing"]
+    /// Stream is actively capturing
     hipStreamCaptureStatusActive = 1,
-    #[doc = "< Stream is part of a capture sequence that has been\n< invalidated, but not terminated"]
+    /// Stream is part of a capture sequence that has been
+    ///< invalidated, but not terminated
     hipStreamCaptureStatusInvalidated = 2,
 }
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipStreamUpdateCaptureDependenciesFlags {
-    #[doc = "< Add new nodes to the dependency set"]
+    /// Add new nodes to the dependency set
     hipStreamAddCaptureDependencies = 0,
-    #[doc = "< Replace the dependency set with the new nodes"]
+    /// Replace the dependency set with the new nodes
     hipStreamSetCaptureDependencies = 1,
 }
 #[repr(i32)]
@@ -4821,25 +5187,28 @@ pub enum hipStreamUpdateCaptureDependenciesFlags {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphMemAttributeType {
     hipGraphMemAttrUsedMemCurrent = 0,
-    #[doc = "< High watermark of memory, in bytes, associated with graphs since\n< the last time."]
+    /// High watermark of memory, in bytes, associated with graphs since
+    ///< the last time.
     hipGraphMemAttrUsedMemHigh = 1,
-    #[doc = "< Amount of memory, in bytes, currently allocated for\n< graphs."]
+    /// Amount of memory, in bytes, currently allocated for
+    ///< graphs.
     hipGraphMemAttrReservedMemCurrent = 2,
-    #[doc = "< High watermark of memory, in bytes, currently allocated for\n< graphs"]
+    /// High watermark of memory, in bytes, currently allocated for
+    ///< graphs
     hipGraphMemAttrReservedMemHigh = 3,
 }
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipUserObjectFlags {
-    #[doc = "< Destructor execution is not synchronized."]
+    /// Destructor execution is not synchronized.
     hipUserObjectNoDestructorSync = 1,
 }
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipUserObjectRetainFlags {
-    #[doc = "< Add new reference or retain."]
+    /// Add new reference or retain.
     hipGraphUserObjectMove = 1,
 }
 #[repr(i32)]
@@ -4847,7 +5216,7 @@ pub enum hipUserObjectRetainFlags {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphInstantiateFlags {
     hipGraphInstantiateFlagAutoFreeOnLaunch = 1,
-    #[doc = "< Automatically upload the graph after instantiation."]
+    /// Automatically upload the graph after instantiation.
     hipGraphInstantiateFlagUpload = 2,
     hipGraphInstantiateFlagDeviceLaunch = 4,
     hipGraphInstantiateFlagUseNodePriority = 8,
@@ -4857,13 +5226,13 @@ pub enum hipGraphInstantiateFlags {
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphDebugDotFlags {
     hipGraphDebugDotFlagsVerbose = 1,
-    #[doc = "< Adds hipKernelNodeParams to output"]
+    /// Adds hipKernelNodeParams to output
     hipGraphDebugDotFlagsKernelNodeParams = 4,
-    #[doc = "< Adds hipMemcpy3DParms to output"]
+    /// Adds hipMemcpy3DParms to output
     hipGraphDebugDotFlagsMemcpyNodeParams = 8,
-    #[doc = "< Adds hipMemsetParams to output"]
+    /// Adds hipMemsetParams to output
     hipGraphDebugDotFlagsMemsetNodeParams = 16,
-    #[doc = "< Adds hipHostNodeParams to output"]
+    /// Adds hipHostNodeParams to output
     hipGraphDebugDotFlagsHostNodeParams = 32,
     hipGraphDebugDotFlagsEventNodeParams = 64,
     hipGraphDebugDotFlagsExtSemasSignalNodeParams = 128,
@@ -4872,46 +5241,51 @@ pub enum hipGraphDebugDotFlags {
     hipGraphDebugDotFlagsHandles = 1024,
 }
 #[repr(i32)]
-#[doc = " hipGraphInstantiateWithParams results"]
+/// hipGraphInstantiateWithParams results
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipGraphInstantiateResult {
-    #[doc = "< Instantiation Success"]
+    /// Instantiation Success
     hipGraphInstantiateSuccess = 0,
-    #[doc = "< Instantiation failed for an\nunexpected reason which is described in the return value of the function"]
+    /// Instantiation failed for an
+    ///unexpected reason which is described in the return value of the function
     hipGraphInstantiateError = 1,
-    #[doc = "< Instantiation failed due\nto invalid structure, such as cycles"]
+    /// Instantiation failed due
+    ///to invalid structure, such as cycles
     hipGraphInstantiateInvalidStructure = 2,
-    #[doc = "< Instantiation for device launch failed\nbecause the graph contained an unsupported operation"]
+    /// Instantiation for device launch failed
+    ///because the graph contained an unsupported operation
     hipGraphInstantiateNodeOperationNotSupported = 3,
-    #[doc = "< Instantiation for device launch failed\ndue to the nodes belonging to different contexts"]
+    /// Instantiation for device launch failed
+    ///due to the nodes belonging to different contexts
     hipGraphInstantiateMultipleDevicesNotSupported = 4,
 }
-#[doc = " Graph Instantiation parameters"]
+/// Graph Instantiation parameters
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipGraphInstantiateParams {
-    #[doc = "< The node which caused instantiation to fail, if any"]
+    /// The node which caused instantiation to fail, if any
     pub errNode_out: hipGraphNode_t,
-    #[doc = "< Instantiation flags"]
+    /// Instantiation flags
     pub flags: ::core::ffi::c_ulonglong,
-    #[doc = "< Whether instantiation was successful.\nIf it failed, the reason why"]
+    /// Whether instantiation was successful.
+    ///If it failed, the reason why
     pub result_out: hipGraphInstantiateResult,
-    #[doc = "< Upload stream"]
+    /// Upload stream
     pub uploadStream: hipStream_t,
 }
-#[doc = " Memory allocation properties"]
+/// Memory allocation properties
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipMemAllocationProp {
-    #[doc = "< Memory allocation type"]
+    /// Memory allocation type
     pub type_: hipMemAllocationType,
     pub __bindgen_anon_1: hipMemAllocationProp__bindgen_ty_1,
-    #[doc = "< Memory location"]
+    /// Memory location
     pub location: hipMemLocation,
-    #[doc = "< Metadata for Win32 handles"]
+    /// Metadata for Win32 handles
     pub win32HandleMetaData: *mut ::core::ffi::c_void,
     pub allocFlags: hipMemAllocationProp__bindgen_ty_2,
 }
@@ -4919,23 +5293,23 @@ pub struct hipMemAllocationProp {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipMemAllocationProp__bindgen_ty_1 {
-    #[doc = "< Requested handle type"]
+    /// Requested handle type
     pub requestedHandleType: hipMemAllocationHandleType,
-    #[doc = "< Requested handle types"]
+    /// Requested handle types
     pub requestedHandleTypes: hipMemAllocationHandleType,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemAllocationProp__bindgen_ty_2 {
-    #[doc = "< Compression type"]
+    /// Compression type
     pub compressionType: ::core::ffi::c_uchar,
-    #[doc = "< RDMA capable"]
+    /// RDMA capable
     pub gpuDirectRDMACapable: ::core::ffi::c_uchar,
-    #[doc = "< Usage"]
+    /// Usage
     pub usage: ::core::ffi::c_ushort,
 }
-#[doc = " External semaphore signal node parameters"]
+/// External semaphore signal node parameters
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -4944,7 +5318,7 @@ pub struct hipExternalSemaphoreSignalNodeParams {
     pub paramsArray: *const hipExternalSemaphoreSignalParams,
     pub numExtSems: ::core::ffi::c_uint,
 }
-#[doc = " External semaphore wait node parameters"]
+/// External semaphore wait node parameters
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -4959,69 +5333,69 @@ pub struct hipExternalSemaphoreWaitNodeParams {
 pub struct ihipMemGenericAllocationHandle {
     _unused: [u8; 0],
 }
-#[doc = " Generic handle for memory allocation"]
+/// Generic handle for memory allocation
 pub type hipMemGenericAllocationHandle_t = *mut ihipMemGenericAllocationHandle;
 #[repr(i32)]
-#[doc = " Flags for granularity"]
+/// Flags for granularity
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemAllocationGranularity_flags {
-    #[doc = "< Minimum granularity"]
+    /// Minimum granularity
     hipMemAllocationGranularityMinimum = 0,
-    #[doc = "< Recommended granularity for performance"]
+    /// Recommended granularity for performance
     hipMemAllocationGranularityRecommended = 1,
 }
 #[repr(i32)]
-#[doc = " Memory handle type"]
+/// Memory handle type
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemHandleType {
-    #[doc = "< Generic handle type"]
+    /// Generic handle type
     hipMemHandleTypeGeneric = 0,
 }
 #[repr(i32)]
-#[doc = " Memory operation types"]
+/// Memory operation types
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemOperationType {
-    #[doc = "< Map operation"]
+    /// Map operation
     hipMemOperationTypeMap = 1,
-    #[doc = "< Unmap operation"]
+    /// Unmap operation
     hipMemOperationTypeUnmap = 2,
 }
 #[repr(i32)]
-#[doc = " Subresource types for sparse arrays"]
+/// Subresource types for sparse arrays
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipArraySparseSubresourceType {
-    #[doc = "< Sparse level"]
+    /// Sparse level
     hipArraySparseSubresourceTypeSparseLevel = 0,
-    #[doc = "< Miptail"]
+    /// Miptail
     hipArraySparseSubresourceTypeMiptail = 1,
 }
-#[doc = " Map info for arrays"]
+/// Map info for arrays
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipArrayMapInfo {
-    #[doc = "< Resource type"]
+    /// Resource type
     pub resourceType: hipResourceType,
     pub resource: hipArrayMapInfo__bindgen_ty_1,
-    #[doc = "< Sparse subresource type"]
+    /// Sparse subresource type
     pub subresourceType: hipArraySparseSubresourceType,
     pub subresource: hipArrayMapInfo__bindgen_ty_2,
-    #[doc = "< Memory operation type"]
+    /// Memory operation type
     pub memOperationType: hipMemOperationType,
-    #[doc = "< Memory handle type"]
+    /// Memory handle type
     pub memHandleType: hipMemHandleType,
     pub memHandle: hipArrayMapInfo__bindgen_ty_3,
-    #[doc = "< Offset within the memory"]
+    /// Offset within the memory
     pub offset: ::core::ffi::c_ulonglong,
-    #[doc = "< Device ordinal bit mask"]
+    /// Device ordinal bit mask
     pub deviceBitMask: ::core::ffi::c_uint,
-    #[doc = "< flags for future use, must be zero now."]
+    /// flags for future use, must be zero now.
     pub flags: ::core::ffi::c_uint,
-    #[doc = "< Reserved for future use, must be zero now."]
+    /// Reserved for future use, must be zero now.
     pub reserved: [::core::ffi::c_uint; 2usize],
 }
 #[repr(C)]
@@ -5042,32 +5416,32 @@ pub union hipArrayMapInfo__bindgen_ty_2 {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_1 {
-    #[doc = "< For mipmapped arrays must be a valid mipmap level. For arrays must be zero"]
+    /// For mipmapped arrays must be a valid mipmap level. For arrays must be zero
     pub level: ::core::ffi::c_uint,
-    #[doc = "< For layered arrays must be a valid layer index. Otherwise, must be zero"]
+    /// For layered arrays must be a valid layer index. Otherwise, must be zero
     pub layer: ::core::ffi::c_uint,
-    #[doc = "< X offset in elements"]
+    /// X offset in elements
     pub offsetX: ::core::ffi::c_uint,
-    #[doc = "< Y offset in elements"]
+    /// Y offset in elements
     pub offsetY: ::core::ffi::c_uint,
-    #[doc = "< Z offset in elements"]
+    /// Z offset in elements
     pub offsetZ: ::core::ffi::c_uint,
-    #[doc = "< Width in elements"]
+    /// Width in elements
     pub extentWidth: ::core::ffi::c_uint,
-    #[doc = "< Height in elements"]
+    /// Height in elements
     pub extentHeight: ::core::ffi::c_uint,
-    #[doc = "< Depth in elements"]
+    /// Depth in elements
     pub extentDepth: ::core::ffi::c_uint,
 }
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_2 {
-    #[doc = "< For layered arrays must be a valid layer index. Otherwise, must be zero"]
+    /// For layered arrays must be a valid layer index. Otherwise, must be zero
     pub layer: ::core::ffi::c_uint,
-    #[doc = "< Offset within mip tail"]
+    /// Offset within mip tail
     pub offset: ::core::ffi::c_ulonglong,
-    #[doc = "< Extent in bytes"]
+    /// Extent in bytes
     pub size: ::core::ffi::c_ulonglong,
 }
 #[repr(C)]
@@ -5076,51 +5450,52 @@ pub struct hipArrayMapInfo__bindgen_ty_2__bindgen_ty_2 {
 pub union hipArrayMapInfo__bindgen_ty_3 {
     pub memHandle: hipMemGenericAllocationHandle_t,
 }
-#[doc = " Memcpy node params"]
+/// Memcpy node params
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemcpyNodeParams {
-    #[doc = "< Must be zero."]
+    /// Must be zero.
     pub flags: ::core::ffi::c_int,
-    #[doc = "< Must be zero."]
+    /// Must be zero.
     pub reserved: [::core::ffi::c_int; 3usize],
-    #[doc = "< Params set for the memory copy."]
+    /// Params set for the memory copy.
     pub copyParams: hipMemcpy3DParms,
 }
-#[doc = " Child graph node params"]
+/// Child graph node params
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipChildGraphNodeParams {
-    #[doc = "< Either the child graph to clone into the node, or\n< a handle to the graph possesed by the node used during query"]
+    /// Either the child graph to clone into the node, or
+    ///< a handle to the graph possesed by the node used during query
     pub graph: hipGraph_t,
 }
-#[doc = " Event record node params"]
+/// Event record node params
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipEventWaitNodeParams {
-    #[doc = "< Event to wait on"]
+    /// Event to wait on
     pub event: hipEvent_t,
 }
-#[doc = " Event record node params"]
+/// Event record node params
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipEventRecordNodeParams {
-    #[doc = "< The event to be recorded when node executes"]
+    /// The event to be recorded when node executes
     pub event: hipEvent_t,
 }
-#[doc = " Memory free node params"]
+/// Memory free node params
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipMemFreeNodeParams {
-    #[doc = "< the pointer to be freed"]
+    /// the pointer to be freed
     pub dptr: *mut ::core::ffi::c_void,
 }
-#[doc = " Params for different graph nodes"]
+/// Params for different graph nodes
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
@@ -5158,23 +5533,29 @@ pub enum hipGraphDependencyType {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipGraphEdgeData {
-    #[doc = "< This indicates when the dependency is triggered from the upstream node on the\n< edge. The meaning is specfic to the node type. A value of 0 in all cases\n< means full completion of the upstream node, with memory visibility to the\n< downstream node or portion thereof (indicated by to_port). Only kernel nodes\n< define non-zero ports. A kernel node can use the following output port types:\n< hipGraphKernelNodePortDefault, hipGraphKernelNodePortProgrammatic, or\n< hipGraphKernelNodePortLaunchCompletion."]
+    /// This indicates when the dependency is triggered from the upstream node on the
+    ///< edge. The meaning is specfic to the node type. A value of 0 in all cases
+    ///< means full completion of the upstream node, with memory visibility to the
+    ///< downstream node or portion thereof (indicated by to_port). Only kernel nodes
+    ///< define non-zero ports. A kernel node can use the following output port types:
+    ///< hipGraphKernelNodePortDefault, hipGraphKernelNodePortProgrammatic, or
+    ///< hipGraphKernelNodePortLaunchCompletion.
     pub from_port: ::core::ffi::c_uchar,
-    #[doc = "< These bytes are unused and must be zeroed"]
+    /// These bytes are unused and must be zeroed
     pub reserved: [::core::ffi::c_uchar; 5usize],
-    #[doc = "< Currently no node types define non-zero ports. This field must be set to zero."]
+    /// Currently no node types define non-zero ports. This field must be set to zero.
     pub to_port: ::core::ffi::c_uchar,
-    #[doc = "< This should be populated with a value from hipGraphDependencyType"]
+    /// This should be populated with a value from hipGraphDependencyType
     pub type_: ::core::ffi::c_uchar,
 }
-#[doc = " Used to specify custom attributes for launching kernels"]
+/// Used to specify custom attributes for launching kernels
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub struct hipLaunchAttribute_st {
-    #[doc = "< Identifier of the launch attribute"]
+    /// Identifier of the launch attribute
     pub id: hipLaunchAttributeID,
-    #[doc = "< Padding to align the structure to 8 bytes"]
+    /// Padding to align the structure to 8 bytes
     pub pad: [::core::ffi::c_char; 4usize],
     pub __bindgen_anon_1: hipLaunchAttribute_st__bindgen_ty_1,
 }
@@ -5182,62 +5563,62 @@ pub struct hipLaunchAttribute_st {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Copy, Clone)]
 pub union hipLaunchAttribute_st__bindgen_ty_1 {
-    #[doc = "< Value associated with the launch attribute"]
+    /// Value associated with the launch attribute
     pub val: hipLaunchAttributeValue,
-    #[doc = "< Value associated with the launch attribute"]
+    /// Value associated with the launch attribute
     pub value: hipLaunchAttributeValue,
 }
-#[doc = " Used to specify custom attributes for launching kernels"]
+/// Used to specify custom attributes for launching kernels
 pub type hipLaunchAttribute = hipLaunchAttribute_st;
-#[doc = " HIP extensible launch configuration"]
+/// HIP extensible launch configuration
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipLaunchConfig_st {
-    #[doc = "< Grid dimensions"]
+    /// Grid dimensions
     pub gridDim: dim3,
-    #[doc = "< Block dimensions"]
+    /// Block dimensions
     pub blockDim: dim3,
-    #[doc = "< Dynamic shared-memory size per thread block"]
+    /// Dynamic shared-memory size per thread block
     pub dynamicSmemBytes: usize,
-    #[doc = "< Stream identifier"]
+    /// Stream identifier
     pub stream: hipStream_t,
-    #[doc = "< Attributes list"]
+    /// Attributes list
     pub attrs: *mut hipLaunchAttribute,
-    #[doc = "< Number of attributes"]
+    /// Number of attributes
     pub numAttrs: ::core::ffi::c_uint,
 }
-#[doc = " HIP extensible launch configuration"]
+/// HIP extensible launch configuration
 pub type hipLaunchConfig_t = hipLaunchConfig_st;
-#[doc = " HIP driver extensible launch configuration"]
+/// HIP driver extensible launch configuration
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct HIP_LAUNCH_CONFIG_st {
-    #[doc = "< Grid width in blocks"]
+    /// Grid width in blocks
     pub gridDimX: ::core::ffi::c_uint,
-    #[doc = "< Grid height in blocks"]
+    /// Grid height in blocks
     pub gridDimY: ::core::ffi::c_uint,
-    #[doc = "< Grid depth in blocks"]
+    /// Grid depth in blocks
     pub gridDimZ: ::core::ffi::c_uint,
-    #[doc = "< Thread block dimension in X"]
+    /// Thread block dimension in X
     pub blockDimX: ::core::ffi::c_uint,
-    #[doc = "< Thread block dimension in Y"]
+    /// Thread block dimension in Y
     pub blockDimY: ::core::ffi::c_uint,
-    #[doc = "< Thread block dimension in Z"]
+    /// Thread block dimension in Z
     pub blockDimZ: ::core::ffi::c_uint,
-    #[doc = "< Dynamic shared-memory size in bytes per block"]
+    /// Dynamic shared-memory size in bytes per block
     pub sharedMemBytes: ::core::ffi::c_uint,
-    #[doc = "< HIP stream identifier"]
+    /// HIP stream identifier
     pub hStream: hipStream_t,
-    #[doc = "< Attribute list"]
+    /// Attribute list
     pub attrs: *mut hipLaunchAttribute,
-    #[doc = "< Number of attributes"]
+    /// Number of attributes
     pub numAttrs: ::core::ffi::c_uint,
 }
-#[doc = " HIP driver extensible launch configuration"]
+/// HIP driver extensible launch configuration
 pub type HIP_LAUNCH_CONFIG = HIP_LAUNCH_CONFIG_st;
-#[doc = " Struct representing array memory requirements."]
+/// Struct representing array memory requirements.
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
@@ -5246,7 +5627,7 @@ pub struct hipArrayMemoryRequirements {
     pub size: usize,
 }
 #[repr(i32)]
-#[doc = " Requested handle type for address range."]
+/// Requested handle type for address range.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeHandleType {
@@ -5254,14 +5635,14 @@ pub enum hipMemRangeHandleType {
     hipMemRangeHandleTypeMax = 2147483647,
 }
 #[repr(i32)]
-#[doc = " Mem Range Flags used in hipMemGetHandleForAddressRange."]
+/// Mem Range Flags used in hipMemGetHandleForAddressRange.
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum hipMemRangeFlags {
     hipMemRangeFlagDmaBufMappingTypePcie = 1,
     hipMemRangeFlagsMax = 2147483647,
 }
-#[doc = " Stream CallBack struct"]
+/// Stream CallBack struct
 pub type hipStreamCallback_t = ::std::option::Option<
     unsafe extern "C" fn(
         stream: hipStream_t,
