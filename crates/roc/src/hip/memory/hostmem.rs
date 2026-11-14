@@ -1,4 +1,9 @@
-use crate::hip::{HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, StreamBound}, stream::HipStream};
+use crate::hip::{
+    HipError,
+    event::HipEvent,
+    memory::{CopyTo, DevPtr, EventSync, StreamBound},
+    stream::HipStream,
+};
 use alloc::sync::Arc;
 use core::{
     cell::UnsafeCell,
@@ -103,7 +108,7 @@ impl<'a> HostSlice<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Src: CopyTo<Self>,
     {
         super::copy(src, self, src_off, dst_off, len)
@@ -117,7 +122,7 @@ impl<'a> HostSlice<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: CopyTo<Dst>,
         Dst: DevPtr,
     {
@@ -132,7 +137,7 @@ impl<'a> HostSlice<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Src: CopyTo<Self> + StreamBound,
     {
         super::copy_async(src, self, src_off, dst_off, len)
@@ -146,7 +151,7 @@ impl<'a> HostSlice<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: CopyTo<Dst>,
         Dst: DevPtr + StreamBound,
     {
@@ -281,7 +286,7 @@ impl<'a> HostSliceMut<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Src: CopyTo<Self>,
     {
         super::copy(src, self, src_off, dst_off, len)
@@ -295,7 +300,7 @@ impl<'a> HostSliceMut<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: CopyTo<Dst>,
         Dst: DevPtr,
     {
@@ -310,7 +315,7 @@ impl<'a> HostSliceMut<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Src: CopyTo<Self> + StreamBound,
     {
         super::copy_async(src, self, src_off, dst_off, len)
@@ -324,7 +329,7 @@ impl<'a> HostSliceMut<'a> {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: CopyTo<Dst>,
         Dst: DevPtr + StreamBound,
     {

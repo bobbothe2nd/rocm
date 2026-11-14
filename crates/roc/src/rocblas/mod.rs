@@ -31,7 +31,10 @@ impl RocBlas {
             unsafe { wrap_sys_res!(|handle| rocblas_create_handle(handle.as_mut_ptr())) };
         let raw = raw?;
         unsafe { try_err!(rocblas_set_stream(raw, stream.raw)) };
-        Ok(Self { raw, stream: stream.clone() })
+        Ok(Self {
+            raw,
+            stream: stream.clone(),
+        })
     }
 
     pub fn as_raw(&self) -> rocblas_handle {

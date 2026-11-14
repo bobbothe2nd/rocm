@@ -490,138 +490,162 @@ impl<const N: usize> __BindgenBitfieldUnit<[u8; N]> {
         }
     }
 }
-pub type va_list = *mut ::core::ffi::c_char;
-pub type __vcrt_bool = bool;
-pub type wchar_t = ::core::ffi::c_ushort;
-pub type int_least8_t = ::core::ffi::c_schar;
-pub type int_least16_t = ::core::ffi::c_short;
-pub type int_least32_t = ::core::ffi::c_int;
-pub type int_least64_t = ::core::ffi::c_longlong;
-pub type uint_least8_t = ::core::ffi::c_uchar;
-pub type uint_least16_t = ::core::ffi::c_ushort;
-pub type uint_least32_t = ::core::ffi::c_uint;
-pub type uint_least64_t = ::core::ffi::c_ulonglong;
-pub type int_fast8_t = ::core::ffi::c_schar;
-pub type int_fast16_t = ::core::ffi::c_int;
-pub type int_fast32_t = ::core::ffi::c_int;
-pub type int_fast64_t = ::core::ffi::c_longlong;
-pub type uint_fast8_t = ::core::ffi::c_uchar;
-pub type uint_fast16_t = ::core::ffi::c_uint;
-pub type uint_fast32_t = ::core::ffi::c_uint;
-pub type uint_fast64_t = ::core::ffi::c_ulonglong;
-pub type intmax_t = ::core::ffi::c_longlong;
-pub type uintmax_t = ::core::ffi::c_ulonglong;
-pub type __crt_bool = bool;
-pub type errno_t = ::core::ffi::c_int;
-pub type wint_t = ::core::ffi::c_ushort;
-pub type wctype_t = ::core::ffi::c_ushort;
-pub type __time32_t = ::core::ffi::c_long;
-pub type __time64_t = ::core::ffi::c_longlong;
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct __crt_locale_data_public {
-    pub _locale_pctype: *const ::core::ffi::c_ushort,
-    pub _locale_mb_cur_max: ::core::ffi::c_int,
-    pub _locale_lc_codepage: ::core::ffi::c_uint,
-}
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct __crt_locale_pointers {
-    pub locinfo: *mut __crt_locale_data,
-    pub mbcinfo: *mut __crt_multibyte_data,
-}
-pub type _locale_t = *mut __crt_locale_pointers;
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _Mbstatet {
-    pub _Wchar: ::core::ffi::c_ulong,
-    pub _Byte: ::core::ffi::c_ushort,
-    pub _State: ::core::ffi::c_ushort,
-}
-pub type mbstate_t = _Mbstatet;
-pub type time_t = __time64_t;
-pub type rsize_t = usize;
-pub type _CoreCrtSecureSearchSortCompareFunction = ::std::option::Option<
-    unsafe extern "C" fn(
-        arg1: *mut ::core::ffi::c_void,
-        arg2: *const ::core::ffi::c_void,
-        arg3: *const ::core::ffi::c_void,
-    ) -> ::core::ffi::c_int,
->;
-pub type _CoreCrtNonSecureSearchSortCompareFunction = ::std::option::Option<
-    unsafe extern "C" fn(
-        arg1: *const ::core::ffi::c_void,
-        arg2: *const ::core::ffi::c_void,
-    ) -> ::core::ffi::c_int,
->;
-pub type _onexit_t = ::std::option::Option<unsafe extern "C" fn() -> ::core::ffi::c_int>;
-pub type _purecall_handler = ::std::option::Option<unsafe extern "C" fn()>;
-pub type _invalid_parameter_handler = ::std::option::Option<
-    unsafe extern "C" fn(
-        arg1: *const wchar_t,
-        arg2: *const wchar_t,
-        arg3: *const wchar_t,
-        arg4: ::core::ffi::c_uint,
-        arg5: usize,
-    ),
->;
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _div_t {
-    pub quot: ::core::ffi::c_int,
-    pub rem: ::core::ffi::c_int,
-}
-pub type div_t = _div_t;
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _ldiv_t {
-    pub quot: ::core::ffi::c_long,
-    pub rem: ::core::ffi::c_long,
-}
-pub type ldiv_t = _ldiv_t;
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _lldiv_t {
-    pub quot: ::core::ffi::c_longlong,
-    pub rem: ::core::ffi::c_longlong,
-}
-pub type lldiv_t = _lldiv_t;
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _LDOUBLE {
-    pub ld: [::core::ffi::c_uchar; 10usize],
-}
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _CRT_DOUBLE {
-    pub x: f64,
-}
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _CRT_FLOAT {
-    pub f: f32,
-}
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _LONGDOUBLE {
-    pub x: f64,
-}
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct _LDBL12 {
-    pub ld12: [::core::ffi::c_uchar; 12usize],
-}
+#[doc = " Default flag. Equivalent to HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM if compiled with\n  -fgpu-default-stream=per-thread flag or HIP_API_PER_THREAD_DEFAULT_STREAM macro is\n defined."]
+pub const HIP_GET_PROC_ADDRESS_DEFAULT: u32 = 0;
+#[doc = " Search for all symbols except the corresponding per-thread versions."]
+pub const HIP_GET_PROC_ADDRESS_LEGACY_STREAM: u32 = 1;
+#[doc = " Search for all symbols including the per-thread versions. If a per-thread version cannot be\n found, returns the legacy version."]
+pub const HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM: u32 = 2;
+#[doc = " @brief The hipTexRefSetArray function flags parameter override format value"]
+pub const HIP_TRSA_OVERRIDE_FORMAT: u32 = 1;
+#[doc = " @brief The hipTexRefSetFlags function flags parameter read as integer value"]
+pub const HIP_TRSF_READ_AS_INTEGER: u32 = 1;
+#[doc = " @brief The hipTexRefSetFlags function flags parameter normalized coordinate value"]
+pub const HIP_TRSF_NORMALIZED_COORDINATES: u32 = 2;
+#[doc = " @brief The hipTexRefSetFlags function flags parameter srgb value"]
+pub const HIP_TRSF_SRGB: u32 = 16;
+pub const hipTextureType1D: u32 = 1;
+pub const hipTextureType2D: u32 = 2;
+pub const hipTextureType3D: u32 = 3;
+pub const hipTextureTypeCubemap: u32 = 12;
+pub const hipTextureType1DLayered: u32 = 241;
+pub const hipTextureType2DLayered: u32 = 242;
+pub const hipTextureTypeCubemapLayered: u32 = 252;
+#[doc = " Should be same as HSA_IMAGE_OBJECT_SIZE_DWORD/HSA_SAMPLER_OBJECT_SIZE_DWORD"]
+pub const HIP_IMAGE_OBJECT_SIZE_DWORD: u32 = 12;
+pub const HIP_SAMPLER_OBJECT_SIZE_DWORD: u32 = 8;
+pub const HIP_SAMPLER_OBJECT_OFFSET_DWORD: u32 = 12;
+pub const HIP_TEXTURE_OBJECT_SIZE_DWORD: u32 = 20;
+pub const HIP_DEPRECATED_MSG : & [u8 ; 189] = b"This API is marked as deprecated and might not be supported in future releases. For more details please refer https://github.com/ROCm/HIP/blob/develop/docs/reference/deprecated_api_list.md\0" ;
+pub const HIP_RESOURCE_ABI_BYTES: u32 = 40;
+pub const hipIpcMemLazyEnablePeerAccess: u32 = 1;
+pub const HIP_IPC_HANDLE_SIZE: u32 = 64;
+#[doc = " Default stream creation flags. These are used with hipStreamCreate()."]
+pub const hipStreamDefault: u32 = 0;
+#[doc = " Stream does not implicitly synchronize with null stream."]
+pub const hipStreamNonBlocking: u32 = 1;
+#[doc = " Default flags."]
+pub const hipEventDefault: u32 = 0;
+#[doc = " Waiting will yield CPU. Power-friendly and usage-friendly but may increase latency."]
+pub const hipEventBlockingSync: u32 = 1;
+#[doc = " Disable event's capability to record timing information. May improve performance."]
+pub const hipEventDisableTiming: u32 = 2;
+#[doc = " Event can support IPC. hipEventDisableTiming also must be set."]
+pub const hipEventInterprocess: u32 = 4;
+#[doc = " Default flag."]
+pub const hipEventRecordDefault: u32 = 0;
+#[doc = " Event is captured in the graph as an external event node when performing stream capture."]
+pub const hipEventRecordExternal: u32 = 1;
+#[doc = " Default flag."]
+pub const hipEventWaitDefault: u32 = 0;
+#[doc = " Wait is captured in the graph as an external event node when performing stream capture."]
+pub const hipEventWaitExternal: u32 = 1;
+#[doc = " Disable performing a system scope sequentially consistent memory fence when the event\n transitions from recording to recorded.  This can be used for events that are only being\n used to measure timing, and do not require the event inspection operations\n (see ::hipEventSynchronize, ::hipEventQuery, and ::hipEventElapsedTime) to synchronize-with\n the work on which the recorded event (see ::hipEventRecord) is waiting.\n On some AMD GPU devices this can improve the accuracy of timing measurements by avoiding the\n cost of cache writeback and invalidation, and the performance impact of those actions on the\n execution of following work."]
+pub const hipEventDisableSystemFence: u32 = 536870912;
+#[doc = " Use a device-scope release when recording this event. This flag is useful to obtain more\n precise timings of commands between events.  The flag is a no-op on CUDA platforms."]
+pub const hipEventReleaseToDevice: u32 = 1073741824;
+#[doc = " Use a system-scope release when recording this event. This flag is useful to make\n non-coherent host memory visible to the host. The flag is a no-op on CUDA platforms."]
+pub const hipEventReleaseToSystem: u32 = 2147483648;
+#[doc = " Default flag. Equivalent to hipEnablePerThreadDefaultStream if compiled with\n  -fgpu-default-stream=per-thread flag or HIP_API_PER_THREAD_DEFAULT_STREAM macro is\n defined."]
+pub const hipEnableDefault: u32 = 0;
+#[doc = " Search for all symbols except the corresponding per-thread versions."]
+pub const hipEnableLegacyStream: u32 = 1;
+#[doc = " Search for all symbols including the per-thread versions. If a per-thread version cannot be\n found, returns the legacy version."]
+pub const hipEnablePerThreadDefaultStream: u32 = 2;
+#[doc = " Default pinned memory allocation on the host."]
+pub const hipHostAllocDefault: u32 = 0;
+#[doc = " Default pinned memory allocation on the host.\n @note This is the same definition as #hipHostAllocPortable."]
+pub const hipHostMallocDefault: u32 = 0;
+#[doc = " Memory is considered allocated by all contexts."]
+pub const hipHostAllocPortable: u32 = 1;
+#[doc = " Memory is considered allocated by all contexts.\n @note This is the same definition as #hipHostAllocPortable."]
+pub const hipHostMallocPortable: u32 = 1;
+#[doc = " Map the allocation into the address space for the current device. The device pointer\n can be obtained with #hipHostGetDevicePointer."]
+pub const hipHostAllocMapped: u32 = 2;
+#[doc = " Map the allocation into the address space for the current device. The device pointer\n can be obtained with #hipHostGetDevicePointer.\n @note This is the same #hipHostMallocMapped."]
+pub const hipHostMallocMapped: u32 = 2;
+#[doc = " Allocates the memory as write-combined. On some system configurations, write-combined allocation\n may be transferred faster across the PCI Express bus, however, could have low read efficiency by\n most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.\n @note  This flag is only for CUDA source compatibility but not functional within HIP runtime,\n because the allocation path is currently not supported on the AMD platform."]
+pub const hipHostAllocWriteCombined: u32 = 4;
+#[doc = " Allocates the memory as write-combined. On some system configurations, write-combined allocation\n may be transferred faster across the PCI Express bus, however, could have low read efficiency by\n most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.\n @note  This flag is the same definition as #hipHostAllocWriteCombined which is equivalent to\n cudaHostAllocWriteCombined. It is only for CUDA source compatibility but not functional within\n HIP runtime, because the allocation path is currently not supported on the AMD platform."]
+pub const hipHostMallocWriteCombined: u32 = 4;
+#[doc = " Host memory will be forcedly allocated on extended fine grained system memory\n pool which is with MTYPE_UC.\n @note  This allocation flag is applicable on AMD devices, except for Navi4X, in Linux only."]
+pub const hipHostMallocUncached: u32 = 268435456;
+pub const hipHostAllocUncached: u32 = 268435456;
+#[doc = " Host memory allocation will follow numa policy set by user.\n @note  This numa allocation flag is applicable on Linux, under development on Windows."]
+pub const hipHostMallocNumaUser: u32 = 536870912;
+#[doc = " Allocate coherent memory. Overrides HIP_HOST_COHERENT for specific allocation."]
+pub const hipHostMallocCoherent: u32 = 1073741824;
+#[doc = " Allocate non-coherent memory. Overrides HIP_HOST_COHERENT for specific allocation."]
+pub const hipHostMallocNonCoherent: u32 = 2147483648;
+#[doc = " Memory can be accessed by any stream on any device"]
+pub const hipMemAttachGlobal: u32 = 1;
+#[doc = " Memory cannot be accessed by any stream on any device."]
+pub const hipMemAttachHost: u32 = 2;
+#[doc = " Memory can only be accessed by a single stream on the associated device."]
+pub const hipMemAttachSingle: u32 = 4;
+pub const hipDeviceMallocDefault: u32 = 0;
+#[doc = " Memory is allocated in fine grained region of device."]
+pub const hipDeviceMallocFinegrained: u32 = 1;
+#[doc = " Memory represents a HSA signal."]
+pub const hipMallocSignalMemory: u32 = 2;
+#[doc = " Memory allocated will be uncached."]
+pub const hipDeviceMallocUncached: u32 = 3;
+#[doc = " Memory allocated will be contiguous."]
+pub const hipDeviceMallocContiguous: u32 = 4;
+#[doc = " Memory is Mapped and Portable."]
+pub const hipHostRegisterDefault: u32 = 0;
+#[doc = " Memory is considered registered by all contexts."]
+pub const hipHostRegisterPortable: u32 = 1;
+#[doc = " Map the allocation into the address space for the current device. The device pointer\n can be obtained with #hipHostGetDevicePointer."]
+pub const hipHostRegisterMapped: u32 = 2;
+#[doc = " The passed memory pointer is treated as pointing to some memory-mapped I/O space, e.g.\n belonging to a third-party PCIe device, and it will be marked as non cache-coherent and\n contiguous."]
+pub const hipHostRegisterIoMemory: u32 = 4;
+#[doc = " This flag is ignored On AMD devices."]
+pub const hipHostRegisterReadOnly: u32 = 8;
+#[doc = " Coarse Grained host memory lock."]
+pub const hipExtHostRegisterCoarseGrained: u32 = 8;
+#[doc = " Map host memory onto extended fine grained access host memory pool when enabled.\n It is applicable on AMD devices, except for Navi4X, in Linux only."]
+pub const hipExtHostRegisterUncached: u32 = 2147483648;
+#[doc = " Automatically select between Spin and Yield."]
+pub const hipDeviceScheduleAuto: u32 = 0;
+#[doc = " Dedicate a CPU core to spin-wait. Provides lowest latency, but burns a CPU core and may\n consume more power."]
+pub const hipDeviceScheduleSpin: u32 = 1;
+#[doc = " Yield the CPU to the operating system when waiting. May increase latency, but lowers power\n and is friendlier to other threads in the system."]
+pub const hipDeviceScheduleYield: u32 = 2;
+pub const hipDeviceScheduleBlockingSync: u32 = 4;
+pub const hipDeviceScheduleMask: u32 = 7;
+pub const hipDeviceMapHost: u32 = 8;
+pub const hipDeviceLmemResizeToMax: u32 = 16;
+#[doc = " Indicates that the deviceFlags passed to hipInitDevice() are valid and should be applied."]
+pub const hipInitDeviceFlagsAreValid: u32 = 1;
+#[doc = " Default HIP array allocation flag."]
+pub const hipArrayDefault: u32 = 0;
+pub const hipArrayLayered: u32 = 1;
+pub const hipArraySurfaceLoadStore: u32 = 2;
+pub const hipArrayCubemap: u32 = 4;
+pub const hipArrayTextureGather: u32 = 8;
+pub const hipOccupancyDefault: u32 = 0;
+pub const hipOccupancyDisableCachingOverride: u32 = 1;
+pub const hipCooperativeLaunchMultiDeviceNoPreSync: u32 = 1;
+pub const hipCooperativeLaunchMultiDeviceNoPostSync: u32 = 2;
+#[doc = " AnyOrderLaunch of kernels."]
+pub const hipExtAnyOrderLaunch: u32 = 1;
+pub const hipStreamWaitValueGte: u32 = 0;
+pub const hipStreamWaitValueEq: u32 = 1;
+pub const hipStreamWaitValueAnd: u32 = 2;
+pub const hipStreamWaitValueNor: u32 = 3;
+pub const hipStreamWriteValueDefault: u32 = 0;
+pub const hipExtStreamWriteValueIncrement: u32 = 4096;
+pub const hipExtStreamWriteValueDecrement: u32 = 4097;
+pub const hipExternalMemoryDedicated: u32 = 1;
+#[doc = " Compile-time upper bound for the number of prefetch regions in\n @ref hipExtDynDataPrefetchConfig.  The actual device limit is queried at\n runtime via @ref hipDeviceAttributeMaxDynDataPrefetchRegions."]
+pub const HIP_EXT_DYN_DATA_PREFETCH_MAX_REGIONS: u32 = 2;
+#[doc = " This port activates when the kernel has finished executing."]
+pub const hipGraphKernelNodePortDefault: u32 = 0;
+#[doc = " This port activates when all blocks of the kernel have begun execution."]
+pub const hipGraphKernelNodePortLaunchCompletion: u32 = 2;
+#[doc = " This port activates when all blocks of the kernel have performed\n hipTriggerProgrammaticLaunchCompletion() or have terminated.\n It must be used with edge type hipGraphDependencyTypeProgrammatic."]
+pub const hipGraphKernelNodePortProgrammatic: u32 = 1;
 #[repr(i32)]
 #[doc = " hipJitOption"]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -747,15 +771,15 @@ pub enum hipLibraryOption_e {
     hipLibraryBinaryIsPreserved = 1,
 }
 pub use self::hipLibraryOption_e as hipLibraryOption;
-pub const HIP_SUCCESS: _bindgen_ty_1 = _bindgen_ty_1::HIP_SUCCESS;
-pub const HIP_ERROR_INVALID_VALUE: _bindgen_ty_1 = _bindgen_ty_1::HIP_ERROR_INVALID_VALUE;
-pub const HIP_ERROR_NOT_INITIALIZED: _bindgen_ty_1 = _bindgen_ty_1::HIP_ERROR_NOT_INITIALIZED;
-pub const HIP_ERROR_LAUNCH_OUT_OF_RESOURCES: _bindgen_ty_1 =
-    _bindgen_ty_1::HIP_ERROR_LAUNCH_OUT_OF_RESOURCES;
+pub const HIP_SUCCESS: _bindgen_ty_15 = _bindgen_ty_15::HIP_SUCCESS;
+pub const HIP_ERROR_INVALID_VALUE: _bindgen_ty_15 = _bindgen_ty_15::HIP_ERROR_INVALID_VALUE;
+pub const HIP_ERROR_NOT_INITIALIZED: _bindgen_ty_15 = _bindgen_ty_15::HIP_ERROR_NOT_INITIALIZED;
+pub const HIP_ERROR_LAUNCH_OUT_OF_RESOURCES: _bindgen_ty_15 =
+    _bindgen_ty_15::HIP_ERROR_LAUNCH_OUT_OF_RESOURCES;
 #[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum _bindgen_ty_1 {
+pub enum _bindgen_ty_15 {
     HIP_SUCCESS = 0,
     HIP_ERROR_INVALID_VALUE = 1,
     HIP_ERROR_NOT_INITIALIZED = 2,
@@ -1633,7 +1657,7 @@ pub enum hipError_t {
 }
 impl hipError_t {
     pub const fn is_err(self) -> bool {
-        matches!(self, Self::hipSuccess | Self::hipErrorNotReady)
+        !matches!(self, Self::hipSuccess | Self::hipErrorNotReady)
     }
 }
 #[cfg(any(rocm_ver = "6.0", feature = "dynamic-loading"))]
@@ -3647,6 +3671,7 @@ pub struct hipTextureDesc {
     pub minMipmapLevelClamp: f32,
     pub maxMipmapLevelClamp: f32,
 }
+pub type hipTexRef = *mut textureReference;
 #[doc = " An opaque value that represents a hip surface object"]
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -5244,15 +5269,52 @@ pub type hipStreamCallback_t = ::std::option::Option<
         userData: *mut ::core::ffi::c_void,
     ),
 >;
-#[repr(C)]
+#[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct __crt_locale_data {
-    pub _address: u8,
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum hipDataType {
+    HIP_R_32F = 0,
+    HIP_R_64F = 1,
+    HIP_R_16F = 2,
+    HIP_R_8I = 3,
+    HIP_C_32F = 4,
+    HIP_C_64F = 5,
+    HIP_C_16F = 6,
+    HIP_C_8I = 7,
+    HIP_R_8U = 8,
+    HIP_C_8U = 9,
+    HIP_R_32I = 10,
+    HIP_C_32I = 11,
+    HIP_R_32U = 12,
+    HIP_C_32U = 13,
+    HIP_R_16BF = 14,
+    HIP_C_16BF = 15,
+    HIP_R_4I = 16,
+    HIP_C_4I = 17,
+    HIP_R_4U = 18,
+    HIP_C_4U = 19,
+    HIP_R_16I = 20,
+    HIP_C_16I = 21,
+    HIP_R_16U = 22,
+    HIP_C_16U = 23,
+    HIP_R_64I = 24,
+    HIP_C_64I = 25,
+    HIP_R_64U = 26,
+    HIP_C_64U = 27,
+    HIP_R_8F_E4M3 = 28,
+    HIP_R_8F_E5M2 = 29,
+    HIP_R_8F_UE8M0 = 30,
+    HIP_R_6F_E2M3 = 31,
+    HIP_R_6F_E3M2 = 32,
+    HIP_R_4F_E2M1 = 33,
+    HIP_R_8F_E4M3_FNUZ = 1000,
+    HIP_R_8F_E5M2_FNUZ = 1001,
 }
-#[repr(C)]
+#[repr(i32)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone)]
-pub struct __crt_multibyte_data {
-    pub _address: u8,
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum hipLibraryPropertyType {
+    HIP_LIBRARY_MAJOR_VERSION = 0,
+    HIP_LIBRARY_MINOR_VERSION = 1,
+    HIP_LIBRARY_PATCH_LEVEL = 2,
 }

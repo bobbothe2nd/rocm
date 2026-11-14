@@ -1,4 +1,4 @@
-//! All HIP/HIPRTC functions and types as of ROCm 7.15.
+//! All HIP/HIPRTC functions and types as of ROCm 10.1.
 
 mod funcs;
 
@@ -11,10 +11,6 @@ pub use types::*;
 mod vecty;
 
 pub use vecty::*;
-
-mod libty;
-
-pub use libty::*;
 
 mod consts;
 

@@ -20,7 +20,7 @@ stable_auto = { version = "0.2", optional = true }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["rocblas", "dynamic-loading", "hipblas"]
+default = ["dynamic-loading", "hip"]
 
 # ROCm libraries
 hip = ["rocm-sys/hip"]

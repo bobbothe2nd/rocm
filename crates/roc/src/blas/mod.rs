@@ -21,7 +21,7 @@ pub trait Axpy<Alpha, X, Y>: RocHandle {
         y: *mut Y,
         incy: u64,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Axpy_64;
 }
 
@@ -42,7 +42,7 @@ pub trait Asum<X, Y>: RocHandle {
         incx: u64,
         result: *mut Y,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Asum_64;
 }
 
@@ -67,7 +67,7 @@ pub trait Dot<X, Y, R>: RocHandle {
         incy: u64,
         result: *mut R,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Dot_64;
 }
 
@@ -106,7 +106,7 @@ pub trait Gemm<Alpha, A, B, Beta, C>: RocHandle {
         c: *mut C,
         ldc: u64,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Gemm_64;
 }
 
@@ -141,7 +141,7 @@ pub trait Gemv<Alpha, A, X, Beta, Y>: RocHandle {
         y: *mut Y,
         incy: u64,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Gemv_64;
 }
 
@@ -162,7 +162,7 @@ pub trait Nrm2<X, R>: RocHandle {
         incx: u64,
         result: *mut R,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Gemv_64;
 }
 
@@ -183,7 +183,7 @@ pub trait Scal<Alpha, X>: RocHandle {
         x: *mut X,
         incx: u64,
     ) -> Result<(), Self::Error>
-    where 
+    where
         Self: Scal_64;
 }
 

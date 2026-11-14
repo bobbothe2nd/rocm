@@ -23,7 +23,7 @@ pub trait EventSync {
     /// Synchronizes the buffer up to it's last `latesync` or usage.
     ///
     /// These are logically equivalent (other than edge cases and errors):
-    /// 
+    ///
     /// ```no_run
     /// # #[cfg(feature = "dynamic-loading")] {
     /// # use roc::hip::*;
@@ -35,7 +35,7 @@ pub trait EventSync {
     /// ```
     ///
     /// and
-    /// 
+    ///
     /// ```no_run
     /// # #[cfg(feature = "dynamic-loading")] {
     /// # use roc::hip::*;
@@ -43,7 +43,7 @@ pub trait EventSync {
     /// stream.sync().unwrap();
     /// # }
     /// ```
-    /// 
+    ///
     /// assuming `buf` was allocated on `stream`.
     fn sync(&self) -> Result<(), super::HipError>;
 }

@@ -1,8 +1,11 @@
 use crate::hip::{
-    HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound}, stream::HipStream,
+    HipError,
+    event::HipEvent,
+    memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound},
+    stream::HipStream,
 };
 use alloc::sync::Arc;
-use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, };
+use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop};
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemsetD8};
 
 /// Handle to an allocation on the GPU
@@ -136,7 +139,7 @@ impl Buffer {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Src: CopyTo<Self>,
     {
         super::copy(src, self, src_off, dst_off, len)
@@ -150,7 +153,7 @@ impl Buffer {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: CopyTo<Dst>,
         Dst: DevPtr,
     {
@@ -165,7 +168,7 @@ impl Buffer {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Src: CopyTo<Self> + StreamBound,
     {
         super::copy_async(src, self, src_off, dst_off, len)
@@ -179,7 +182,7 @@ impl Buffer {
         dst_off: u32,
         len: u32,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: CopyTo<Dst>,
         Dst: DevPtr + StreamBound,
     {

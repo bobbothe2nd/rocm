@@ -81,7 +81,8 @@ fn main() {
 
     let mut out_host = stream.alloc_host(BYTES as u32).unwrap();
 
-    out.copy_to_async(&mut out_host, 0, 0, BYTES as u32).unwrap();
+    out.copy_to_async(&mut out_host, 0, 0, BYTES as u32)
+        .unwrap();
 
     stream.sync().unwrap();
 

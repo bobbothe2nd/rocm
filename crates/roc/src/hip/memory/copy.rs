@@ -1,6 +1,14 @@
-use rocm_sys::hip::{hipMemcpyDtoD, hipMemcpyDtoDAsync, hipMemcpyDtoH, hipMemcpyDtoHAsync, hipMemcpyHtoD, hipMemcpyHtoDAsync};
+use rocm_sys::hip::{
+    hipMemcpyDtoD, hipMemcpyDtoDAsync, hipMemcpyDtoH, hipMemcpyDtoHAsync, hipMemcpyHtoD,
+    hipMemcpyHtoDAsync,
+};
 
-use crate::hip::{HipError, device::Device, memory::{Buffer, EventSync, HostBuffer, HostSlice, HostSliceMut}, stream::HipStream};
+use crate::hip::{
+    HipError,
+    device::Device,
+    memory::{Buffer, EventSync, HostBuffer, HostSlice, HostSliceMut},
+    stream::HipStream,
+};
 
 #[inline]
 pub fn copy<Src, Dst>(
@@ -10,13 +18,13 @@ pub fn copy<Src, Dst>(
     dst_off: u32,
     len: u32,
 ) -> Result<(), HipError>
-where 
+where
     Src: CopyTo<Dst>,
     Dst: DevPtr,
 {
     if src_off
-            .checked_add(len)
-            .is_none_or(|end| end > src.size() as u32)
+        .checked_add(len)
+        .is_none_or(|end| end > src.size() as u32)
         || dst_off
             .checked_add(len)
             .is_none_or(|end| end > dst.size() as u32)
@@ -25,9 +33,7 @@ where
         return Err(HipError::InvalidValue);
     }
 
-    unsafe {
-        Src::copy(src, dst, src_off, dst_off, len)
-    }
+    unsafe { Src::copy(src, dst, src_off, dst_off, len) }
 }
 
 #[inline]
@@ -38,13 +44,13 @@ pub fn copy_async<Src, Dst>(
     dst_off: u32,
     len: u32,
 ) -> Result<(), HipError>
-where 
-    Src: CopyTo<Dst> +StreamBound,
+where
+    Src: CopyTo<Dst> + StreamBound,
     Dst: DevPtr + StreamBound,
 {
     let stream = src.stream();
 
-    if !stream.same_as(&dst.stream())
+    if !stream.same_as(dst.stream())
         || src_off
             .checked_add(len)
             .is_none_or(|end| end > src.size() as u32)
@@ -114,7 +120,9 @@ impl DevPtr for Buffer {
 
     #[inline(always)]
     fn dev(&self) -> Device {
-        self.stream.get_dev().expect("valid Stream should have device")
+        self.stream
+            .get_dev()
+            .expect("valid Stream should have device")
     }
 }
 
@@ -131,7 +139,9 @@ impl DevPtr for HostBuffer {
 
     #[inline(always)]
     fn dev(&self) -> Device {
-        self.stream.get_dev().expect("valid Stream should have device")
+        self.stream
+            .get_dev()
+            .expect("valid Stream should have device")
     }
 }
 
@@ -148,7 +158,9 @@ impl DevPtr for HostSlice<'_> {
 
     #[inline(always)]
     fn dev(&self) -> Device {
-        self.stream.get_dev().expect("valid Stream should have device")
+        self.stream
+            .get_dev()
+            .expect("valid Stream should have device")
     }
 }
 
@@ -165,7 +177,9 @@ impl DevPtr for HostSliceMut<'_> {
 
     #[inline(always)]
     fn dev(&self) -> Device {
-        self.stream.get_dev().expect("valid Stream should have device")
+        self.stream
+            .get_dev()
+            .expect("valid Stream should have device")
     }
 }
 
@@ -186,7 +200,7 @@ pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
         len: u32,
         stream: &HipStream,
     ) -> Result<(), HipError>
-    where 
+    where
         Self: StreamBound,
         Dst: StreamBound;
 }
@@ -204,7 +218,7 @@ unsafe impl CopyTo<Buffer> for HostSlice<'_> {
             try_err!(
                 hipMemcpyHtoD(
                     dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
+                    src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                 ),
                 Ok(())
@@ -222,14 +236,12 @@ unsafe impl CopyTo<Buffer> for HostSlice<'_> {
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
-            try_err!(
-                hipMemcpyHtoDAsync(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    stream.raw,
-                ),
-            )
+            try_err!(hipMemcpyHtoDAsync(
+                dst.ptr.byte_add(dst_off as usize).cast(),
+                src.ptr.byte_add(src_off as usize).cast(),
+                len as usize,
+                stream.raw,
+            ),)
         }
 
         dst.latesync()?;
@@ -270,14 +282,12 @@ unsafe impl CopyTo<Buffer> for HostSliceMut<'_> {
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
-            try_err!(
-                hipMemcpyHtoDAsync(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    stream.raw,
-                ),
-            )
+            try_err!(hipMemcpyHtoDAsync(
+                dst.ptr.byte_add(dst_off as usize).cast(),
+                src.as_ref().ptr.byte_add(src_off as usize).cast(),
+                len as usize,
+                stream.raw,
+            ),)
         }
 
         dst.latesync()?;
@@ -318,14 +328,12 @@ unsafe impl CopyTo<Buffer> for HostBuffer {
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
-            try_err!(
-                hipMemcpyHtoDAsync(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.as_ref().ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    stream.raw,
-                ),
-            )
+            try_err!(hipMemcpyHtoDAsync(
+                dst.ptr.byte_add(dst_off as usize).cast(),
+                src.as_ref().ptr.byte_add(src_off as usize).cast(),
+                len as usize,
+                stream.raw,
+            ),)
         }
 
         dst.latesync()?;
@@ -347,7 +355,7 @@ unsafe impl CopyTo<HostSliceMut<'_>> for Buffer {
         unsafe {
             try_err!(
                 hipMemcpyDtoH(
-                    dst.as_mut().ptr.byte_add(dst_off as usize).cast(),
+                    dst.ptr.byte_add(dst_off as usize).cast(),
                     src.ptr.byte_add(src_off as usize).cast(),
                     len as usize,
                 ),
@@ -366,14 +374,12 @@ unsafe impl CopyTo<HostSliceMut<'_>> for Buffer {
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
-            try_err!(
-                hipMemcpyDtoHAsync(
-                    dst.as_mut().ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    stream.raw,
-                ),
-            )
+            try_err!(hipMemcpyDtoHAsync(
+                dst.ptr.byte_add(dst_off as usize).cast(),
+                src.ptr.byte_add(src_off as usize).cast(),
+                len as usize,
+                stream.raw,
+            ),)
         }
 
         dst.latesync()?;
@@ -414,14 +420,12 @@ unsafe impl CopyTo<HostBuffer> for Buffer {
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
-            try_err!(
-                hipMemcpyDtoHAsync(
-                    dst.as_mut().ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    stream.raw,
-                ),
-            )
+            try_err!(hipMemcpyDtoHAsync(
+                dst.as_mut().ptr.byte_add(dst_off as usize).cast(),
+                src.ptr.byte_add(src_off as usize).cast(),
+                len as usize,
+                stream.raw,
+            ),)
         }
 
         dst.latesync()?;
@@ -462,14 +466,12 @@ unsafe impl CopyTo<Self> for Buffer {
         stream: &HipStream,
     ) -> Result<(), HipError> {
         unsafe {
-            try_err!(
-                hipMemcpyDtoDAsync(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    stream.raw,
-                ),
-            )
+            try_err!(hipMemcpyDtoDAsync(
+                dst.ptr.byte_add(dst_off as usize).cast(),
+                src.ptr.byte_add(src_off as usize).cast(),
+                len as usize,
+                stream.raw,
+            ),)
         }
 
         dst.latesync()?;

@@ -12,7 +12,10 @@ use rocm_sys::hip::{
     hipGetDevicePropertiesR0600, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
 };
 
-use crate::{RocHandle, hip::{HipError, gfx::GfxVersion, memory::MemPool}};
+use crate::{
+    RocHandle,
+    hip::{HipError, gfx::GfxVersion, memory::MemPool},
+};
 
 #[repr(transparent)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
