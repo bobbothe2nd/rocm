@@ -88,12 +88,6 @@ impl HipSlice<'_> {
     }
 }
 
-impl Drop for HipSlice<'_> {
-    fn drop(&mut self) {
-        log_if_err!("failed to synchronize HipSlice": self.event.sync());
-    }
-}
-
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
@@ -221,12 +215,6 @@ impl HipSliceMut<'_> {
         self.latesync()?;
 
         Ok(())
-    }
-}
-
-impl Drop for HipSliceMut<'_> {
-    fn drop(&mut self) {
-        log_if_err!("failed to synchronize HipSliceMut": self.event.sync());
     }
 }
 
