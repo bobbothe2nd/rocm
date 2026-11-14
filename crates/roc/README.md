@@ -1,6 +1,6 @@
 # `roc`
 
-Pure-Rust safe ROCm wrappers around `rocm-sys` and `rocm-core`, using `rocm-build` to find available libraries.
+Pure-Rust safe ROCm wrappers around `rocm-sys` and `rocm-include`, using `rocm-build` to find available libraries.
 
 ## Disclaimer
 
