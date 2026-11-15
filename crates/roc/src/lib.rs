@@ -77,6 +77,9 @@ pub trait RocHandle {
     type Error;
 }
 
+#[doc(hidden)]
+pub mod auxiliary;
+
 #[cfg(feature = "blas")]
 pub mod blas;
 

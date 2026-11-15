@@ -1,8 +1,11 @@
-use crate::hip::{
-    HipError,
-    event::HipEvent,
-    memory::{CopyTo, DevPtr, StreamBound},
-    stream::HipStream,
+use crate::{
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        HipError,
+        event::HipEvent,
+        memory::{CopyTo, DevPtr, StreamBound},
+        stream::HipStream,
+    },
 };
 use alloc::sync::Arc;
 use core::{
@@ -10,7 +13,7 @@ use core::{
     hint::unreachable_unchecked,
     marker::PhantomData,
     mem::ManuallyDrop,
-    ops::{Bound, Deref, DerefMut, RangeBounds},
+    ops::{Deref, DerefMut, RangeBounds},
     slice,
 };
 use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister};
@@ -32,6 +35,23 @@ unsafe impl Send for HostSlice<'_> {}
 unsafe impl Sync for HostSlice<'_> {}
 
 impl<'a> HostSlice<'a> {
+    pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
+        unsafe {
+            Self::from_raw_parts(
+                self.ptr.add(start),
+                size,
+                self.premapped,
+                &self.stream,
+                &self.event,
+            )
+        }
+    }
+
     /// Maps the ptr and return a handle
     pub fn new(ptr: &'a [u8], stream: &Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_ptr() as *mut _, ptr.len(), 0) };
@@ -53,7 +73,7 @@ impl<'a> HostSlice<'a> {
 
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        ptr: *mut u8,
+        ptr: *const u8,
         size: usize,
         premapped: bool,
         stream: &Arc<HipStream>,
@@ -200,6 +220,23 @@ unsafe impl Send for HostSliceMut<'_> {}
 unsafe impl Sync for HostSliceMut<'_> {}
 
 impl<'a> HostSliceMut<'a> {
+    pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
+        unsafe {
+            Self::from_raw_parts(
+                self.ptr.add(start),
+                size,
+                self.premapped,
+                &self.stream,
+                &self.event,
+            )
+        }
+    }
+
     /// Maps the ptr and return a handle
     pub fn new(ptr: &'a mut [u8], stream: &Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_mut_ptr().cast(), ptr.len(), 0) };
@@ -461,18 +498,11 @@ impl HostBuffer {
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> HostSlice<'_> {
-        let start = match range.start_bound() {
-            Bound::Unbounded => 0,
-            Bound::Excluded(start) => start + 1,
-            Bound::Included(start) => *start,
-        };
-        let end = match range.end_bound() {
-            Bound::Unbounded => self.size,
-            Bound::Excluded(end) => end - 1,
-            Bound::Included(end) => *end,
-        };
-        let size = end - start;
-
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
         unsafe {
             HostSlice::from_raw_parts(
                 self.ptr.add(start),
@@ -485,18 +515,11 @@ impl HostBuffer {
     }
 
     pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> HostSliceMut<'_> {
-        let start = match range.start_bound() {
-            Bound::Unbounded => 0,
-            Bound::Excluded(start) => start + 1,
-            Bound::Included(start) => *start,
-        };
-        let end = match range.end_bound() {
-            Bound::Unbounded => self.size,
-            Bound::Excluded(end) => end - 1,
-            Bound::Included(end) => *end,
-        };
-        let size = end - start;
-
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
         unsafe {
             HostSliceMut::from_raw_parts(
                 self.ptr.add(start),

@@ -1,16 +1,14 @@
-use crate::hip::{
-    HipError,
-    event::HipEvent,
-    memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound},
-    stream::HipStream,
+use crate::{
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        HipError,
+        event::HipEvent,
+        memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound},
+        stream::HipStream,
+    },
 };
 use alloc::sync::Arc;
-use core::{
-    cell::UnsafeCell,
-    marker::PhantomData,
-    mem::ManuallyDrop,
-    ops::{Bound, RangeBounds},
-};
+use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::RangeBounds};
 use rocm_sys::hip::{hipFree, hipMalloc, hipMemsetD8};
 
 #[repr(C)]
@@ -28,10 +26,19 @@ unsafe impl Send for HipSlice<'_> {}
 unsafe impl Sync for HipSlice<'_> {}
 
 impl HipSlice<'_> {
+    pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
+        unsafe { Self::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event) }
+    }
+
     /// Constructs a GPU buffer from a raw pointer, size, stream, and event
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        ptr: *mut u8,
+        ptr: *const u8,
         size: usize,
         stream: &Arc<HipStream>,
         event: &HipEvent,
@@ -103,6 +110,15 @@ unsafe impl Send for HipSliceMut<'_> {}
 unsafe impl Sync for HipSliceMut<'_> {}
 
 impl HipSliceMut<'_> {
+    pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
+        unsafe { Self::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event) }
+    }
+
     /// Constructs a GPU buffer from a raw pointer, size, stream, and event
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
@@ -310,34 +326,20 @@ impl HipBuffer {
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> HipSlice<'_> {
-        let start = match range.start_bound() {
-            Bound::Unbounded => 0,
-            Bound::Excluded(start) => start + 1,
-            Bound::Included(start) => *start,
-        };
-        let end = match range.end_bound() {
-            Bound::Unbounded => self.size,
-            Bound::Excluded(end) => end - 1,
-            Bound::Included(end) => *end,
-        };
-        let size = end - start;
-
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
         unsafe { HipSlice::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event) }
     }
 
     pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> HipSliceMut<'_> {
-        let start = match range.start_bound() {
-            Bound::Unbounded => 0,
-            Bound::Excluded(start) => start + 1,
-            Bound::Included(start) => *start,
-        };
-        let end = match range.end_bound() {
-            Bound::Unbounded => self.size,
-            Bound::Excluded(end) => end - 1,
-            Bound::Included(end) => *end,
-        };
-        let size = end - start;
-
+        let ResolvedRange {
+            start,
+            size,
+            end: _,
+        } = resolve_range(range, self.size);
         unsafe { HipSliceMut::from_raw_parts(self.ptr.add(start), size, &self.stream, &self.event) }
     }
 

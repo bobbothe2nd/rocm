@@ -28,7 +28,8 @@ pub struct Device {
 impl Device {
     /// Recreates the current device
     pub fn current() -> Result<Self, HipError> {
-        let raw: Result<_, HipError> = unsafe { wrap_sys_res!(|dev: hipDevice_t| hipGetDevice(dev.as_mut_ptr().cast())) };
+        let raw: Result<_, HipError> =
+            unsafe { wrap_sys_res!(|dev: hipDevice_t| hipGetDevice(dev.as_mut_ptr().cast())) };
         Self::create(raw?)
     }
 
@@ -41,9 +42,7 @@ impl Device {
             return Err(HipError::InvalidDevice);
         }
 
-        unsafe {
-            Self::from_raw(dev)
-        }
+        unsafe { Self::from_raw(dev) }
     }
 
     /// Converts the device into the raw one used by `rocm-sys`.
@@ -61,10 +60,19 @@ impl Device {
     /// Constructs a safe device from the raw one used by `rocm-sys`.
     #[inline(always)]
     pub unsafe fn from_raw(dev: hipDevice_t) -> Result<Self, HipError> {
-        let async_alloc_attr: Result<i32, HipError> = unsafe { wrap_sys_res!(|val| hipDeviceGetAttribute(val.as_mut_ptr(), hipDeviceAttribute_t::hipDeviceAttributeMemoryPoolsSupported, dev)) };
+        let async_alloc_attr: Result<i32, HipError> = unsafe {
+            wrap_sys_res!(|val| hipDeviceGetAttribute(
+                val.as_mut_ptr(),
+                hipDeviceAttribute_t::hipDeviceAttributeMemoryPoolsSupported,
+                dev
+            ))
+        };
         let has_async_alloc = async_alloc_attr.is_ok_and(|x| x > 0);
 
-        Ok(Self { dev, has_async_alloc })
+        Ok(Self {
+            dev,
+            has_async_alloc,
+        })
     }
 
     /// Sets the current default device

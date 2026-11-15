@@ -68,10 +68,7 @@ impl HipStream {
         let dev_raw: Result<i32, HipError> =
             unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(raw, dev.as_mut_ptr())) };
         let dev = unsafe { Device::from_raw(dev_raw?)? };
-        Ok(Arc::new(Self {
-            raw,
-            dev,
-        }))
+        Ok(Arc::new(Self { raw, dev }))
     }
 
     pub unsafe fn copy_htod(
