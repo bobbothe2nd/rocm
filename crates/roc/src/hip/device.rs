@@ -23,6 +23,8 @@ use crate::{
 pub struct Device {
     dev: hipDevice_t,
     pub(crate) has_async_alloc: bool,
+    pub(crate) concurrent_managed_access: bool,
+    pub(crate) has_managed_memory: bool,
 }
 
 impl Device {
@@ -60,18 +62,27 @@ impl Device {
     /// Constructs a safe device from the raw one used by `rocm-sys`.
     #[inline(always)]
     pub unsafe fn from_raw(dev: hipDevice_t) -> Result<Self, HipError> {
-        let async_alloc_attr: Result<i32, HipError> = unsafe {
-            wrap_sys_res!(|val| hipDeviceGetAttribute(
-                val.as_mut_ptr(),
-                hipDeviceAttribute_t::hipDeviceAttributeMemoryPoolsSupported,
-                dev
-            ))
-        };
-        let has_async_alloc = async_alloc_attr.is_ok_and(|x| x > 0);
+        fn has_attr(attr: hipDeviceAttribute_t, dev: hipDevice_t) -> Result<bool, HipError> {
+            unsafe { wrap_sys_res!(|val| hipDeviceGetAttribute(val.as_mut_ptr(), attr, dev,)) }
+                .map(|x| x > 0)
+        }
+
+        let has_async_alloc = has_attr(
+            hipDeviceAttribute_t::hipDeviceAttributeMemoryPoolsSupported,
+            dev,
+        )?;
+        let concurrent_managed_access = has_attr(
+            hipDeviceAttribute_t::hipDeviceAttributeConcurrentManagedAccess,
+            dev,
+        )?;
+        let has_managed_memory =
+            has_attr(hipDeviceAttribute_t::hipDeviceAttributeManagedMemory, dev)?;
 
         Ok(Self {
             dev,
             has_async_alloc,
+            concurrent_managed_access,
+            has_managed_memory,
         })
     }
 

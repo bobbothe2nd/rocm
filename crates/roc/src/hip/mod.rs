@@ -15,7 +15,6 @@ pub mod graph;
 pub mod memory;
 pub mod stream;
 
-#[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]
 pub mod module;
 
 use rocm_sys::hip::hipError_t;

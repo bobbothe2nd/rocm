@@ -10,7 +10,8 @@ extern crate std;
 macro_rules! wrap_sys_res {
     (|$val:ident$(:$ty:ty)?| $expr:expr) => {{
         let mut $val$(: ::core::mem::MaybeUninit<$ty>)? = ::core::mem::MaybeUninit::uninit();
-        Ok(try_err!($expr, $val.assume_init()))
+        let res = $crate::MapToErr::map_to_err($expr);
+        res.map(|_| $val.assume_init())
     }};
 }
 
@@ -35,15 +36,6 @@ macro_rules! err_ty {
             }
         }
 
-        impl $err {
-            pub const fn wrap(err: $sys_err) -> Result<(), Self> {
-                match err {
-                    $sys_err::$success => Ok(()),
-                    err => Err(unsafe { ::core::mem::transmute::<$sys_err, Self>(err) }),
-                }
-            }
-        }
-
         impl ::core::error::Error for $err {}
 
         impl ::core::convert::From<$sys_err> for $err {
@@ -61,7 +53,23 @@ macro_rules! err_ty {
             }
         }
 
+        impl $crate::MapToErr<$err> for $sys_err {
+            fn map_to_err(self) -> Result<(), $err> {
+                match self {
+                    Self::$success => Ok(()),
+                    err => Err(err.into()),
+                }
+            }
+        }
+
         impl $err {
+            pub const fn wrap(err: $sys_err) -> Result<(), Self> {
+                match err {
+                    $sys_err::$success => Ok(()),
+                    err => Err(unsafe { ::core::mem::transmute::<$sys_err, Self>(err) }),
+                }
+            }
+
             pub fn log(self, msg: &::core::primitive::str) {
                 let _ = msg;
                 #[cfg(feature = "log")]
@@ -71,6 +79,10 @@ macro_rules! err_ty {
             }
         }
     };
+}
+
+pub trait MapToErr<E> {
+    fn map_to_err(self) -> Result<(), E>;
 }
 
 pub trait RocHandle {

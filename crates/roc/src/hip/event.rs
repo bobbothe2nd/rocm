@@ -96,7 +96,7 @@ bitflags! {
         const BLOCKING_SYNC = 1;
         /// Disable event's capability to record timing information. May improve performance.
         const DISABLE_TIMING = 2;
-        /// Event can support IPC. hipEventDisableTiming also must be set.
+        /// Event can support IPC. [`Self::DISABLE_TIMING`] also must be set.
         const INTERPROCESS = 4;
     }
 }

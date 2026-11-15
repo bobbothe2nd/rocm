@@ -14,6 +14,7 @@ use core::{
     marker::PhantomData,
     mem::ManuallyDrop,
     ops::{Deref, DerefMut, RangeBounds},
+    ptr::write_bytes,
     slice,
 };
 use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister};
@@ -26,6 +27,7 @@ pub struct HostSlice<'a> {
     pub(crate) ptr: *const u8,
     pub(crate) size: usize,
     pub(crate) premapped: bool,
+    pub(crate) is_init: bool,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     _marker: PhantomData<&'a UnsafeCell<[u8]>>,
@@ -48,6 +50,7 @@ impl<'a> HostSlice<'a> {
                 self.premapped,
                 &self.stream,
                 &self.event,
+                self.is_init,
             )
         }
     }
@@ -65,6 +68,7 @@ impl<'a> HostSlice<'a> {
             ptr: ptr.as_ptr(),
             size: ptr.len() as usize,
             premapped,
+            is_init: true,
             event: ManuallyDrop::new(HipEvent::create(None)?),
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             _marker: PhantomData,
@@ -78,15 +82,34 @@ impl<'a> HostSlice<'a> {
         premapped: bool,
         stream: &Arc<HipStream>,
         event: &HipEvent,
+        is_init: bool,
     ) -> Self {
         Self {
             ptr,
             size,
+            premapped,
+            is_init,
             event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
-            premapped,
             _marker: PhantomData,
         }
+    }
+
+    #[inline(always)]
+    pub const fn expect_init(&self, msg: Option<&str>) {
+        assert!(
+            self.is_init,
+            "{}",
+            match msg {
+                Some(msg) => msg,
+                None => "expected init HostSlice, encountered uninit",
+            }
+        );
+    }
+
+    #[inline(always)]
+    pub const unsafe fn assume_init(&mut self) {
+        self.is_init = true;
     }
 
     #[inline(always)]
@@ -95,6 +118,7 @@ impl<'a> HostSlice<'a> {
     }
 
     pub fn as_slice(&self) -> &[u8] {
+        self.expect_init(None);
         log_if_err!("failed to synchronize HostSlice": self.event.sync());
         unsafe { slice::from_raw_parts(self.ptr, self.size as usize) }
     }
@@ -211,6 +235,7 @@ pub struct HostSliceMut<'a> {
     pub(crate) ptr: *mut u8,
     pub(crate) size: usize,
     pub(crate) premapped: bool,
+    pub(crate) is_init: bool,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     _marker: PhantomData<&'a mut UnsafeCell<[u8]>>,
@@ -233,6 +258,7 @@ impl<'a> HostSliceMut<'a> {
                 self.premapped,
                 &self.stream,
                 &self.event,
+                self.is_init,
             )
         }
     }
@@ -250,6 +276,7 @@ impl<'a> HostSliceMut<'a> {
             ptr: ptr.as_mut_ptr(),
             size: ptr.len() as usize,
             premapped,
+            is_init: true,
             event: ManuallyDrop::new(HipEvent::create(None)?),
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             _marker: PhantomData,
@@ -263,11 +290,13 @@ impl<'a> HostSliceMut<'a> {
         premapped: bool,
         stream: &Arc<HipStream>,
         event: &HipEvent,
+        is_init: bool,
     ) -> Self {
         Self {
             ptr,
             size,
             premapped,
+            is_init,
             event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             _marker: PhantomData,
@@ -279,12 +308,31 @@ impl<'a> HostSliceMut<'a> {
         self.ptr
     }
 
+    #[inline(always)]
+    pub const fn expect_init(&self, msg: Option<&str>) {
+        assert!(
+            self.is_init,
+            "{}",
+            match msg {
+                Some(msg) => msg,
+                None => "expected init HostSliceMut, encountered uninit",
+            }
+        );
+    }
+
+    #[inline(always)]
+    pub const unsafe fn assume_init(&mut self) {
+        self.is_init = true;
+    }
+
     pub fn as_slice(&self) -> &[u8] {
+        self.expect_init(None);
         log_if_err!("failed to synchronize HostSliceMut": self.event.sync());
         unsafe { slice::from_raw_parts(self.ptr, self.size as usize) }
     }
 
     pub fn as_mut_slice(&mut self) -> &mut [u8] {
+        self.expect_init(None);
         log_if_err!("failed to synchronize HostSliceMut": self.event.sync());
         unsafe { slice::from_raw_parts_mut(self.ptr, self.size as usize) }
     }
@@ -372,6 +420,12 @@ impl<'a> HostSliceMut<'a> {
     {
         super::copy_async(self, dst, src_off, dst_off, len)
     }
+
+    pub fn memset(&self, byte: u8) {
+        unsafe {
+            write_bytes(self.ptr, byte, self.size);
+        }
+    }
 }
 
 impl Drop for HostSliceMut<'_> {
@@ -408,6 +462,7 @@ pub struct HostBuffer {
     pub(crate) ptr: *mut u8,
     pub(crate) size: usize,
     pub(crate) is_mapped: bool,
+    pub(crate) is_init: bool,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
     _marker: PhantomData<UnsafeCell<[u8]>>,
@@ -431,9 +486,21 @@ impl HipStream {
             ptr,
             size,
             is_mapped: true,
+            is_init: false,
             stream: self.clone(),
             event: HipEvent::create(None)?,
             _marker: PhantomData,
+        })
+    }
+
+    /// Allocates `size` bytes and makes it accessible from all HIP devices
+    pub fn alloc_host_zeroed(self: &Arc<Self>, size: usize) -> Result<HostBuffer, HipError> {
+        self.alloc_host(size).map(|mut buf| {
+            buf.memset(0);
+            unsafe {
+                buf.assume_init();
+            }
+            buf
         })
     }
 
@@ -441,10 +508,12 @@ impl HipStream {
     pub fn alloc_host_init(self: &Arc<Self>, ptr: &[u8]) -> Result<HostBuffer, HipError> {
         let size = ptr.len();
 
-        let buf = self.alloc_host(size as usize)?;
+        let mut buf = self.alloc_host(size as usize)?;
 
         unsafe {
             buf.ptr.copy_from_nonoverlapping(ptr.as_ptr(), size);
+
+            buf.assume_init();
         }
 
         Ok(buf)
@@ -475,11 +544,29 @@ impl HostBuffer {
         Self {
             ptr,
             size,
-            is_mapped: false,
+            is_mapped: true,
+            is_init: true,
             stream,
             event,
             _marker: PhantomData,
         }
+    }
+
+    #[inline(always)]
+    pub const fn expect_init(&self, msg: Option<&str>) {
+        assert!(
+            self.is_init,
+            "{}",
+            match msg {
+                Some(msg) => msg,
+                None => "expected init HostBuffer, encountered uninit",
+            }
+        );
+    }
+
+    #[inline(always)]
+    pub const unsafe fn assume_init(&mut self) {
+        self.is_init = true;
     }
 
     #[inline(always)]
@@ -488,11 +575,13 @@ impl HostBuffer {
     }
 
     pub fn as_slice(&self) -> &[u8] {
+        self.expect_init(None);
         log_if_err!("failed to synchronize HostBuffer": self.event.sync());
         unsafe { slice::from_raw_parts(self.ptr, self.size as usize) }
     }
 
     pub fn as_mut_slice(&mut self) -> &mut [u8] {
+        self.expect_init(None);
         log_if_err!("failed to synchronize HostBuffer": self.event.sync());
         unsafe { slice::from_raw_parts_mut(self.ptr, self.size as usize) }
     }
@@ -510,6 +599,7 @@ impl HostBuffer {
                 self.is_mapped,
                 &self.stream,
                 &self.event,
+                self.is_init,
             )
         }
     }
@@ -527,6 +617,7 @@ impl HostBuffer {
                 self.is_mapped,
                 &self.stream,
                 &self.event,
+                self.is_init,
             )
         }
     }
@@ -556,6 +647,12 @@ impl HostBuffer {
     /// The buffer must never be deallocated again or dropped and the buffer can't be used again.
     pub unsafe fn dealloc_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipHostFree(self.ptr.cast()), Ok(())) }
+    }
+
+    pub fn memset(&self, byte: u8) {
+        unsafe {
+            write_bytes(self.ptr, byte, self.size);
+        }
     }
 }
 
