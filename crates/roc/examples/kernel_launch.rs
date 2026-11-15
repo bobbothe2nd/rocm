@@ -3,7 +3,7 @@ use core::mem::transmute;
 use roc::{
     hip::{
         device::Device,
-        module::LaunchConfig,
+        module::LaunchShape,
         stream::{HipStream, StreamKind},
     },
     hiprtc::program::{CompileOptions, Hsaco},
@@ -45,24 +45,18 @@ fn main() {
 
     let stream = HipStream::create(StreamKind::Default).unwrap();
 
-    let mut out = stream.alloc(BYTES).unwrap();
+    let mut out = stream.alloc_unified(BYTES, true).unwrap();
     let mut a = stream.alloc(BYTES).unwrap();
     let mut b = stream.alloc(BYTES).unwrap();
 
     {
-        let a_host = {
-            let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
+        let a_buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
+        let a_host = stream.host_slice(&a_buf).unwrap();
+        let b_buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
+        let b_host = stream.host_slice(&b_buf).unwrap();
 
-            stream.alloc_host_init(&buf).unwrap()
-        };
-        let b_host = {
-            let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
-
-            stream.alloc_host_init(&buf).unwrap()
-        };
-
-        a.copy_from_async(&a_host, 0, 0, BYTES as u32).unwrap();
-        b.copy_from_async(&b_host, 0, 0, BYTES as u32).unwrap();
+        a.copy_from_async(&a_host, 0, 0, BYTES).unwrap();
+        b.copy_from_async(&b_host, 0, 0, BYTES).unwrap();
     }
 
     let mut n = LEN as i32;
@@ -74,7 +68,7 @@ fn main() {
         (&raw mut n).cast(),
     ];
 
-    let conf = LaunchConfig {
+    let conf = LaunchShape {
         grid: [LEN.div_ceil(128) as u32, 1, 1],
         block: [128, 1, 1],
     };
@@ -83,14 +77,9 @@ fn main() {
         stream.launch(&func, &mut args, conf).unwrap();
     }
 
-    let mut out_host = stream.alloc_host(BYTES as u32).unwrap();
-
-    out.copy_to_async(&mut out_host, 0, 0, BYTES as u32)
-        .unwrap();
-
     stream.sync().unwrap();
 
-    for chunk in out_host.chunks(size_of::<f32>()) {
+    for chunk in out.chunks(size_of::<f32>()) {
         let u8x4: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
         let float = f32::from_ne_bytes(u8x4);
 

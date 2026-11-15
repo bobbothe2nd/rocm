@@ -241,7 +241,7 @@ impl KernelParams {
     pub const fn new(
         func: &crate::hip::module::Func,
         args: &mut [*mut u8],
-        conf: crate::hip::module::LaunchConfig,
+        conf: crate::hip::module::LaunchShape,
     ) -> Self {
         use rocm_sys::hip::dim3;
 

@@ -4,7 +4,7 @@ use roc::{
     hip::{
         device::Device,
         graph::{GraphInstantiateFlags, StreamCaptureMode},
-        module::LaunchConfig,
+        module::LaunchShape,
         stream::{HipStream, StreamKind},
     },
     hiprtc::program::{CompileOptions, Hsaco},
@@ -62,8 +62,8 @@ fn main() {
         stream.alloc_host_init(&buf).unwrap()
     };
 
-    a.copy_from_async(&a_host, 0, 0, BYTES as u32).unwrap();
-    b.copy_from_async(&b_host, 0, 0, BYTES as u32).unwrap();
+    a.copy_from_async(&a_host, 0, 0, BYTES).unwrap();
+    b.copy_from_async(&b_host, 0, 0, BYTES).unwrap();
 
     let mut n = LEN as i32;
 
@@ -74,7 +74,7 @@ fn main() {
         (&raw mut n).cast(),
     ];
 
-    let conf = LaunchConfig {
+    let conf = LaunchShape {
         grid: [LEN.div_ceil(128) as u32, 1, 1],
         block: [128, 1, 1],
     };
@@ -92,9 +92,9 @@ fn main() {
         stream.launch_graph(&exec).unwrap();
     }
 
-    let mut out_host = stream.alloc_host(BYTES as u32).unwrap();
+    let mut out_host = stream.alloc_host(BYTES).unwrap();
 
-    out.copy_to_async(&mut out_host, 0, 0, BYTES as u32)
+    out.copy_to_async(&mut out_host, 0, 0, BYTES)
         .unwrap();
 
     stream.sync().unwrap();
