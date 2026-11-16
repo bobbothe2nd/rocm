@@ -2,22 +2,13 @@ use alloc::sync::Arc;
 use core::{
     ffi::{c_int, c_ulonglong},
     mem::transmute,
-    ptr,
 };
 use rocm_sys::hip::{
-    hipError_t, hipFreeAsync, hipMemcpyDtoDAsync, hipMemcpyDtoHAsync, hipMemcpyHtoDAsync,
-    hipStream_t, hipStreamCreateWithFlags, hipStreamCreateWithPriority, hipStreamDestroy,
+    hipError_t, hipStream_t, hipStreamCreateWithFlags, hipStreamCreateWithPriority, hipStreamDestroy,
     hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
 };
 
-use crate::{
-    RocHandle,
-    hip::{
-        HipError,
-        device::Device,
-        memory::{HipBuffer, HostSlice, HostSliceMut},
-    },
-};
+use crate::{RocHandle, hip::{HipError, device::Device}};
 
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -69,146 +60,6 @@ impl HipStream {
             unsafe { wrap_sys_res!(|dev| hipStreamGetDevice(raw, dev.as_mut_ptr())) };
         let dev = unsafe { Device::from_raw(dev_raw?)? };
         Ok(Arc::new(Self { raw, dev }))
-    }
-
-    pub unsafe fn copy_htod(
-        &self,
-        src: &HostSlice<'_>,
-        dst: &HipBuffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
-    ) -> Result<(), HipError> {
-        if src_off
-            .checked_add(len)
-            .is_none_or(|end| end > src.size as u32)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > dst.size as u32)
-        {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe { self.copy_htod_unchecked(src, dst, src_off, dst_off, len) }
-    }
-
-    #[inline(always)]
-    pub unsafe fn copy_htod_unchecked(
-        &self,
-        src: &HostSlice<'_>,
-        dst: &HipBuffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyHtoDAsync(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.add(src_off as usize).cast(),
-                    len as usize,
-                    self.raw,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    pub unsafe fn copy_dtoh(
-        &self,
-        src: &HipBuffer,
-        dst: &HostSliceMut<'_>,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
-    ) -> Result<(), HipError> {
-        if src_off
-            .checked_add(len)
-            .is_none_or(|end| end > src.size as u32)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > dst.size as u32)
-        {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe { self.copy_dtoh_unchecked(src, dst, src_off, dst_off, len) }
-    }
-
-    #[inline(always)]
-    pub unsafe fn copy_dtoh_unchecked(
-        &self,
-        src: &HipBuffer,
-        dst: &HostSliceMut<'_>,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyDtoHAsync(
-                    dst.ptr.add(dst_off as usize) as *mut _,
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    self.raw,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    pub unsafe fn copy_dtod(
-        &self,
-        src: &HipBuffer,
-        dst: &HipBuffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
-    ) -> Result<(), HipError> {
-        if src_off
-            .checked_add(len)
-            .is_none_or(|end| end > src.size as u32)
-            || dst_off
-                .checked_add(len)
-                .is_none_or(|end| end > dst.size as u32)
-            || ptr::eq(src.ptr, dst.ptr)
-        {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe { self.copy_dtod_unchecked(src, dst, src_off, dst_off, len) }
-    }
-
-    #[inline(always)]
-    pub unsafe fn copy_dtod_unchecked(
-        &self,
-        src: &HipBuffer,
-        dst: &HipBuffer,
-        src_off: u32,
-        dst_off: u32,
-        len: u32,
-    ) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipMemcpyDtoDAsync(
-                    dst.ptr.byte_add(dst_off as usize).cast(),
-                    src.ptr.byte_add(src_off as usize).cast(),
-                    len as usize,
-                    self.raw,
-                ),
-                Ok(())
-            )
-        }
-    }
-
-    /// Asynchronously free a GPU buffer
-    ///
-    /// # Safety
-    ///
-    /// The buffer must not be dropped or freed again
-    #[inline(always)]
-    pub unsafe fn free_unchecked(&self, buf: &HipBuffer) -> Result<(), HipError> {
-        unsafe { try_err!(hipFreeAsync(buf.ptr.cast(), self.raw,), Ok(())) }
     }
 
     /// Returns `true` if the stream has finished all queued tasks

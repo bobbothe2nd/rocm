@@ -1,5 +1,3 @@
-use core::mem::transmute;
-
 use roc::{
     hip::{
         device::Device,
@@ -19,7 +17,6 @@ void vec_add(float* out, const float* a, const float* b, int n) {
 "#;
 
 const LEN: usize = 1024;
-const BYTES: usize = LEN * size_of::<f32>();
 
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
@@ -46,24 +43,15 @@ fn main() {
 
     let stream = HipStream::create(StreamKind::Default).unwrap();
 
-    let mut out = stream.alloc_zeroed(BYTES).unwrap();
-    let mut a = stream.alloc(BYTES).unwrap();
-    let mut b = stream.alloc(BYTES).unwrap();
+    let mut out = stream.alloc_unified_zeroed::<f32>(LEN, true).unwrap();
+    let mut a = stream.alloc(LEN).unwrap();
+    let mut b = stream.alloc(LEN).unwrap();
 
-    let a_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
+    let a_host = stream.map_slice(&[A_VAL; LEN]).unwrap();
+    let b_host = stream.map_slice(&[B_VAL; LEN]).unwrap();
 
-        stream.alloc_host_init(&buf).unwrap()
-    };
-
-    let b_host = {
-        let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
-
-        stream.alloc_host_init(&buf).unwrap()
-    };
-
-    a.copy_from_async(&a_host, 0, 0, BYTES).unwrap();
-    b.copy_from_async(&b_host, 0, 0, BYTES).unwrap();
+    a.copy_from_async(&a_host, 0, 0, LEN).unwrap();
+    b.copy_from_async(&b_host, 0, 0, LEN).unwrap();
 
     let mut n = LEN as i32;
 
@@ -81,7 +69,7 @@ fn main() {
 
     let params = KernelParams::new(&func, &mut args, conf);
 
-    let mut graph = Graph::new(GraphInstantiateFlags::empty()).unwrap();
+    let mut graph = Graph::create(GraphInstantiateFlags::empty()).unwrap();
 
     let mut prev_nodes = Vec::with_capacity(10);
 
@@ -97,17 +85,9 @@ fn main() {
         stream.launch_graph(&exec).unwrap();
     }
 
-    let mut out_host = stream.alloc_host(BYTES).unwrap();
-
-    out.copy_to_async(&mut out_host, 0, 0, BYTES)
-        .unwrap();
-
     stream.sync().unwrap();
 
-    for chunk in out_host.chunks(size_of::<f32>()) {
-        let bytes: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
-        let value = f32::from_ne_bytes(bytes);
-
-        assert_eq!(value, 10.0 * (A_VAL + B_VAL));
+    for val in out.as_slice() {
+        assert_eq!(*val, 10.0 * (A_VAL + B_VAL));
     }
 }

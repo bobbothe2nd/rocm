@@ -1,5 +1,3 @@
-use core::mem::transmute;
-
 use roc::{
     hip::{
         device::Device,
@@ -18,7 +16,6 @@ void vec_add(float* out, const float* a, const float* b, int n) {
 "#;
 
 const LEN: usize = 1024;
-const BYTES: usize = LEN * size_of::<f32>();
 
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
@@ -45,19 +42,15 @@ fn main() {
 
     let stream = HipStream::create(StreamKind::Default).unwrap();
 
-    let mut out = stream.alloc_unified(BYTES, true).unwrap();
-    let mut a = stream.alloc(BYTES).unwrap();
-    let mut b = stream.alloc(BYTES).unwrap();
+    let mut out = stream.alloc_unified::<f32>(LEN, true).unwrap();
+    let mut a = stream.alloc(LEN).unwrap();
+    let mut b = stream.alloc(LEN).unwrap();
 
-    {
-        let a_buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
-        let a_host = stream.host_slice(&a_buf).unwrap();
-        let b_buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
-        let b_host = stream.host_slice(&b_buf).unwrap();
+    let a_host = stream.map_slice(&[A_VAL; LEN]).unwrap();
+    let b_host = stream.map_slice(&[B_VAL; LEN]).unwrap();
 
-        a.copy_from_async(&a_host, 0, 0, BYTES).unwrap();
-        b.copy_from_async(&b_host, 0, 0, BYTES).unwrap();
-    }
+    a.copy_from_async(&a_host, 0, 0, LEN).unwrap();
+    b.copy_from_async(&b_host, 0, 0, LEN).unwrap();
 
     let mut n = LEN as i32;
 
@@ -79,10 +72,7 @@ fn main() {
 
     stream.sync().unwrap();
 
-    for chunk in out.chunks(size_of::<f32>()) {
-        let u8x4: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
-        let float = f32::from_ne_bytes(u8x4);
-
-        assert_eq!(float, A_VAL + B_VAL);
+    for val in out.as_slice() {
+        assert_eq!(*val, A_VAL + B_VAL);
     }
 }

@@ -4,7 +4,7 @@ use rocm_sys::hip::{
 
 use crate::hip::{HipError, stream::HipStream};
 
-pub unsafe trait Memset {
+pub unsafe trait Memset: Copy {
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError>;
     unsafe fn memset_async(
         dst: *mut Self,

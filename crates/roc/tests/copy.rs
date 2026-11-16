@@ -17,7 +17,7 @@ fn htod_copy_preserves_bytes_outside_requested_range() {
 
     let src = stream.alloc_host_init(&src_bytes).unwrap();
     let mut dst = stream.alloc(64).unwrap();
-    let dst_host = stream.host_slice(&initial_dst).unwrap();
+    let dst_host = stream.map_slice(&initial_dst).unwrap();
 
     dst.copy_from_async(&dst_host, 0, 0, 64).unwrap();
     dst.copy_from_async(&src, 8, 24, 16).unwrap();

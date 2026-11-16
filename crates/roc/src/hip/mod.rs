@@ -13,9 +13,9 @@ pub mod event;
 pub mod gfx;
 pub mod graph;
 pub mod memory;
-pub mod stream;
-
 pub mod module;
+pub mod stream;
+pub mod vector;
 
 use rocm_sys::hip::hipError_t;
 
@@ -108,3 +108,22 @@ impl HipError {
 }
 
 err_ty!(type HipError = hipError_t is !hipSuccess from rocm_sys::hip::hipGetErrorString;);
+
+pub unsafe trait DevRepr {}
+
+unsafe impl DevRepr for bool {}
+
+unsafe impl DevRepr for f32 {}
+unsafe impl DevRepr for f64 {}
+
+unsafe impl DevRepr for i8 {}
+unsafe impl DevRepr for u8 {}
+
+unsafe impl DevRepr for i16 {}
+unsafe impl DevRepr for u16 {}
+
+unsafe impl DevRepr for i32 {}
+unsafe impl DevRepr for u32 {}
+
+unsafe impl DevRepr for i64 {}
+unsafe impl DevRepr for u64 {}

@@ -2,14 +2,12 @@ use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::{Deref
 use std::ptr::write_bytes;
 
 use alloc::sync::Arc;
+use briny::traits::Zeroable;
 use rocm_sys::hip::{hipFree, hipFreeAsync, hipMallocManaged};
 
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range},
-    hip::{
-        HipError,
-        event::{EventFlags, HipEvent},
-        stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range}, hip::{
+        DevRepr, HipError, event::{EventFlags, HipEvent}, stream::HipStream,
     },
 };
 
@@ -33,30 +31,30 @@ pub enum MemAttachFlags {
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
-pub struct UnifiedSlice<'a> {
-    pub(crate) ptr: *const u8,
-    pub(crate) size: usize,
+pub struct UnifiedSlice<'a, T: DevRepr> {
+    pub(crate) ptr: *const T,
+    pub(crate) len: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     pub(crate) attach_mode: MemAttachFlags,
     pub(crate) is_init: bool,
-    pub(crate) _marker: PhantomData<&'a UnsafeCell<[u8]>>,
+    pub(crate) _marker: PhantomData<&'a UnsafeCell<[T]>>,
 }
 
-unsafe impl Send for UnifiedSlice<'_> {}
-unsafe impl Sync for UnifiedSlice<'_> {}
+unsafe impl<T: DevRepr> Send for UnifiedSlice<'_, T> {}
+unsafe impl<T: DevRepr> Sync for UnifiedSlice<'_, T> {}
 
-impl UnifiedSlice<'_> {
+impl<T: DevRepr> UnifiedSlice<'_, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
         let ResolvedRange {
             start,
-            size,
+            len,
             end: _,
-        } = resolve_range(range, self.size);
+        } = resolve_range(range, self.len);
         unsafe {
             Self::from_raw_parts(
                 self.ptr.add(start),
-                size,
+                len,
                 &self.stream,
                 &self.event,
                 self.attach_mode,
@@ -67,8 +65,8 @@ impl UnifiedSlice<'_> {
 
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        ptr: *const u8,
-        size: usize,
+        ptr: *const T,
+        len: usize,
         stream: &Arc<HipStream>,
         event: &HipEvent,
         attach_mode: MemAttachFlags,
@@ -76,7 +74,7 @@ impl UnifiedSlice<'_> {
     ) -> Self {
         Self {
             ptr,
-            size,
+            len,
             event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             attach_mode,
@@ -104,25 +102,25 @@ impl UnifiedSlice<'_> {
 
     /// Gets the pointer to GPU memory
     #[inline(always)]
-    pub const fn as_ptr(&self) -> *const u8 {
+    pub const fn as_ptr(&self) -> *const T {
         self.ptr
     }
 
-    /// Gets the size of the allocation
+    /// Gets the length of the allocation
     #[inline(always)]
-    pub const fn size(&self) -> usize {
-        self.size
+    pub const fn len(&self) -> usize {
+        self.len
     }
 
-    pub fn as_slice(&self) -> &[u8] {
+    pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedSlice": self.event.sync());
-        unsafe { slice::from_raw_parts(self.ptr, self.size as usize) }
+        unsafe { slice::from_raw_parts(self.ptr, self.len as usize) }
     }
 }
 
-impl Deref for UnifiedSlice<'_> {
-    type Target = [u8];
+impl<T: DevRepr> Deref for UnifiedSlice<'_, T> {
+    type Target = [T];
 
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
@@ -133,30 +131,30 @@ impl Deref for UnifiedSlice<'_> {
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
-pub struct UnifiedSliceMut<'a> {
-    pub(crate) ptr: *mut u8,
-    pub(crate) size: usize,
+pub struct UnifiedSliceMut<'a, T: DevRepr> {
+    pub(crate) ptr: *mut T,
+    pub(crate) len: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
     pub(crate) attach_mode: MemAttachFlags,
     pub(crate) is_init: bool,
-    pub(crate) _marker: PhantomData<&'a mut UnsafeCell<[u8]>>,
+    pub(crate) _marker: PhantomData<&'a mut UnsafeCell<[T]>>,
 }
 
-unsafe impl Send for UnifiedSliceMut<'_> {}
-unsafe impl Sync for UnifiedSliceMut<'_> {}
+unsafe impl<T: DevRepr> Send for UnifiedSliceMut<'_, T> {}
+unsafe impl<T: DevRepr> Sync for UnifiedSliceMut<'_, T> {}
 
-impl UnifiedSliceMut<'_> {
+impl<T: DevRepr> UnifiedSliceMut<'_, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
         let ResolvedRange {
             start,
-            size,
+            len,
             end: _,
-        } = resolve_range(range, self.size);
+        } = resolve_range(range, self.len);
         unsafe {
             Self::from_raw_parts(
                 self.ptr.add(start),
-                size,
+                len,
                 &self.stream,
                 &self.event,
                 self.attach_mode,
@@ -167,8 +165,8 @@ impl UnifiedSliceMut<'_> {
 
     #[inline(always)]
     pub const unsafe fn from_raw_parts(
-        ptr: *mut u8,
-        size: usize,
+        ptr: *mut T,
+        len: usize,
         stream: &Arc<HipStream>,
         event: &HipEvent,
         attach_mode: MemAttachFlags,
@@ -176,7 +174,7 @@ impl UnifiedSliceMut<'_> {
     ) -> Self {
         Self {
             ptr,
-            size,
+            len,
             event: ManuallyDrop::new(unsafe { core::ptr::read(event) }),
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             attach_mode,
@@ -204,37 +202,37 @@ impl UnifiedSliceMut<'_> {
 
     /// Gets the pointer to GPU memory
     #[inline(always)]
-    pub const fn as_ptr(&self) -> *const u8 {
+    pub const fn as_ptr(&self) -> *const T {
         self.ptr
     }
 
-    /// Gets the size of the allocation
+    /// Gets the length of the allocation
     #[inline(always)]
-    pub const fn size(&self) -> usize {
-        self.size
+    pub const fn len(&self) -> usize {
+        self.len
     }
 
-    pub fn as_slice(&self) -> &[u8] {
+    pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedSliceMut": self.event.sync());
-        unsafe { slice::from_raw_parts(self.ptr, self.size as usize) }
+        unsafe { slice::from_raw_parts(self.ptr, self.len as usize) }
     }
 
-    pub fn as_mut_slice(&mut self) -> &mut [u8] {
+    pub fn as_mut_slice(&mut self) -> &mut [T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedSliceMut": self.event.sync());
-        unsafe { slice::from_raw_parts_mut(self.ptr, self.size as usize) }
+        unsafe { slice::from_raw_parts_mut(self.ptr, self.len as usize) }
     }
 
     pub fn memset(&self, byte: u8) {
         unsafe {
-            write_bytes(self.ptr, byte, self.size);
+            write_bytes(self.ptr, byte, self.len);
         }
     }
 }
 
-impl Deref for UnifiedSliceMut<'_> {
-    type Target = [u8];
+impl<T: DevRepr> Deref for UnifiedSliceMut<'_, T> {
+    type Target = [T];
 
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
@@ -242,7 +240,7 @@ impl Deref for UnifiedSliceMut<'_> {
     }
 }
 
-impl DerefMut for UnifiedSliceMut<'_> {
+impl<T: DevRepr> DerefMut for UnifiedSliceMut<'_, T> {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut_slice()
@@ -252,18 +250,18 @@ impl DerefMut for UnifiedSliceMut<'_> {
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
-pub struct UnifiedBuffer {
-    pub(crate) ptr: *mut u8,
-    pub(crate) size: usize,
+pub struct UnifiedBuffer<T: DevRepr> {
+    pub(crate) ptr: *mut T,
+    pub(crate) len: usize,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
     pub(crate) attach_mode: MemAttachFlags,
     pub(crate) is_init: bool,
-    pub(crate) _marker: PhantomData<UnsafeCell<[u8]>>,
+    pub(crate) _marker: PhantomData<UnsafeCell<[T]>>,
 }
 
-unsafe impl Send for UnifiedBuffer {}
-unsafe impl Sync for UnifiedBuffer {}
+unsafe impl<T: DevRepr> Send for UnifiedBuffer<T> {}
+unsafe impl<T: DevRepr> Sync for UnifiedBuffer<T> {}
 
 impl HipStream {
     /// Allocate unified (managed) memory.
@@ -275,11 +273,11 @@ impl HipStream {
     ///
     /// Returns [`sys::hipError_t::hipErrorNotSupported`] if the device
     /// does not advertise `hipDeviceAttributeManagedMemory`.
-    pub fn alloc_unified(
+    pub fn alloc_unified<T: DevRepr>(
         self: &Arc<Self>,
-        size: usize,
+        len: usize,
         attach_global: bool,
-    ) -> Result<UnifiedBuffer, HipError> {
+    ) -> Result<UnifiedBuffer<T>, HipError> {
         if !self.dev.has_managed_memory {
             return Err(HipError::NotSupported);
         }
@@ -291,14 +289,14 @@ impl HipStream {
         };
 
         let raw = unsafe {
-            wrap_sys_res!(|raw| hipMallocManaged(raw.as_mut_ptr(), size, attach_mode as u32))
+            wrap_sys_res!(|raw| hipMallocManaged(raw.as_mut_ptr(), len, attach_mode as u32))
         };
 
         let event = HipEvent::create(Some(EventFlags::BLOCKING_SYNC))?;
 
         Ok(UnifiedBuffer {
             ptr: raw?.cast(),
-            size,
+            len,
             stream: self.clone(),
             event,
             attach_mode,
@@ -308,12 +306,12 @@ impl HipStream {
     }
 
     /// Allocate unified (managed) memory.
-    pub fn alloc_unified_zeroed(
+    pub fn alloc_unified_zeroed<T: DevRepr + Zeroable>(
         self: &Arc<Self>,
-        size: usize,
+        len: usize,
         attach_global: bool,
-    ) -> Result<UnifiedBuffer, HipError> {
-        self.alloc_unified(size, attach_global).map(|mut buf| {
+    ) -> Result<UnifiedBuffer<T>, HipError> {
+        self.alloc_unified(len, attach_global).map(|mut buf| {
             buf.memset(0);
             unsafe {
                 buf.assume_init();
@@ -323,7 +321,7 @@ impl HipStream {
     }
 }
 
-impl UnifiedBuffer {
+impl<T: DevRepr> UnifiedBuffer<T> {
     #[inline(always)]
     pub const fn expect_init(&self, msg: Option<&str>) {
         assert!(
@@ -343,26 +341,26 @@ impl UnifiedBuffer {
 
     /// Gets the pointer to GPU memory
     #[inline(always)]
-    pub const fn as_ptr(&self) -> *const u8 {
+    pub const fn as_ptr(&self) -> *const T {
         self.ptr
     }
 
-    /// Gets the size of the allocation
+    /// Gets the length of the allocation
     #[inline(always)]
-    pub const fn size(&self) -> usize {
-        self.size
+    pub const fn len(&self) -> usize {
+        self.len
     }
 
-    pub fn slice(&self, range: impl RangeBounds<usize>) -> UnifiedSlice<'_> {
+    pub fn slice(&self, range: impl RangeBounds<usize>) -> UnifiedSlice<'_, T> {
         let ResolvedRange {
             start,
-            size,
+            len,
             end: _,
-        } = resolve_range(range, self.size);
+        } = resolve_range(range, self.len);
         unsafe {
             UnifiedSlice::from_raw_parts(
                 self.ptr.add(start),
-                size,
+                len,
                 &self.stream,
                 &self.event,
                 self.attach_mode,
@@ -371,16 +369,16 @@ impl UnifiedBuffer {
         }
     }
 
-    pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> UnifiedSliceMut<'_> {
+    pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> UnifiedSliceMut<'_, T> {
         let ResolvedRange {
             start,
-            size,
+            len,
             end: _,
-        } = resolve_range(range, self.size);
+        } = resolve_range(range, self.len);
         unsafe {
             UnifiedSliceMut::from_raw_parts(
                 self.ptr.add(start),
-                size,
+                len,
                 &self.stream,
                 &self.event,
                 self.attach_mode,
@@ -389,16 +387,16 @@ impl UnifiedBuffer {
         }
     }
 
-    pub fn as_slice(&self) -> &[u8] {
+    pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedBuffer": self.event.sync());
-        unsafe { slice::from_raw_parts(self.ptr, self.size as usize) }
+        unsafe { slice::from_raw_parts(self.ptr, self.len as usize) }
     }
 
-    pub fn as_mut_slice(&mut self) -> &mut [u8] {
+    pub fn as_mut_slice(&mut self) -> &mut [T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedBuffer": self.event.sync());
-        unsafe { slice::from_raw_parts_mut(self.ptr, self.size as usize) }
+        unsafe { slice::from_raw_parts_mut(self.ptr, self.len as usize) }
     }
 
     /// Deallocates a buffer
@@ -435,13 +433,13 @@ impl UnifiedBuffer {
 
     pub fn memset(&self, byte: u8) {
         unsafe {
-            write_bytes(self.ptr, byte, self.size);
+            write_bytes(self.ptr, byte, self.len);
         }
     }
 }
 
-impl Deref for UnifiedBuffer {
-    type Target = [u8];
+impl<T: DevRepr> Deref for UnifiedBuffer<T> {
+    type Target = [T];
 
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
@@ -449,14 +447,14 @@ impl Deref for UnifiedBuffer {
     }
 }
 
-impl DerefMut for UnifiedBuffer {
+impl<T: DevRepr> DerefMut for UnifiedBuffer<T> {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut_slice()
     }
 }
 
-impl Drop for UnifiedBuffer {
+impl<T: DevRepr> Drop for UnifiedBuffer<T> {
     fn drop(&mut self) {
         if self.stream.dev.has_async_alloc {
             unsafe {
@@ -471,35 +469,35 @@ impl Drop for UnifiedBuffer {
     }
 }
 
-impl<'a> AsRef<UnifiedSlice<'a>> for UnifiedBuffer {
+impl<'a, T: DevRepr> AsRef<UnifiedSlice<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
-    fn as_ref(&self) -> &UnifiedSlice<'a> {
+    fn as_ref(&self) -> &UnifiedSlice<'a, T> {
         unsafe { &*(self as *const Self).cast() }
     }
 }
 
-impl<'a> AsRef<UnifiedSlice<'a>> for UnifiedSliceMut<'a> {
+impl<'a, T: DevRepr> AsRef<UnifiedSlice<'a, T>> for UnifiedSliceMut<'a, T> {
     #[inline(always)]
-    fn as_ref(&self) -> &UnifiedSlice<'a> {
+    fn as_ref(&self) -> &UnifiedSlice<'a, T> {
         unsafe { &*(self as *const Self).cast() }
     }
 }
 
-impl<'a> AsMut<UnifiedSliceMut<'a>> for UnifiedBuffer {
+impl<'a, T: DevRepr> AsMut<UnifiedSliceMut<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
-    fn as_mut(&mut self) -> &mut UnifiedSliceMut<'a> {
+    fn as_mut(&mut self) -> &mut UnifiedSliceMut<'a, T> {
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
 
-impl AsRef<Self> for UnifiedSlice<'_> {
+impl<T: DevRepr> AsRef<Self> for UnifiedSlice<'_, T> {
     #[inline(always)]
     fn as_ref(&self) -> &Self {
         unsafe { &*(self as *const Self).cast() }
     }
 }
 
-impl AsMut<Self> for UnifiedSliceMut<'_> {
+impl<T: DevRepr> AsMut<Self> for UnifiedSliceMut<'_, T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut Self {
         unsafe { &mut *(self as *mut Self).cast() }

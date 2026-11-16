@@ -53,22 +53,25 @@ pub trait StreamBound {
     fn stream(&self) -> &super::stream::HipStream;
 }
 
-pub trait DevPtr {
-    fn as_ptr(&self) -> *const u8;
-    fn size(&self) -> usize;
+pub trait DevPtr<T> {
+    fn as_ptr(&self) -> *const T;
+    fn len(&self) -> usize;
     fn dev(&self) -> super::device::Device;
+    fn size(&self) -> usize {
+        self.len() * size_of::<T>()
+    }
 }
 
 macro_rules! impl_buf {
     ($($ty:ty)*) => {$(
-        impl StreamBound for $ty {
+        impl<T: super::DevRepr> StreamBound for $ty {
             #[inline(always)]
             fn stream(&self) -> &super::stream::HipStream {
                 &self.stream
             }
         }
 
-        impl EventSync for $ty {
+        impl<T: super::DevRepr> EventSync for $ty {
             #[inline(always)]
             fn latesync(&self) -> Result<(), crate::hip::HipError> {
                 if self.stream.dev.has_async_alloc { return Ok(()); }
@@ -81,15 +84,15 @@ macro_rules! impl_buf {
             }
         }
 
-        impl DevPtr for $ty {
+        impl<T: super::DevRepr> DevPtr<T> for $ty {
             #[inline(always)]
-            fn as_ptr(&self) -> *const u8 {
+            fn as_ptr(&self) -> *const T {
                 self.ptr
             }
 
             #[inline(always)]
-            fn size(&self) -> usize {
-                self.size
+            fn len(&self) -> usize {
+                self.len
             }
 
             #[inline(always)]
@@ -103,7 +106,7 @@ macro_rules! impl_buf {
 }
 
 impl_buf!(
-    HipBuffer HipSlice<'_> HipSliceMut<'_>
-    HostBuffer HostSlice<'_> HostSliceMut<'_>
-    UnifiedBuffer UnifiedSlice<'_> UnifiedSliceMut<'_>
+    HipBuffer<T> HipSlice<'_, T> HipSliceMut<'_, T>
+    HostBuffer<T> HostSlice<'_, T> HostSliceMut<'_, T>
+    UnifiedBuffer<T> UnifiedSlice<'_, T> UnifiedSliceMut<'_, T>
 );

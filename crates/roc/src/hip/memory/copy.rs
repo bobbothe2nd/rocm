@@ -8,7 +8,7 @@ use crate::hip::{
 };
 
 #[inline]
-pub fn copy<Src, Dst>(
+pub fn copy<T, Src, Dst>(
     src: &Src,
     dst: &mut Dst,
     src_off: usize,
@@ -16,15 +16,15 @@ pub fn copy<Src, Dst>(
     len: usize,
 ) -> Result<(), HipError>
 where
-    Src: CopyTo<Dst>,
-    Dst: DevPtr,
+    Src: CopyTo<T, Dst>,
+    Dst: DevPtr<T>,
 {
     if src_off
         .checked_add(len)
-        .is_none_or(|end| end > src.size() as usize)
+        .is_none_or(|end| end > src.len() as usize)
         || dst_off
             .checked_add(len)
-            .is_none_or(|end| end > dst.size() as usize)
+            .is_none_or(|end| end > dst.len() as usize)
         || core::ptr::eq(src.as_ptr(), dst.as_ptr())
     {
         return Err(HipError::InvalidValue);
@@ -34,7 +34,7 @@ where
 }
 
 #[inline]
-pub fn copy_async<Src, Dst>(
+pub fn copy_async<T, Src, Dst>(
     src: &Src,
     dst: &mut Dst,
     src_off: usize,
@@ -42,18 +42,18 @@ pub fn copy_async<Src, Dst>(
     len: usize,
 ) -> Result<(), HipError>
 where
-    Src: CopyTo<Dst> + StreamBound,
-    Dst: DevPtr + StreamBound,
+    Src: CopyTo<T, Dst> + StreamBound,
+    Dst: DevPtr<T> + StreamBound,
 {
     let stream = src.stream();
 
     if !stream.same_as(dst.stream())
         || src_off
             .checked_add(len)
-            .is_none_or(|end| end > src.size() as usize)
+            .is_none_or(|end| end > src.len() as usize)
         || dst_off
             .checked_add(len)
-            .is_none_or(|end| end > dst.size() as usize)
+            .is_none_or(|end| end > dst.len() as usize)
         || core::ptr::eq(src.as_ptr(), dst.as_ptr())
     {
         return Err(HipError::InvalidValue);
@@ -66,7 +66,7 @@ where
     Ok(())
 }
 
-pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
+pub unsafe trait CopyTo<T, Dst: DevPtr<T>>: DevPtr<T> {
     unsafe fn copy(
         src: &Self,
         dst: &mut Dst,
@@ -90,7 +90,7 @@ pub unsafe trait CopyTo<Dst: DevPtr>: DevPtr {
 
 macro_rules! impl_copy {
     ($($src:ty > ($sync:ident | $async:ident) > $dst:ty),*$(,)?) => {$(
-        unsafe impl CopyTo<$dst> for $src {
+        unsafe impl<T: crate::hip::DevRepr> CopyTo<T, $dst> for $src {
             #[inline(always)]
             unsafe fn copy(
                 src: &Self,
@@ -138,24 +138,24 @@ macro_rules! impl_copy {
 }
 
 impl_copy!(
-    HipBuffer > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > Self,
-    HipBuffer > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipSliceMut<'_>,
-    HipSlice<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipBuffer,
-    HipSlice<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipSliceMut<'_>,
-    HipSliceMut<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipBuffer,
-    HipSliceMut<'_> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > Self,
+    HipBuffer<T> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > Self,
+    HipBuffer<T> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipSliceMut<'_, T>,
+    HipSlice<'_, T> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipBuffer<T>,
+    HipSlice<'_, T> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipSliceMut<'_, T>,
+    HipSliceMut<'_, T> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > HipBuffer<T>,
+    HipSliceMut<'_, T> > (hipMemcpyDtoD | hipMemcpyDtoDAsync) > Self,
 
-    HipBuffer > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer,
-    HipBuffer > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_>,
-    HipSlice<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer,
-    HipSlice<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_>,
-    HipSliceMut<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer,
-    HipSliceMut<'_> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_>,
+    HipBuffer<T> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer<T>,
+    HipBuffer<T> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_, T>,
+    HipSlice<'_, T> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer<T>,
+    HipSlice<'_, T> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_, T>,
+    HipSliceMut<'_, T> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostBuffer<T>,
+    HipSliceMut<'_, T> > (hipMemcpyDtoH | hipMemcpyDtoHAsync) > HostSliceMut<'_, T>,
 
-    HostBuffer > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer,
-    HostBuffer > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_>,
-    HostSlice<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer,
-    HostSlice<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_>,
-    HostSliceMut<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer,
-    HostSliceMut<'_> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_>,
+    HostBuffer<T> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer<T>,
+    HostBuffer<T> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_, T>,
+    HostSlice<'_, T> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer<T>,
+    HostSlice<'_, T> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_, T>,
+    HostSliceMut<'_, T> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipBuffer<T>,
+    HostSliceMut<'_, T> > (hipMemcpyHtoD | hipMemcpyHtoDAsync) > HipSliceMut<'_, T>,
 );

@@ -11,6 +11,7 @@ categories = ["hardware-support"]
 
 [dependencies]
 bitflags = "2"
+briny = { version = "0.16", path = "../../../briny" }
 log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.7" }
 rocm-include = { path = "../rocm-include", version = "0.2" }
@@ -20,7 +21,7 @@ stable_auto = { version = "0.3", optional = true, features = ["alloc"] }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["dynamic-loading", "hip"]
+default = ["dynamic-loading", "hip", "hiprtc"]
 
 # ROCm libraries
 hip = ["rocm-sys/hip"]
