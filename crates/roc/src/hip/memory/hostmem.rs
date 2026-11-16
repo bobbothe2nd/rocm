@@ -4,7 +4,6 @@ use crate::{
     },
 };
 use alloc::sync::Arc;
-use briny::traits::Zeroable;
 use core::{
     cell::UnsafeCell,
     hint::unreachable_unchecked,
@@ -123,6 +122,12 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
     }
 
     /// Maps the buffer such that is is accessible
@@ -339,6 +344,12 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
         self.len
     }
 
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
+    }
+
     /// Maps the buffer such that is is accessible
     #[inline(always)]
     pub fn map(&self) -> Result<(), HipError> {
@@ -491,7 +502,7 @@ impl HipStream {
     }
 
     /// Allocates `len` elements and makes it accessible from all HIP devices
-    pub fn alloc_host_zeroed<T: DevRepr + Zeroable>(self: &Arc<Self>, len: usize) -> Result<HostBuffer<T>, HipError> {
+    pub fn alloc_host_zeroed<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HostBuffer<T>, HipError> {
         self.alloc_host(len).map(|mut buf| {
             buf.memset(0);
             unsafe {
@@ -622,6 +633,12 @@ impl<T: DevRepr> HostBuffer<T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
     }
 
     /// Deallocates the GPU-accessible buffer and synchronizes

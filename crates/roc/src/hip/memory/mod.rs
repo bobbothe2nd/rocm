@@ -56,7 +56,7 @@ pub trait StreamBound {
 pub trait DevPtr<T> {
     fn as_ptr(&self) -> *const T;
     fn len(&self) -> usize;
-    fn dev(&self) -> super::device::Device;
+    fn get_dev(&self) -> super::device::Device;
     fn size(&self) -> usize {
         self.len() * size_of::<T>()
     }
@@ -96,10 +96,8 @@ macro_rules! impl_buf {
             }
 
             #[inline(always)]
-            fn dev(&self) -> super::device::Device {
-                self.stream
-                    .get_dev()
-                    .expect("valid HipStream should have device")
+            fn get_dev(&self) -> super::device::Device {
+                self.stream.dev
             }
         }
     )*};

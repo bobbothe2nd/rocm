@@ -4,9 +4,8 @@ use crate::{
     },
 };
 use alloc::sync::Arc;
-use briny::traits::Zeroable;
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::RangeBounds};
-use rocm_sys::hip::{hipFree, hipFreeAsync, hipMalloc, hipMemsetD8};
+use rocm_sys::hip::{hipFree, hipFreeAsync, hipMalloc};
 
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
@@ -55,10 +54,16 @@ impl<T: DevRepr> HipSlice<'_, T> {
         self.ptr
     }
 
-    /// Gets the len of the allocation
+    /// Gets the length of the allocation
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
     }
 
     #[inline]
@@ -139,10 +144,16 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
         self.ptr
     }
 
-    /// Gets the len of the allocation
+    /// Gets the length of the allocation
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
     }
 
     #[inline]
@@ -279,25 +290,10 @@ impl HipStream {
     }
 
     /// Allocates `len` zeroed elements on the default device
-    pub fn alloc_zeroed<T: DevRepr + Zeroable>(self: &Arc<Self>, len: usize) -> Result<HipBuffer<T>, HipError> {
-        let ptr: Result<*mut T, HipError> =
-            unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), len)) };
-        let ptr = ptr?;
-
-        if ptr.is_null() {
-            return Err(HipError::InvalidValue);
-        }
-
-        unsafe {
-            try_err!(hipMemsetD8(ptr.cast(), 0, len as usize));
-        }
-
-        Ok(HipBuffer {
-            ptr,
-            len,
-            stream: self.clone(),
-            event: HipEvent::create(None)?,
-            _marker: PhantomData,
+    pub fn alloc_zeroed<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HipBuffer<T>, HipError> {
+        self.alloc(len).and_then(|mut buf| {
+            buf.memset(0u8)?;
+            Ok(buf)
         })
     }
 }
@@ -326,10 +322,16 @@ impl<T: DevRepr> HipBuffer<T> {
         self.ptr
     }
 
-    /// Gets the len of the allocation
+    /// Gets the length of the allocation
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> HipSlice<'_, T> {
@@ -447,7 +449,7 @@ impl<T: DevRepr> HipBuffer<T> {
     }
 
     #[inline(always)]
-    pub fn memset<D: Memset>(&self, val: D) -> Result<(), HipError> {
+    pub fn memset<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
         if bytes % size_of::<D>() != 0 {
@@ -463,7 +465,7 @@ impl<T: DevRepr> HipBuffer<T> {
         }
     }
 
-    pub fn memset_async<D: Memset>(&self, val: D) -> Result<(), HipError> {
+    pub fn memset_async<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
         if bytes % size_of::<D>() != 0 {

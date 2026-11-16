@@ -91,10 +91,9 @@ impl HipStream {
     }
 
     #[inline(always)]
-    pub fn get_dev(&self) -> Result<Device, HipError> {
-        unsafe {
-            wrap_sys_res!(|dev: Device| hipStreamGetDevice(self.raw, dev.as_mut_ptr().cast()))
-        }
+    pub fn get_dev(&self) -> Device {
+        // unsafe { wrap_sys_res!(|dev: Device| hipStreamGetDevice(self.raw, dev.as_mut_ptr().cast())) }
+        self.dev
     }
 
     #[inline(always)]

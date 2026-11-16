@@ -2,7 +2,6 @@ use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::{Deref
 use std::ptr::write_bytes;
 
 use alloc::sync::Arc;
-use briny::traits::Zeroable;
 use rocm_sys::hip::{hipFree, hipFreeAsync, hipMallocManaged};
 
 use crate::{
@@ -112,6 +111,12 @@ impl<T: DevRepr> UnifiedSlice<'_, T> {
         self.len
     }
 
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
+    }
+
     pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedSlice": self.event.sync());
@@ -212,6 +217,12 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
         self.len
     }
 
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
+    }
+
     pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize UnifiedSliceMut": self.event.sync());
@@ -306,7 +317,7 @@ impl HipStream {
     }
 
     /// Allocate unified (managed) memory.
-    pub fn alloc_unified_zeroed<T: DevRepr + Zeroable>(
+    pub fn alloc_unified_zeroed<T: DevRepr>(
         self: &Arc<Self>,
         len: usize,
         attach_global: bool,
@@ -349,6 +360,12 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    /// Gets the size of the allocation
+    #[inline(always)]
+    pub const fn size(&self) -> usize {
+        self.len * size_of::<T>()
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> UnifiedSlice<'_, T> {
