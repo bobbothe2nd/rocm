@@ -22,10 +22,10 @@ use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hip
 pub struct HostSlice<'a, T: DevRepr> {
     pub(crate) ptr: *const T,
     pub(crate) len: usize,
-    pub(crate) premapped: bool,
-    pub(crate) is_init: bool,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
+    pub(crate) premapped: bool,
+    pub(crate) is_init: bool,
     _marker: PhantomData<&'a UnsafeCell<[T]>>,
 }
 
@@ -52,7 +52,7 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     }
 
     /// Maps the ptr and return a handle
-    pub fn new(ptr: &'a [T], stream: &Arc<HipStream>) -> Result<Self, HipError> {
+    pub fn new(ptr: &'a [T], stream: &'a Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_ptr() as *mut _, ptr.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -236,10 +236,10 @@ impl<T: DevRepr> Deref for HostSlice<'_, T> {
 pub struct HostSliceMut<'a, T: DevRepr> {
     pub(crate) ptr: *mut T,
     pub(crate) len: usize,
-    pub(crate) premapped: bool,
-    pub(crate) is_init: bool,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
+    pub(crate) premapped: bool,
+    pub(crate) is_init: bool,
     _marker: PhantomData<&'a mut UnsafeCell<[T]>>,
 }
 
@@ -266,7 +266,7 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     }
 
     /// Maps the ptr and return a handle
-    pub fn new(ptr: &'a mut [T], stream: &Arc<HipStream>) -> Result<Self, HipError> {
+    pub fn new(ptr: &'a mut [T], stream: &'a Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_mut_ptr().cast(), ptr.len(), 0) };
         let premapped = match res {
             hipError_t::hipSuccess => true,
@@ -469,10 +469,11 @@ impl<T: DevRepr> DerefMut for HostSliceMut<'_, T> {
 pub struct HostBuffer<T: DevRepr> {
     pub(crate) ptr: *mut T,
     pub(crate) len: usize,
-    pub(crate) is_mapped: bool,
-    pub(crate) is_init: bool,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
+    /// always true
+    pub(crate) true_pad: bool,
+    pub(crate) is_init: bool,
     _marker: PhantomData<UnsafeCell<[T]>>,
 }
 
@@ -493,7 +494,7 @@ impl HipStream {
         Ok(HostBuffer {
             ptr,
             len,
-            is_mapped: true,
+            true_pad: true,
             is_init: false,
             stream: self.clone(),
             event: HipEvent::create(None)?,
@@ -528,13 +529,13 @@ impl HipStream {
     }
 
     /// Borrows elements and makes it accessible from all HIP devices
-    pub fn map_slice<'a, T: DevRepr>(self: &Arc<Self>, ptr: &'a [T]) -> Result<HostSlice<'a, T>, HipError> {
+    pub fn map_slice<'a, T: DevRepr>(self: &'a Arc<Self>, ptr: &'a [T]) -> Result<HostSlice<'a, T>, HipError> {
         HostSlice::new(ptr, self)
     }
 
     /// Borrows elements and makes it accessible from all HIP devices
     pub fn map_slice_mut<'a, T: DevRepr>(
-        self: &Arc<Self>,
+        self: &'a Arc<Self>,
         ptr: &'a mut [T],
     ) -> Result<HostSliceMut<'a, T>, HipError> {
         HostSliceMut::new(ptr, self)
@@ -552,7 +553,7 @@ impl<T: DevRepr> HostBuffer<T> {
         Self {
             ptr,
             len,
-            is_mapped: true,
+            true_pad: true,
             is_init: true,
             stream,
             event,
@@ -604,7 +605,7 @@ impl<T: DevRepr> HostBuffer<T> {
             HostSlice::from_raw_parts(
                 self.ptr.add(start),
                 len,
-                self.is_mapped,
+                self.true_pad,
                 &self.stream,
                 &self.event,
                 self.is_init,
@@ -622,7 +623,7 @@ impl<T: DevRepr> HostBuffer<T> {
             HostSliceMut::from_raw_parts(
                 self.ptr.add(start),
                 len,
-                self.is_mapped,
+                self.true_pad,
                 &self.stream,
                 &self.event,
                 self.is_init,

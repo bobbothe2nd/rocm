@@ -6,7 +6,7 @@ use rocm_sys::hip::{hipFree, hipFreeAsync, hipMallocManaged};
 
 use crate::{
     auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, event::{EventFlags, HipEvent}, stream::HipStream,
+        DevRepr, HipError, event::{EventFlags, HipEvent}, memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut}, stream::HipStream,
     },
 };
 
@@ -35,8 +35,9 @@ pub struct UnifiedSlice<'a, T: DevRepr> {
     pub(crate) len: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
-    pub(crate) attach_mode: MemAttachFlags,
+    pub(crate) true_pad: bool,
     pub(crate) is_init: bool,
+    pub(crate) attach_mode: MemAttachFlags,
     pub(crate) _marker: PhantomData<&'a UnsafeCell<[T]>>,
 }
 
@@ -78,6 +79,7 @@ impl<T: DevRepr> UnifiedSlice<'_, T> {
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             attach_mode,
             is_init,
+            true_pad: true,
             _marker: PhantomData,
         }
     }
@@ -141,8 +143,9 @@ pub struct UnifiedSliceMut<'a, T: DevRepr> {
     pub(crate) len: usize,
     pub(crate) event: ManuallyDrop<HipEvent>,
     pub(crate) stream: ManuallyDrop<Arc<HipStream>>,
-    pub(crate) attach_mode: MemAttachFlags,
+    pub(crate) true_pad: bool,
     pub(crate) is_init: bool,
+    pub(crate) attach_mode: MemAttachFlags,
     pub(crate) _marker: PhantomData<&'a mut UnsafeCell<[T]>>,
 }
 
@@ -184,6 +187,7 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
             stream: ManuallyDrop::new(unsafe { core::ptr::read(stream) }),
             attach_mode,
             is_init,
+            true_pad: true,
             _marker: PhantomData,
         }
     }
@@ -266,8 +270,9 @@ pub struct UnifiedBuffer<T: DevRepr> {
     pub(crate) len: usize,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
-    pub(crate) attach_mode: MemAttachFlags,
+    pub(crate) true_pad: bool,
     pub(crate) is_init: bool,
+    pub(crate) attach_mode: MemAttachFlags,
     pub(crate) _marker: PhantomData<UnsafeCell<[T]>>,
 }
 
@@ -312,6 +317,7 @@ impl HipStream {
             event,
             attach_mode,
             is_init: false,
+            true_pad: true,
             _marker: PhantomData,
         })
     }
@@ -517,6 +523,48 @@ impl<T: DevRepr> AsRef<Self> for UnifiedSlice<'_, T> {
 impl<T: DevRepr> AsMut<Self> for UnifiedSliceMut<'_, T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut Self {
+        unsafe { &mut *(self as *mut Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedBuffer<T> {
+    #[inline(always)]
+    fn as_ref(&self) -> &HostSlice<'a, T> {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedSliceMut<'a, T> {
+    #[inline(always)]
+    fn as_ref(&self) -> &HostSlice<'a, T> {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsMut<HostSliceMut<'a, T>> for UnifiedBuffer<T> {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut HostSliceMut<'a, T> {
+        unsafe { &mut *(self as *mut Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
+    #[inline(always)]
+    fn as_ref(&self) -> &HipSlice<'a, T> {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
+    #[inline(always)]
+    fn as_ref(&self) -> &HipSlice<'a, T> {
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedBuffer<T> {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
