@@ -13,7 +13,7 @@ use rocm_sys::hip::{
 };
 
 use crate::{
-    RocHandle,
+    aux::RocHandle,
     hip::{HipError, gfx::GfxVersion, memory::MemPool},
 };
 

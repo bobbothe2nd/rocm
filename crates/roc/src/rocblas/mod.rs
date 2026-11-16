@@ -4,7 +4,7 @@ use rocm_sys::rocblas::{
     rocblas_set_stream, rocblas_status,
 };
 
-use crate::{RocHandle, hip::stream::HipStream};
+use crate::{aux::RocHandle, hip::stream::HipStream};
 
 macro_rules! try_err {
     ($func:expr$(, $sucess:expr)?$(,)?) => {

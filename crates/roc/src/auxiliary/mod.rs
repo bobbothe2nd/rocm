@@ -1,7 +1,10 @@
 use core::ops::{Bound, RangeBounds};
 
+pub mod public;
+
 pub struct ResolvedRange<T> {
     pub start: T,
+    #[expect(dead_code)]
     pub end: T,
     pub len: T,
 }

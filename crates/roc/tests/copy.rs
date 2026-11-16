@@ -3,10 +3,10 @@
 fn htod_copy_preserves_bytes_outside_requested_range() {
     use roc::{
         hip::stream::{HipStream, StreamKind},
-        is_amdhip64_present,
+        aux::is_hip_present,
     };
 
-    if !is_amdhip64_present() {
+    if !is_hip_present() {
         return;
     }
 
