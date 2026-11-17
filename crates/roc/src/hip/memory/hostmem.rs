@@ -1,10 +1,6 @@
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range},
-    hip::{
-        DevRepr, HipError,
-        event::HipEvent,
-        memory::{CopyTo, DevPtr, StreamBound},
-        stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range}, hip::{
+        DevRepr, HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, StreamBound}, stream::HipStream,
     },
 };
 use alloc::sync::Arc;
@@ -214,7 +210,7 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound,
+        Dst: DevPtr<T> + StreamBound + EventSync,
     {
         super::copy_async(self, dst, src_off, dst_off, len)
     }
@@ -437,7 +433,7 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound,
+        Dst: DevPtr<T> + StreamBound + EventSync,
     {
         super::copy_async(self, dst, src_off, dst_off, len)
     }
@@ -688,6 +684,64 @@ impl<T: DevRepr> HostBuffer<T> {
     /// The buffer must never be deallocated again or dropped and the buffer can't be used again.
     pub unsafe fn dealloc_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipHostFree(self.ptr.cast()), Ok(())) }
+    }
+
+    #[inline]
+    pub fn copy_from_sync<Src>(
+        &mut self,
+        src: &Src,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError>
+    where
+        Src: CopyTo<T, Self>,
+    {
+        super::copy(src, self, src_off, dst_off, len)
+    }
+
+    #[inline]
+    pub fn copy_to_sync<Dst>(
+        &self,
+        dst: &mut Dst,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError>
+    where
+        Self: CopyTo<T, Dst>,
+        Dst: DevPtr<T>,
+    {
+        super::copy(self, dst, src_off, dst_off, len)
+    }
+
+    #[inline]
+    pub fn copy_from_async<Src>(
+        &mut self,
+        src: &Src,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError>
+    where
+        Src: CopyTo<T, Self> + StreamBound,
+    {
+        super::copy_async(src, self, src_off, dst_off, len)
+    }
+
+    #[inline]
+    pub fn copy_to_async<Dst>(
+        &self,
+        dst: &mut Dst,
+        src_off: usize,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError>
+    where
+        Self: CopyTo<T, Dst>,
+        Dst: DevPtr<T> + StreamBound + EventSync,
+    {
+        super::copy_async(self, dst, src_off, dst_off, len)
     }
 
     pub fn memset(&self, byte: u8) {

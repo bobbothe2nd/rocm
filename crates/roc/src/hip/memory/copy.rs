@@ -19,7 +19,8 @@ where
     Src: CopyTo<T, Dst>,
     Dst: DevPtr<T>,
 {
-    if src_off
+    if src.get_dev() == dst.get_dev()
+        || src_off
         .checked_add(len)
         .is_none_or(|end| end > src.len() as usize)
         || dst_off
@@ -43,11 +44,9 @@ pub fn copy_async<T, Src, Dst>(
 ) -> Result<(), HipError>
 where
     Src: CopyTo<T, Dst> + StreamBound,
-    Dst: DevPtr<T> + StreamBound,
+    Dst: DevPtr<T> + StreamBound + EventSync,
 {
-    let stream = src.stream();
-
-    if !stream.same_as(dst.stream())
+    if src.get_dev() == dst.get_dev()
         || src_off
             .checked_add(len)
             .is_none_or(|end| end > src.len() as usize)
@@ -57,6 +56,12 @@ where
         || core::ptr::eq(src.as_ptr(), dst.as_ptr())
     {
         return Err(HipError::InvalidValue);
+    }
+
+    let stream = src.stream();
+
+    if !dst.stream().same_as(stream) {
+        dst.sync()?;
     }
 
     unsafe {

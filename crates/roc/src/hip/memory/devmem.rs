@@ -91,7 +91,7 @@ impl<T: DevRepr> HipSlice<'_, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound,
+        Dst: DevPtr<T> + StreamBound + EventSync,
     {
         super::copy_async(self, dst, src_off, dst_off, len)
     }
@@ -205,7 +205,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound,
+        Dst: DevPtr<T> + StreamBound + EventSync,
     {
         super::copy_async(self, dst, src_off, dst_off, len)
     }
@@ -423,7 +423,7 @@ impl<T: DevRepr> HipBuffer<T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound,
+        Dst: DevPtr<T> + StreamBound + EventSync,
     {
         super::copy_async(self, dst, src_off, dst_off, len)
     }

@@ -625,6 +625,9 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     /// Validate that the given stream may access this buffer. Returns
     /// `Err(hipErrorNotSupported)` when the attach mode forbids it.
     pub fn check_dev_access(&self) -> Result<(), HipError> {
+        if !self.is_init {
+            return Err(HipError::InvalidValue);
+        }
         match self.attach_mode {
             MemAttachFlags::Global => {}
             MemAttachFlags::Host => {
@@ -747,7 +750,7 @@ impl<'a, T: DevRepr> AsMut<HostSliceMut<'a, T>> for UnifiedSliceMut<'_, T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
-        log_if_err!("unsafe device access on UnifiedBuffer": self.check_dev_access());
+        self.check_dev_access().expect("unsafe device access on UnifiedBuffer");
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -755,7 +758,7 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSlice<'a, T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
-        log_if_err!("unsafe device access on UnifiedSlice": self.check_dev_access());
+        self.check_dev_access().expect("unsafe device access on UnifiedSlice");
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -763,7 +766,8 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSlice<'a, T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
-        log_if_err!("unsafe device access on UnifiedSliceMut": self.check_dev_access());
+        self.expect_init(None);
+        self.check_dev_access().expect("unsafe device access on UnifiedSliceMut");
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -771,7 +775,7 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
 impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
-        log_if_err!("unsafe device access on UnifiedBuffer": self.check_dev_access());
+        self.check_dev_access().expect("unsafe device access on UnifiedBuffer");
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
@@ -779,7 +783,7 @@ impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedSliceMut<'_, T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
-        log_if_err!("unsafe device access on UnifiedSliceMut": self.check_dev_access());
+        self.check_dev_access().expect("unsafe device access on UnifiedSliceMut");
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
