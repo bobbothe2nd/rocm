@@ -100,3 +100,213 @@ pub const HIP_TWO_TO_M54: f64 = 5.5511151231257827e-17;
 pub const HIP_TWO_TO_M1022: f64 = 2.22507385850720140e-308;
 pub const HIP_TRIG_PLOSS: f64 = 2147483648.0;
 pub const HIP_DBL2INT_CVT: f64 = 6755399441055744.0;
+
+/// Default flag. Equivalent to `HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM` if compiled with
+/// `-fgpu-default-stream=per-thread flag` or `HIP_API_PER_THREAD_DEFAULT_STREAM` macro is
+/// defined.
+pub const HIP_GET_PROC_ADDRESS_DEFAULT: u32 = 0;
+/// Search for all symbols except the corresponding per-thread versions.
+pub const HIP_GET_PROC_ADDRESS_LEGACY_STREAM: u32 = 1;
+/// Search for all symbols including the per-thread versions. If a per-thread version cannot be
+/// found, returns the legacy version.
+pub const HIP_GET_PROC_ADDRESS_PER_THREAD_DEFAULT_STREAM: u32 = 2;
+/// The hipTexRefSetArray function flags parameter override format value
+pub const HIP_TRSA_OVERRIDE_FORMAT: u32 = 1;
+/// The `hipTexRefSetFlags` function flags parameter read as integer value
+pub const HIP_TRSF_READ_AS_INTEGER: u32 = 1;
+/// The `hipTexRefSetFlags` function flags parameter normalized coordinate value
+pub const HIP_TRSF_NORMALIZED_COORDINATES: u32 = 2;
+/// The `hipTexRefSetFlags` function flags parameter srgb value
+pub const HIP_TRSF_SRGB: u32 = 16;
+pub const hipTextureType1D: u32 = 1;
+pub const hipTextureType2D: u32 = 2;
+pub const hipTextureType3D: u32 = 3;
+pub const hipTextureTypeCubemap: u32 = 12;
+pub const hipTextureType1DLayered: u32 = 241;
+pub const hipTextureType2DLayered: u32 = 242;
+pub const hipTextureTypeCubemapLayered: u32 = 252;
+/// Should be same as `HSA_IMAGE_OBJECT_SIZE_DWORD`/`HSA_SAMPLER_OBJECT_SIZE_DWORD`
+pub const HIP_IMAGE_OBJECT_SIZE_DWORD: u32 = 12;
+pub const HIP_SAMPLER_OBJECT_SIZE_DWORD: u32 = 8;
+pub const HIP_SAMPLER_OBJECT_OFFSET_DWORD: u32 = 12;
+pub const HIP_TEXTURE_OBJECT_SIZE_DWORD: u32 = 20;
+pub const HIP_DEPRECATED_MSG : & [u8 ; 189] = b"This API is marked as deprecated and might not be supported in future releases. For more details please refer https://github.com/ROCm/HIP/blob/develop/docs/reference/deprecated_api_list.md\0" ;
+pub const HIP_RESOURCE_ABI_BYTES: u32 = 40;
+pub const hipIpcMemLazyEnablePeerAccess: u32 = 1;
+pub const HIP_IPC_HANDLE_SIZE: u32 = 64;
+/// Default stream creation flags. These are used with `hipStreamCreate()`.
+pub const hipStreamDefault: u32 = 0;
+/// Stream does not implicitly synchronize with null stream.
+pub const hipStreamNonBlocking: u32 = 1;
+/// Default flags.
+pub const hipEventDefault: u32 = 0;
+/// Waiting will yield CPU. Power-friendly and usage-friendly but may increase latency.
+pub const hipEventBlockingSync: u32 = 1;
+/// Disable event's capability to record timing information. May improve performance.
+pub const hipEventDisableTiming: u32 = 2;
+/// Event can support IPC. hipEventDisableTiming also must be set.
+pub const hipEventInterprocess: u32 = 4;
+/// Default flag.
+pub const hipEventRecordDefault: u32 = 0;
+/// Event is captured in the graph as an external event node when performing stream capture.
+pub const hipEventRecordExternal: u32 = 1;
+/// Default flag.
+pub const hipEventWaitDefault: u32 = 0;
+/// Wait is captured in the graph as an external event node when performing stream capture.
+pub const hipEventWaitExternal: u32 = 1;
+/// Disable performing a system scope sequentially consistent memory fence when the event
+/// transitions from recording to recorded.  This can be used for events that are only being
+/// used to measure timing, and do not require the event inspection operations
+/// (see `::hipEventSynchronize`, `::hipEventQuery`, and `::hipEventElapsedTime`) to synchronize-with
+/// the work on which the recorded event (see `::hipEventRecord`) is waiting.
+/// On some AMD GPU devices this can improve the accuracy of timing measurements by avoiding the
+/// cost of cache writeback and invalidation, and the performance impact of those actions on the
+/// execution of following work.
+pub const hipEventDisableSystemFence: u32 = 536870912;
+/// Use a device-scope release when recording this event. This flag is useful to obtain more
+/// precise timings of commands between events.  The flag is a no-op on CUDA platforms.
+pub const hipEventReleaseToDevice: u32 = 1073741824;
+/// Use a system-scope release when recording this event. This flag is useful to make
+/// non-coherent host memory visible to the host. The flag is a no-op on CUDA platforms.
+pub const hipEventReleaseToSystem: u32 = 2147483648;
+/// Default flag.
+///
+/// Equivalent to hipEnablePerThreadDefaultStream if compiled with
+/// `-fgpu-default-stream=per-thread` flag or `HIP_API_PER_THREAD_DEFAULT_STREAM` macro is
+/// defined.
+pub const hipEnableDefault: u32 = 0;
+/// Search for all symbols except the corresponding per-thread versions.
+pub const hipEnableLegacyStream: u32 = 1;
+/// Search for all symbols including the per-thread versions. If a per-thread version cannot be
+/// found, returns the legacy version.
+pub const hipEnablePerThreadDefaultStream: u32 = 2;
+/// Default pinned memory allocation on the host.
+pub const hipHostAllocDefault: u32 = 0;
+/// Default pinned memory allocation on the host.
+///
+/// This is the same definition as #hipHostAllocPortable.
+pub const hipHostMallocDefault: u32 = 0;
+/// Memory is considered allocated by all contexts.
+pub const hipHostAllocPortable: u32 = 1;
+/// Memory is considered allocated by all contexts.
+///
+/// This is the same definition as #hipHostAllocPortable.
+pub const hipHostMallocPortable: u32 = 1;
+/// Map the allocation into the address space for the current device. The device pointer
+/// can be obtained with #hipHostGetDevicePointer.
+pub const hipHostAllocMapped: u32 = 2;
+/// Map the allocation into the address space for the current device. The device pointer
+/// can be obtained with #hipHostGetDevicePointer.
+///
+/// This is the same #hipHostMallocMapped.
+pub const hipHostMallocMapped: u32 = 2;
+/// Allocates the memory as write-combined. On some system configurations, write-combined allocation
+/// may be transferred faster across the PCI Express bus, however, could have low read efficiency by
+/// most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.
+///
+///  This flag is only for CUDA source compatibility but not functional within HIP runtime,
+/// because the allocation path is currently not supported on the AMD platform.
+pub const hipHostAllocWriteCombined: u32 = 4;
+/// Allocates the memory as write-combined. On some system configurations, write-combined allocation
+/// may be transferred faster across the PCI Express bus, however, could have low read efficiency by
+/// most CPUs. It's a good option for data transfer from host to device via mapped pinned memory.
+///
+///  This flag is the same definition as #hipHostAllocWriteCombined which is equivalent to
+/// cudaHostAllocWriteCombined. It is only for CUDA source compatibility but not functional within
+/// HIP runtime, because the allocation path is currently not supported on the AMD platform.
+pub const hipHostMallocWriteCombined: u32 = 4;
+/// Host memory will be forcedly allocated on extended fine grained system memory
+/// pool which is with MTYPE_UC.
+///
+///  This allocation flag is applicable on AMD devices, except for Navi4X, in Linux only.
+pub const hipHostMallocUncached: u32 = 268435456;
+pub const hipHostAllocUncached: u32 = 268435456;
+/// Host memory allocation will follow numa policy set by user.
+///
+///  This numa allocation flag is applicable on Linux, under development on Windows.
+pub const hipHostMallocNumaUser: u32 = 536870912;
+/// Allocate coherent memory. Overrides HIP_HOST_COHERENT for specific allocation.
+pub const hipHostMallocCoherent: u32 = 1073741824;
+/// Allocate non-coherent memory. Overrides HIP_HOST_COHERENT for specific allocation.
+pub const hipHostMallocNonCoherent: u32 = 2147483648;
+/// Memory can be accessed by any stream on any device
+pub const hipMemAttachGlobal: u32 = 1;
+/// Memory cannot be accessed by any stream on any device.
+pub const hipMemAttachHost: u32 = 2;
+/// Memory can only be accessed by a single stream on the associated device.
+pub const hipMemAttachSingle: u32 = 4;
+pub const hipDeviceMallocDefault: u32 = 0;
+/// Memory is allocated in fine grained region of device.
+pub const hipDeviceMallocFinegrained: u32 = 1;
+/// Memory represents a HSA signal.
+pub const hipMallocSignalMemory: u32 = 2;
+/// Memory allocated will be uncached.
+pub const hipDeviceMallocUncached: u32 = 3;
+/// Memory allocated will be contiguous.
+pub const hipDeviceMallocContiguous: u32 = 4;
+/// Memory is Mapped and Portable.
+pub const hipHostRegisterDefault: u32 = 0;
+/// Memory is considered registered by all contexts.
+pub const hipHostRegisterPortable: u32 = 1;
+/// Map the allocation into the address space for the current device. The device pointer
+/// can be obtained with #hipHostGetDevicePointer.
+pub const hipHostRegisterMapped: u32 = 2;
+/// The passed memory pointer is treated as pointing to some memory-mapped I/O space, e.g.
+/// belonging to a third-party PCIe device, and it will be marked as non cache-coherent and
+/// contiguous.
+pub const hipHostRegisterIoMemory: u32 = 4;
+/// This flag is ignored On AMD devices.
+pub const hipHostRegisterReadOnly: u32 = 8;
+/// Coarse Grained host memory lock.
+pub const hipExtHostRegisterCoarseGrained: u32 = 8;
+/// Map host memory onto extended fine grained access host memory pool when enabled.
+/// It is applicable on AMD devices, except for Navi4X, in Linux only.
+pub const hipExtHostRegisterUncached: u32 = 2147483648;
+/// Automatically select between Spin and Yield.
+pub const hipDeviceScheduleAuto: u32 = 0;
+/// Dedicate a CPU core to spin-wait. Provides lowest latency, but burns a CPU core and may
+/// consume more power.
+pub const hipDeviceScheduleSpin: u32 = 1;
+/// Yield the CPU to the operating system when waiting. May increase latency, but lowers power
+/// and is friendlier to other threads in the system.
+pub const hipDeviceScheduleYield: u32 = 2;
+pub const hipDeviceScheduleBlockingSync: u32 = 4;
+pub const hipDeviceScheduleMask: u32 = 7;
+pub const hipDeviceMapHost: u32 = 8;
+pub const hipDeviceLmemResizeToMax: u32 = 16;
+/// Indicates that the deviceFlags passed to hipInitDevice() are valid and should be applied.
+pub const hipInitDeviceFlagsAreValid: u32 = 1;
+/// Default HIP array allocation flag.
+pub const hipArrayDefault: u32 = 0;
+pub const hipArrayLayered: u32 = 1;
+pub const hipArraySurfaceLoadStore: u32 = 2;
+pub const hipArrayCubemap: u32 = 4;
+pub const hipArrayTextureGather: u32 = 8;
+pub const hipOccupancyDefault: u32 = 0;
+pub const hipOccupancyDisableCachingOverride: u32 = 1;
+pub const hipCooperativeLaunchMultiDeviceNoPreSync: u32 = 1;
+pub const hipCooperativeLaunchMultiDeviceNoPostSync: u32 = 2;
+pub const hipCpuDeviceId: i32 = -1;
+pub const hipInvalidDeviceId: i32 = -2;
+/// AnyOrderLaunch of kernels.
+pub const hipExtAnyOrderLaunch: u32 = 1;
+pub const hipStreamWaitValueGte: u32 = 0;
+pub const hipStreamWaitValueEq: u32 = 1;
+pub const hipStreamWaitValueAnd: u32 = 2;
+pub const hipStreamWaitValueNor: u32 = 3;
+pub const hipStreamWriteValueDefault: u32 = 0;
+pub const hipExtStreamWriteValueIncrement: u32 = 4096;
+pub const hipExtStreamWriteValueDecrement: u32 = 4097;
+pub const hipExternalMemoryDedicated: u32 = 1;
+/// Compile-time upper bound for the number of prefetch regions in
+/// [`hipExtDynDataPrefetchConfig`](`crate::hip::hipExtDynDataPrefetchConfig`). The actual device limit is queried at
+/// runtime via [`hipDeviceAttributeMaxDynDataPrefetchRegions`].
+pub const HIP_EXT_DYN_DATA_PREFETCH_MAX_REGIONS: u32 = 2;
+/// This port activates when the kernel has finished executing.
+pub const hipGraphKernelNodePortDefault: u32 = 0;
+/// This port activates when all blocks of the kernel have begun execution.
+pub const hipGraphKernelNodePortLaunchCompletion: u32 = 2;
+/// This port activates when all blocks of the kernel have performed
+/// `hipTriggerProgrammaticLaunchCompletion()` or have terminated.
+/// It must be used with edge type hipGraphDependencyTypeProgrammatic.
+pub const hipGraphKernelNodePortProgrammatic: u32 = 1;

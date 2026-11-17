@@ -2,7 +2,7 @@ use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::{Deref
 use std::ptr::write_bytes;
 
 use alloc::sync::Arc;
-use rocm_sys::hip::{hipFree, hipFreeAsync, hipMallocManaged};
+use rocm_sys::hip::{hipCpuDeviceId, hipFree, hipFreeAsync, hipMallocManaged, hipMemPrefetchAsync, hipStreamAttachMemAsync};
 
 use crate::{
     auxiliary::{ResolvedRange, resolve_range}, hip::{
@@ -356,6 +356,11 @@ impl<T: DevRepr> UnifiedBuffer<T> {
         self.is_init = true;
     }
 
+    #[inline(always)]
+    pub const fn attach_mode(&self) -> MemAttachFlags {
+        self.attach_mode
+    }
+
     /// Gets the pointer to GPU memory
     #[inline(always)]
     pub const fn as_ptr(&self) -> *const T {
@@ -454,10 +459,91 @@ impl<T: DevRepr> UnifiedBuffer<T> {
         unsafe { try_err!(hipFreeAsync(self.ptr.cast(), self.stream.raw), Ok(())) }
     }
 
+    /// Re-attach to a new stream and buffer
+    pub fn attach(
+        &mut self,
+        stream: &Arc<HipStream>,
+        flags: MemAttachFlags,
+    ) -> Result<(), HipError> {
+        self.event.sync()?;
+        self.stream = stream.clone();
+        self.attach_mode = flags;
+        unsafe {
+            try_err!(hipStreamAttachMemAsync(
+                self.stream.raw,
+                self.ptr as *mut _,
+                self.size(),
+                self.attach_mode as i32,
+            ), Ok(()))
+        }
+    }
+
+    /// Hint HIP to prefetch the buffer to the appropriate location based
+    /// on the current [`attach_mode`](`Self::attach_mode`).
+    ///
+    /// - `Global` / `Single`: prefetch to the stream's device (requires
+    ///   `hipDeviceAttributeConcurrentManagedAccess`).
+    /// - `Host`: prefetch to host memory ([`hipCpuDeviceId`]).
+    pub fn prefetch(&self) -> Result<(), HipError> {
+        let device = match self.attach_mode {
+            MemAttachFlags::Global | MemAttachFlags::Single => {
+                if !self.stream.dev.concurrent_managed_access {
+                    return Err(HipError::NotSupported);
+                }
+                self.stream.dev.as_raw()
+            }
+            MemAttachFlags::Host => hipCpuDeviceId,
+        };
+        unsafe {
+            try_err!(hipMemPrefetchAsync(
+                self.ptr as *const _,
+                self.size(),
+                device,
+                self.stream.raw,
+            ), Ok(()))
+        }
+    }
+
     pub fn memset(&self, byte: u8) {
         unsafe {
             write_bytes(self.ptr, byte, self.len);
         }
+    }
+
+    /// Synchronize the stream if needed to guarantee safe host access.
+    pub fn sync_host(&self) -> Result<(), HipError> {
+        if matches!(self.attach_mode, MemAttachFlags::Single) {
+            self.event.sync()?;
+        }
+        Ok(())
+    }
+
+    /// Validate that the given stream may access this buffer. Returns
+    /// `Err(hipErrorNotSupported)` when the attach mode forbids it.
+    pub fn check_dev_access(&self, stream: &HipStream) -> Result<(), HipError> {
+        match self.attach_mode {
+            MemAttachFlags::Global => {
+                // Any context/stream may access.
+            }
+            MemAttachFlags::Host => {
+                // Cross-context access requires the *target* context to
+                // advertise concurrent managed access.
+                let cma = if self.stream.same_as(stream) {
+                    self.stream.dev.concurrent_managed_access
+                } else {
+                    stream.dev.concurrent_managed_access
+                };
+                if !cma {
+                    return Err(HipError::NotSupported);
+                }
+            }
+            MemAttachFlags::Single => {
+                if self.stream.same_as(stream) {
+                    return Err(HipError::NotSupported);
+                }
+            }
+        }
+        Ok(())
     }
 }
 
