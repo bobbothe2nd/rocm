@@ -1,6 +1,10 @@
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound}, stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        DevRepr, HipError,
+        event::HipEvent,
+        memory::{CopyTo, DevPtr, EventSync, Memset, StreamBound},
+        stream::HipStream,
     },
 };
 use alloc::sync::Arc;
@@ -23,11 +27,7 @@ unsafe impl<T: DevRepr> Sync for HipSlice<'_, T> {}
 
 impl<T: DevRepr> HipSlice<'_, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe { Self::from_raw_parts(self.ptr.add(start), len, &self.stream, &self.event) }
     }
 
@@ -113,11 +113,7 @@ unsafe impl<T: DevRepr> Sync for HipSliceMut<'_, T> {}
 
 impl<T: DevRepr> HipSliceMut<'_, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe { Self::from_raw_parts(self.ptr.add(start), len, &self.stream, &self.event) }
     }
 
@@ -221,13 +217,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
             return Err(HipError::InvalidValue);
         }
 
-        unsafe {
-            D::memset_sync(
-                self.ptr.cast(),
-                val,
-                bytes / size_of::<D>(),
-            )
-        }
+        unsafe { D::memset_sync(self.ptr.cast(), val, bytes / size_of::<D>()) }
     }
 
     pub fn memset_async<D: Memset>(&self, val: D) -> Result<(), HipError> {
@@ -238,12 +228,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
         }
 
         unsafe {
-            D::memset_async(
-                self.ptr.cast(),
-                val,
-                bytes / size_of::<D>(),
-                &self.stream,
-            )?;
+            D::memset_async(self.ptr.cast(), val, bytes / size_of::<D>(), &self.stream)?;
         }
 
         self.latesync()?;
@@ -261,19 +246,19 @@ pub struct HipBuffer<T: DevRepr> {
     pub(crate) len: usize,
     pub(crate) event: HipEvent,
     pub(crate) stream: Arc<HipStream>,
-    _marker: PhantomData<UnsafeCell<[T]>>,
+    pub(super) _marker: PhantomData<UnsafeCell<[T]>>,
 }
 
 unsafe impl<T: DevRepr> Send for HipBuffer<T> {}
 unsafe impl<T: DevRepr> Sync for HipBuffer<T> {}
 
 impl HipStream {
-    /// Allocates `len` elements on the default device
+    /// Allocates `len` elements
     pub fn alloc<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HipBuffer<T>, HipError> {
         let event = HipEvent::create(None)?;
 
         let ptr: Result<*mut T, HipError> =
-            unsafe { wrap_sys_res!(|ptr| hipMalloc((&raw mut ptr).cast(), len)) };
+            unsafe { wrap_sys_res!(|ptr: *mut T| hipMalloc(ptr.as_mut_ptr().cast(), len)) };
         let ptr = ptr?;
 
         if ptr.is_null() {
@@ -289,8 +274,11 @@ impl HipStream {
         })
     }
 
-    /// Allocates `len` zeroed elements on the default device
-    pub fn alloc_zeroed<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HipBuffer<T>, HipError> {
+    /// Allocates `len` zeroed elements
+    pub fn alloc_zeroed<T: DevRepr>(
+        self: &Arc<Self>,
+        len: usize,
+    ) -> Result<HipBuffer<T>, HipError> {
         self.alloc(len).and_then(|mut buf| {
             buf.memset(0u8)?;
             Ok(buf)
@@ -335,20 +323,12 @@ impl<T: DevRepr> HipBuffer<T> {
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> HipSlice<'_, T> {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe { HipSlice::from_raw_parts(self.ptr.add(start), len, &self.stream, &self.event) }
     }
 
     pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> HipSliceMut<'_, T> {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe { HipSliceMut::from_raw_parts(self.ptr.add(start), len, &self.stream, &self.event) }
     }
 
@@ -456,13 +436,7 @@ impl<T: DevRepr> HipBuffer<T> {
             return Err(HipError::InvalidValue);
         }
 
-        unsafe {
-            D::memset_sync(
-                self.ptr.cast(),
-                val,
-                bytes / size_of::<D>(),
-            )
-        }
+        unsafe { D::memset_sync(self.ptr.cast(), val, bytes / size_of::<D>()) }
     }
 
     pub fn memset_async<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
@@ -473,12 +447,7 @@ impl<T: DevRepr> HipBuffer<T> {
         }
 
         unsafe {
-            D::memset_async(
-                self.ptr.cast(),
-                val,
-                bytes / size_of::<D>(),
-                &self.stream,
-            )?;
+            D::memset_async(self.ptr.cast(), val, bytes / size_of::<D>(), &self.stream)?;
         }
 
         self.latesync()?;
@@ -489,7 +458,7 @@ impl<T: DevRepr> HipBuffer<T> {
 
 impl<T: DevRepr> Drop for HipBuffer<T> {
     fn drop(&mut self) {
-        if self.stream.dev.has_async_alloc {
+        if self.stream.dev.has_mem_pools {
             unsafe {
                 log_if_err!("failed to deallocate HipBuffer": self.dealloc_async_unchecked());
             }

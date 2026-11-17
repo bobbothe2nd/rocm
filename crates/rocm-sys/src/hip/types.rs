@@ -1756,7 +1756,7 @@ pub struct hipDeviceProp_tR0600 {
     pub uuid: hipUUID,
 
     /// 8-byte locally unique identifier (LUID). Only valid on Windows.
-    pub luid: [::core::ffi::c_char; 8],
+    pub luid: crate::platform::windows::LUID,
 
     /// LUID device node mask.
     pub luidDeviceNodeMask: ::core::ffi::c_uint,
@@ -4298,8 +4298,8 @@ pub struct hipMemPoolProps {
     pub handleTypes: hipMemAllocationHandleType,
     /// Location where allocations should reside
     pub location: hipMemLocation,
-    /// Windows-specific LPSECURITYATTRIBUTES required when `hipMemHandleTypeWin32` is specified
-    pub win32SecurityAttributes: *mut ::core::ffi::c_void,
+    /// Windows-specific `LPSECURITYATTRIBUTES` required when `hipMemHandleTypeWin32` is specified
+    pub win32SecurityAttributes: crate::platform::windows::LPSECURITYATTRIBUTES,
     /// Maximum pool size. When set to 0, defaults to a system dependent value
     pub maxSize: usize,
     /// Reserved for future use, must be 0

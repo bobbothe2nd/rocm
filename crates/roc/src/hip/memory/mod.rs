@@ -49,6 +49,8 @@ pub trait StreamBound {
     fn stream(&self) -> &super::stream::HipStream;
 }
 
+pub trait MutPtr {}
+
 pub trait DevPtr<T> {
     fn as_ptr(&self) -> *const T;
     fn len(&self) -> usize;
@@ -56,6 +58,10 @@ pub trait DevPtr<T> {
     fn size(&self) -> usize {
         self.len() * size_of::<T>()
     }
+}
+
+pub trait HostPtr<T> {
+    fn as_ptr(&self) -> *const T;
 }
 
 macro_rules! impl_buf {
@@ -111,8 +117,44 @@ macro_rules! impl_dev {
 
 impl_dev!(
     HipBuffer<T> HipSlice<'_, T> HipSliceMut<'_, T>
+);
+
+impl<T: super::DevRepr> MutPtr for HipBuffer<T> {}
+impl<T: super::DevRepr> MutPtr for HipSliceMut<'_, T> {}
+
+macro_rules! impl_unified {
+    ($($ty:ty)*) => {$(
+        impl<T: super::DevRepr> DevPtr<T> for $ty {
+            #[inline(always)]
+            fn as_ptr(&self) -> *const T {
+                self.ptr
+            }
+
+            #[inline(always)]
+            fn len(&self) -> usize {
+                self.len
+            }
+
+            #[inline(always)]
+            fn get_dev(&self) -> super::device::Device {
+                self.stream.dev
+            }
+        }
+        impl<T: super::DevRepr> HostPtr<T> for $ty {
+            #[inline(always)]
+            fn as_ptr(&self) -> *const T {
+                self.ptr
+            }
+        }
+    )*};
+}
+
+impl_unified!(
     UnifiedBuffer<T> UnifiedSlice<'_, T> UnifiedSliceMut<'_, T>
 );
+
+impl<T: super::DevRepr> MutPtr for UnifiedBuffer<T> {}
+impl<T: super::DevRepr> MutPtr for UnifiedSliceMut<'_, T> {}
 
 macro_rules! impl_host {
     ($($ty:ty)*) => {$(
@@ -132,9 +174,18 @@ macro_rules! impl_host {
                 self.stream.dev
             }
         }
+        impl<T: super::DevRepr> HostPtr<T> for $ty {
+            #[inline(always)]
+            fn as_ptr(&self) -> *const T {
+                self.ptr
+            }
+        }
     )*};
 }
 
 impl_host!(
     HostBuffer<T> HostSlice<'_, T> HostSliceMut<'_, T>
 );
+
+impl<T: super::DevRepr> MutPtr for HostBuffer<T> {}
+impl<T: super::DevRepr> MutPtr for HostSliceMut<'_, T> {}

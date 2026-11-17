@@ -4,11 +4,15 @@ use core::{
     mem::transmute,
 };
 use rocm_sys::hip::{
-    hipError_t, hipStream_t, hipStreamCreateWithFlags, hipStreamCreateWithPriority, hipStreamDestroy,
-    hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority, hipStreamQuery, hipStreamSynchronize,
+    hipError_t, hipStream_t, hipStreamCreateWithFlags, hipStreamCreateWithPriority,
+    hipStreamDestroy, hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority, hipStreamQuery,
+    hipStreamSynchronize,
 };
 
-use crate::{aux::RocHandle, hip::{HipError, device::Device}};
+use crate::{
+    aux::RocHandle,
+    hip::{HipError, device::Device},
+};
 
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]

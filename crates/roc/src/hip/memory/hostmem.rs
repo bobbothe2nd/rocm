@@ -17,7 +17,10 @@ use core::{
     ptr::write_bytes,
     slice,
 };
-use rocm_sys::hip::{hipError_t, hipHostFree, hipHostGetDevicePointer, hipHostMalloc, hipHostRegister, hipHostUnregister};
+use rocm_sys::hip::{
+    hipError_t, hipHostFree, hipHostGetDevicePointer, hipHostMalloc, hipHostRegister,
+    hipHostUnregister,
+};
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
@@ -116,7 +119,12 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     #[inline(always)]
     pub fn as_dev_ptr(&self) -> Result<*const T, HipError> {
         unsafe {
-            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(dev_ptr.as_mut_ptr(), self.ptr as *mut _, 0)).map(|ptr| ptr as _)
+            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(
+                dev_ptr.as_mut_ptr(),
+                self.ptr as *mut _,
+                0
+            ))
+            .map(|ptr| ptr as _)
         }
     }
 
@@ -311,7 +319,12 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     #[inline(always)]
     pub fn as_dev_ptr(&self) -> Result<*mut T, HipError> {
         unsafe {
-            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(dev_ptr.as_mut_ptr(), self.ptr.cast(), 0)).map(<*mut _>::cast)
+            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(
+                dev_ptr.as_mut_ptr(),
+                self.ptr.cast(),
+                0
+            ))
+            .map(<*mut _>::cast)
         }
     }
 
@@ -595,7 +608,12 @@ impl<T: DevRepr> HostBuffer<T> {
     #[inline(always)]
     pub fn as_dev_ptr(&self) -> Result<*mut T, HipError> {
         unsafe {
-            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(dev_ptr.as_mut_ptr(), self.ptr.cast(), 0)).map(<*mut _>::cast)
+            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(
+                dev_ptr.as_mut_ptr(),
+                self.ptr.cast(),
+                0
+            ))
+            .map(<*mut _>::cast)
         }
     }
 

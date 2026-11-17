@@ -24,5 +24,9 @@ pub fn resolve_range(range: impl RangeBounds<usize>, total_len: usize) -> Resolv
         start <= end && end <= total_len,
         "slice range out of bounds"
     );
-    ResolvedRange { start, end, len: end - start }
+    ResolvedRange {
+        start,
+        end,
+        len: end - start,
+    }
 }

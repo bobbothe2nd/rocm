@@ -11,6 +11,8 @@
 )]
 #![cfg_attr(not(feature = "dynamic-loading"), no_std)]
 
+pub mod platform;
+
 #[cfg(all(feature = "hip", any(feature = "dynamic-loading", hip)))]
 pub mod hip;
 #[cfg(all(feature = "hiprtc", any(feature = "dynamic-loading", hiprtc)))]

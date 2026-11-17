@@ -1,12 +1,25 @@
-use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::{Deref, DerefMut, RangeBounds}, slice};
+use core::{
+    cell::UnsafeCell,
+    marker::PhantomData,
+    mem::ManuallyDrop,
+    ops::{Deref, DerefMut, RangeBounds},
+    slice,
+};
 use std::ptr::write_bytes;
 
 use alloc::sync::Arc;
-use rocm_sys::hip::{hipCpuDeviceId, hipFree, hipFreeAsync, hipMallocManaged, hipMemPrefetchAsync, hipStreamAttachMemAsync};
+use rocm_sys::hip::{
+    hipCpuDeviceId, hipFree, hipFreeAsync, hipMallocManaged, hipMemPrefetchAsync,
+    hipStreamAttachMemAsync,
+};
 
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, event::{EventFlags, HipEvent}, memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut}, stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        DevRepr, HipError,
+        event::{EventFlags, HipEvent},
+        memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut},
+        stream::HipStream,
     },
 };
 
@@ -46,11 +59,7 @@ unsafe impl<T: DevRepr> Sync for UnifiedSlice<'_, T> {}
 
 impl<T: DevRepr> UnifiedSlice<'_, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             Self::from_raw_parts(
                 self.ptr.add(start),
@@ -142,12 +151,10 @@ impl<T: DevRepr> UnifiedSlice<'_, T> {
             MemAttachFlags::Host => hipCpuDeviceId,
         };
         unsafe {
-            try_err!(hipMemPrefetchAsync(
-                self.ptr as *const _,
-                self.size(),
-                device,
-                self.stream.raw,
-            ), Ok(()))
+            try_err!(
+                hipMemPrefetchAsync(self.ptr as *const _, self.size(), device, self.stream.raw,),
+                Ok(())
+            )
         }
     }
 
@@ -203,11 +210,7 @@ unsafe impl<T: DevRepr> Sync for UnifiedSliceMut<'_, T> {}
 
 impl<T: DevRepr> UnifiedSliceMut<'_, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             Self::from_raw_parts(
                 self.ptr.add(start),
@@ -289,19 +292,19 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
     }
 
     /// Re-attach to a new stream and buffer
-    pub fn attach(
-        &mut self,
-        flags: MemAttachFlags,
-    ) -> Result<(), HipError> {
+    pub fn attach(&mut self, flags: MemAttachFlags) -> Result<(), HipError> {
         self.event.sync()?;
         self.attach_mode = flags;
         unsafe {
-            try_err!(hipStreamAttachMemAsync(
-                self.stream.raw,
-                self.ptr as *mut _,
-                self.size(),
-                self.attach_mode as i32,
-            ), Ok(()))
+            try_err!(
+                hipStreamAttachMemAsync(
+                    self.stream.raw,
+                    self.ptr as *mut _,
+                    self.size(),
+                    self.attach_mode as i32,
+                ),
+                Ok(())
+            )
         }
     }
 
@@ -322,12 +325,10 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
             MemAttachFlags::Host => hipCpuDeviceId,
         };
         unsafe {
-            try_err!(hipMemPrefetchAsync(
-                self.ptr as *const _,
-                self.size(),
-                device,
-                self.stream.raw,
-            ), Ok(()))
+            try_err!(
+                hipMemPrefetchAsync(self.ptr as *const _, self.size(), device, self.stream.raw,),
+                Ok(())
+            )
         }
     }
 
@@ -495,11 +496,7 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> UnifiedSlice<'_, T> {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             UnifiedSlice::from_raw_parts(
                 self.ptr.add(start),
@@ -513,11 +510,7 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     }
 
     pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> UnifiedSliceMut<'_, T> {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             UnifiedSliceMut::from_raw_parts(
                 self.ptr.add(start),
@@ -575,19 +568,19 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     }
 
     /// Re-attach to a new stream and buffer
-    pub fn attach(
-        &mut self,
-        flags: MemAttachFlags,
-    ) -> Result<(), HipError> {
+    pub fn attach(&mut self, flags: MemAttachFlags) -> Result<(), HipError> {
         self.event.sync()?;
         self.attach_mode = flags;
         unsafe {
-            try_err!(hipStreamAttachMemAsync(
-                self.stream.raw,
-                self.ptr as *mut _,
-                self.size(),
-                self.attach_mode as i32,
-            ), Ok(()))
+            try_err!(
+                hipStreamAttachMemAsync(
+                    self.stream.raw,
+                    self.ptr as *mut _,
+                    self.size(),
+                    self.attach_mode as i32,
+                ),
+                Ok(())
+            )
         }
     }
 
@@ -608,12 +601,10 @@ impl<T: DevRepr> UnifiedBuffer<T> {
             MemAttachFlags::Host => hipCpuDeviceId,
         };
         unsafe {
-            try_err!(hipMemPrefetchAsync(
-                self.ptr as *const _,
-                self.size(),
-                device,
-                self.stream.raw,
-            ), Ok(()))
+            try_err!(
+                hipMemPrefetchAsync(self.ptr as *const _, self.size(), device, self.stream.raw,),
+                Ok(())
+            )
         }
     }
 
@@ -665,7 +656,7 @@ impl<T: DevRepr> DerefMut for UnifiedBuffer<T> {
 
 impl<T: DevRepr> Drop for UnifiedBuffer<T> {
     fn drop(&mut self) {
-        if self.stream.dev.has_async_alloc {
+        if self.stream.dev.has_mem_pools {
             unsafe {
                 log_if_err!("failed to deallocate UnifiedBuffer": self.dealloc_async_unchecked());
             }

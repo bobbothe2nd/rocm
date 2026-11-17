@@ -114,6 +114,5 @@ pub use hipfft;
 #[cfg(all(feature = "miopen", any(feature = "dynamic-loading", miopen)))]
 pub use miopen;
 
-
 #[cfg(any(feature = "dynamic-loading", all(hip, hiprtc)))]
 rocm_include::doctest!(["hip", "hiprtc"] readme: "../README.md");
