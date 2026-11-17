@@ -1,6 +1,10 @@
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, event::HipEvent, memory::{CopyTo, DevPtr, StreamBound}, stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        DevRepr, HipError,
+        event::HipEvent,
+        memory::{CopyTo, DevPtr, StreamBound},
+        stream::HipStream,
     },
 };
 use alloc::sync::Arc;
@@ -13,7 +17,7 @@ use core::{
     ptr::write_bytes,
     slice,
 };
-use rocm_sys::hip::{hipError_t, hipHostFree, hipHostMalloc, hipHostRegister, hipHostUnregister};
+use rocm_sys::hip::{hipError_t, hipHostFree, hipHostGetDevicePointer, hipHostMalloc, hipHostRegister, hipHostUnregister};
 
 /// Handle to CPU memory, mapped to all GPUs on the device
 #[repr(C)]
@@ -34,11 +38,7 @@ unsafe impl<T: DevRepr> Sync for HostSlice<'_, T> {}
 
 impl<'a, T: DevRepr> HostSlice<'a, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             Self::from_raw_parts(
                 self.ptr.add(start),
@@ -51,12 +51,12 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
         }
     }
 
-    /// Maps the ptr and return a handle
+    /// Maps the `ptr` and return a handle
     pub fn new(ptr: &'a [T], stream: &'a Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_ptr() as *mut _, ptr.len(), 0) };
         let premapped = match res {
-            hipError_t::hipSuccess => true,
-            hipError_t::hipErrorHostMemoryAlreadyRegistered => false,
+            hipError_t::hipSuccess => false,
+            hipError_t::hipErrorHostMemoryAlreadyRegistered => true,
             res => try_err!(res, unsafe { unreachable_unchecked() }),
         };
 
@@ -113,6 +113,13 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
         self.ptr
     }
 
+    #[inline(always)]
+    pub fn as_dev_ptr(&self) -> Result<*const T, HipError> {
+        unsafe {
+            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(dev_ptr.as_mut_ptr(), self.ptr as *mut _, 0)).map(|ptr| ptr as _)
+        }
+    }
+
     pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize HostSlice": self.event.sync());
@@ -133,12 +140,7 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     /// Maps the buffer such that is is accessible
     #[inline(always)]
     pub fn map(&self) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipHostRegister(self.ptr as *mut _, self.len, 0),
-                Ok(())
-            )
-        }
+        unsafe { try_err!(hipHostRegister(self.ptr as *mut _, self.len, 0), Ok(())) }
     }
 
     /// Unmaps the buffer such that is is inaccessible
@@ -248,11 +250,7 @@ unsafe impl<T: DevRepr> Sync for HostSliceMut<'_, T> {}
 
 impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     pub fn slice(&mut self, range: impl RangeBounds<usize>) -> Self {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             Self::from_raw_parts(
                 self.ptr.add(start),
@@ -265,12 +263,12 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
         }
     }
 
-    /// Maps the ptr and return a handle
+    /// Maps the `ptr` and return a handle
     pub fn new(ptr: &'a mut [T], stream: &'a Arc<HipStream>) -> Result<Self, HipError> {
         let res = unsafe { hipHostRegister(ptr.as_mut_ptr().cast(), ptr.len(), 0) };
         let premapped = match res {
-            hipError_t::hipSuccess => true,
-            hipError_t::hipErrorHostMemoryAlreadyRegistered => false,
+            hipError_t::hipSuccess => false,
+            hipError_t::hipErrorHostMemoryAlreadyRegistered => true,
             res => try_err!(res, unsafe { unreachable_unchecked() }),
         };
 
@@ -308,6 +306,13 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     #[inline(always)]
     pub fn as_ptr(&self) -> *mut T {
         self.ptr
+    }
+
+    #[inline(always)]
+    pub fn as_dev_ptr(&self) -> Result<*mut T, HipError> {
+        unsafe {
+            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(dev_ptr.as_mut_ptr(), self.ptr.cast(), 0)).map(<*mut _>::cast)
+        }
     }
 
     #[inline(always)]
@@ -353,12 +358,7 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     /// Maps the buffer such that is is accessible
     #[inline(always)]
     pub fn map(&self) -> Result<(), HipError> {
-        unsafe {
-            try_err!(
-                hipHostRegister(self.ptr.cast(), self.len, 0),
-                Ok(())
-            )
-        }
+        unsafe { try_err!(hipHostRegister(self.ptr.cast(), self.len, 0), Ok(())) }
     }
 
     /// Unmaps the buffer such that is is inaccessible
@@ -503,7 +503,10 @@ impl HipStream {
     }
 
     /// Allocates `len` elements and makes it accessible from all HIP devices
-    pub fn alloc_host_zeroed<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HostBuffer<T>, HipError> {
+    pub fn alloc_host_zeroed<T: DevRepr>(
+        self: &Arc<Self>,
+        len: usize,
+    ) -> Result<HostBuffer<T>, HipError> {
         self.alloc_host(len).map(|mut buf| {
             buf.memset(0);
             unsafe {
@@ -514,7 +517,10 @@ impl HipStream {
     }
 
     /// Allocates a slice of elements and makes it accessible from all HIP devices
-    pub fn alloc_host_init<T: DevRepr>(self: &Arc<Self>, ptr: &[T]) -> Result<HostBuffer<T>, HipError> {
+    pub fn alloc_host_init<T: DevRepr>(
+        self: &Arc<Self>,
+        ptr: &[T],
+    ) -> Result<HostBuffer<T>, HipError> {
         let len = ptr.len();
 
         let mut buf = self.alloc_host::<T>(len)?;
@@ -529,7 +535,10 @@ impl HipStream {
     }
 
     /// Borrows elements and makes it accessible from all HIP devices
-    pub fn map_slice<'a, T: DevRepr>(self: &'a Arc<Self>, ptr: &'a [T]) -> Result<HostSlice<'a, T>, HipError> {
+    pub fn map_slice<'a, T: DevRepr>(
+        self: &'a Arc<Self>,
+        ptr: &'a [T],
+    ) -> Result<HostSlice<'a, T>, HipError> {
         HostSlice::new(ptr, self)
     }
 
@@ -583,6 +592,13 @@ impl<T: DevRepr> HostBuffer<T> {
         self.ptr
     }
 
+    #[inline(always)]
+    pub fn as_dev_ptr(&self) -> Result<*mut T, HipError> {
+        unsafe {
+            wrap_sys_res!(|dev_ptr| hipHostGetDevicePointer(dev_ptr.as_mut_ptr(), self.ptr.cast(), 0)).map(<*mut _>::cast)
+        }
+    }
+
     pub fn as_slice(&self) -> &[T] {
         self.expect_init(None);
         log_if_err!("failed to synchronize HostBuffer": self.event.sync());
@@ -596,11 +612,7 @@ impl<T: DevRepr> HostBuffer<T> {
     }
 
     pub fn slice(&self, range: impl RangeBounds<usize>) -> HostSlice<'_, T> {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             HostSlice::from_raw_parts(
                 self.ptr.add(start),
@@ -614,11 +626,7 @@ impl<T: DevRepr> HostBuffer<T> {
     }
 
     pub fn slice_mut(&mut self, range: impl RangeBounds<usize>) -> HostSliceMut<'_, T> {
-        let ResolvedRange {
-            start,
-            len,
-            end: _,
-        } = resolve_range(range, self.len);
+        let ResolvedRange { start, len, end: _ } = resolve_range(range, self.len);
         unsafe {
             HostSliceMut::from_raw_parts(
                 self.ptr.add(start),

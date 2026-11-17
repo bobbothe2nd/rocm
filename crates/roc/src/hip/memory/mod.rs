@@ -1,22 +1,18 @@
-use rocm_sys::hip::hipMemPool_t;
-
 mod copy;
 mod devmem;
+mod extmem;
 mod hostmem;
+mod mempool;
 mod memset;
 mod unified;
 
 pub use copy::*;
 pub use devmem::*;
+pub use extmem::*;
 pub use hostmem::*;
+pub use mempool::*;
 pub use memset::*;
 pub use unified::*;
-
-#[repr(transparent)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct MemPool {
-    mem_pool: hipMemPool_t,
-}
 
 pub trait EventSync {
     /// Records a synchronization checkpoint for the buffer, or a logical buffer usage.
@@ -74,7 +70,7 @@ macro_rules! impl_buf {
         impl<T: super::DevRepr> EventSync for $ty {
             #[inline(always)]
             fn latesync(&self) -> Result<(), crate::hip::HipError> {
-                if self.stream.dev.has_async_alloc { return Ok(()); }
+                if self.stream.dev.has_mem_pools { return Ok(()); }
                 self.event.record(&self.stream, None)
             }
 
@@ -83,7 +79,17 @@ macro_rules! impl_buf {
                 self.event.sync()
             }
         }
+    )*};
+}
 
+impl_buf!(
+    HipBuffer<T> HipSlice<'_, T> HipSliceMut<'_, T>
+    HostBuffer<T> HostSlice<'_, T> HostSliceMut<'_, T>
+    UnifiedBuffer<T> UnifiedSlice<'_, T> UnifiedSliceMut<'_, T>
+);
+
+macro_rules! impl_dev {
+    ($($ty:ty)*) => {$(
         impl<T: super::DevRepr> DevPtr<T> for $ty {
             #[inline(always)]
             fn as_ptr(&self) -> *const T {
@@ -103,8 +109,32 @@ macro_rules! impl_buf {
     )*};
 }
 
-impl_buf!(
+impl_dev!(
     HipBuffer<T> HipSlice<'_, T> HipSliceMut<'_, T>
-    HostBuffer<T> HostSlice<'_, T> HostSliceMut<'_, T>
     UnifiedBuffer<T> UnifiedSlice<'_, T> UnifiedSliceMut<'_, T>
+);
+
+macro_rules! impl_host {
+    ($($ty:ty)*) => {$(
+        impl<T: super::DevRepr> DevPtr<T> for $ty {
+            #[inline(always)]
+            fn as_ptr(&self) -> *const T {
+                self.as_dev_ptr().unwrap()
+            }
+
+            #[inline(always)]
+            fn len(&self) -> usize {
+                self.len
+            }
+
+            #[inline(always)]
+            fn get_dev(&self) -> super::device::Device {
+                self.stream.dev
+            }
+        }
+    )*};
+}
+
+impl_host!(
+    HostBuffer<T> HostSlice<'_, T> HostSliceMut<'_, T>
 );
