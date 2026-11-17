@@ -124,6 +124,55 @@ impl<T: DevRepr> UnifiedSlice<'_, T> {
         log_if_err!("failed to synchronize UnifiedSlice": self.event.sync());
         unsafe { slice::from_raw_parts(self.ptr, self.len as usize) }
     }
+
+    /// Hint HIP to prefetch the buffer to the appropriate location based
+    /// on the current [`attach_mode`](`Self::attach_mode`).
+    ///
+    /// - `Global` / `Single`: prefetch to the stream's device (requires
+    ///   `hipDeviceAttributeConcurrentManagedAccess`).
+    /// - `Host`: prefetch to host memory ([`hipCpuDeviceId`]).
+    pub fn prefetch(&self) -> Result<(), HipError> {
+        let device = match self.attach_mode {
+            MemAttachFlags::Global | MemAttachFlags::Single => {
+                if !self.stream.dev.concurrent_managed_access {
+                    return Err(HipError::NotSupported);
+                }
+                self.stream.dev.as_raw()
+            }
+            MemAttachFlags::Host => hipCpuDeviceId,
+        };
+        unsafe {
+            try_err!(hipMemPrefetchAsync(
+                self.ptr as *const _,
+                self.size(),
+                device,
+                self.stream.raw,
+            ), Ok(()))
+        }
+    }
+
+    /// Synchronize the stream if needed to guarantee safe host access.
+    pub fn sync_host(&self) -> Result<(), HipError> {
+        if matches!(self.attach_mode, MemAttachFlags::Single) {
+            self.event.sync()?;
+        }
+        Ok(())
+    }
+
+    /// Validate that the given stream may access this buffer. Returns
+    /// `Err(hipErrorNotSupported)` when the attach mode forbids it.
+    pub fn check_dev_access(&self) -> Result<(), HipError> {
+        match self.attach_mode {
+            MemAttachFlags::Global => {}
+            MemAttachFlags::Host => {
+                if !self.stream.dev.concurrent_managed_access {
+                    return Err(HipError::NotSupported);
+                }
+            }
+            MemAttachFlags::Single => return Err(HipError::NotSupported),
+        }
+        Ok(())
+    }
 }
 
 impl<T: DevRepr> Deref for UnifiedSlice<'_, T> {
@@ -239,10 +288,76 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
         unsafe { slice::from_raw_parts_mut(self.ptr, self.len as usize) }
     }
 
-    pub fn memset(&self, byte: u8) {
+    /// Re-attach to a new stream and buffer
+    pub fn attach(
+        &mut self,
+        flags: MemAttachFlags,
+    ) -> Result<(), HipError> {
+        self.event.sync()?;
+        self.attach_mode = flags;
+        unsafe {
+            try_err!(hipStreamAttachMemAsync(
+                self.stream.raw,
+                self.ptr as *mut _,
+                self.size(),
+                self.attach_mode as i32,
+            ), Ok(()))
+        }
+    }
+
+    /// Hint HIP to prefetch the buffer to the appropriate location based
+    /// on the current [`attach_mode`](`Self::attach_mode`).
+    ///
+    /// - `Global` / `Single`: prefetch to the stream's device (requires
+    ///   `hipDeviceAttributeConcurrentManagedAccess`).
+    /// - `Host`: prefetch to host memory ([`hipCpuDeviceId`]).
+    pub fn prefetch(&self) -> Result<(), HipError> {
+        let device = match self.attach_mode {
+            MemAttachFlags::Global | MemAttachFlags::Single => {
+                if !self.stream.dev.concurrent_managed_access {
+                    return Err(HipError::NotSupported);
+                }
+                self.stream.dev.as_raw()
+            }
+            MemAttachFlags::Host => hipCpuDeviceId,
+        };
+        unsafe {
+            try_err!(hipMemPrefetchAsync(
+                self.ptr as *const _,
+                self.size(),
+                device,
+                self.stream.raw,
+            ), Ok(()))
+        }
+    }
+
+    pub fn memset(&mut self, byte: u8) {
         unsafe {
             write_bytes(self.ptr, byte, self.len);
         }
+    }
+
+    /// Synchronize the stream if needed to guarantee safe host access.
+    pub fn sync_host(&self) -> Result<(), HipError> {
+        if matches!(self.attach_mode, MemAttachFlags::Single) {
+            self.event.sync()?;
+        }
+        Ok(())
+    }
+
+    /// Validate that the given stream may access this buffer. Returns
+    /// `Err(hipErrorNotSupported)` when the attach mode forbids it.
+    pub fn check_dev_access(&self) -> Result<(), HipError> {
+        match self.attach_mode {
+            MemAttachFlags::Global => {}
+            MemAttachFlags::Host => {
+                if !self.stream.dev.concurrent_managed_access {
+                    return Err(HipError::NotSupported);
+                }
+            }
+            MemAttachFlags::Single => return Err(HipError::NotSupported),
+        }
+        Ok(())
     }
 }
 
@@ -462,11 +577,9 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     /// Re-attach to a new stream and buffer
     pub fn attach(
         &mut self,
-        stream: &Arc<HipStream>,
         flags: MemAttachFlags,
     ) -> Result<(), HipError> {
         self.event.sync()?;
-        self.stream = stream.clone();
         self.attach_mode = flags;
         unsafe {
             try_err!(hipStreamAttachMemAsync(
@@ -504,7 +617,7 @@ impl<T: DevRepr> UnifiedBuffer<T> {
         }
     }
 
-    pub fn memset(&self, byte: u8) {
+    pub fn memset(&mut self, byte: u8) {
         unsafe {
             write_bytes(self.ptr, byte, self.len);
         }
@@ -520,28 +633,15 @@ impl<T: DevRepr> UnifiedBuffer<T> {
 
     /// Validate that the given stream may access this buffer. Returns
     /// `Err(hipErrorNotSupported)` when the attach mode forbids it.
-    pub fn check_dev_access(&self, stream: &HipStream) -> Result<(), HipError> {
+    pub fn check_dev_access(&self) -> Result<(), HipError> {
         match self.attach_mode {
-            MemAttachFlags::Global => {
-                // Any context/stream may access.
-            }
+            MemAttachFlags::Global => {}
             MemAttachFlags::Host => {
-                // Cross-context access requires the *target* context to
-                // advertise concurrent managed access.
-                let cma = if self.stream.same_as(stream) {
-                    self.stream.dev.concurrent_managed_access
-                } else {
-                    stream.dev.concurrent_managed_access
-                };
-                if !cma {
+                if !self.stream.dev.concurrent_managed_access {
                     return Err(HipError::NotSupported);
                 }
             }
-            MemAttachFlags::Single => {
-                if self.stream.same_as(stream) {
-                    return Err(HipError::NotSupported);
-                }
-            }
+            MemAttachFlags::Single => return Err(HipError::NotSupported),
         }
         Ok(())
     }
@@ -616,6 +716,15 @@ impl<T: DevRepr> AsMut<Self> for UnifiedSliceMut<'_, T> {
 impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_ref(&self) -> &HostSlice<'a, T> {
+        log_if_err!("failed to synchronize UnifiedBuffer": self.sync_host());
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedSlice<'a, T> {
+    #[inline(always)]
+    fn as_ref(&self) -> &HostSlice<'a, T> {
+        log_if_err!("failed to synchronize UnifiedSlice": self.sync_host());
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -623,6 +732,7 @@ impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedSliceMut<'a, T> {
     #[inline(always)]
     fn as_ref(&self) -> &HostSlice<'a, T> {
+        log_if_err!("failed to synchronize UnifiedSliceMut": self.sync_host());
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -630,6 +740,15 @@ impl<'a, T: DevRepr> AsRef<HostSlice<'a, T>> for UnifiedSliceMut<'a, T> {
 impl<'a, T: DevRepr> AsMut<HostSliceMut<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut HostSliceMut<'a, T> {
+        log_if_err!("failed to synchronize UnifiedBuffer": self.sync_host());
+        unsafe { &mut *(self as *mut Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsMut<HostSliceMut<'a, T>> for UnifiedSliceMut<'_, T> {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut HostSliceMut<'a, T> {
+        log_if_err!("failed to synchronize UnifiedSliceMut": self.sync_host());
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
@@ -637,6 +756,15 @@ impl<'a, T: DevRepr> AsMut<HostSliceMut<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
+        log_if_err!("unsafe device access on UnifiedBuffer": self.check_dev_access());
+        unsafe { &*(self as *const Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSlice<'a, T> {
+    #[inline(always)]
+    fn as_ref(&self) -> &HipSlice<'a, T> {
+        log_if_err!("unsafe device access on UnifiedSlice": self.check_dev_access());
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -644,6 +772,7 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
+        log_if_err!("unsafe device access on UnifiedSliceMut": self.check_dev_access());
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -651,6 +780,15 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
 impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
+        log_if_err!("unsafe device access on UnifiedBuffer": self.check_dev_access());
+        unsafe { &mut *(self as *mut Self).cast() }
+    }
+}
+
+impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedSliceMut<'_, T> {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
+        log_if_err!("unsafe device access on UnifiedSliceMut": self.check_dev_access());
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
