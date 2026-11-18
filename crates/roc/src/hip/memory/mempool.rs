@@ -1,11 +1,11 @@
-use core::{ffi::c_int, marker::PhantomData, mem::{ManuallyDrop, MaybeUninit, transmute}, ptr::null_mut};
+use core::{ffi::c_int, marker::PhantomData, mem::{ManuallyDrop, transmute}, ptr::null_mut};
 
 use alloc::sync::Arc;
 use rocm_sys::{
-    hip::{hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemPool_t, hipMemPoolCreate, hipMemPoolDestroy, hipMemPoolExportToShareableHandle, hipMemPoolImportFromShareableHandle, hipMemPoolPtrExportData, hipMemPoolTrimTo}, platform::windows::LPSECURITYATTRIBUTES,
+    hip::{hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemPool_t, hipMemPoolCreate, hipMemPoolDestroy, hipMemPoolExportPointer, hipMemPoolExportToShareableHandle, hipMemPoolImportFromShareableHandle, hipMemPoolPtrExportData, hipMemPoolTrimTo}, platform::windows::LPSECURITYATTRIBUTES,
 };
 
-use crate::hip::{DevRepr, HipError, device::Device, event::HipEvent, memory::HipBuffer, stream::HipStream};
+use crate::hip::{DevRepr, HipError, device::Device, event::HipEvent, memory::{DevPtr, HipBuffer}, stream::HipStream};
 
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
@@ -58,6 +58,7 @@ impl HipMemPool {
         self.inner.export(handle_type)
     }
 
+    /// you should probably use [`RefMemPool::import`] instead
     pub unsafe fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
         Ok(Self {
             inner: unsafe {
@@ -115,6 +116,22 @@ impl AsMut<RefMemPool> for HipMemPool {
     }
 }
 
+pub trait Export<T>: DevPtr<T> {
+    fn export_ptr(&mut self) -> Result<HipPtrExport<'_, Self>, HipError>;
+}
+
+impl<P: DevPtr<T>, T> Export<T> for P {
+    fn export_ptr(&mut self) -> Result<HipPtrExport<'_, Self>, HipError> {
+        if !self.get_dev().has_mem_pools {
+            return Err(HipError::NotSupported);
+        }
+
+        unsafe {
+            wrap_sys_res!(|export_data: HipPtrExport<'_, Self>| hipMemPoolExportPointer(export_data.as_mut_ptr().cast(), self.as_ptr() as *mut _))
+        }
+    }
+}
+
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct RefMemPool {
@@ -129,8 +146,17 @@ impl RefMemPool {
     }
 
     pub fn export(&self, handle_type: HipMemAllocHandleType) -> Result<HipMemPoolExport, HipError> {
+        if matches!(handle_type, HipMemAllocHandleType::Fabric) {
+            return Err(HipError::NotSupported);
+        }
+
+        #[cfg(windows)]
+        if matches!(handle_type, HipMemAllocHandleType::Win32Kmt) {
+            return Err(HipError::NotSupported);
+        }
+
         let export_data: Result<_, HipError> = unsafe {
-            wrap_sys_res!(|data: MaybeUninit<u64>| hipMemPoolExportToShareableHandle(
+            wrap_sys_res!(|data: __private_owned_shareable_handle::OwnedShareableHandle| hipMemPoolExportToShareableHandle(
                 data.as_mut_ptr().cast(),
                 self.raw,
                 transmute::<HipMemAllocHandleType, hipMemAllocationHandleType>(handle_type),
@@ -147,7 +173,7 @@ impl RefMemPool {
         let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
             wrap_sys_res!(|mem_pool| hipMemPoolImportFromShareableHandle(
                 mem_pool.as_mut_ptr(),
-                export_data.export_data.as_ptr() as *mut _,
+                export_data.export_data.as_hip_handle(export_data.handle_type),
                 transmute::<HipMemAllocHandleType, hipMemAllocationHandleType>(export_data.handle_type),
                 0,
             ))
@@ -208,16 +234,87 @@ impl RefMemPool {
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct HipMemPoolExport {
-    export_data: MaybeUninit<u64>,
+    export_data: __private_owned_shareable_handle::OwnedShareableHandle,
     handle_type: HipMemAllocHandleType,
+}
+
+impl Drop for HipMemPoolExport {
+    fn drop(&mut self) {
+        unsafe {
+            self.export_data.release(self.handle_type);
+        }
+    }
+}
+
+mod __private_owned_shareable_handle {
+    use core::{ffi::c_void, fmt::Debug};
+
+    use crate::hip::memory::HipMemAllocHandleType;
+
+    #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
+    pub union OwnedShareableHandle {
+        #[cfg(unix)]
+        fd: i32,
+        #[cfg(windows)]
+        win32: *mut c_void,
+        // #[cfg(windows)] kmt: u32,
+        // fabric: rocm_sys::hip::hipMemFabricHandle_t,
+    }
+
+    impl OwnedShareableHandle {
+        pub(super) unsafe fn release(&mut self, handle_type: HipMemAllocHandleType) {
+            #[cfg(unix)]
+            {
+                use core::ffi::c_int;
+
+                if handle_type == HipMemAllocHandleType::PosixFileDescriptor {
+                    unsafe {
+                        libc::close(self.fd as c_int);
+                    }
+                }
+            }
+            #[cfg(windows)]
+            {
+                match handle_type {
+                    HipMemAllocHandleType::Win32 => unsafe {
+                        windows_sys::Win32::Foundation::CloseHandle(self.win32);
+                    }
+                    HipMemAllocHandleType::Win32Kmt => {},
+                    _ => {}
+                }
+            }
+        }
+
+        pub(super) fn as_hip_handle(&self, handle_type: HipMemAllocHandleType) -> *mut c_void {
+            match handle_type {
+                #[cfg(unix)]
+                HipMemAllocHandleType::PosixFileDescriptor => {
+                    unsafe { self.fd as *mut c_void }
+                }
+
+                #[cfg(windows)]
+                HipMemAllocHandleType::Win32 => {
+                    unsafe { self.win32 }
+                }
+
+                _ => core::ptr::null_mut(),
+            }
+        }
+    }
+
+    impl Debug for OwnedShareableHandle {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            f.write_str("OwnedShareableHandle")
+        }
+    }
 }
 
 #[repr(transparent)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
-pub struct HipMemPoolPtrExport<'a> {
+pub struct HipPtrExport<'a, T: ?Sized> {
     export_data: hipMemPoolPtrExportData,
-    _marker: PhantomData<&'a HipMemPool>,
+    _marker: PhantomData<&'a mut T>,
 }
 
 /// Specifies the properties of allocations made from the pool.
@@ -243,7 +340,7 @@ impl MemPoolProps {
     pub const fn new() -> Self {
         Self {
             alloc_type: HipMemAllocType::Invalid,
-            handle_types: HipMemAllocHandleTypes::NONE,
+            handle_types: HipMemAllocHandleTypes::empty(),
             location: HipMemLoc {
                 type_: HipMemLocType::Invalid,
                 id: -1,
@@ -303,8 +400,6 @@ pub enum HipMemAllocType {
 #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum HipMemAllocHandleType {
-    /// Does not allow any export mechanism
-    None = 0,
     #[cfg(unix)]
     PosixFileDescriptor = 1,
     /// Allows a Win32 NT handle for exporting. ([`HANDLE`](rocm_sys::platform::windows::HANDLE))
@@ -322,8 +417,6 @@ bitflags::bitflags! {
     #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
     #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
     pub struct HipMemAllocHandleTypes: i32 {
-        /// Does not allow any export mechanism
-        const NONE = 0;
         #[cfg(unix)]
         const POSIX_FILE_DESCRIPTOR = 1;
         /// Allows a Win32 NT handle for exporting. ([`HANDLE`](rocm_sys::platform::windows::HANDLE))

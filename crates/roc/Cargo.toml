@@ -16,6 +16,12 @@ rocm-sys = { path = "../rocm-sys", version = "0.7" }
 rocm-include = { path = "../rocm-include", version = "0.2" }
 stable_auto = { version = "0.3", optional = true, features = ["alloc"] }
 
+[target.'cfg(unix)'.dependencies]
+libc = { version = "0.2.191", default-features = false }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.2", features = ["Win32_Foundation"] }
+
 [build-dependencies]
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
