@@ -493,7 +493,7 @@ impl HipStream {
     /// Allocates `len` elements and makes it accessible from all HIP devices
     pub fn alloc_host<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HostBuffer<T>, HipError> {
         let ptr: Result<*mut T, HipError> =
-            unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), len, 0)) };
+            unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), len * size_of::<T>(), 0)) };
         let ptr = ptr?;
 
         if ptr.is_null() {

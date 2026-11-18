@@ -421,7 +421,7 @@ impl HipStream {
         };
 
         let raw = unsafe {
-            wrap_sys_res!(|raw| hipMallocManaged(raw.as_mut_ptr(), len, attach_mode as u32))
+            wrap_sys_res!(|raw| hipMallocManaged(raw.as_mut_ptr(), len * size_of::<T>(), attach_mode as u32))
         };
 
         let event = HipEvent::create(Some(EventFlags::BLOCKING_SYNC))?;

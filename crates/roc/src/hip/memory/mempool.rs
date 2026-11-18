@@ -1,4 +1,4 @@
-use core::{ffi::{c_int, c_void}, marker::PhantomData, mem::{ManuallyDrop, transmute}, ptr::null_mut};
+use core::{ffi::c_int, marker::PhantomData, mem::{ManuallyDrop, MaybeUninit, transmute}, ptr::null_mut};
 
 use alloc::sync::Arc;
 use rocm_sys::{
@@ -10,9 +10,7 @@ use crate::hip::{DevRepr, HipError, device::Device, event::HipEvent, memory::Hip
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct HipMemPool {
-    raw: hipMemPool_t,
-    stream: Option<Arc<HipStream>>,
-    handle_types: HipMemAllocHandleTypes,
+    inner: RefMemPool,
 }
 
 impl HipStream {
@@ -28,15 +26,18 @@ impl HipStream {
             ))
         };
         Ok(HipMemPool {
-            raw: mem_pool?,
-            stream: Some(self.clone()),
-            handle_types: prop.handle_types,
+            inner: RefMemPool {
+                raw: mem_pool?,
+                stream: Some(self.clone()),
+            },
         })
     }
 }
 
 impl Device {
-    pub fn set_mem_pool(self, mem_pool: HipMemPool) -> Result<(), HipError> {
+    pub fn set_mem_pool<T: AsRef<RefMemPool>>(self, mem_pool: &T) -> Result<(), HipError> {
+        let mem_pool = mem_pool.as_ref();
+
         if mem_pool.stream.is_none() {
             return Err(HipError::NotSupported);
         }
@@ -50,33 +51,110 @@ impl Device {
 impl HipMemPool {
     #[inline(always)]
     pub fn as_raw(&self) -> hipMemPool_t {
+        self.inner.raw
+    }
+
+    pub fn export(&self, handle_type: HipMemAllocHandleType) -> Result<HipMemPoolExport, HipError> {
+        self.inner.export(handle_type)
+    }
+
+    pub unsafe fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
+        Ok(Self {
+            inner: unsafe {
+                RefMemPool::import(export_data)?
+            },
+        })
+    }
+
+    /// Allocates `len` elements
+    pub fn alloc<T: DevRepr>(&self, len: usize) -> Result<HipBuffer<T>, HipError> {
+        self.inner.alloc(len)
+    }
+
+    /// Allocates `len` zeroed elements
+    pub fn alloc_zeroed<T: DevRepr>(&self, len: usize) -> Result<HipBuffer<T>, HipError> {
+        self.inner.alloc_zeroed(len)
+    }
+
+    #[inline(always)]
+    pub fn trim_to(&self, min_size: usize) -> Result<(), HipError> {
+        self.inner.trim_to(min_size)
+    }
+
+    #[inline(always)]
+    pub fn destroy(self) -> Result<(), HipError> {
+        let handle = ManuallyDrop::new(self);
+        unsafe { handle.destroy_unchecked() }
+    }
+
+    #[inline(always)]
+    pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
+        unsafe {
+            self.inner.destroy_unchecked()
+        }
+    }
+}
+
+impl Drop for HipMemPool {
+    fn drop(&mut self) {
+        log_if_err!("failed to destroy HipMemPool": unsafe {
+            self.destroy_unchecked()
+        });
+    }
+}
+
+impl AsRef<RefMemPool> for HipMemPool {
+    fn as_ref(&self) -> &RefMemPool {
+        &self.inner
+    }
+}
+
+impl AsMut<RefMemPool> for HipMemPool {
+    fn as_mut(&mut self) -> &mut RefMemPool {
+        &mut self.inner
+    }
+}
+
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
+#[derive(Debug)]
+pub struct RefMemPool {
+    raw: hipMemPool_t,
+    stream: Option<Arc<HipStream>>,
+}
+
+impl RefMemPool {
+    #[inline(always)]
+    pub fn as_raw(&self) -> hipMemPool_t {
         self.raw
     }
 
-    pub fn export(&self, handle_types: HipMemAllocHandleTypes) -> Result<HipMemPoolExport, HipError> {
-        unsafe {
-            wrap_sys_res!(|data: HipMemPoolExport| hipMemPoolExportToShareableHandle(
+    pub fn export(&self, handle_type: HipMemAllocHandleType) -> Result<HipMemPoolExport, HipError> {
+        let export_data: Result<_, HipError> = unsafe {
+            wrap_sys_res!(|data: MaybeUninit<u64>| hipMemPoolExportToShareableHandle(
                 data.as_mut_ptr().cast(),
                 self.raw,
-                transmute::<HipMemAllocHandleTypes, hipMemAllocationHandleType>(handle_types),
-                0,
-            ))
-        }
-    }
-
-    pub unsafe fn import_handle(export_data: HipMemPoolExport, handle_types: HipMemAllocHandleTypes) -> Result<Self, HipError> {
-        let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
-            wrap_sys_res!(|mem_pool| hipMemPoolImportFromShareableHandle(
-                mem_pool.as_mut_ptr(),
-                export_data.export_data,
-                transmute::<HipMemAllocHandleTypes, hipMemAllocationHandleType>(handle_types),
+                transmute::<HipMemAllocHandleType, hipMemAllocationHandleType>(handle_type),
                 0,
             ))
         };
-        Ok(HipMemPool {
+        Ok(HipMemPoolExport {
+            export_data: export_data?,
+            handle_type,
+        })
+    }
+
+    pub unsafe fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
+        let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
+            wrap_sys_res!(|mem_pool| hipMemPoolImportFromShareableHandle(
+                mem_pool.as_mut_ptr(),
+                export_data.export_data.as_ptr() as *mut _,
+                transmute::<HipMemAllocHandleType, hipMemAllocationHandleType>(export_data.handle_type),
+                0,
+            ))
+        };
+        Ok(RefMemPool {
             raw: mem_pool?,
             stream: None,
-            handle_types,
         })
     }
 
@@ -89,7 +167,7 @@ impl HipMemPool {
         let event = HipEvent::create(None)?;
 
         let ptr: Result<*mut T, HipError> = unsafe {
-            wrap_sys_res!(|ptr: *mut T| hipMallocFromPoolAsync((&raw mut ptr).cast(), len, self.raw, stream.raw))
+            wrap_sys_res!(|ptr: *mut T| hipMallocFromPoolAsync((&raw mut ptr).cast(), len * size_of::<T>(), self.raw, stream.raw))
         };
         let ptr = ptr?;
 
@@ -122,30 +200,16 @@ impl HipMemPool {
     }
 
     #[inline(always)]
-    pub fn destroy(self) -> Result<(), HipError> {
-        let handle = ManuallyDrop::new(self);
-        unsafe { handle.destroy_unchecked() }
-    }
-
-    #[inline(always)]
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipMemPoolDestroy(self.raw), Ok(())) }
     }
 }
 
-impl Drop for HipMemPool {
-    fn drop(&mut self) {
-        log_if_err!("failed to destroy HipMemPool": unsafe {
-            self.destroy_unchecked()
-        });
-    }
-}
-
-#[repr(transparent)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct HipMemPoolExport {
-    export_data: *mut c_void,
+    export_data: MaybeUninit<u64>,
+    handle_type: HipMemAllocHandleType,
 }
 
 #[repr(transparent)]
@@ -205,6 +269,11 @@ impl MemPoolProps {
         self
     }
 
+    pub const fn location(mut self, location: HipMemLoc) -> Self {
+        self.location = location;
+        self
+    }
+
     #[cfg(windows)]
     pub const unsafe fn win32_security_attributes(
         mut self,
@@ -229,6 +298,25 @@ pub enum HipMemAllocType {
     Max = 2147483647,
 }
 
+/// Flags for specifying handle types for memory pool allocations
+#[repr(i32)]
+#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum HipMemAllocHandleType {
+    /// Does not allow any export mechanism
+    None = 0,
+    #[cfg(unix)]
+    PosixFileDescriptor = 1,
+    /// Allows a Win32 NT handle for exporting. ([`HANDLE`](rocm_sys::platform::windows::HANDLE))
+    #[cfg(windows)]
+    Win32 = 2,
+    /// Allows a Win32 KMT handle for exporting. ([`D3DKMT_HANDLE`](rocm_sys::platform::windows::D3DKMT_HANDLE))
+    #[cfg(windows)]
+    Win32Kmt = 4,
+    /// Allows a fabric handle to be used for exporting.
+    Fabric = 8,
+}
+
 bitflags::bitflags! {
     /// Flags for specifying handle types for memory pool allocations
     #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
@@ -237,7 +325,7 @@ bitflags::bitflags! {
         /// Does not allow any export mechanism
         const NONE = 0;
         #[cfg(unix)]
-        const POSIC_FILE_DESCRIPTOR = 1;
+        const POSIX_FILE_DESCRIPTOR = 1;
         /// Allows a Win32 NT handle for exporting. ([`HANDLE`](rocm_sys::platform::windows::HANDLE))
         #[cfg(windows)]
         const WIN32 = 2;

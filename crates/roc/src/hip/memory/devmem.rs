@@ -258,7 +258,7 @@ impl HipStream {
         let event = HipEvent::create(None)?;
 
         let ptr: Result<*mut T, HipError> =
-            unsafe { wrap_sys_res!(|ptr: *mut T| hipMalloc(ptr.as_mut_ptr().cast(), len)) };
+            unsafe { wrap_sys_res!(|ptr: *mut T| hipMalloc(ptr.as_mut_ptr().cast(), len * size_of::<T>())) };
         let ptr = ptr?;
 
         if ptr.is_null() {
