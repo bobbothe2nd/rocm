@@ -14,14 +14,14 @@ use rocm_sys::hip::{
 
 use crate::{
     aux::RocHandle,
-    hip::{HipError, gfx::GfxVersion, memory::MemPool},
+    hip::{HipError, gfx::GfxVersion, memory::HipMemPool},
 };
 
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Device {
-    dev: hipDevice_t,
+    pub(super) dev: hipDevice_t,
     pub(crate) has_mem_pools: bool,
     pub(crate) concurrent_managed_access: bool,
     pub(crate) has_managed_memory: bool,
@@ -106,9 +106,9 @@ impl Device {
     }
 
     /// Gets default memory pool for the device
-    pub fn get_default_mem_pool(self) -> Result<MemPool, HipError> {
+    pub fn get_default_mem_pool(self) -> Result<HipMemPool, HipError> {
         unsafe {
-            wrap_sys_res!(|mem_pool: MemPool| hipDeviceGetDefaultMemPool(
+            wrap_sys_res!(|mem_pool: HipMemPool| hipDeviceGetDefaultMemPool(
                 mem_pool.as_mut_ptr().cast(),
                 self.dev
             ))
@@ -116,9 +116,9 @@ impl Device {
     }
 
     /// Gets active memory pool for the device
-    pub fn get_mem_pool(self) -> Result<MemPool, HipError> {
+    pub fn get_mem_pool(self) -> Result<HipMemPool, HipError> {
         unsafe {
-            wrap_sys_res!(|mem_pool: MemPool| hipDeviceGetMemPool(
+            wrap_sys_res!(|mem_pool: HipMemPool| hipDeviceGetMemPool(
                 self.dev,
                 mem_pool.as_mut_ptr().cast()
             ))

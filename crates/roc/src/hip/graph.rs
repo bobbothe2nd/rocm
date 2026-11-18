@@ -1,7 +1,5 @@
 use core::{
-    ffi::{c_uint, c_ulonglong},
-    mem::{ManuallyDrop, transmute},
-    ptr::from_ref,
+    ffi::{c_uint, c_ulonglong}, hint::unreachable_unchecked, mem::{ManuallyDrop, transmute}, ptr::from_ref,
 };
 
 use rocm_sys::hip::{
@@ -194,6 +192,7 @@ impl HipStream {
             hipStreamCaptureStatus::hipStreamCaptureStatusInvalidated => {
                 Err(HipError::StreamCaptureInvalidated)
             }
+            _ => unsafe { unreachable_unchecked() },
         }
     }
 

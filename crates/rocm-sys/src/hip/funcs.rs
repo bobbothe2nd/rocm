@@ -1,4 +1,4 @@
-use super::types::*;
+use super::{types::*, prop::*};
 use rocm_include::ctype::*;
 
 rocm_include::link! {
