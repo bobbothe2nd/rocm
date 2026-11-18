@@ -1,184 +1,183 @@
-#[repr(i32)]
-/// hipblas status codes definition
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasStatus_t {
+impl hipblasStatus_t {
     /// Function succeeds
-    HIPBLAS_STATUS_SUCCESS = 0,
+    pub const HIPBLAS_STATUS_SUCCESS: hipblasStatus_t = hipblasStatus_t(0);
     /// HIPBLAS library not initialized
-    HIPBLAS_STATUS_NOT_INITIALIZED = 1,
+    pub const HIPBLAS_STATUS_NOT_INITIALIZED: hipblasStatus_t = hipblasStatus_t(1);
     /// resource allocation failed
-    HIPBLAS_STATUS_ALLOC_FAILED = 2,
+    pub const HIPBLAS_STATUS_ALLOC_FAILED: hipblasStatus_t = hipblasStatus_t(2);
     /// unsupported numerical value was passed to function
-    HIPBLAS_STATUS_INVALID_VALUE = 3,
+    pub const HIPBLAS_STATUS_INVALID_VALUE: hipblasStatus_t = hipblasStatus_t(3);
     /// access to GPU memory space failed
-    HIPBLAS_STATUS_MAPPING_ERROR = 4,
+    pub const HIPBLAS_STATUS_MAPPING_ERROR: hipblasStatus_t = hipblasStatus_t(4);
     /// GPU program failed to execute
-    HIPBLAS_STATUS_EXECUTION_FAILED = 5,
+    pub const HIPBLAS_STATUS_EXECUTION_FAILED: hipblasStatus_t = hipblasStatus_t(5);
     /// an internal HIPBLAS operation failed
-    HIPBLAS_STATUS_INTERNAL_ERROR = 6,
+    pub const HIPBLAS_STATUS_INTERNAL_ERROR: hipblasStatus_t = hipblasStatus_t(6);
     /// function not implemented
-    HIPBLAS_STATUS_NOT_SUPPORTED = 7,
+    pub const HIPBLAS_STATUS_NOT_SUPPORTED: hipblasStatus_t = hipblasStatus_t(7);
     /// architecture mismatch
-    HIPBLAS_STATUS_ARCH_MISMATCH = 8,
+    pub const HIPBLAS_STATUS_ARCH_MISMATCH: hipblasStatus_t = hipblasStatus_t(8);
     /// hipBLAS handle is null pointer
-    HIPBLAS_STATUS_HANDLE_IS_NULLPTR = 9,
+    pub const HIPBLAS_STATUS_HANDLE_IS_NULLPTR: hipblasStatus_t = hipblasStatus_t(9);
     ///  unsupported enum value was passed to function
-    HIPBLAS_STATUS_INVALID_ENUM = 10,
+    pub const HIPBLAS_STATUS_INVALID_ENUM: hipblasStatus_t = hipblasStatus_t(10);
     ///  back-end returned an unsupported status code
-    HIPBLAS_STATUS_UNKNOWN = 11,
+    pub const HIPBLAS_STATUS_UNKNOWN: hipblasStatus_t = hipblasStatus_t(11);
 }
-#[repr(i32)]
-/// Used to specify whether the matrix is to be transposed or not.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief hipblas status codes definition
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasOperation_t {
+pub struct hipblasStatus_t(pub ::core::ffi::c_int);
+impl hipblasOperation_t {
     ///  Operate with the matrix.
-    HIPBLAS_OP_N = 111,
+    pub const HIPBLAS_OP_N: hipblasOperation_t = hipblasOperation_t(111);
     ///  Operate with the transpose of the matrix.
-    HIPBLAS_OP_T = 112,
+    pub const HIPBLAS_OP_T: hipblasOperation_t = hipblasOperation_t(112);
     /// Operate with the conjugate transpose of the matrix.
-    HIPBLAS_OP_C = 113,
+    pub const HIPBLAS_OP_C: hipblasOperation_t = hipblasOperation_t(113);
 }
-#[repr(i32)]
-/// The compute type to be used. Currently only used with GemmEx with the HIPBLAS_V2 interface.\n         Note that support for compute types is largely dependent on backend.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Used to specify whether the matrix is to be transposed or not.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasComputeType_t {
+pub struct hipblasOperation_t(pub ::core::ffi::c_int);
+impl hipblasComputeType_t {
     /// compute will be at least 16-bit precision
-    HIPBLAS_COMPUTE_16F = 0,
+    pub const HIPBLAS_COMPUTE_16F: hipblasComputeType_t = hipblasComputeType_t(0);
     /// compute will be exactly 16-bit precision
-    HIPBLAS_COMPUTE_16F_PEDANTIC = 1,
+    pub const HIPBLAS_COMPUTE_16F_PEDANTIC: hipblasComputeType_t = hipblasComputeType_t(1);
     /// compute will be at least 32-bit precision
-    HIPBLAS_COMPUTE_32F = 2,
+    pub const HIPBLAS_COMPUTE_32F: hipblasComputeType_t = hipblasComputeType_t(2);
     /// compute will be exactly 32-bit precision
-    HIPBLAS_COMPUTE_32F_PEDANTIC = 3,
+    pub const HIPBLAS_COMPUTE_32F_PEDANTIC: hipblasComputeType_t = hipblasComputeType_t(3);
     /// 32-bit input can use 16-bit compute
-    HIPBLAS_COMPUTE_32F_FAST_16F = 4,
+    pub const HIPBLAS_COMPUTE_32F_FAST_16F: hipblasComputeType_t = hipblasComputeType_t(4);
     /// 32-bit input can is bf16 compute
-    HIPBLAS_COMPUTE_32F_FAST_16BF = 5,
-    HIPBLAS_COMPUTE_32F_FAST_TF32 = 6,
+    pub const HIPBLAS_COMPUTE_32F_FAST_16BF: hipblasComputeType_t = hipblasComputeType_t(5);
+    pub const HIPBLAS_COMPUTE_32F_FAST_TF32: hipblasComputeType_t = hipblasComputeType_t(6);
     /// compute will be at least 64-bit precision
-    HIPBLAS_COMPUTE_64F = 7,
+    pub const HIPBLAS_COMPUTE_64F: hipblasComputeType_t = hipblasComputeType_t(7);
     /// compute will be exactly 64-bit precision
-    HIPBLAS_COMPUTE_64F_PEDANTIC = 8,
+    pub const HIPBLAS_COMPUTE_64F_PEDANTIC: hipblasComputeType_t = hipblasComputeType_t(8);
     /// compute will be at least 32-bit integer precision
-    HIPBLAS_COMPUTE_32I = 9,
+    pub const HIPBLAS_COMPUTE_32I: hipblasComputeType_t = hipblasComputeType_t(9);
     /// compute will be exactly 32-bit integer precision
-    HIPBLAS_COMPUTE_32I_PEDANTIC = 10,
+    pub const HIPBLAS_COMPUTE_32I_PEDANTIC: hipblasComputeType_t = hipblasComputeType_t(10);
     /// 32-bit compute using fp8 mfma instruction
-    HIPBLAS_COMPUTE_32F_FAST_8F_FNUZ = 100,
+    pub const HIPBLAS_COMPUTE_32F_FAST_8F_FNUZ: hipblasComputeType_t = hipblasComputeType_t(100);
     /// 32-bit compute using bf8 mfma instruction
-    HIPBLAS_COMPUTE_32F_FAST_8BF_FNUZ = 101,
+    pub const HIPBLAS_COMPUTE_32F_FAST_8BF_FNUZ: hipblasComputeType_t = hipblasComputeType_t(101);
     /// 32-bit compute using f8bf8 mfma instruction
-    HIPBLAS_COMPUTE_32F_FAST_8F8BF_FNUZ = 102,
+    pub const HIPBLAS_COMPUTE_32F_FAST_8F8BF_FNUZ: hipblasComputeType_t = hipblasComputeType_t(102);
     /// 32-bit compute using bf8f8 mfma instruction
-    HIPBLAS_COMPUTE_32F_FAST_8BF8F_FNUZ = 103,
+    pub const HIPBLAS_COMPUTE_32F_FAST_8BF8F_FNUZ: hipblasComputeType_t = hipblasComputeType_t(103);
 }
-/// ``hipblasHandle_t`` is a void pointer that stores the library context (either rocBLAS or cuBLAS).
+#[repr(transparent)]
+/// \\brief The compute type to be used. Currently only used with GemmEx with the HIPBLAS_V2 interface.\n         Note that support for compute types is largely dependent on backend.
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct hipblasComputeType_t(pub ::core::ffi::c_int);
+/// \\brief `hipblasHandle_t` is a void pointer that stores the library context (either rocBLAS or cuBLAS).
 pub type hipblasHandle_t = *mut ::core::ffi::c_void;
 pub type hipblasHalf = u16;
-///  To specify the datatype as a signed char
+/// \\brief  To specify the datatype as a signed char
 pub type hipblasInt8 = i8;
-///  Stride between matrices or vectors in strided_batched functions.
+/// \\brief  Stride between matrices or vectors in strided_batched functions.
 pub type hipblasStride = i64;
 #[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
 #[derive(Debug, Copy, Clone)]
 pub struct hipblasBfloat16 {
     pub data: u16,
 }
-#[repr(i32)]
-/// Indicates whether scalar pointers are on the host or device. This is used for scalars alpha and beta and for scalar function return values.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasPointerMode_t {
+impl hipblasPointerMode_t {
     /// Scalar values affected by this variable will be located on the host.
-    HIPBLAS_POINTER_MODE_HOST = 0,
+    pub const HIPBLAS_POINTER_MODE_HOST: hipblasPointerMode_t = hipblasPointerMode_t(0);
     ///  Scalar values affected by this variable will be located on the device.
-    HIPBLAS_POINTER_MODE_DEVICE = 1,
+    pub const HIPBLAS_POINTER_MODE_DEVICE: hipblasPointerMode_t = hipblasPointerMode_t(1);
 }
-#[repr(i32)]
-/// Used by the Hermitian, symmetric, and triangular matrix routines to specify whether the upper or lower triangle is being referenced.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Indicates whether scalar pointers are on the host or device. This is used for scalars alpha and beta and for scalar function return values.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasFillMode_t {
+pub struct hipblasPointerMode_t(pub ::core::ffi::c_int);
+impl hipblasFillMode_t {
     ///  Upper triangle.
-    HIPBLAS_FILL_MODE_UPPER = 121,
+    pub const HIPBLAS_FILL_MODE_UPPER: hipblasFillMode_t = hipblasFillMode_t(121);
     ///  Lower triangle.
-    HIPBLAS_FILL_MODE_LOWER = 122,
-    HIPBLAS_FILL_MODE_FULL = 123,
+    pub const HIPBLAS_FILL_MODE_LOWER: hipblasFillMode_t = hipblasFillMode_t(122);
+    pub const HIPBLAS_FILL_MODE_FULL: hipblasFillMode_t = hipblasFillMode_t(123);
 }
-#[repr(i32)]
-/// Used by the triangular matrix routines to specify whether the matrix is unit triangular.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Used by the Hermitian, symmetric, and triangular matrix routines to specify whether the upper or lower triangle is being referenced.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasDiagType_t {
+pub struct hipblasFillMode_t(pub ::core::ffi::c_int);
+impl hipblasDiagType_t {
     ///  Non-unit triangular.
-    HIPBLAS_DIAG_NON_UNIT = 131,
+    pub const HIPBLAS_DIAG_NON_UNIT: hipblasDiagType_t = hipblasDiagType_t(131);
     ///  Unit triangular.
-    HIPBLAS_DIAG_UNIT = 132,
+    pub const HIPBLAS_DIAG_UNIT: hipblasDiagType_t = hipblasDiagType_t(132);
 }
-#[repr(i32)]
-/// Indicates the side matrix A is located on, relative to matrix B, during multiplication.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Used by the triangular matrix routines to specify whether the matrix is unit triangular.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasSideMode_t {
-    HIPBLAS_SIDE_LEFT = 141,
-    HIPBLAS_SIDE_RIGHT = 142,
-    HIPBLAS_SIDE_BOTH = 143,
+pub struct hipblasDiagType_t(pub ::core::ffi::c_int);
+impl hipblasSideMode_t {
+    pub const HIPBLAS_SIDE_LEFT: hipblasSideMode_t = hipblasSideMode_t(141);
+    pub const HIPBLAS_SIDE_RIGHT: hipblasSideMode_t = hipblasSideMode_t(142);
+    pub const HIPBLAS_SIDE_BOTH: hipblasSideMode_t = hipblasSideMode_t(143);
 }
-#[repr(i32)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Indicates the side matrix A is located on, relative to matrix B, during multiplication.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasMath_t {
-    HIPBLAS_DEFAULT_MATH = 0,
-    HIPBLAS_XF32_XDL_MATH = 1,
-    HIPBLAS_PEDANTIC_MATH = 2,
-    HIPBLAS_TF32_TENSOR_OP_MATH = 3,
-    HIPBLAS_MATH_DISALLOW_REDUCED_PRECISION_REDUCTION = 4,
-    HIPBLAS_TENSOR_OP_MATH = 5,
+pub struct hipblasSideMode_t(pub ::core::ffi::c_int);
+impl hipblasMath_t {
+    pub const HIPBLAS_DEFAULT_MATH: hipblasMath_t = hipblasMath_t(0);
+    pub const HIPBLAS_XF32_XDL_MATH: hipblasMath_t = hipblasMath_t(1);
+    pub const HIPBLAS_PEDANTIC_MATH: hipblasMath_t = hipblasMath_t(2);
+    pub const HIPBLAS_TF32_TENSOR_OP_MATH: hipblasMath_t = hipblasMath_t(3);
+    pub const HIPBLAS_MATH_DISALLOW_REDUCED_PRECISION_REDUCTION: hipblasMath_t = hipblasMath_t(4);
+    pub const HIPBLAS_TENSOR_OP_MATH: hipblasMath_t = hipblasMath_t(5);
 }
-#[repr(i32)]
-/// Indicates whether the layer is active through the use of a bitmask.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasGemmAlgo_t {
-    ///  enumerator ``rocblas_gemm_algo_standard``
-    HIPBLAS_GEMM_DEFAULT = 160,
+pub struct hipblasMath_t(pub ::core::ffi::c_int);
+impl hipblasGemmAlgo_t {
+    ///  enumerator `rocblas_gemm_algo_standard`
+    pub const HIPBLAS_GEMM_DEFAULT: hipblasGemmAlgo_t = hipblasGemmAlgo_t(160);
 }
-#[repr(i32)]
-/// Indicates whether atomics operations are allowed. Not allowing atomic operations can generally improve determinism and repeatability of results at a cost of performance.\n         By default, the rocBLAS backend allows atomic operations, while the cuBLAS backend disallows atomic operations. See the backend documentation\n         for more details.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Indicates whether the layer is active through the use of a bitmask.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasAtomicsMode_t {
+pub struct hipblasGemmAlgo_t(pub ::core::ffi::c_int);
+impl hipblasAtomicsMode_t {
     ///  Algorithms will refrain from atomics where applicable.
-    HIPBLAS_ATOMICS_NOT_ALLOWED = 0,
+    pub const HIPBLAS_ATOMICS_NOT_ALLOWED: hipblasAtomicsMode_t = hipblasAtomicsMode_t(0);
     /// Algorithms will take advantage of atomics where applicable.
-    HIPBLAS_ATOMICS_ALLOWED = 1,
+    pub const HIPBLAS_ATOMICS_ALLOWED: hipblasAtomicsMode_t = hipblasAtomicsMode_t(1);
 }
-#[repr(i32)]
-/// Control flags passed into gemm ex with flags algorithms. Only relevant with rocBLAS backend. See rocBLAS documentation\n         for more information.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Indicates whether atomics operations are allowed. Not allowing atomic operations can generally improve determinism and repeatability of results at a cost of performance.\n         By default, the rocBLAS backend allows atomic operations, while the cuBLAS backend disallows atomic operations. See the backend documentation\n         for more details.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasGemmFlags_t {
+pub struct hipblasAtomicsMode_t(pub ::core::ffi::c_int);
+impl hipblasGemmFlags_t {
     /// Default empty flags
-    HIPBLAS_GEMM_FLAGS_NONE = 0,
-    HIPBLAS_GEMM_FLAGS_USE_CU_EFFICIENCY = 2,
+    pub const HIPBLAS_GEMM_FLAGS_NONE: hipblasGemmFlags_t = hipblasGemmFlags_t(0);
+    pub const HIPBLAS_GEMM_FLAGS_USE_CU_EFFICIENCY: hipblasGemmFlags_t = hipblasGemmFlags_t(2);
     /// enumerator rocblas_gemm_flags_fp16_alt_impl
-    HIPBLAS_GEMM_FLAGS_FP16_ALT_IMPL = 4,
-    HIPBLAS_GEMM_FLAGS_CHECK_SOLUTION_INDEX = 8,
-    HIPBLAS_GEMM_FLAGS_FP16_ALT_IMPL_RNZ = 16,
+    pub const HIPBLAS_GEMM_FLAGS_FP16_ALT_IMPL: hipblasGemmFlags_t = hipblasGemmFlags_t(4);
+    pub const HIPBLAS_GEMM_FLAGS_CHECK_SOLUTION_INDEX: hipblasGemmFlags_t = hipblasGemmFlags_t(8);
+    pub const HIPBLAS_GEMM_FLAGS_FP16_ALT_IMPL_RNZ: hipblasGemmFlags_t = hipblasGemmFlags_t(16);
 }
-#[repr(i32)]
-/// Library property types for querying version components.
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
+#[repr(transparent)]
+/// \\brief Control flags passed into gemm ex with flags algorithms. Only relevant with rocBLAS backend. See rocBLAS documentation\n         for more information.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum hipblasLibraryProperty_t {
+pub struct hipblasGemmFlags_t(pub ::core::ffi::c_int);
+impl hipblasLibraryProperty_t {
     /// Major version number
-    HIPBLAS_MAJOR_VERSION = 0,
+    pub const HIPBLAS_MAJOR_VERSION: hipblasLibraryProperty_t = hipblasLibraryProperty_t(0);
     /// Minor version number
-    HIPBLAS_MINOR_VERSION = 1,
+    pub const HIPBLAS_MINOR_VERSION: hipblasLibraryProperty_t = hipblasLibraryProperty_t(1);
     /// Patch level
-    HIPBLAS_PATCH_LEVEL = 2,
+    pub const HIPBLAS_PATCH_LEVEL: hipblasLibraryProperty_t = hipblasLibraryProperty_t(2);
 }
+#[repr(transparent)]
+/// \\brief Library property types for querying version components.
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct hipblasLibraryProperty_t(pub ::core::ffi::c_int);
