@@ -97,6 +97,31 @@ impl<T: DevRepr> HipSlice<'_, T> {
     }
 }
 
+impl<'a, T: DevRepr> HipSlice<'a, T> {
+    /// Reinterpret the buffer as `[U]`.
+    ///
+    /// Returns `None` if the byte length isn't divisible by `size_of::<U>()`.
+    ///
+    /// Consumes `self`; the returned slice continues to own the
+    /// underlying allocation and any read/write events.
+    pub fn transmute<U: DevRepr>(self) -> Option<HipSlice<'a, U>> {
+        let bytes = self.size();
+        let u_size = size_of::<U>();
+        if u_size == 0 || bytes % u_size != 0 {
+            return None;
+        }
+        let new_len = bytes / u_size;
+        let handle = ManuallyDrop::new(self);
+        Some(HipSlice {
+            ptr: handle.ptr.cast(),
+            len: new_len,
+            event: unsafe { core::ptr::read(&handle.event) },
+            stream: unsafe { core::ptr::read(&handle.stream) },
+            _marker: PhantomData,
+        })
+    }
+}
+
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
@@ -237,6 +262,31 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     }
 }
 
+impl<'a, T: DevRepr> HipSliceMut<'a, T> {
+    /// Reinterpret the buffer as `[U]`.
+    ///
+    /// Returns `None` if the byte length isn't divisible by `size_of::<U>()`.
+    ///
+    /// Consumes `self`; the returned slice continues to own the
+    /// underlying allocation and any read/write events.
+    pub fn transmute<U: DevRepr>(self) -> Option<HipSliceMut<'a, U>> {
+        let bytes = self.size();
+        let u_size = size_of::<U>();
+        if u_size == 0 || bytes % u_size != 0 {
+            return None;
+        }
+        let new_len = bytes / u_size;
+        let handle = ManuallyDrop::new(self);
+        Some(HipSliceMut {
+            ptr: handle.ptr.cast(),
+            len: new_len,
+            event: unsafe { core::ptr::read(&handle.event) },
+            stream: unsafe { core::ptr::read(&handle.stream) },
+            _marker: PhantomData,
+        })
+    }
+}
+
 /// Handle to an allocation on the GPU
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
@@ -302,6 +352,29 @@ impl<T: DevRepr> HipBuffer<T> {
             event,
             _marker: PhantomData,
         }
+    }
+
+    /// Reinterpret the buffer as `[U]`.
+    ///
+    /// Returns `None` if the byte length isn't divisible by `size_of::<U>()`.
+    ///
+    /// Consumes `self`; the returned slice continues to own the
+    /// underlying allocation and any read/write events.
+    pub fn transmute<U: DevRepr>(self) -> Option<HipBuffer<U>> {
+        let bytes = self.size();
+        let u_size = size_of::<U>();
+        if u_size == 0 || bytes % u_size != 0 {
+            return None;
+        }
+        let new_len = bytes / u_size;
+        let handle = ManuallyDrop::new(self);
+        Some(HipBuffer {
+            ptr: handle.ptr.cast(),
+            len: new_len,
+            event: unsafe { core::ptr::read(&handle.event) },
+            stream: unsafe { core::ptr::read(&handle.stream) },
+            _marker: PhantomData,
+        })
     }
 
     /// Gets the pointer to GPU memory

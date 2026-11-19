@@ -1,6 +1,5 @@
 mod copy;
 mod devmem;
-mod extmem;
 mod hostmem;
 mod mempool;
 mod memset;
@@ -8,11 +7,15 @@ mod unified;
 
 pub use copy::*;
 pub use devmem::*;
-pub use extmem::*;
 pub use hostmem::*;
 pub use mempool::*;
 pub use memset::*;
 pub use unified::*;
+
+#[cfg(feature = "std")]
+mod extmem;
+#[cfg(feature = "std")]
+pub use extmem::*;
 
 pub trait EventSync {
     /// Records a synchronization checkpoint for the buffer, or a logical buffer usage.
@@ -49,9 +52,9 @@ pub trait StreamBound {
     fn stream(&self) -> &super::stream::HipStream;
 }
 
-pub trait MutPtr {}
+pub unsafe trait MutPtr {}
 
-pub trait DevPtr<T> {
+pub unsafe trait DevPtr<T> {
     fn as_ptr(&self) -> *const T;
     fn len(&self) -> usize;
     fn get_dev(&self) -> super::device::Device;
@@ -60,7 +63,7 @@ pub trait DevPtr<T> {
     }
 }
 
-pub trait HostPtr<T> {
+pub unsafe trait HostPtr<T> {
     fn as_ptr(&self) -> *const T;
 }
 
@@ -96,7 +99,7 @@ impl_buf!(
 
 macro_rules! impl_dev {
     ($($ty:ty)*) => {$(
-        impl<T: super::DevRepr> DevPtr<T> for $ty {
+        unsafe impl<T: super::DevRepr> DevPtr<T> for $ty {
             #[inline(always)]
             fn as_ptr(&self) -> *const T {
                 self.ptr
@@ -119,12 +122,12 @@ impl_dev!(
     HipBuffer<T> HipSlice<'_, T> HipSliceMut<'_, T>
 );
 
-impl<T: super::DevRepr> MutPtr for HipBuffer<T> {}
-impl<T: super::DevRepr> MutPtr for HipSliceMut<'_, T> {}
+unsafe impl<T: super::DevRepr> MutPtr for HipBuffer<T> {}
+unsafe impl<T: super::DevRepr> MutPtr for HipSliceMut<'_, T> {}
 
 macro_rules! impl_unified {
     ($($ty:ty)*) => {$(
-        impl<T: super::DevRepr> DevPtr<T> for $ty {
+        unsafe impl<T: super::DevRepr> DevPtr<T> for $ty {
             #[inline(always)]
             fn as_ptr(&self) -> *const T {
                 self.ptr
@@ -140,7 +143,7 @@ macro_rules! impl_unified {
                 self.stream.dev
             }
         }
-        impl<T: super::DevRepr> HostPtr<T> for $ty {
+        unsafe impl<T: super::DevRepr> HostPtr<T> for $ty {
             #[inline(always)]
             fn as_ptr(&self) -> *const T {
                 self.ptr
@@ -153,12 +156,12 @@ impl_unified!(
     UnifiedBuffer<T> UnifiedSlice<'_, T> UnifiedSliceMut<'_, T>
 );
 
-impl<T: super::DevRepr> MutPtr for UnifiedBuffer<T> {}
-impl<T: super::DevRepr> MutPtr for UnifiedSliceMut<'_, T> {}
+unsafe impl<T: super::DevRepr> MutPtr for UnifiedBuffer<T> {}
+unsafe impl<T: super::DevRepr> MutPtr for UnifiedSliceMut<'_, T> {}
 
 macro_rules! impl_host {
     ($($ty:ty)*) => {$(
-        impl<T: super::DevRepr> DevPtr<T> for $ty {
+        unsafe impl<T: super::DevRepr> DevPtr<T> for $ty {
             #[inline(always)]
             fn as_ptr(&self) -> *const T {
                 self.as_dev_ptr().unwrap()
@@ -174,7 +177,7 @@ macro_rules! impl_host {
                 self.stream.dev
             }
         }
-        impl<T: super::DevRepr> HostPtr<T> for $ty {
+        unsafe impl<T: super::DevRepr> HostPtr<T> for $ty {
             #[inline(always)]
             fn as_ptr(&self) -> *const T {
                 self.ptr
@@ -187,5 +190,5 @@ impl_host!(
     HostBuffer<T> HostSlice<'_, T> HostSliceMut<'_, T>
 );
 
-impl<T: super::DevRepr> MutPtr for HostBuffer<T> {}
-impl<T: super::DevRepr> MutPtr for HostSliceMut<'_, T> {}
+unsafe impl<T: super::DevRepr> MutPtr for HostBuffer<T> {}
+unsafe impl<T: super::DevRepr> MutPtr for HostSliceMut<'_, T> {}
