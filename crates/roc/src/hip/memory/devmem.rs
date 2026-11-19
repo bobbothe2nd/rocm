@@ -60,6 +60,11 @@ impl<T: DevRepr> HipSlice<'_, T> {
         self.len
     }
 
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
     /// Gets the size of the allocation
     #[inline(always)]
     pub const fn size(&self) -> usize {
@@ -107,7 +112,7 @@ impl<'a, T: DevRepr> HipSlice<'a, T> {
     pub fn transmute<U: DevRepr>(self) -> Option<HipSlice<'a, U>> {
         let bytes = self.size();
         let u_size = size_of::<U>();
-        if u_size == 0 || bytes % u_size != 0 {
+        if u_size == 0 || bytes.is_multiple_of(u_size) {
             return None;
         }
         let new_len = bytes / u_size;
@@ -169,6 +174,11 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
     }
 
     /// Gets the size of the allocation
@@ -238,7 +248,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     pub fn memset<D: Memset>(&self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes % size_of::<D>() != 0 {
+        if bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
@@ -250,7 +260,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     pub fn memset_async<D: Memset>(&self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes % size_of::<D>() != 0 {
+        if bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
@@ -274,7 +284,7 @@ impl<'a, T: DevRepr> HipSliceMut<'a, T> {
     pub fn transmute<U: DevRepr>(self) -> Option<HipSliceMut<'a, U>> {
         let bytes = self.size();
         let u_size = size_of::<U>();
-        if u_size == 0 || bytes % u_size != 0 {
+        if u_size == 0 || bytes.is_multiple_of(u_size) {
             return None;
         }
         let new_len = bytes / u_size;
@@ -303,8 +313,12 @@ pub struct HipBuffer<T: DevRepr> {
 
 impl<T: DevRepr> Clone for HipBuffer<T> {
     fn clone(&self) -> Self {
-        let mut dst = self.stream.alloc::<T>(self.len).expect("HIP allocation failed");
-        self.copy_to_async(&mut dst, 0, 0, self.len).expect("HIP DtoD async copy failed");
+        let mut dst = self
+            .stream
+            .alloc::<T>(self.len)
+            .expect("HIP allocation failed");
+        self.copy_to_async(&mut dst, 0, 0, self.len)
+            .expect("HIP DtoD async copy failed");
         dst
     }
 }
@@ -318,9 +332,20 @@ impl HipStream {
         let event = HipEvent::create(None)?;
 
         let ptr: Result<*mut T, HipError> = if self.dev.has_mem_pools {
-            unsafe { wrap_sys_res!(|ptr: *mut T| hipMallocAsync(ptr.as_mut_ptr().cast(), len * size_of::<T>(), self.raw)) }
+            unsafe {
+                wrap_sys_res!(|ptr: *mut T| hipMallocAsync(
+                    ptr.as_mut_ptr().cast(),
+                    len * size_of::<T>(),
+                    self.raw
+                ))
+            }
         } else {
-            unsafe { wrap_sys_res!(|ptr: *mut T| hipMalloc(ptr.as_mut_ptr().cast(), len * size_of::<T>())) }
+            unsafe {
+                wrap_sys_res!(|ptr: *mut T| hipMalloc(
+                    ptr.as_mut_ptr().cast(),
+                    len * size_of::<T>()
+                ))
+            }
         };
         let ptr = ptr?;
 
@@ -376,7 +401,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn transmute<U: DevRepr>(self) -> Option<HipBuffer<U>> {
         let bytes = self.size();
         let u_size = size_of::<U>();
-        if u_size == 0 || bytes % u_size != 0 {
+        if u_size == 0 || bytes.is_multiple_of(u_size) {
             return None;
         }
         let new_len = bytes / u_size;
@@ -402,6 +427,11 @@ impl<T: DevRepr> HipBuffer<T> {
         self.len
     }
 
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
     /// Gets the size of the allocation
     #[inline(always)]
     pub const fn size(&self) -> usize {
@@ -425,11 +455,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn dealloc(self) -> Result<(), HipError> {
         let handle = ManuallyDrop::new(self);
 
-        unsafe {
-            handle.dealloc_unchecked()?;
-        }
-
-        Ok(())
+        unsafe { handle.dealloc_unchecked() }
     }
 
     /// Deallocates a buffer
@@ -518,7 +544,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn memset<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes % size_of::<D>() != 0 {
+        if bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
@@ -528,7 +554,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn memset_async<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes % size_of::<D>() != 0 {
+        if bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 

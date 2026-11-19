@@ -14,8 +14,12 @@ use rocm_sys::hip::{
 };
 
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, event::{EventFlags, HipEvent}, memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut, Memset}, stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        DevRepr, HipError,
+        event::{EventFlags, HipEvent},
+        memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut, Memset},
+        stream::HipStream,
     },
 };
 
@@ -116,6 +120,11 @@ impl<T: DevRepr> UnifiedSlice<'_, T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
     }
 
     /// Gets the size of the allocation
@@ -269,6 +278,11 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
         self.len
     }
 
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
     /// Gets the size of the allocation
     #[inline(always)]
     pub const fn size(&self) -> usize {
@@ -417,7 +431,11 @@ impl HipStream {
         };
 
         let raw = unsafe {
-            wrap_sys_res!(|raw| hipMallocManaged(raw.as_mut_ptr(), len * size_of::<T>(), attach_mode as u32))
+            wrap_sys_res!(|raw| hipMallocManaged(
+                raw.as_mut_ptr(),
+                len * size_of::<T>(),
+                attach_mode as u32
+            ))
         };
 
         let event = HipEvent::create(Some(EventFlags::BLOCKING_SYNC))?;
@@ -488,6 +506,11 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
     }
 
     /// Gets the size of the allocation
@@ -761,7 +784,8 @@ impl<'a, T: DevRepr> AsMut<HostSliceMut<'a, T>> for UnifiedSliceMut<'_, T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
-        self.check_dev_access().expect("unsafe device access on UnifiedBuffer");
+        self.check_dev_access()
+            .expect("unsafe device access on UnifiedBuffer");
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -769,7 +793,8 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSlice<'a, T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
-        self.check_dev_access().expect("unsafe device access on UnifiedSlice");
+        self.check_dev_access()
+            .expect("unsafe device access on UnifiedSlice");
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -778,7 +803,8 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
     #[inline(always)]
     fn as_ref(&self) -> &HipSlice<'a, T> {
         self.expect_init(None);
-        self.check_dev_access().expect("unsafe device access on UnifiedSliceMut");
+        self.check_dev_access()
+            .expect("unsafe device access on UnifiedSliceMut");
         unsafe { &*(self as *const Self).cast() }
     }
 }
@@ -786,7 +812,8 @@ impl<'a, T: DevRepr> AsRef<HipSlice<'a, T>> for UnifiedSliceMut<'a, T> {
 impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedBuffer<T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
-        self.check_dev_access().expect("unsafe device access on UnifiedBuffer");
+        self.check_dev_access()
+            .expect("unsafe device access on UnifiedBuffer");
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }
@@ -794,7 +821,8 @@ impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedBuffer<T> {
 impl<'a, T: DevRepr> AsMut<HipSliceMut<'a, T>> for UnifiedSliceMut<'_, T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut HipSliceMut<'a, T> {
-        self.check_dev_access().expect("unsafe device access on UnifiedSliceMut");
+        self.check_dev_access()
+            .expect("unsafe device access on UnifiedSliceMut");
         unsafe { &mut *(self as *mut Self).cast() }
     }
 }

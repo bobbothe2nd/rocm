@@ -47,11 +47,7 @@ where
             index % 8
         };
         let mask = 1 << bit_index;
-        if val {
-            byte | mask
-        } else {
-            byte & !mask
-        }
+        if val { byte | mask } else { byte & !mask }
     }
     #[inline]
     pub fn set_bit(&mut self, index: usize, val: bool) {
@@ -3434,22 +3430,24 @@ impl hipStreamBatchMemOpType {
 /// Operations for hipStreamBatchMemOp
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct hipStreamBatchMemOpType(pub ::core::ffi::c_int);
-/// @brief Union representing batch memory operation parameters for HIP streams.
+/// Union representing batch memory operation parameters for HIP streams.
 /// hipStreamBatchMemOpParams is used to specify the parameters for batch memory
 /// operations in a HIP stream. This union supports various operations including
 /// waiting for a specific value, writing a value, and different flags for wait conditions.
-/// @details
+///
 /// The union includes fields for different types of operations defined in the
 /// enum hipStreamBatchMemOpType:
-/// - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.
-/// - hipStreamMemOpWriteValue32: Write a 32-bit value.
-/// - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.
-/// - hipStreamMemOpWriteValue64: Write a 64-bit value.
+/// - `hipStreamMemOpWaitValue32`:  Wait for a 32-bit value.
+/// - `hipStreamMemOpWriteValue32`: Write a 32-bit value.
+/// - `hipStreamMemOpWaitValue64`:  Wait for a 64-bit value.
+/// - `hipStreamMemOpWriteValue64`: Write a 64-bit value.
+///
 /// Each operation type includes an address, the value to wait for or write, flags, and an
 /// optional alias that is not relevant on AMD GPUs. Flags can be used to specify different
 /// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
+///
 /// Example usage:
-/// @code
+/// ```
 /// hipStreamBatchMemOpParams myArray[2];
 /// myArray[0].operation = hipStreamMemOpWaitValue32;
 /// myArray[0].waitValue.address = waitAddr1;
@@ -3460,7 +3458,7 @@ pub struct hipStreamBatchMemOpType(pub ::core::ffi::c_int);
 /// myArray[1].writeValue.value = 0x1;
 /// myArray[1].writeValue.flags = 0x0;
 /// result = hipStreamBatchMemOp(stream, 2, myArray, 0);
-/// @endcode
+/// ```
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union hipStreamBatchMemOpParams_union {
@@ -3519,22 +3517,24 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
     pub operation: hipStreamBatchMemOpType,
     pub flags: ::core::ffi::c_uint,
 }
-/// @brief Union representing batch memory operation parameters for HIP streams.
-/// hipStreamBatchMemOpParams is used to specify the parameters for batch memory
+/// Union representing batch memory operation parameters for HIP streams.
+/// `hipStreamBatchMemOpParams` is used to specify the parameters for batch memory
 /// operations in a HIP stream. This union supports various operations including
 /// waiting for a specific value, writing a value, and different flags for wait conditions.
-/// @details
+///
 /// The union includes fields for different types of operations defined in the
 /// enum hipStreamBatchMemOpType:
-/// - hipStreamMemOpWaitValue32:  Wait for a 32-bit value.
-/// - hipStreamMemOpWriteValue32: Write a 32-bit value.
-/// - hipStreamMemOpWaitValue64:  Wait for a 64-bit value.
-/// - hipStreamMemOpWriteValue64: Write a 64-bit value.
+/// - `hipStreamMemOpWaitValue32`:  Wait for a 32-bit value.
+/// - `hipStreamMemOpWriteValue32`: Write a 32-bit value.
+/// - `hipStreamMemOpWaitValue64`:  Wait for a 64-bit value.
+/// - `hipStreamMemOpWriteValue64`: Write a 64-bit value.
+///
 /// Each operation type includes an address, the value to wait for or write, flags, and an
 /// optional alias that is not relevant on AMD GPUs. Flags can be used to specify different
 /// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
+///
 /// Example usage:
-/// @code
+/// ```
 /// hipStreamBatchMemOpParams myArray[2];
 /// myArray[0].operation = hipStreamMemOpWaitValue32;
 /// myArray[0].waitValue.address = waitAddr1;
@@ -3545,20 +3545,21 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
 /// myArray[1].writeValue.value = 0x1;
 /// myArray[1].writeValue.flags = 0x0;
 /// result = hipStreamBatchMemOp(stream, 2, myArray, 0);
-/// @endcode
+/// ```
 pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
-/// @brief Structure representing node parameters for batch memory operations in HIP graphs.
+/// Structure representing node parameters for batch memory operations in HIP graphs.
 /// hipBatchMemOpNodeParams is used to specify the parameters for batch memory
 /// operations in HIP graphs. This struct includes the context to use for the operations, the
-/// number of operations, and an array of hipStreamBatchMemOpParams that describe the operations.
-/// @details
+/// number of operations, and an array of `hipStreamBatchMemOpParams` that describe the operations.
+///
 /// The structure includes the following fields:
-/// - ctx: The HIP context to use for the operations.
-/// - count: The number of operations in the paramArray.
-/// - paramArray: A pointer to an array of hipStreamBatchMemOpParams.
-/// - flags: Flags to control the node.
+/// - `ctx`: The HIP context to use for the operations.
+/// - `count`: The number of operations in the `paramArray`.
+/// - `paramArray`: A pointer to an array of `hipStreamBatchMemOpParams`.
+/// - `flags`: Flags to control the node.
+///
 /// Example usage:
-/// @code
+/// ```
 /// hipBatchMemOpNodeParams nodeParams;
 /// nodeParams.ctx = context;
 /// nodeParams.count = ARRAY_SIZE;
@@ -3566,7 +3567,7 @@ pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
 /// nodeParams.flags = 0;
 /// Pass nodeParams to a HIP graph APIs hipGraphAddBatchMemOpNode, hipGraphBatchMemOpNodeGetParams,
 /// hipGraphBatchMemOpNodeSetParams, hipGraphExecBatchMemOpNodeSetParams
-/// @endcode
+/// ```
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct hipBatchMemOpNodeParams {
@@ -4279,10 +4280,10 @@ impl hipExtDynDataPrefetchTemporal {
         hipExtDynDataPrefetchTemporal(1);
 }
 #[repr(transparent)]
-/// @brief Temporal locality hint for dynamic data prefetch.
+/// Temporal locality hint for dynamic data prefetch.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct hipExtDynDataPrefetchTemporal(pub ::core::ffi::c_int);
-/// @brief Describes one 2D memory region to prefetch into L2 cache.
+/// Describes one 2D memory region to prefetch into L2 cache.
 /// @p address must be aligned to the device's L2 cache line size.
 /// @p width is measured in bytes and must be a multiple of the cache line size.
 /// @p height is the number of rows to prefetch.
@@ -4299,7 +4300,7 @@ pub struct hipExtDynDataPrefetchRegion {
     /// Number of rows to prefetch
     pub height: usize,
 }
-/// @brief Configuration for dynamic data prefetch.
+/// Configuration for dynamic data prefetch.
 /// Pointed to by a launch attribute via @ref hipLaunchAttributeExtDynDataPrefetch.
 /// @p numRegions must not exceed the device limit queried via
 /// @ref hipDeviceAttributeMaxDynDataPrefetchRegions (use @ref hipDeviceGetAttribute).
@@ -4374,7 +4375,7 @@ pub union hipLaunchAttributeValue {
     /// Value of launch attribute ::hipLaunchAttributeExtDynDataPrefetch
     pub dynDataPrefetch: *const hipExtDynDataPrefetchConfig,
 }
-/// @brief Specifies the desired cluster dimensions for a kernel launch.
+/// Specifies the desired cluster dimensions for a kernel launch.
 /// This opaque type is used as the value for the launch attribute
 /// ::hipLaunchAttributeClusterDimension. It defines the dimensions of the
 /// compute cluster in terms of blocks, where each field must evenly divide

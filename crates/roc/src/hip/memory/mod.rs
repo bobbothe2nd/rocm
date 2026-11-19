@@ -57,6 +57,9 @@ pub unsafe trait MutPtr {}
 pub unsafe trait DevPtr<T> {
     fn as_ptr(&self) -> *const T;
     fn len(&self) -> usize;
+    fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
     fn get_dev(&self) -> super::device::Device;
     fn size(&self) -> usize {
         self.len() * size_of::<T>()

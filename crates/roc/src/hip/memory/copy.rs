@@ -21,8 +21,8 @@ where
 {
     if src.get_dev() == dst.get_dev()
         || src_off
-        .checked_add(len)
-        .is_none_or(|end| end > src.len() as usize)
+            .checked_add(len)
+            .is_none_or(|end| end > src.len() as usize)
         || dst_off
             .checked_add(len)
             .is_none_or(|end| end > dst.len() as usize)

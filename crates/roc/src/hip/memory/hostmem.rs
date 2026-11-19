@@ -1,6 +1,10 @@
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, event::HipEvent, memory::{CopyTo, DevPtr, EventSync, StreamBound}, stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        DevRepr, HipError,
+        event::HipEvent,
+        memory::{CopyTo, DevPtr, EventSync, StreamBound},
+        stream::HipStream,
     },
 };
 use alloc::sync::Arc;
@@ -133,6 +137,11 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
     }
 
     /// Gets the size of the allocation
@@ -358,6 +367,11 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
         self.len
     }
 
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
     /// Gets the size of the allocation
     #[inline(always)]
     pub const fn size(&self) -> usize {
@@ -492,8 +506,9 @@ unsafe impl<T: DevRepr> Sync for HostBuffer<T> {}
 impl HipStream {
     /// Allocates `len` elements and makes it accessible from all HIP devices
     pub fn alloc_host<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HostBuffer<T>, HipError> {
-        let ptr: Result<*mut T, HipError> =
-            unsafe { wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), len * size_of::<T>(), 0)) };
+        let ptr: Result<*mut T, HipError> = unsafe {
+            wrap_sys_res!(|ptr| hipHostMalloc((&raw mut ptr).cast(), len * size_of::<T>(), 0))
+        };
         let ptr = ptr?;
 
         if ptr.is_null() {
@@ -656,6 +671,11 @@ impl<T: DevRepr> HostBuffer<T> {
     #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
+    }
+
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
     }
 
     /// Gets the size of the allocation
