@@ -1217,7 +1217,6 @@ rocm_include::link! {
     hipError_t hipMallocAsync(
         *mut *mut void dev_ptr,
         size_t size,
-        hipMemPool_t mem_pool,
         hipStream_t stream,
     );
 

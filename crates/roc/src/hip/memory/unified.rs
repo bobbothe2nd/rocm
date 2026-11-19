@@ -14,12 +14,8 @@ use rocm_sys::hip::{
 };
 
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range},
-    hip::{
-        DevRepr, HipError,
-        event::{EventFlags, HipEvent},
-        memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut},
-        stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range}, hip::{
+        DevRepr, HipError, event::{EventFlags, HipEvent}, memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut, Memset}, stream::HipStream,
     },
 };
 
@@ -445,7 +441,12 @@ impl HipStream {
         attach_global: bool,
     ) -> Result<UnifiedBuffer<T>, HipError> {
         self.alloc_unified(len, attach_global).map(|mut buf| {
-            buf.memset(0);
+            if attach_global {
+                buf.memset_host(0);
+            } else {
+                buf.memset_async(0);
+            };
+
             unsafe {
                 buf.assume_init();
             }
@@ -608,10 +609,20 @@ impl<T: DevRepr> UnifiedBuffer<T> {
         }
     }
 
-    pub fn memset(&mut self, byte: u8) {
+    pub fn memset_host(&mut self, byte: u8) {
         unsafe {
             write_bytes(self.ptr, byte, self.len);
         }
+    }
+
+    pub fn memset_dev<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
+        let hip_slice: &HipSliceMut<'_, T> = self.as_mut();
+        hip_slice.memset(val)
+    }
+
+    pub fn memset_async<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
+        let hip_slice: &HipSliceMut<'_, T> = self.as_mut();
+        hip_slice.memset_async(val)
     }
 
     /// Synchronize the stream if needed to guarantee safe host access.

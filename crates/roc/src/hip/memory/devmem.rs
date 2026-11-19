@@ -9,7 +9,7 @@ use crate::{
 };
 use alloc::sync::Arc;
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::RangeBounds};
-use rocm_sys::hip::{hipFree, hipFreeAsync, hipMalloc};
+use rocm_sys::hip::{hipFree, hipFreeAsync, hipMalloc, hipMallocAsync};
 
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
@@ -242,6 +242,8 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
             return Err(HipError::InvalidValue);
         }
 
+        self.sync()?;
+
         unsafe { D::memset_sync(self.ptr.cast(), val, bytes / size_of::<D>()) }
     }
 
@@ -299,6 +301,14 @@ pub struct HipBuffer<T: DevRepr> {
     pub(super) _marker: PhantomData<UnsafeCell<[T]>>,
 }
 
+impl<T: DevRepr> Clone for HipBuffer<T> {
+    fn clone(&self) -> Self {
+        let mut dst = self.stream.alloc::<T>(self.len).expect("HIP allocation failed");
+        self.copy_to_async(&mut dst, 0, 0, self.len).expect("HIP DtoD async copy failed");
+        dst
+    }
+}
+
 unsafe impl<T: DevRepr> Send for HipBuffer<T> {}
 unsafe impl<T: DevRepr> Sync for HipBuffer<T> {}
 
@@ -307,8 +317,11 @@ impl HipStream {
     pub fn alloc<T: DevRepr>(self: &Arc<Self>, len: usize) -> Result<HipBuffer<T>, HipError> {
         let event = HipEvent::create(None)?;
 
-        let ptr: Result<*mut T, HipError> =
-            unsafe { wrap_sys_res!(|ptr: *mut T| hipMalloc(ptr.as_mut_ptr().cast(), len * size_of::<T>())) };
+        let ptr: Result<*mut T, HipError> = if self.dev.has_mem_pools {
+            unsafe { wrap_sys_res!(|ptr: *mut T| hipMallocAsync(ptr.as_mut_ptr().cast(), len * size_of::<T>(), self.raw)) }
+        } else {
+            unsafe { wrap_sys_res!(|ptr: *mut T| hipMalloc(ptr.as_mut_ptr().cast(), len * size_of::<T>())) }
+        };
         let ptr = ptr?;
 
         if ptr.is_null() {
@@ -330,7 +343,7 @@ impl HipStream {
         len: usize,
     ) -> Result<HipBuffer<T>, HipError> {
         self.alloc(len).and_then(|mut buf| {
-            buf.memset(0u8)?;
+            buf.memset_async(0)?;
             Ok(buf)
         })
     }

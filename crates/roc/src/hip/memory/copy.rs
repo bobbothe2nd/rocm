@@ -104,11 +104,14 @@ macro_rules! impl_copy {
                 dst_off: usize,
                 len: usize,
             ) -> Result<(), HipError> {
+                src.sync()?;
+                dst.sync()?;
+
                 unsafe {
                     try_err!(
                         rocm_sys::hip::$sync(
-                            dst.ptr.byte_add(dst_off as usize) as *mut _,
-                            src.ptr.byte_add(src_off as usize) as *mut _,
+                            dst.ptr.add(dst_off as usize) as *mut _,
+                            src.ptr.add(src_off as usize) as *mut _,
                             len as usize,
                         ),
                         Ok(())
@@ -128,8 +131,8 @@ macro_rules! impl_copy {
                 unsafe {
                     try_err!(
                         rocm_sys::hip::$async(
-                            dst.ptr.byte_add(dst_off as usize) as *mut _,
-                            src.ptr.byte_add(src_off as usize) as *mut _,
+                            dst.ptr.add(dst_off as usize) as *mut _,
+                            src.ptr.add(src_off as usize) as *mut _,
                             len as usize,
                             stream.raw,
                         )
