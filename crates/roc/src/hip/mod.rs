@@ -127,3 +127,6 @@ unsafe impl DevRepr for u32 {}
 
 unsafe impl DevRepr for i64 {}
 unsafe impl DevRepr for u64 {}
+
+unsafe impl DevRepr for i128 {}
+unsafe impl DevRepr for u128 {}
