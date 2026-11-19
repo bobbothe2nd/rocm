@@ -444,7 +444,7 @@ impl HipStream {
             if attach_global {
                 buf.memset_host(0);
             } else {
-                buf.memset_async(0);
+                buf.memset_async(0).expect("failed to zero UnifiedBuffer");
             };
 
             unsafe {
