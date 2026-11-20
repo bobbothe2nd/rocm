@@ -1,23 +1,19 @@
-use core::{
-    marker::PhantomData,
-    mem::ManuallyDrop,
-    ptr::null_mut,
-};
+use core::{marker::PhantomData, mem::ManuallyDrop, ptr::null_mut};
 
 use alloc::sync::Arc;
 use rocm_sys::hip::{
     hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemAllocationType,
     hipMemLocation, hipMemLocationType, hipMemPool_t, hipMemPoolCreate, hipMemPoolDestroy,
     hipMemPoolExportPointer, hipMemPoolExportToShareableHandle,
-    hipMemPoolImportFromShareableHandle, hipMemPoolProps, hipMemPoolPtrExportData,
-    hipMemPoolTrimTo,
+    hipMemPoolImportFromShareableHandle, hipMemPoolImportPointer, hipMemPoolProps,
+    hipMemPoolPtrExportData, hipMemPoolTrimTo,
 };
 
 use crate::hip::{
     DevRepr, HipError,
     device::Device,
     event::HipEvent,
-    memory::{DevPtr, HipBuffer},
+    memory::{DevPtr, HipBuffer, RawPtr},
     stream::HipStream,
 };
 
@@ -97,7 +93,7 @@ impl HipMemPool {
     /// you should probably use [`RefMemPool::import`] instead
     pub unsafe fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
         Ok(Self {
-            inner: unsafe { RefMemPool::import(export_data)? },
+            inner: RefMemPool::import(export_data)?,
         })
     }
 
@@ -152,7 +148,7 @@ pub trait Export<T>: DevPtr<T> {
     fn export_ptr(&mut self) -> Result<HipPtrExport<'_, Self>, HipError>;
 }
 
-impl<P: DevPtr<T>, T> Export<T> for P {
+impl<P: DevPtr<T>, T: DevRepr> Export<T> for P {
     fn export_ptr(&mut self) -> Result<HipPtrExport<'_, Self>, HipError> {
         if !self.get_dev().has_mem_pools {
             return Err(HipError::NotSupported);
@@ -165,6 +161,21 @@ impl<P: DevPtr<T>, T> Export<T> for P {
                     self.as_ptr() as *mut _
                 )
             )
+        }
+    }
+}
+
+impl HipMemPool {
+    pub fn import_ptr<'a, P: DevPtr<T>, T: DevRepr>(
+        &self,
+        ptr: &mut HipPtrExport<'a, P>,
+    ) -> Result<RawPtr<'a, T>, HipError> {
+        unsafe {
+            wrap_sys_res!(|dev_ptr: RawPtr<T>| hipMemPoolImportPointer(
+                dev_ptr.as_mut_ptr().cast(),
+                self.inner.raw,
+                &raw mut ptr.export_data
+            ))
         }
     }
 }
@@ -200,7 +211,7 @@ impl RefMemPool {
         })
     }
 
-    pub unsafe fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
+    pub fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
         let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
             wrap_sys_res!(|mem_pool| hipMemPoolImportFromShareableHandle(
                 mem_pool.as_mut_ptr(),
@@ -282,8 +293,10 @@ impl Drop for HipMemPoolExport {
 mod __private_owned_shareable_handle {
     use core::{ffi::c_void, fmt::Debug};
 
+    #[repr(transparent)]
+    #[derive(Debug)]
     #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
-    pub union OwnedShareableHandle {
+    pub struct OwnedShareableHandle {
         #[cfg(unix)]
         fd: i32,
         #[cfg(windows)]
@@ -306,20 +319,14 @@ mod __private_owned_shareable_handle {
 
         pub(super) fn as_hip_handle(&self) -> *mut c_void {
             #[cfg(unix)]
-            unsafe {
+            {
                 self.fd as *mut c_void
             }
 
             #[cfg(windows)]
-            unsafe {
+            {
                 self.win32
             }
-        }
-    }
-
-    impl Debug for OwnedShareableHandle {
-        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-            f.write_str("OwnedShareableHandle")
         }
     }
 }

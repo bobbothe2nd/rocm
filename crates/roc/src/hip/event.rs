@@ -12,13 +12,18 @@ use crate::hip::{HipError, stream::HipStream};
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone)]
 pub struct HipEvent {
-    raw: hipEvent_t,
+    pub(crate) raw: hipEvent_t,
 }
 
 unsafe impl Send for HipEvent {}
 unsafe impl Sync for HipEvent {}
 
 impl HipEvent {
+    #[inline(always)]
+    pub const fn as_raw(&self) -> hipEvent_t {
+        self.raw
+    }
+
     pub fn create(flags: Option<EventFlags>) -> Result<Self, HipError> {
         if let Some(flags) = flags {
             unsafe {

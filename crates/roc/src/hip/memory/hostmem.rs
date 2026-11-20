@@ -204,9 +204,9 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
         len: usize,
     ) -> Result<(), HipError>
     where
-        Src: CopyTo<T, Self> + StreamBound,
+        Src: CopyTo<T, Self> + StreamBound + EventSync,
     {
-        super::copy_async(src, self, src_off, dst_off, len)
+        super::copy_async(src, self, src_off, dst_off, len, src.stream())
     }
 
     #[inline]
@@ -219,9 +219,9 @@ impl<'a, T: DevRepr> HostSlice<'a, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound + EventSync,
+        Dst: DevPtr<T> + EventSync,
     {
-        super::copy_async(self, dst, src_off, dst_off, len)
+        super::copy_async(self, dst, src_off, dst_off, len, &self.stream)
     }
 }
 
@@ -432,9 +432,9 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
         len: usize,
     ) -> Result<(), HipError>
     where
-        Src: CopyTo<T, Self> + StreamBound,
+        Src: CopyTo<T, Self> + StreamBound + EventSync,
     {
-        super::copy_async(src, self, src_off, dst_off, len)
+        super::copy_async(src, self, src_off, dst_off, len, src.stream())
     }
 
     #[inline]
@@ -447,9 +447,9 @@ impl<'a, T: DevRepr> HostSliceMut<'a, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound + EventSync,
+        Dst: DevPtr<T> + EventSync,
     {
-        super::copy_async(self, dst, src_off, dst_off, len)
+        super::copy_async(self, dst, src_off, dst_off, len, &self.stream)
     }
 
     pub fn memset(&self, byte: u8) {
@@ -744,9 +744,9 @@ impl<T: DevRepr> HostBuffer<T> {
         len: usize,
     ) -> Result<(), HipError>
     where
-        Src: CopyTo<T, Self> + StreamBound,
+        Src: CopyTo<T, Self> + StreamBound + EventSync,
     {
-        super::copy_async(src, self, src_off, dst_off, len)
+        super::copy_async(src, self, src_off, dst_off, len, src.stream())
     }
 
     #[inline]
@@ -759,9 +759,9 @@ impl<T: DevRepr> HostBuffer<T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound + EventSync,
+        Dst: DevPtr<T> + EventSync,
     {
-        super::copy_async(self, dst, src_off, dst_off, len)
+        super::copy_async(self, dst, src_off, dst_off, len, &self.stream)
     }
 
     pub fn memset(&self, byte: u8) {

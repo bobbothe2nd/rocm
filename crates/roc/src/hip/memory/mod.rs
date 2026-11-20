@@ -20,7 +20,11 @@ mod extmem;
 #[cfg(all(feature = "std", any(windows, unix)))]
 pub use extmem::*;
 
+use crate::hip::event::HipEvent;
+
 pub trait EventSync {
+    fn event(&self) -> &HipEvent;
+
     /// Records a synchronization checkpoint for the buffer, or a logical buffer usage.
     fn latesync(&self) -> Result<(), super::HipError>;
 
@@ -49,7 +53,9 @@ pub trait EventSync {
     /// ```
     ///
     /// assuming `buf` was allocated on `stream`.
-    fn sync(&self) -> Result<(), super::HipError>;
+    fn sync(&self) -> Result<(), super::HipError> {
+        self.event().sync()
+    }
 }
 
 pub trait StreamBound {
@@ -89,6 +95,11 @@ macro_rules! impl_buf {
         }
 
         impl<T: super::DevRepr> EventSync for $ty {
+            #[inline(always)]
+            fn event(&self) -> &HipEvent {
+                &self.event
+            }
+
             #[inline(always)]
             fn latesync(&self) -> Result<(), crate::hip::HipError> {
                 if self.stream.dev.has_mem_pools { return Ok(()); }

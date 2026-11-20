@@ -342,10 +342,20 @@ impl<T: DevRepr> UnifiedSliceMut<'_, T> {
         }
     }
 
-    pub fn memset(&mut self, byte: u8) {
+    pub fn memset_host(&mut self, byte: u8) {
         unsafe {
             write_bytes(self.ptr, byte, self.len);
         }
+    }
+
+    pub fn memset_dev<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
+        let hip_slice: &HipSliceMut<'_, T> = self.as_mut();
+        hip_slice.memset(val)
+    }
+
+    pub fn memset_async<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
+        let hip_slice: &HipSliceMut<'_, T> = self.as_mut();
+        hip_slice.memset_async(val)
     }
 
     /// Synchronize the stream if needed to guarantee safe host access.
@@ -460,9 +470,9 @@ impl HipStream {
     ) -> Result<UnifiedBuffer<T>, HipError> {
         self.alloc_unified(len, attach_global).map(|mut buf| {
             if attach_global {
-                buf.memset_host(0);
-            } else {
                 buf.memset_async(0).expect("failed to zero UnifiedBuffer");
+            } else {
+                buf.memset_host(0);
             };
 
             unsafe {
@@ -581,6 +591,7 @@ impl<T: DevRepr> UnifiedBuffer<T> {
     /// Deallocates a buffer asynchronously
     #[inline(always)]
     pub fn dealloc_async(self) -> Result<(), HipError> {
+        self.stream.wait(&self.event)?;
         let handle = ManuallyDrop::new(self);
         unsafe { handle.dealloc_async_unchecked() }
     }
@@ -626,7 +637,7 @@ impl<T: DevRepr> UnifiedBuffer<T> {
         };
         unsafe {
             try_err!(
-                hipMemPrefetchAsync(self.ptr as *const _, self.size(), device, self.stream.raw,),
+                hipMemPrefetchAsync(self.ptr as *const _, self.size(), device, self.stream.raw),
                 Ok(())
             )
         }
@@ -694,6 +705,7 @@ impl<T: DevRepr> DerefMut for UnifiedBuffer<T> {
 impl<T: DevRepr> Drop for UnifiedBuffer<T> {
     fn drop(&mut self) {
         if self.stream.dev.has_mem_pools {
+            log_if_err!("failed to wait on stream for UnifiedBuffer": self.stream.wait(&self.event));
             unsafe {
                 log_if_err!("failed to deallocate UnifiedBuffer": self.dealloc_async_unchecked());
             }

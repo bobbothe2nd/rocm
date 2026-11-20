@@ -9,7 +9,7 @@ use crate::{
 };
 use alloc::sync::Arc;
 use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop, ops::RangeBounds};
-use rocm_sys::hip::{hipFree, hipFreeAsync, hipMalloc, hipMallocAsync};
+use rocm_sys::hip::{hipDeviceptr_t, hipFree, hipFreeAsync, hipMalloc, hipMallocAsync};
 
 #[repr(C)]
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
@@ -96,9 +96,9 @@ impl<T: DevRepr> HipSlice<'_, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound + EventSync,
+        Dst: DevPtr<T> + EventSync,
     {
-        super::copy_async(self, dst, src_off, dst_off, len)
+        super::copy_async(self, dst, src_off, dst_off, len, &self.stream)
     }
 }
 
@@ -225,9 +225,9 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
         len: usize,
     ) -> Result<(), HipError>
     where
-        Src: CopyTo<T, Self> + StreamBound,
+        Src: CopyTo<T, Self> + StreamBound + EventSync,
     {
-        super::copy_async(src, self, src_off, dst_off, len)
+        super::copy_async(src, self, src_off, dst_off, len, src.stream())
     }
 
     #[inline]
@@ -240,9 +240,9 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound + EventSync,
+        Dst: DevPtr<T> + EventSync,
     {
-        super::copy_async(self, dst, src_off, dst_off, len)
+        super::copy_async(self, dst, src_off, dst_off, len, &self.stream)
     }
 
     pub fn memset<D: Memset>(&self, val: D) -> Result<(), HipError> {
@@ -263,6 +263,8 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
         if !bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
+
+        self.stream.wait(&self.event)?;
 
         unsafe {
             D::memset_async(self.ptr.cast(), val, bytes / size_of::<D>(), &self.stream)?;
@@ -471,8 +473,8 @@ impl<T: DevRepr> HipBuffer<T> {
     /// Deallocates a buffer asynchronously
     #[inline(always)]
     pub fn dealloc_async(self) -> Result<(), HipError> {
+        self.stream.wait(&self.event)?;
         let handle = ManuallyDrop::new(self);
-
         unsafe { handle.dealloc_async_unchecked() }
     }
 
@@ -520,9 +522,9 @@ impl<T: DevRepr> HipBuffer<T> {
         len: usize,
     ) -> Result<(), HipError>
     where
-        Src: CopyTo<T, Self> + StreamBound,
+        Src: CopyTo<T, Self> + StreamBound + EventSync,
     {
-        super::copy_async(src, self, src_off, dst_off, len)
+        super::copy_async(src, self, src_off, dst_off, len, src.stream())
     }
 
     #[inline]
@@ -535,9 +537,9 @@ impl<T: DevRepr> HipBuffer<T> {
     ) -> Result<(), HipError>
     where
         Self: CopyTo<T, Dst>,
-        Dst: DevPtr<T> + StreamBound + EventSync,
+        Dst: DevPtr<T> + EventSync,
     {
-        super::copy_async(self, dst, src_off, dst_off, len)
+        super::copy_async(self, dst, src_off, dst_off, len, &self.stream)
     }
 
     #[inline(always)]
@@ -558,6 +560,8 @@ impl<T: DevRepr> HipBuffer<T> {
             return Err(HipError::InvalidValue);
         }
 
+        self.stream.wait(&self.event)?;
+
         unsafe {
             D::memset_async(self.ptr.cast(), val, bytes / size_of::<D>(), &self.stream)?;
         }
@@ -571,6 +575,7 @@ impl<T: DevRepr> HipBuffer<T> {
 impl<T: DevRepr> Drop for HipBuffer<T> {
     fn drop(&mut self) {
         if self.stream.dev.has_mem_pools {
+            log_if_err!("failed to wait on stream for HipBuffer": self.stream.wait(&self.event));
             unsafe {
                 log_if_err!("failed to deallocate HipBuffer": self.dealloc_async_unchecked());
             }
@@ -615,5 +620,32 @@ impl<T: DevRepr> AsMut<Self> for HipSliceMut<'_, T> {
     #[inline(always)]
     fn as_mut(&mut self) -> &mut Self {
         unsafe { &mut *(self as *mut Self).cast() }
+    }
+}
+
+#[repr(transparent)]
+#[derive(Debug, Clone, Copy, Hash)]
+pub struct RawPtr<'a, T: DevRepr> {
+    ptr: hipDeviceptr_t,
+    _marker: PhantomData<&'a [T]>,
+}
+
+impl<'a, T: DevRepr> RawPtr<'a, T> {
+    pub const fn as_raw(&self) -> hipDeviceptr_t {
+        self.ptr
+    }
+
+    pub const fn from_raw<U>(ptr: *mut U) -> Self {
+        Self {
+            ptr: ptr.cast(),
+            _marker: PhantomData,
+        }
+    }
+
+    pub const fn transmute<U: DevRepr>(&self) -> RawPtr<'a, U> {
+        RawPtr {
+            ptr: self.ptr,
+            _marker: PhantomData,
+        }
     }
 }

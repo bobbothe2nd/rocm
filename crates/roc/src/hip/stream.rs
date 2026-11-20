@@ -6,12 +6,17 @@ use core::{
 use rocm_sys::hip::{
     hipError_t, hipStream_t, hipStreamCreateWithFlags, hipStreamCreateWithPriority,
     hipStreamDestroy, hipStreamGetDevice, hipStreamGetId, hipStreamGetPriority, hipStreamQuery,
-    hipStreamSynchronize,
+    hipStreamSynchronize, hipStreamWaitEvent,
 };
 
 use crate::{
     aux::RocHandle,
-    hip::{HipError, device::Device},
+    hip::{
+        HipError,
+        device::Device,
+        event::HipEvent,
+        memory::{CopyTo, DevPtr, EventSync, copy_async},
+    },
 };
 
 #[repr(C)]
@@ -96,18 +101,32 @@ impl HipStream {
 
     #[inline(always)]
     pub fn get_dev(&self) -> Device {
-        // unsafe { wrap_sys_res!(|dev: Device| hipStreamGetDevice(self.raw, dev.as_mut_ptr().cast())) }
         self.dev
-    }
-
-    #[inline(always)]
-    pub(crate) fn same_as(&self, other: &Self) -> bool {
-        self.raw == other.raw
     }
 
     #[inline(always)]
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipStreamDestroy(self.raw), Ok(())) }
+    }
+
+    #[inline(always)]
+    pub fn wait(&self, event: &HipEvent) -> Result<(), HipError> {
+        unsafe { try_err!(hipStreamWaitEvent(self.raw, event.raw, 0), Ok(())) }
+    }
+
+    pub fn copy<T, Src, Dst>(
+        &self,
+        src: Src,
+        src_off: usize,
+        dst: &mut Dst,
+        dst_off: usize,
+        len: usize,
+    ) -> Result<(), HipError>
+    where
+        Src: CopyTo<T, Dst> + EventSync,
+        Dst: DevPtr<T> + EventSync,
+    {
+        copy_async(&src, dst, src_off, dst_off, len, self)
     }
 }
 

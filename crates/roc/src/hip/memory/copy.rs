@@ -2,7 +2,6 @@ use crate::hip::{
     HipError,
     memory::{
         DevPtr, EventSync, HipBuffer, HipSlice, HipSliceMut, HostBuffer, HostSlice, HostSliceMut,
-        StreamBound,
     },
     stream::HipStream,
 };
@@ -41,10 +40,11 @@ pub fn copy_async<T, Src, Dst>(
     src_off: usize,
     dst_off: usize,
     len: usize,
+    stream: &HipStream,
 ) -> Result<(), HipError>
 where
-    Src: CopyTo<T, Dst> + StreamBound,
-    Dst: DevPtr<T> + StreamBound + EventSync,
+    Src: CopyTo<T, Dst> + EventSync,
+    Dst: DevPtr<T> + EventSync,
 {
     if src.get_dev() == dst.get_dev()
         || src_off
@@ -58,17 +58,10 @@ where
         return Err(HipError::InvalidValue);
     }
 
-    let stream = src.stream();
+    stream.wait(src.event())?;
+    stream.wait(dst.event())?;
 
-    if !dst.stream().same_as(stream) {
-        dst.sync()?;
-    }
-
-    unsafe {
-        Src::copy_async(src, dst, src_off, dst_off, len, stream)?;
-    }
-
-    Ok(())
+    unsafe { Src::copy_async(src, dst, src_off, dst_off, len, stream) }
 }
 
 pub unsafe trait CopyTo<T, Dst: DevPtr<T>>: DevPtr<T> {
@@ -87,10 +80,7 @@ pub unsafe trait CopyTo<T, Dst: DevPtr<T>>: DevPtr<T> {
         dst_off: usize,
         len: usize,
         stream: &HipStream,
-    ) -> Result<(), HipError>
-    where
-        Self: StreamBound,
-        Dst: StreamBound;
+    ) -> Result<(), HipError>;
 }
 
 macro_rules! impl_copy {

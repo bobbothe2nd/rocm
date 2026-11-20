@@ -1,14 +1,26 @@
-use core::{marker::PhantomData, mem::{ManuallyDrop, MaybeUninit}, ops::RangeBounds};
+use core::{
+    marker::PhantomData,
+    mem::{ManuallyDrop, MaybeUninit},
+    ops::RangeBounds,
+};
 use std::fs::File;
 
 use alloc::sync::Arc;
 use rocm_sys::hip::{
-    hipDestroyExternalMemory, hipDeviceptr_t, hipExternalMemory_t, hipExternalMemoryBufferDesc_st, hipExternalMemoryGetMappedBuffer, hipExternalMemoryHandleDesc_st, hipExternalMemoryHandleDesc_st__bindgen_ty_1, hipExternalMemoryHandleType, hipFree, hipFreeAsync, hipImportExternalMemory,
+    hipDestroyExternalMemory, hipDeviceptr_t, hipExternalMemory_t, hipExternalMemoryBufferDesc_st,
+    hipExternalMemoryGetMappedBuffer, hipExternalMemoryHandleDesc_st,
+    hipExternalMemoryHandleDesc_st__bindgen_ty_1, hipExternalMemoryHandleType, hipFree,
+    hipFreeAsync, hipImportExternalMemory,
 };
 
 use crate::{
-    auxiliary::{ResolvedRange, resolve_range}, hip::{
-        DevRepr, HipError, device::Device, event::HipEvent, memory::{DevPtr, EventSync, HipSlice, HipSliceMut, MutPtr, StreamBound}, stream::HipStream,
+    auxiliary::{ResolvedRange, resolve_range},
+    hip::{
+        DevRepr, HipError,
+        device::Device,
+        event::HipEvent,
+        memory::{DevPtr, EventSync, HipSlice, HipSliceMut, MutPtr, StreamBound},
+        stream::HipStream,
     },
 };
 
@@ -204,7 +216,12 @@ impl MappedBuffer {
     /// Deallocates a buffer asynchronously
     #[inline(always)]
     pub unsafe fn dealloc_async_unchecked(&self) -> Result<(), HipError> {
-        unsafe { try_err!(hipFreeAsync(self.ptr.cast(), self.extmem.stream.raw,), Ok(())) }
+        unsafe {
+            try_err!(
+                hipFreeAsync(self.ptr.cast(), self.extmem.stream.raw,),
+                Ok(())
+            )
+        }
     }
 
     /// # Safety
@@ -239,6 +256,10 @@ unsafe impl DevPtr<MaybeUninit<u8>> for MappedBuffer {
 unsafe impl MutPtr for MappedBuffer {}
 
 impl EventSync for MappedBuffer {
+    fn event(&self) -> &HipEvent {
+        &self.event
+    }
+
     fn latesync(&self) -> Result<(), HipError> {
         self.event.record(&self.extmem.stream, None)
     }
