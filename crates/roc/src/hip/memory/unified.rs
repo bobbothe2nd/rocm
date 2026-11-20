@@ -17,7 +17,7 @@ use crate::{
     auxiliary::{ResolvedRange, resolve_range},
     hip::{
         DevRepr, HipError,
-        event::{EventFlags, HipEvent},
+        event::HipEvent,
         memory::{HipSlice, HipSliceMut, HostSlice, HostSliceMut, Memset},
         stream::HipStream,
     },
@@ -438,7 +438,7 @@ impl HipStream {
             ))
         };
 
-        let event = HipEvent::create(Some(EventFlags::BLOCKING_SYNC))?;
+        let event = HipEvent::create(None)?;
 
         Ok(UnifiedBuffer {
             ptr: raw?.cast(),
