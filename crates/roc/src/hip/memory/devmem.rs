@@ -112,7 +112,7 @@ impl<'a, T: DevRepr> HipSlice<'a, T> {
     pub fn transmute<U: DevRepr>(self) -> Option<HipSlice<'a, U>> {
         let bytes = self.size();
         let u_size = size_of::<U>();
-        if u_size == 0 || bytes.is_multiple_of(u_size) {
+        if u_size == 0 || !bytes.is_multiple_of(u_size) {
             return None;
         }
         let new_len = bytes / u_size;
@@ -248,7 +248,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     pub fn memset<D: Memset>(&self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes.is_multiple_of(size_of::<D>()) {
+        if !bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
@@ -260,7 +260,7 @@ impl<T: DevRepr> HipSliceMut<'_, T> {
     pub fn memset_async<D: Memset>(&self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes.is_multiple_of(size_of::<D>()) {
+        if !bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
@@ -284,7 +284,7 @@ impl<'a, T: DevRepr> HipSliceMut<'a, T> {
     pub fn transmute<U: DevRepr>(self) -> Option<HipSliceMut<'a, U>> {
         let bytes = self.size();
         let u_size = size_of::<U>();
-        if u_size == 0 || bytes.is_multiple_of(u_size) {
+        if u_size == 0 || !bytes.is_multiple_of(u_size) {
             return None;
         }
         let new_len = bytes / u_size;
@@ -401,7 +401,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn transmute<U: DevRepr>(self) -> Option<HipBuffer<U>> {
         let bytes = self.size();
         let u_size = size_of::<U>();
-        if u_size == 0 || bytes.is_multiple_of(u_size) {
+        if u_size == 0 || !bytes.is_multiple_of(u_size) {
             return None;
         }
         let new_len = bytes / u_size;
@@ -544,7 +544,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn memset<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes.is_multiple_of(size_of::<D>()) {
+        if !bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
@@ -554,7 +554,7 @@ impl<T: DevRepr> HipBuffer<T> {
     pub fn memset_async<D: Memset>(&mut self, val: D) -> Result<(), HipError> {
         let bytes = self.len * size_of::<T>();
 
-        if bytes.is_multiple_of(size_of::<D>()) {
+        if !bytes.is_multiple_of(size_of::<D>()) {
             return Err(HipError::InvalidValue);
         }
 
