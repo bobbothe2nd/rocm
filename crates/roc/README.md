@@ -14,11 +14,12 @@ This API is very limited and only covers a small subset of HIP and hipRTC, but n
 
 The example shown below compiles and launches a simple program:
 
-```rust
-use core::mem::transmute;
-
-use roc::{
-    hip::{device::Device, module::LaunchConfig, stream::HipStream},
+```rustuse roc::{
+    hip::{
+        device::Device,
+        module::LaunchShape,
+        stream::{HipStream, StreamKind},
+    },
     hiprtc::program::{CompileOptions, Hsaco},
 };
 
@@ -31,14 +32,9 @@ void vec_add(float* out, const float* a, const float* b, int n) {
 "#;
 
 const LEN: usize = 1024;
-const BYTES: u32 = (LEN * size_of::<f32>()) as u32;
 
 const A_VAL: f32 = 3.0;
 const B_VAL: f32 = 2.0;
-
-if !roc::is_amdhip64_present() || !roc::is_hiprtc_present() {
-    return;
-}
 
 let dev = Device::current().unwrap();
 let arch = dev.gfx_version().unwrap();
@@ -59,39 +55,28 @@ let func = {
     module.get_func_c(c"vec_add").unwrap()
 };
 
-let stream = HipStream::create().unwrap();
+let stream = HipStream::create(StreamKind::Default).unwrap();
 
-let out = stream.alloc(BYTES).unwrap();
-let a = stream.alloc(BYTES).unwrap();
-let b = stream.alloc(BYTES).unwrap();
+let mut out = stream.alloc_unified::<f32>(LEN, true).unwrap();
+let mut a = stream.alloc(LEN).unwrap();
+let mut b = stream.alloc(LEN).unwrap();
 
-let a_host = {
-    let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([A_VAL; LEN]) };
+let a_host = stream.map_slice(&[A_VAL; LEN]).unwrap();
+let b_host = stream.map_slice(&[B_VAL; LEN]).unwrap();
 
-    stream.alloc_host_init(&buf).unwrap()
-};
-let b_host = {
-    let buf = unsafe { transmute::<[f32; LEN], [u8; BYTES as usize]>([B_VAL; LEN]) };
+a.copy_from_async(&a_host, 0, 0, LEN).unwrap();
+b.copy_from_async(&b_host, 0, 0, LEN).unwrap();
 
-    stream.alloc_host_init(&buf).unwrap()
-};
-
-a.copy_from_host_async(&a_host, 0, 0, BYTES).unwrap();
-b.copy_from_host_async(&b_host, 0, 0, BYTES).unwrap();
-
-let mut out_ptr = out.as_ptr();
-let mut a_ptr = a.as_ptr();
-let mut b_ptr = b.as_ptr();
 let mut n = LEN as i32;
 
 let mut args = [
-    (&raw mut out_ptr).cast(),
-    (&raw mut a_ptr).cast(),
-    (&raw mut b_ptr).cast(),
+    (&raw mut out).cast(),
+    (&raw mut a).cast(),
+    (&raw mut b).cast(),
     (&raw mut n).cast(),
 ];
 
-let conf = LaunchConfig {
+let conf = LaunchShape {
     grid: [LEN.div_ceil(128) as u32, 1, 1],
     block: [128, 1, 1],
 };
@@ -100,16 +85,9 @@ unsafe {
     stream.launch(&func, &mut args, conf).unwrap();
 }
 
-let mut out_host = stream.alloc_host(BYTES).unwrap();
-
 stream.sync().unwrap();
 
-out.copy_to_host(&mut out_host, 0, 0, BYTES).unwrap();
-
-for chunk in out_host.chunks(size_of::<f32>()) {
-    let u8x4: [u8; size_of::<f32>()] = chunk.try_into().unwrap();
-    let float = f32::from_ne_bytes(u8x4);
-
-    assert_eq!(float, A_VAL + B_VAL);
+for val in out.as_slice() {
+    assert_eq!(*val, A_VAL + B_VAL);
 }
 ```

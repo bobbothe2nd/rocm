@@ -72,7 +72,7 @@ If the shared library is present on the system under a different name than one o
 
             $(#[$cfg_internal(feature = "internal")])?
             $($(#[$cfg_strong(feature = "deprecated")])?)?
-            #[cfg(test)]
+            #[cfg(all(test, feature = "test_exists"))]
             $paste! {
                 #[test]
                 fn [<$prefix $name $suffix>]() {

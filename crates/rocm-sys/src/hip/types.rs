@@ -3447,7 +3447,7 @@ pub struct hipStreamBatchMemOpType(pub ::core::ffi::c_int);
 /// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
 ///
 /// Example usage:
-/// ```
+/// ```c
 /// hipStreamBatchMemOpParams myArray[2];
 /// myArray[0].operation = hipStreamMemOpWaitValue32;
 /// myArray[0].waitValue.address = waitAddr1;
@@ -3534,7 +3534,7 @@ pub struct hipStreamBatchMemOpParams_union_hipStreamMemOpMemoryBarrierParams_t {
 /// wait conditions such as equality, bitwise AND, greater than or equal, and bitwise NOR.
 ///
 /// Example usage:
-/// ```
+/// ```c
 /// hipStreamBatchMemOpParams myArray[2];
 /// myArray[0].operation = hipStreamMemOpWaitValue32;
 /// myArray[0].waitValue.address = waitAddr1;
@@ -3559,7 +3559,7 @@ pub type hipStreamBatchMemOpParams = hipStreamBatchMemOpParams_union;
 /// - `flags`: Flags to control the node.
 ///
 /// Example usage:
-/// ```
+/// ```c
 /// hipBatchMemOpNodeParams nodeParams;
 /// nodeParams.ctx = context;
 /// nodeParams.count = ARRAY_SIZE;

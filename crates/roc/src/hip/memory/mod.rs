@@ -30,9 +30,9 @@ pub trait EventSync {
     ///
     /// ```no_run
     /// # #[cfg(feature = "dynamic-loading")] {
-    /// # use roc::hip::*;
-    /// # let stream = stream::HipStream::create().unwrap();
-    /// # let buf = stream.alloc(128).unwrap();
+    /// # use roc::hip::{*, memory::EventSync as _};
+    /// # let stream = stream::HipStream::create(stream::StreamKind::Default).unwrap();
+    /// # let buf = stream.alloc::<u8>(128).unwrap();
     /// buf.latesync().unwrap();
     /// buf.sync().unwrap();
     /// # }
@@ -42,7 +42,8 @@ pub trait EventSync {
     ///
     /// ```no_run
     /// # #[cfg(feature = "dynamic-loading")] {
-    /// # let stream = roc::hip::stream::HipStream::create().unwrap();
+    /// # use roc::hip::*;
+    /// # let stream = stream::HipStream::create(stream::StreamKind::Default).unwrap();
     /// stream.sync().unwrap();
     /// # }
     /// ```

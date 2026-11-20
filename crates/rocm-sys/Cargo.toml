@@ -51,6 +51,8 @@ internal = []
 # auto trait derive
 stable_auto = ["dep:stable_auto"]
 
+test_exists = []
+
 [[example]]
 name = "get_device_count"
 required-features = ["hip", "dynamic-loading"]
