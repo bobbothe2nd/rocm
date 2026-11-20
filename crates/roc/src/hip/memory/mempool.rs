@@ -1,19 +1,12 @@
 use core::{
-    ffi::c_int,
     marker::PhantomData,
     mem::{ManuallyDrop, transmute},
     ptr::null_mut,
 };
 
 use alloc::sync::Arc;
-use rocm_sys::{
-    hip::{
-        hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemPool_t,
-        hipMemPoolCreate, hipMemPoolDestroy, hipMemPoolExportPointer,
-        hipMemPoolExportToShareableHandle, hipMemPoolImportFromShareableHandle,
-        hipMemPoolPtrExportData, hipMemPoolTrimTo,
-    },
-    platform::windows::LPSECURITYATTRIBUTES,
+use rocm_sys::hip::{
+    hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemAllocationType, hipMemLocation, hipMemLocationType, hipMemPool_t, hipMemPoolCreate, hipMemPoolDestroy, hipMemPoolExportPointer, hipMemPoolExportToShareableHandle, hipMemPoolImportFromShareableHandle, hipMemPoolProps, hipMemPoolPtrExportData, hipMemPoolTrimTo,
 };
 
 use crate::hip::{
@@ -30,18 +23,39 @@ pub struct HipMemPool {
     inner: RefMemPool,
 }
 
+const DEFAULT_ALLOCATION_TYPE: hipMemAllocationHandleType = {
+    #[cfg(unix)]
+    {
+        hipMemAllocationHandleType::hipMemHandleTypePosixFileDescriptor
+    }
+    #[cfg(windows)]
+    {
+        hipMemAllocationHandleType::hipMemHandleTypeWin32
+    }
+};
+
 impl HipStream {
-    pub fn create_mem_pool(self: &Arc<Self>, prop: MemPoolProps) -> Result<HipMemPool, HipError> {
+    pub fn create_mem_pool(self: &Arc<Self>) -> Result<HipMemPool, HipError> {
         if !self.dev.has_mem_pools {
             return Err(HipError::NotSupported);
         }
 
-        let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
-            wrap_sys_res!(|mem_pool| hipMemPoolCreate(
-                mem_pool.as_mut_ptr(),
-                (&raw const prop).cast()
-            ))
+        let prop = hipMemPoolProps {
+            allocType: hipMemAllocationType::hipMemAllocationTypePinned,
+            handleTypes: DEFAULT_ALLOCATION_TYPE,
+            location: hipMemLocation {
+                type_: hipMemLocationType::hipMemLocationTypeDevice,
+                id: 0,
+            },
+            win32SecurityAttributes: null_mut(),
+            maxSize: 0,
+            reserved: [0; 56],
         };
+
+        let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
+            wrap_sys_res!(|mem_pool| hipMemPoolCreate(mem_pool.as_mut_ptr(), &raw const prop))
+        };
+
         Ok(HipMemPool {
             inner: RefMemPool {
                 raw: mem_pool?,
@@ -72,8 +86,8 @@ impl HipMemPool {
         self.inner.raw
     }
 
-    pub fn export(&self, handle_type: HipMemAllocHandleType) -> Result<HipMemPoolExport, HipError> {
-        self.inner.export(handle_type)
+    pub fn export(&self) -> Result<HipMemPoolExport, HipError> {
+        self.inner.export()
     }
 
     /// you should probably use [`RefMemPool::import`] instead
@@ -164,23 +178,16 @@ impl RefMemPool {
         self.raw
     }
 
-    pub fn export(&self, handle_type: HipMemAllocHandleType) -> Result<HipMemPoolExport, HipError> {
-        if matches!(handle_type, HipMemAllocHandleType::Fabric) {
-            return Err(HipError::NotSupported);
-        }
-
-        #[cfg(windows)]
-        if matches!(handle_type, HipMemAllocHandleType::Win32Kmt) {
-            return Err(HipError::NotSupported);
-        }
-
+    pub fn export(&self) -> Result<HipMemPoolExport, HipError> {
         let export_data: Result<_, HipError> = unsafe {
             wrap_sys_res!(
                 |data: __private_owned_shareable_handle::OwnedShareableHandle| {
                     hipMemPoolExportToShareableHandle(
                         data.as_mut_ptr().cast(),
                         self.raw,
-                        transmute::<HipMemAllocHandleType, hipMemAllocationHandleType>(handle_type),
+                        transmute::<hipMemAllocationHandleType, hipMemAllocationHandleType>(
+                            DEFAULT_ALLOCATION_TYPE,
+                        ),
                         0,
                     )
                 }
@@ -188,7 +195,6 @@ impl RefMemPool {
         };
         Ok(HipMemPoolExport {
             export_data: export_data?,
-            handle_type,
         })
     }
 
@@ -196,12 +202,8 @@ impl RefMemPool {
         let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
             wrap_sys_res!(|mem_pool| hipMemPoolImportFromShareableHandle(
                 mem_pool.as_mut_ptr(),
-                export_data
-                    .export_data
-                    .as_hip_handle(export_data.handle_type),
-                transmute::<HipMemAllocHandleType, hipMemAllocationHandleType>(
-                    export_data.handle_type
-                ),
+                export_data.export_data.as_hip_handle(),
+                DEFAULT_ALLOCATION_TYPE,
                 0,
             ))
         };
@@ -265,13 +267,12 @@ impl RefMemPool {
 #[derive(Debug)]
 pub struct HipMemPoolExport {
     export_data: __private_owned_shareable_handle::OwnedShareableHandle,
-    handle_type: HipMemAllocHandleType,
 }
 
 impl Drop for HipMemPoolExport {
     fn drop(&mut self) {
         unsafe {
-            self.export_data.release(self.handle_type);
+            self.export_data.release();
         }
     }
 }
@@ -279,51 +280,37 @@ impl Drop for HipMemPoolExport {
 mod __private_owned_shareable_handle {
     use core::{ffi::c_void, fmt::Debug};
 
-    use crate::hip::memory::HipMemAllocHandleType;
-
     #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
     pub union OwnedShareableHandle {
         #[cfg(unix)]
         fd: i32,
         #[cfg(windows)]
         win32: *mut c_void,
-        // #[cfg(windows)] kmt: u32,
-        // fabric: rocm_sys::hip::hipMemFabricHandle_t,
     }
 
     impl OwnedShareableHandle {
-        pub(super) unsafe fn release(&mut self, handle_type: HipMemAllocHandleType) {
+        pub(super) unsafe fn release(&mut self) {
             #[cfg(unix)]
             {
-                use core::ffi::c_int;
-
-                if handle_type == HipMemAllocHandleType::PosixFileDescriptor {
-                    unsafe {
-                        libc::close(self.fd as c_int);
-                    }
+                unsafe {
+                    libc::close(self.fd as core::ffi::c_int);
                 }
             }
             #[cfg(windows)]
-            {
-                match handle_type {
-                    HipMemAllocHandleType::Win32 => unsafe {
-                        windows_sys::Win32::Foundation::CloseHandle(self.win32);
-                    },
-                    HipMemAllocHandleType::Win32Kmt => {}
-                    _ => {}
-                }
+            unsafe {
+                windows_sys::Win32::Foundation::CloseHandle(self.win32);
             }
         }
 
-        pub(super) fn as_hip_handle(&self, handle_type: HipMemAllocHandleType) -> *mut c_void {
-            match handle_type {
-                #[cfg(unix)]
-                HipMemAllocHandleType::PosixFileDescriptor => unsafe { self.fd as *mut c_void },
+        pub(super) fn as_hip_handle(&self) -> *mut c_void {
+            #[cfg(unix)]
+            unsafe {
+                self.fd as *mut c_void
+            }
 
-                #[cfg(windows)]
-                HipMemAllocHandleType::Win32 => unsafe { self.win32 },
-
-                _ => core::ptr::null_mut(),
+            #[cfg(windows)]
+            unsafe {
+                self.win32
             }
         }
     }
@@ -341,150 +328,4 @@ mod __private_owned_shareable_handle {
 pub struct HipPtrExport<'a, T: ?Sized> {
     export_data: hipMemPoolPtrExportData,
     _marker: PhantomData<&'a mut T>,
-}
-
-/// Specifies the properties of allocations made from the pool.
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct MemPoolProps {
-    /// Allocation type. Currently must be specified as [`hipMemAllocationTypePinned`](MemAllocType)
-    alloc_type: HipMemAllocType,
-    /// Handle types that will be supported by allocations from the pool
-    handle_types: HipMemAllocHandleTypes,
-    /// Location where allocations should reside
-    location: HipMemLoc,
-    /// Windows-specific [`LPSECURITYATTRIBUTES`] required when `hipMemHandleTypeWin32` is specified
-    win32_security_attributes: LPSECURITYATTRIBUTES,
-    /// Maximum pool size. When set to 0, defaults to a system dependent value
-    max_size: usize,
-    /// Reserved for future use, must be 0
-    reserved: [::core::ffi::c_uchar; 56usize],
-}
-
-impl Default for MemPoolProps {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl MemPoolProps {
-    pub const fn new() -> Self {
-        Self {
-            alloc_type: HipMemAllocType::Invalid,
-            handle_types: HipMemAllocHandleTypes::empty(),
-            location: HipMemLoc {
-                type_: HipMemLocType::Invalid,
-                id: -1,
-            },
-            win32_security_attributes: null_mut(),
-            max_size: 0,
-            reserved: [0; 56],
-        }
-    }
-
-    pub const fn alloc_type(mut self, alloc_type: HipMemAllocType) -> Self {
-        self.alloc_type = alloc_type;
-        self
-    }
-
-    pub const fn handle_types(mut self, handle_types: HipMemAllocHandleTypes) -> Self {
-        self.handle_types = handle_types;
-        self
-    }
-
-    pub const fn max_size(mut self, max_size: usize) -> Self {
-        self.max_size = max_size;
-        self
-    }
-
-    pub const fn location(mut self, location: HipMemLoc) -> Self {
-        self.location = location;
-        self
-    }
-
-    #[cfg(windows)]
-    pub const unsafe fn win32_security_attributes(
-        mut self,
-        win32_security_attributes: LPSECURITYATTRIBUTES,
-    ) -> Self {
-        self.win32_security_attributes = win32_security_attributes;
-        self
-    }
-}
-
-/// Defines the allocation types
-#[repr(i32)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum HipMemAllocType {
-    Invalid = 0,
-    /// This allocation type is 'pinned', i.e. cannot migrate from its current
-    /// location while the application is actively using it
-    Pinned = 1,
-    Managed = 2,
-    Uncached = 1073741824,
-    Max = 2147483647,
-}
-
-/// Flags for specifying handle types for memory pool allocations
-#[repr(i32)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum HipMemAllocHandleType {
-    #[cfg(unix)]
-    PosixFileDescriptor = 1,
-    /// Allows a Win32 NT handle for exporting. ([`HANDLE`](rocm_sys::platform::windows::HANDLE))
-    #[cfg(windows)]
-    Win32 = 2,
-    /// Allows a Win32 KMT handle for exporting. ([`D3DKMT_HANDLE`](rocm_sys::platform::windows::D3DKMT_HANDLE))
-    #[cfg(windows)]
-    Win32Kmt = 4,
-    /// Allows a fabric handle to be used for exporting.
-    Fabric = 8,
-}
-
-bitflags::bitflags! {
-    /// Flags for specifying handle types for memory pool allocations
-    #[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-    #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-    pub struct HipMemAllocHandleTypes: i32 {
-        #[cfg(unix)]
-        const POSIX_FILE_DESCRIPTOR = 1;
-        /// Allows a Win32 NT handle for exporting. ([`HANDLE`](rocm_sys::platform::windows::HANDLE))
-        #[cfg(windows)]
-        const WIN32 = 2;
-        /// Allows a Win32 KMT handle for exporting. ([`D3DKMT_HANDLE`](rocm_sys::platform::windows::D3DKMT_HANDLE))
-        #[cfg(windows)]
-        const WIN32_KMT = 4;
-        /// Allows a fabric handle to be used for exporting.
-        const FABRIC = 8;
-    }
-}
-
-/// Specifies a memory location.
-/// To specify a gpu, set type = `hipMemLocationTypeDevice` and set id = the gpu's device ID
-#[repr(C)]
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct HipMemLoc {
-    /// Specifies the location type, which describes the meaning of id
-    pub type_: HipMemLocType,
-    /// Identifier for the provided location type `HipMemLocType`
-    pub id: c_int,
-}
-
-#[repr(i32)]
-/// Specifies the type of location
-#[cfg_attr(feature = "stable_auto", derive(stable_auto::Auto))]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum HipMemLocType {
-    Invalid = 0,
-    /// Device location, thus it's HIP device ID
-    Device = 1,
-    /// Host location, `id` is ignored
-    Host = 2,
-    /// Host NUMA node location, `id` is host NUMA node id
-    HostNuma = 3,
-    HostNumaCurrent = 4,
 }
