@@ -1,12 +1,16 @@
 use core::{
     marker::PhantomData,
-    mem::{ManuallyDrop, transmute},
+    mem::ManuallyDrop,
     ptr::null_mut,
 };
 
 use alloc::sync::Arc;
 use rocm_sys::hip::{
-    hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemAllocationType, hipMemLocation, hipMemLocationType, hipMemPool_t, hipMemPoolCreate, hipMemPoolDestroy, hipMemPoolExportPointer, hipMemPoolExportToShareableHandle, hipMemPoolImportFromShareableHandle, hipMemPoolProps, hipMemPoolPtrExportData, hipMemPoolTrimTo,
+    hipDeviceSetMemPool, hipMallocFromPoolAsync, hipMemAllocationHandleType, hipMemAllocationType,
+    hipMemLocation, hipMemLocationType, hipMemPool_t, hipMemPoolCreate, hipMemPoolDestroy,
+    hipMemPoolExportPointer, hipMemPoolExportToShareableHandle,
+    hipMemPoolImportFromShareableHandle, hipMemPoolProps, hipMemPoolPtrExportData,
+    hipMemPoolTrimTo,
 };
 
 use crate::hip::{
@@ -185,9 +189,7 @@ impl RefMemPool {
                     hipMemPoolExportToShareableHandle(
                         data.as_mut_ptr().cast(),
                         self.raw,
-                        transmute::<hipMemAllocationHandleType, hipMemAllocationHandleType>(
-                            DEFAULT_ALLOCATION_TYPE,
-                        ),
+                        DEFAULT_ALLOCATION_TYPE,
                         0,
                     )
                 }
