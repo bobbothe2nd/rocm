@@ -57,6 +57,11 @@ pub trait StreamBound {
 
 pub unsafe trait MutPtr {}
 
+/// # Safety
+///
+/// It is assumed that implementors of this trait will return a valid
+/// pointer from [`Self::as_ptr`]. It must be valid for reads up to
+/// `self.len() * size_of::<T>()`.
 pub unsafe trait DevPtr<T> {
     fn as_ptr(&self) -> *const T;
     fn len(&self) -> usize;
