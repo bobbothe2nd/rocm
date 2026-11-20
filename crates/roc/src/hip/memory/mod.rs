@@ -1,20 +1,23 @@
 mod copy;
 mod devmem;
 mod hostmem;
-mod mempool;
 mod memset;
 mod unified;
 
 pub use copy::*;
 pub use devmem::*;
 pub use hostmem::*;
-pub use mempool::*;
 pub use memset::*;
 pub use unified::*;
 
-#[cfg(feature = "std")]
+#[cfg(any(windows, unix))]
+mod mempool;
+#[cfg(any(windows, unix))]
+pub use mempool::*;
+
+#[cfg(all(feature = "std", any(windows, unix)))]
 mod extmem;
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", any(windows, unix)))]
 pub use extmem::*;
 
 pub trait EventSync {

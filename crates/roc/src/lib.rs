@@ -116,3 +116,6 @@ pub use miopen;
 
 #[cfg(any(feature = "dynamic-loading", all(hip, hiprtc)))]
 rocm_include::doctest!(["hip", "hiprtc"] readme: "../README.md");
+
+#[cfg(not(any(windows, unix)))]
+compile_error!("unsupported target, `roc` requires either Windows or Unix");
