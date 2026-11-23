@@ -111,22 +111,119 @@ err_ty!(type HipError = hipError_t is !hipSuccess from rocm_sys::hip::hipGetErro
 
 pub unsafe trait DevRepr {}
 
+unsafe impl<T: DevWrRepr> DevRepr for T {}
+
 unsafe impl DevRepr for bool {}
+unsafe impl DevRepr for char {}
 
-unsafe impl DevRepr for f32 {}
-unsafe impl DevRepr for f64 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevRepr for lowp::f4 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevRepr for lowp::bf6 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevRepr for lowp::hf6 {}
 
-unsafe impl DevRepr for i8 {}
-unsafe impl DevRepr for u8 {}
+pub unsafe trait DevWrRepr: DevRepr {}
 
-unsafe impl DevRepr for i16 {}
-unsafe impl DevRepr for u16 {}
+unsafe impl DevWrRepr for f32 {}
+unsafe impl DevWrRepr for f64 {}
 
-unsafe impl DevRepr for i32 {}
-unsafe impl DevRepr for u32 {}
+unsafe impl DevWrRepr for i8 {}
+unsafe impl DevWrRepr for u8 {}
 
-unsafe impl DevRepr for i64 {}
-unsafe impl DevRepr for u64 {}
+unsafe impl DevWrRepr for i16 {}
+unsafe impl DevWrRepr for u16 {}
 
-unsafe impl DevRepr for i128 {}
-unsafe impl DevRepr for u128 {}
+unsafe impl DevWrRepr for i32 {}
+unsafe impl DevWrRepr for u32 {}
+
+unsafe impl DevWrRepr for i64 {}
+unsafe impl DevWrRepr for u64 {}
+
+unsafe impl DevWrRepr for i128 {}
+unsafe impl DevWrRepr for u128 {}
+
+#[cfg(feature = "half")]
+unsafe impl DevWrRepr for half::bf16 {}
+#[cfg(feature = "half")]
+unsafe impl DevWrRepr for half::f16 {}
+
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::bf6x4 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::hf6x4 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::f4x2 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::bf8 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::bf8uz {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::hf8 {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::hf8fn {}
+#[cfg(feature = "lowp")]
+unsafe impl DevWrRepr for lowp::hf8uz {}
+
+use crate::hip::vector::{
+    f32x1, f32x2, f32x3, f32x4,
+    f64x1, f64x2, f64x3, f64x4,
+    i16x1, i16x2, i16x3, i16x4,
+    i32x1, i32x2, i32x3, i32x4,
+    i64x1, i64x2, i64x3, i64x4,
+    i8x1, i8x2, i8x3, i8x4,
+    u16x1, u16x2, u16x3, u16x4,
+    u32x1, u32x2, u32x3, u32x4,
+    u64x1, u64x2, u64x3, u64x4,
+    u8x1, u8x2, u8x3, u8x4,
+};
+
+unsafe impl DevWrRepr for f32x1 {}
+unsafe impl DevWrRepr for f32x2 {}
+unsafe impl DevWrRepr for f32x3 {}
+unsafe impl DevWrRepr for f32x4 {}
+
+unsafe impl DevWrRepr for f64x1 {}
+unsafe impl DevWrRepr for f64x2 {}
+unsafe impl DevWrRepr for f64x3 {}
+unsafe impl DevWrRepr for f64x4 {}
+
+unsafe impl DevWrRepr for i8x1 {}
+unsafe impl DevWrRepr for i8x2 {}
+unsafe impl DevWrRepr for i8x3 {}
+unsafe impl DevWrRepr for i8x4 {}
+
+unsafe impl DevWrRepr for u8x1 {}
+unsafe impl DevWrRepr for u8x2 {}
+unsafe impl DevWrRepr for u8x3 {}
+unsafe impl DevWrRepr for u8x4 {}
+
+unsafe impl DevWrRepr for i16x1 {}
+unsafe impl DevWrRepr for i16x2 {}
+unsafe impl DevWrRepr for i16x3 {}
+unsafe impl DevWrRepr for i16x4 {}
+
+unsafe impl DevWrRepr for u16x1 {}
+unsafe impl DevWrRepr for u16x2 {}
+unsafe impl DevWrRepr for u16x3 {}
+unsafe impl DevWrRepr for u16x4 {}
+
+unsafe impl DevWrRepr for i32x1 {}
+unsafe impl DevWrRepr for i32x2 {}
+unsafe impl DevWrRepr for i32x3 {}
+unsafe impl DevWrRepr for i32x4 {}
+
+unsafe impl DevWrRepr for u32x1 {}
+unsafe impl DevWrRepr for u32x2 {}
+unsafe impl DevWrRepr for u32x3 {}
+unsafe impl DevWrRepr for u32x4 {}
+
+unsafe impl DevWrRepr for i64x1 {}
+unsafe impl DevWrRepr for i64x2 {}
+unsafe impl DevWrRepr for i64x3 {}
+unsafe impl DevWrRepr for i64x4 {}
+
+unsafe impl DevWrRepr for u64x1 {}
+unsafe impl DevWrRepr for u64x2 {}
+unsafe impl DevWrRepr for u64x3 {}
+unsafe impl DevWrRepr for u64x4 {}

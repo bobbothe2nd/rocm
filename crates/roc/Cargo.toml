@@ -15,6 +15,8 @@ log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.7" }
 rocm-include = { path = "../rocm-include", version = "0.3" }
 stable_auto = { version = "0.4", optional = true, features = ["alloc"] }
+half = { version = "2.7.1", default-features = false, optional = true }
+lowp = { version = "0.1.0", default-features = false, optional = true }
 
 [target.'cfg(unix)'.dependencies]
 libc = { version = "0.2.191", default-features = false }
@@ -26,7 +28,7 @@ windows-sys = { version = "0.61.2", features = ["Win32_Foundation"] }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["dynamic-loading", "hip", "hiprtc"]
+default = ["dynamic-loading", "hip", "hiprtc", "half", "lowp"]
 
 # ROCm libraries
 hip = ["rocm-sys/hip"]
@@ -62,6 +64,8 @@ dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
 std = ["rocm-include/std", "stable_auto?/std"]
 log = ["dep:log"]
 stable_auto = ["rocm-sys/stable_auto", "dep:stable_auto"]
+half = ["dep:half", "lowp?/half"]
+lowp = ["dep:lowp"]
 
 [[example]]
 name = "kernel_launch"
