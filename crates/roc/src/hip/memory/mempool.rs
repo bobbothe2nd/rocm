@@ -1,4 +1,4 @@
-use core::{marker::PhantomData, mem::ManuallyDrop, ptr::null_mut};
+use core::{marker::PhantomData, mem::ManuallyDrop, ops::{Deref, DerefMut}, ptr::null_mut};
 
 use alloc::sync::Arc;
 use rocm_sys::hip::{
@@ -74,7 +74,7 @@ impl Device {
         }
 
         try_err!(
-            unsafe { hipDeviceSetMemPool(self.dev, mem_pool.raw) },
+            unsafe { hipDeviceSetMemPool(mem_pool.raw, self.dev) },
             Ok(())
         )
     }
@@ -86,41 +86,25 @@ impl HipMemPool {
         self.inner.raw
     }
 
-    pub fn export(&self) -> Result<HipMemPoolExport, HipError> {
+    pub fn export<'a>(&'a self) -> Result<HipMemPoolExport<'a>, HipError> {
         self.inner.export()
     }
 
     /// you should probably use [`RefMemPool::import`] instead
+    ///
+    /// # Safety
+    ///
+    /// Only one mem pool can be dropped
     pub unsafe fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
         Ok(Self {
             inner: RefMemPool::import(export_data)?,
         })
     }
 
-    /// Allocates `len` elements
-    pub fn alloc<T: DevRepr>(&self, len: usize) -> Result<HipBuffer<T>, HipError> {
-        self.inner.alloc(len)
-    }
-
-    /// Allocates `len` zeroed elements
-    pub fn alloc_zeroed<T: DevRepr>(&self, len: usize) -> Result<HipBuffer<T>, HipError> {
-        self.inner.alloc_zeroed(len)
-    }
-
-    #[inline(always)]
-    pub fn trim_to(&self, min_size: usize) -> Result<(), HipError> {
-        self.inner.trim_to(min_size)
-    }
-
     #[inline(always)]
     pub fn destroy(self) -> Result<(), HipError> {
         let handle = ManuallyDrop::new(self);
         unsafe { handle.destroy_unchecked() }
-    }
-
-    #[inline(always)]
-    pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
-        unsafe { self.inner.destroy_unchecked() }
     }
 }
 
@@ -129,6 +113,20 @@ impl Drop for HipMemPool {
         log_if_err!("failed to destroy HipMemPool": unsafe {
             self.destroy_unchecked()
         });
+    }
+}
+
+impl Deref for HipMemPool {
+    type Target = RefMemPool;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
+    }
+}
+
+impl DerefMut for HipMemPool {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.inner
     }
 }
 
@@ -183,8 +181,8 @@ impl HipMemPool {
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug)]
 pub struct RefMemPool {
-    raw: hipMemPool_t,
-    stream: Option<Arc<HipStream>>,
+    pub(crate) raw: hipMemPool_t,
+    pub(crate) stream: Option<Arc<HipStream>>,
 }
 
 impl RefMemPool {
@@ -193,10 +191,10 @@ impl RefMemPool {
         self.raw
     }
 
-    pub fn export(&self) -> Result<HipMemPoolExport, HipError> {
-        let export_data: Result<_, HipError> = unsafe {
+    pub fn export<'a>(&'a self) -> Result<HipMemPoolExport<'a>, HipError> {
+        unsafe {
             wrap_sys_res!(
-                |data: __private_owned_shareable_handle::OwnedShareableHandle| {
+                |data: HipMemPoolExport| {
                     hipMemPoolExportToShareableHandle(
                         data.as_mut_ptr().cast(),
                         self.raw,
@@ -205,10 +203,7 @@ impl RefMemPool {
                     )
                 }
             )
-        };
-        Ok(HipMemPoolExport {
-            export_data: export_data?,
-        })
+        }
     }
 
     pub fn import(export_data: HipMemPoolExport) -> Result<Self, HipError> {
@@ -257,6 +252,10 @@ impl RefMemPool {
         })
     }
 
+    pub fn set_stream(&mut self, stream: &Arc<HipStream>) -> Option<Arc<HipStream>> {
+        self.stream.replace(stream.clone())
+    }
+
     /// Allocates `len` zeroed elements
     pub fn alloc_zeroed<T: DevRepr>(&self, len: usize) -> Result<HipBuffer<T>, HipError> {
         self.alloc(len).and_then(|mut buf| {
@@ -276,13 +275,27 @@ impl RefMemPool {
     }
 }
 
-#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
-#[derive(Debug)]
-pub struct HipMemPoolExport {
-    export_data: __private_owned_shareable_handle::OwnedShareableHandle,
+impl AsRef<Self> for RefMemPool {
+    fn as_ref(&self) -> &Self {
+        self
+    }
 }
 
-impl Drop for HipMemPoolExport {
+impl AsMut<Self> for RefMemPool {
+    fn as_mut(&mut self) -> &mut Self {
+        self
+    }
+}
+
+#[repr(transparent)]
+#[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
+#[derive(Debug)]
+pub struct HipMemPoolExport<'a> {
+    export_data: __private_owned_shareable_handle::OwnedShareableHandle,
+    _marker: PhantomData<&'a HipMemPool>,
+}
+
+impl Drop for HipMemPoolExport<'_> {
     fn drop(&mut self) {
         unsafe {
             self.export_data.release();

@@ -96,14 +96,14 @@ rocm_include::link! {
 
     #[since = 5 .1, "5.1"]
     hipError_t hipDeviceSetMemPool(
-        int device,
         hipMemPool_t mem_pool,
+        int device,
     );
 
     #[since = 5 .1, "5.1"]
     hipError_t hipDeviceGetMemPool(
-        int device,
         *mut hipMemPool_t mem_pool,
+        int device,
     );
 
     /// assumes hipDeviceProp_t=hipDeviceProp_t

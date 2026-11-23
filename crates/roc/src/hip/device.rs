@@ -6,15 +6,11 @@ use core::{
 use alloc::string::{String, ToString};
 
 use rocm_sys::hip::{
-    hipDevice_t, hipDeviceAttribute_t, hipDeviceGetAttribute, hipDeviceGetDefaultMemPool,
-    hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset, hipDeviceSetLimit,
-    hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags,
-    hipGetDevicePropertiesR0600, hipLimit_t, hipSetDevice, hipSetDeviceFlags,
+    hipDevice_t, hipDeviceAttribute_t, hipDeviceGetAttribute, hipDeviceGetDefaultMemPool, hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset, hipDeviceSetLimit, hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags, hipGetDevicePropertiesR0600, hipLimit_t, hipMemPool_t, hipSetDevice, hipSetDeviceFlags,
 };
 
 use crate::{
-    aux::RocHandle,
-    hip::{HipError, gfx::GfxVersion, memory::HipMemPool},
+    aux::RocHandle, hip::{HipError, gfx::GfxVersion, memory::RefMemPool},
 };
 
 #[repr(C)]
@@ -106,23 +102,31 @@ impl Device {
     }
 
     /// Gets default memory pool for the device
-    pub fn get_default_mem_pool(self) -> Result<HipMemPool, HipError> {
-        unsafe {
-            wrap_sys_res!(|mem_pool: HipMemPool| hipDeviceGetDefaultMemPool(
+    pub fn get_default_mem_pool(self) -> Result<RefMemPool, HipError> {
+        let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
+            wrap_sys_res!(|mem_pool: hipMemPool_t| hipDeviceGetDefaultMemPool(
                 mem_pool.as_mut_ptr().cast(),
-                self.dev
+                self.dev,
             ))
-        }
+        };
+        Ok(RefMemPool {
+            raw: mem_pool?,
+            stream: None,
+        })
     }
 
     /// Gets active memory pool for the device
-    pub fn get_mem_pool(self) -> Result<HipMemPool, HipError> {
-        unsafe {
-            wrap_sys_res!(|mem_pool: HipMemPool| hipDeviceGetMemPool(
+    pub fn get_mem_pool(self) -> Result<RefMemPool, HipError> {
+        let mem_pool: Result<hipMemPool_t, HipError> = unsafe {
+            wrap_sys_res!(|mem_pool: hipMemPool_t| hipDeviceGetMemPool(
+                mem_pool.as_mut_ptr().cast(),
                 self.dev,
-                mem_pool.as_mut_ptr().cast()
             ))
-        }
+        };
+        Ok(RefMemPool {
+            raw: mem_pool?,
+            stream: None,
+        })
     }
 
     /// Gets properties of the device
