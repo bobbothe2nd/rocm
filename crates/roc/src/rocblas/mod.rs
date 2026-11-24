@@ -17,15 +17,15 @@ macro_rules! try_err {
 
 #[cfg_attr(feature = "stable_auto", stable_auto::auto_opaque)]
 #[derive(Debug, Clone)]
-pub struct RocBlas {
+pub struct RocblasHandle {
     pub(crate) raw: rocblas_handle,
     pub(crate) stream: Arc<HipStream>,
 }
 
-unsafe impl Send for RocBlas {}
-unsafe impl Sync for RocBlas {}
+unsafe impl Send for RocblasHandle {}
+unsafe impl Sync for RocblasHandle {}
 
-impl RocBlas {
+impl RocblasHandle {
     pub fn new(stream: &Arc<HipStream>) -> Result<Self, RocblasError> {
         let raw: Result<*mut rocm_sys::rocblas::_rocblas_handle, RocblasError> =
             unsafe { wrap_sys_res!(|handle| rocblas_create_handle(handle.as_mut_ptr())) };
@@ -46,12 +46,16 @@ impl RocBlas {
         unsafe { try_err!(rocblas_set_stream(self.raw, self.stream.raw), Ok(())) }
     }
 
+    pub fn get_stream(&self) -> &HipStream {
+        &self.stream
+    }
+
     pub fn set_pointer_mode(&self, pointer_mode: rocblas_pointer_mode) -> Result<(), RocblasError> {
         unsafe { try_err!(rocblas_set_pointer_mode(self.raw, pointer_mode), Ok(())) }
     }
 }
 
-impl RocHandle for RocBlas {
+impl RocHandle for RocblasHandle {
     type Error = RocblasError;
 }
 

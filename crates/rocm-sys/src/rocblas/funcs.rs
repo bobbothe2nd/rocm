@@ -3118,7 +3118,7 @@ rocm_include::link! {
         *const float beta,
         *const float B,
         rocblas_int ldb,
-        float C,
+        *mut float C,
         rocblas_int ldc,
     );
 
@@ -4116,7 +4116,7 @@ rocm_include::link! {
         *const float beta,
         *const float B,
         rocblas_int ldb,
-        float C,
+        *mut float C,
         rocblas_int ldc,
     );
 

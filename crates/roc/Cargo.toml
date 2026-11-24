@@ -28,7 +28,7 @@ windows-sys = { version = "0.61.2", features = ["Win32_Foundation"] }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["dynamic-loading", "hip", "hiprtc", "half", "lowp"]
+default = ["dynamic-loading", "rocblas", "half", "lowp"]
 
 # ROCm libraries
 hip = ["rocm-sys/hip"]
