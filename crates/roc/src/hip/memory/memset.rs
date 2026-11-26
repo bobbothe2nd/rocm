@@ -44,16 +44,12 @@ unsafe impl Memset for i8 {
         size: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
-        unsafe {
-            u8::memset_async(dst.cast(), value.cast_unsigned(), size, stream)
-        }
+        unsafe { u8::memset_async(dst.cast(), value.cast_unsigned(), size, stream) }
     }
 
     #[inline(always)]
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
-        unsafe {
-            u8::memset_sync(dst.cast(), value.cast_unsigned(), count)
-        }
+        unsafe { u8::memset_sync(dst.cast(), value.cast_unsigned(), count) }
     }
 }
 
@@ -87,16 +83,12 @@ unsafe impl Memset for i16 {
         size: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
-        unsafe {
-            u16::memset_async(dst.cast(), value.cast_unsigned(), size, stream)
-        }
+        unsafe { u16::memset_async(dst.cast(), value.cast_unsigned(), size, stream) }
     }
 
     #[inline(always)]
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
-        unsafe {
-            u16::memset_sync(dst.cast(), value.cast_unsigned(), count)
-        }
+        unsafe { u16::memset_sync(dst.cast(), value.cast_unsigned(), count) }
     }
 }
 
@@ -130,16 +122,12 @@ unsafe impl Memset for u32 {
         size: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
-        unsafe {
-            i32::memset_async(dst.cast(), value.cast_signed(), size, stream)
-        }
+        unsafe { i32::memset_async(dst.cast(), value.cast_signed(), size, stream) }
     }
 
     #[inline(always)]
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
-        unsafe {
-            i32::memset_sync(dst.cast(), value.cast_signed(), count)
-        }
+        unsafe { i32::memset_sync(dst.cast(), value.cast_signed(), count) }
     }
 }
 
@@ -151,15 +139,11 @@ unsafe impl Memset for f32 {
         size: usize,
         stream: &HipStream,
     ) -> Result<(), HipError> {
-        unsafe {
-            u32::memset_async(dst.cast(), value.to_bits(), size, stream)
-        }
+        unsafe { u32::memset_async(dst.cast(), value.to_bits(), size, stream) }
     }
 
     #[inline(always)]
     unsafe fn memset_sync(dst: *mut Self, value: Self, count: usize) -> Result<(), HipError> {
-        unsafe {
-            u32::memset_sync(dst.cast(), value.to_bits(), count)
-        }
+        unsafe { u32::memset_sync(dst.cast(), value.to_bits(), count) }
     }
 }

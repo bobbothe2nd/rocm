@@ -6,6 +6,9 @@ pub trait RocHandle {
     type Error;
 }
 
+/// The largest byte size a buffer can be for most non-ILP64 functions.
+pub const BUF_MAX: usize = u32::MAX as usize;
+
 macro_rules! is_lib_present {
     ($lib_cfg:ident,$lib_lit:literal,$dyn_func:path,$new_func:ident) => {
         #[cfg(feature = $lib_lit)]

@@ -14,6 +14,7 @@ pub mod gfx;
 pub mod graph;
 pub mod memory;
 pub mod module;
+pub mod sord;
 pub mod stream;
 pub mod vector;
 
@@ -109,7 +110,12 @@ impl HipError {
 
 err_ty!(type HipError = hipError_t is !hipSuccess from rocm_sys::hip::hipGetErrorString;);
 
-pub unsafe trait DevRepr {}
+/// # Safety
+///
+/// Must be safe to be written to from a GPU:
+/// - no `impl Drop`
+/// - memcpy-safe
+pub unsafe trait DevRepr: Copy + Send + Sync {}
 
 unsafe impl<T: DevWrRepr> DevRepr for T {}
 
@@ -166,16 +172,9 @@ unsafe impl DevWrRepr for lowp::hf8fn {}
 unsafe impl DevWrRepr for lowp::hf8uz {}
 
 use crate::hip::vector::{
-    f32x1, f32x2, f32x3, f32x4,
-    f64x1, f64x2, f64x3, f64x4,
-    i16x1, i16x2, i16x3, i16x4,
-    i32x1, i32x2, i32x3, i32x4,
-    i64x1, i64x2, i64x3, i64x4,
-    i8x1, i8x2, i8x3, i8x4,
-    u16x1, u16x2, u16x3, u16x4,
-    u32x1, u32x2, u32x3, u32x4,
-    u64x1, u64x2, u64x3, u64x4,
-    u8x1, u8x2, u8x3, u8x4,
+    f32x1, f32x2, f32x3, f32x4, f64x1, f64x2, f64x3, f64x4, i8x1, i8x2, i8x3, i8x4, i16x1, i16x2,
+    i16x3, i16x4, i32x1, i32x2, i32x3, i32x4, i64x1, i64x2, i64x3, i64x4, u8x1, u8x2, u8x3, u8x4,
+    u16x1, u16x2, u16x3, u16x4, u32x1, u32x2, u32x3, u32x4, u64x1, u64x2, u64x3, u64x4,
 };
 
 unsafe impl DevWrRepr for f32x1 {}

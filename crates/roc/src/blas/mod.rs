@@ -25,7 +25,7 @@ pub unsafe trait Axpy<Alpha, X, Y>: RocHandle {
         Self: Axpy_64;
 }
 
-pub unsafe trait Axpy_64 {}
+pub trait Axpy_64 {}
 
 pub unsafe trait Asum<X, Y>: RocHandle {
     unsafe fn blas_asum(
@@ -46,7 +46,7 @@ pub unsafe trait Asum<X, Y>: RocHandle {
         Self: Asum_64;
 }
 
-pub unsafe trait Asum_64 {}
+pub trait Asum_64 {}
 
 pub unsafe trait Dot<X, Y, R>: RocHandle {
     unsafe fn blas_dot(
@@ -71,7 +71,7 @@ pub unsafe trait Dot<X, Y, R>: RocHandle {
         Self: Dot_64;
 }
 
-pub unsafe trait Dot_64 {}
+pub trait Dot_64 {}
 
 pub unsafe trait Gemm<Alpha, A, B, Beta, C>: RocHandle {
     unsafe fn blas_gemm(
@@ -110,7 +110,7 @@ pub unsafe trait Gemm<Alpha, A, B, Beta, C>: RocHandle {
         Self: Gemm_64;
 }
 
-pub unsafe trait Gemm_64 {}
+pub trait Gemm_64 {}
 
 pub unsafe trait Gemv<Alpha, A, X, Beta, Y>: RocHandle {
     unsafe fn blas_gemv(
@@ -145,7 +145,7 @@ pub unsafe trait Gemv<Alpha, A, X, Beta, Y>: RocHandle {
         Self: Gemv_64;
 }
 
-pub unsafe trait Gemv_64 {}
+pub trait Gemv_64 {}
 
 pub unsafe trait Geam<Alpha, A, Beta, B, C>: RocHandle {
     unsafe fn blas_geam(
@@ -182,7 +182,7 @@ pub unsafe trait Geam<Alpha, A, Beta, B, C>: RocHandle {
         Self: Gemv_64;
 }
 
-pub unsafe trait Geam_64 {}
+pub trait Geam_64 {}
 
 pub unsafe trait Ger<Alpha, X, Y, A>: RocHandle {
     unsafe fn blas_ger(
@@ -213,7 +213,7 @@ pub unsafe trait Ger<Alpha, X, Y, A>: RocHandle {
         Self: Ger_64;
 }
 
-pub unsafe trait Ger_64 {}
+pub trait Ger_64 {}
 
 pub unsafe trait Gemmt<Alpha, A, B, C>: RocHandle {
     unsafe fn blas_gemmt(
@@ -250,7 +250,7 @@ pub unsafe trait Gemmt<Alpha, A, B, C>: RocHandle {
         Self: Gemmt_64;
 }
 
-pub unsafe trait Gemmt_64 {}
+pub trait Gemmt_64 {}
 
 pub unsafe trait Nrm2<X, R>: RocHandle {
     unsafe fn blas_nrm2(
@@ -271,7 +271,7 @@ pub unsafe trait Nrm2<X, R>: RocHandle {
         Self: Gemv_64;
 }
 
-pub unsafe trait Nrm2_64 {}
+pub trait Nrm2_64 {}
 
 pub unsafe trait Scal<Alpha, X>: RocHandle {
     unsafe fn blas_scal(
@@ -292,7 +292,7 @@ pub unsafe trait Scal<Alpha, X>: RocHandle {
         Self: Scal_64;
 }
 
-pub unsafe trait Scal_64 {}
+pub trait Scal_64 {}
 
 pub unsafe trait Spr<Alpha, X, AP>: RocHandle {
     unsafe fn blas_spr(
@@ -317,7 +317,7 @@ pub unsafe trait Spr<Alpha, X, AP>: RocHandle {
         Self: Spr_64;
 }
 
-pub unsafe trait Spr_64 {}
+pub trait Spr_64 {}
 
 pub unsafe trait Spr2<Alpha, X, Y, AP>: RocHandle {
     unsafe fn blas_spr2(
@@ -346,7 +346,7 @@ pub unsafe trait Spr2<Alpha, X, Y, AP>: RocHandle {
         Self: Spr_64;
 }
 
-pub unsafe trait Spr2_64 {}
+pub trait Spr2_64 {}
 
 pub unsafe trait Syr<Alpha, X, A>: RocHandle {
     unsafe fn blas_syr(
@@ -373,7 +373,7 @@ pub unsafe trait Syr<Alpha, X, A>: RocHandle {
         Self: Syr_64;
 }
 
-pub unsafe trait Syr_64 {}
+pub trait Syr_64 {}
 
 pub unsafe trait Syr2<Alpha, X, Y, A>: RocHandle {
     unsafe fn blas_syr2(
@@ -404,7 +404,7 @@ pub unsafe trait Syr2<Alpha, X, Y, A>: RocHandle {
         Self: Syr2_64;
 }
 
-pub unsafe trait Syr2_64 {}
+pub trait Syr2_64 {}
 
 pub unsafe trait Syrk<Alpha, A, Beta, C>: RocHandle {
     unsafe fn blas_syrk(
@@ -436,7 +436,7 @@ pub unsafe trait Syrk<Alpha, A, Beta, C>: RocHandle {
         Self: Syrk_64;
 }
 
-pub unsafe trait Syrk_64 {}
+pub trait Syrk_64 {}
 
 pub unsafe trait Syrkx<Alpha, A, B, Beta, C>: RocHandle {
     unsafe fn blas_syrkx(
@@ -473,7 +473,7 @@ pub unsafe trait Syrkx<Alpha, A, B, Beta, C>: RocHandle {
         Self: Syrkx_64;
 }
 
-pub unsafe trait Syrkx_64 {}
+pub trait Syrkx_64 {}
 
 pub unsafe trait Dgmm<A, X, C>: RocHandle {
     unsafe fn blas_dgmm(
@@ -504,7 +504,7 @@ pub unsafe trait Dgmm<A, X, C>: RocHandle {
         Self: Dgmm_64;
 }
 
-pub unsafe trait Dgmm_64 {}
+pub trait Dgmm_64 {}
 
 pub unsafe trait Trmv<A, X>: RocHandle {
     unsafe fn blas_trmv(
@@ -533,7 +533,7 @@ pub unsafe trait Trmv<A, X>: RocHandle {
         Self: Trmv_64;
 }
 
-pub unsafe trait Trmv_64 {}
+pub trait Trmv_64 {}
 
 pub unsafe trait Trsv<A, X>: RocHandle {
     unsafe fn blas_trsv(
@@ -562,7 +562,7 @@ pub unsafe trait Trsv<A, X>: RocHandle {
         Self: Trsv_64;
 }
 
-pub unsafe trait Trsv_64 {}
+pub trait Trsv_64 {}
 
 pub unsafe trait Trmm<Alpha, A, B, C>: RocHandle {
     unsafe fn blas_trmm(
@@ -601,7 +601,7 @@ pub unsafe trait Trmm<Alpha, A, B, C>: RocHandle {
         Self: Trmm_64;
 }
 
-pub unsafe trait Trmm_64 {}
+pub trait Trmm_64 {}
 
 pub unsafe trait Trsm<Alpha, A, B>: RocHandle {
     unsafe fn blas_trsm(
@@ -636,7 +636,7 @@ pub unsafe trait Trsm<Alpha, A, B>: RocHandle {
         Self: Trsm_64;
 }
 
-pub unsafe trait Trsm_64 {}
+pub trait Trsm_64 {}
 
 pub unsafe trait Gbmv<Alpha, A, B, Beta, Y>: RocHandle {
     unsafe fn blas_gbmv(
@@ -675,7 +675,7 @@ pub unsafe trait Gbmv<Alpha, A, B, Beta, Y>: RocHandle {
         Self: Gbmv_64;
 }
 
-pub unsafe trait Gbmv_64 {}
+pub trait Gbmv_64 {}
 
 pub unsafe trait Rot<X, Y, C, S>: RocHandle {
     unsafe fn blas_rot(
@@ -702,7 +702,7 @@ pub unsafe trait Rot<X, Y, C, S>: RocHandle {
         Self: Rot_64;
 }
 
-pub unsafe trait Rot_64 {}
+pub trait Rot_64 {}
 
 pub unsafe trait Rotg<A, B, C, S>: RocHandle {
     unsafe fn blas_rotg(
@@ -737,7 +737,7 @@ pub unsafe trait Rotm<X, Y, Param>: RocHandle {
         Self: Rotm_64;
 }
 
-pub unsafe trait Rotm_64 {}
+pub trait Rotm_64 {}
 
 pub unsafe trait Rotmg<D1, D2, X1, Y1, Param>: RocHandle {
     unsafe fn blas_rotmg(
@@ -783,7 +783,7 @@ pub unsafe trait Symm<Alpha, A, B, C>: RocHandle {
         Self: Symm_64;
 }
 
-pub unsafe trait Symm_64 {}
+pub trait Symm_64 {}
 
 pub unsafe trait Symv<Alpha, A, X, Beta, Y>: RocHandle {
     unsafe fn blas_symv(
@@ -816,7 +816,7 @@ pub unsafe trait Symv<Alpha, A, X, Beta, Y>: RocHandle {
         Self: Symv_64;
 }
 
-pub unsafe trait Symv_64 {}
+pub trait Symv_64 {}
 
 pub unsafe trait Her<Alpha, X, A>: RocHandle {
     unsafe fn blas_her(
@@ -843,7 +843,7 @@ pub unsafe trait Her<Alpha, X, A>: RocHandle {
         Self: Her_64;
 }
 
-pub unsafe trait Her_64 {}
+pub trait Her_64 {}
 
 pub unsafe trait Her2<Alpha, X, Y, A>: RocHandle {
     unsafe fn blas_her2(
@@ -874,7 +874,7 @@ pub unsafe trait Her2<Alpha, X, Y, A>: RocHandle {
         Self: Her2_64;
 }
 
-pub unsafe trait Her2_64 {}
+pub trait Her2_64 {}
 
 pub unsafe trait Herk<Alpha, A, Beta, C>: RocHandle {
     unsafe fn blas_herk(
@@ -907,7 +907,7 @@ pub unsafe trait Herk<Alpha, A, Beta, C>: RocHandle {
         Self: Herk_64;
 }
 
-pub unsafe trait Herk_64 {}
+pub trait Herk_64 {}
 
 pub unsafe trait Her2k<Alpha, A, B, Beta, C>: RocHandle {
     unsafe fn blas_her2k(
@@ -944,7 +944,7 @@ pub unsafe trait Her2k<Alpha, A, B, Beta, C>: RocHandle {
         Self: Her2k_64;
 }
 
-pub unsafe trait Her2k_64 {}
+pub trait Her2k_64 {}
 
 pub unsafe trait Herkx<Alpha, A, Beta, C>: RocHandle {
     unsafe fn blas_herkx(
@@ -977,7 +977,7 @@ pub unsafe trait Herkx<Alpha, A, Beta, C>: RocHandle {
         Self: Herkx_64;
 }
 
-pub unsafe trait Herkx_64 {}
+pub trait Herkx_64 {}
 
 #[repr(i32)]
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]

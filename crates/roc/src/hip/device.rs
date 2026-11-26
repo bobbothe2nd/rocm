@@ -6,11 +6,15 @@ use core::{
 use alloc::string::{String, ToString};
 
 use rocm_sys::hip::{
-    hipDevice_t, hipDeviceAttribute_t, hipDeviceGetAttribute, hipDeviceGetDefaultMemPool, hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset, hipDeviceSetLimit, hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags, hipGetDevicePropertiesR0600, hipLimit_t, hipMemPool_t, hipSetDevice, hipSetDeviceFlags,
+    hipDevice_t, hipDeviceAttribute_t, hipDeviceGetAttribute, hipDeviceGetDefaultMemPool,
+    hipDeviceGetLimit, hipDeviceGetMemPool, hipDeviceProp_t, hipDeviceReset, hipDeviceSetLimit,
+    hipDeviceSynchronize, hipGetDevice, hipGetDeviceCount, hipGetDeviceFlags,
+    hipGetDevicePropertiesR0600, hipLimit_t, hipMemPool_t, hipSetDevice, hipSetDeviceFlags,
 };
 
 use crate::{
-    aux::RocHandle, hip::{HipError, gfx::GfxVersion, memory::RefMemPool},
+    aux::RocHandle,
+    hip::{HipError, gfx::GfxVersion, memory::RefMemPool},
 };
 
 #[repr(C)]

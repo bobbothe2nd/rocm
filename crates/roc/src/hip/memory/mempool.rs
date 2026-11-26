@@ -1,4 +1,9 @@
-use core::{marker::PhantomData, mem::ManuallyDrop, ops::{Deref, DerefMut}, ptr::null_mut};
+use core::{
+    marker::PhantomData,
+    mem::ManuallyDrop,
+    ops::{Deref, DerefMut},
+    ptr::null_mut,
+};
 
 use alloc::sync::Arc;
 use rocm_sys::hip::{
@@ -193,16 +198,14 @@ impl RefMemPool {
 
     pub fn export<'a>(&'a self) -> Result<HipMemPoolExport<'a>, HipError> {
         unsafe {
-            wrap_sys_res!(
-                |data: HipMemPoolExport| {
-                    hipMemPoolExportToShareableHandle(
-                        data.as_mut_ptr().cast(),
-                        self.raw,
-                        DEFAULT_ALLOCATION_TYPE,
-                        0,
-                    )
-                }
-            )
+            wrap_sys_res!(|data: HipMemPoolExport| {
+                hipMemPoolExportToShareableHandle(
+                    data.as_mut_ptr().cast(),
+                    self.raw,
+                    DEFAULT_ALLOCATION_TYPE,
+                    0,
+                )
+            })
         }
     }
 

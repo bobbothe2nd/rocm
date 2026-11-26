@@ -1,4 +1,6 @@
-use core::mem::{ManuallyDrop, transmute};
+use core::{
+    fmt::Debug, mem::{ManuallyDrop, transmute}, ptr::null_mut,
+};
 
 use bitflags::bitflags;
 use rocm_sys::hip::{
@@ -19,6 +21,11 @@ unsafe impl Send for HipEvent {}
 unsafe impl Sync for HipEvent {}
 
 impl HipEvent {
+    #[inline(always)]
+    pub const unsafe fn invalid() -> Self {
+        Self { raw: null_mut() }
+    }
+
     #[inline(always)]
     pub const fn as_raw(&self) -> hipEvent_t {
         self.raw
@@ -63,6 +70,7 @@ impl HipEvent {
         }
     }
 
+    #[inline(always)]
     pub fn sync(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipEventSynchronize(self.raw), Ok(())) }
     }
@@ -77,6 +85,7 @@ impl HipEvent {
         Ok(())
     }
 
+    #[inline(always)]
     pub unsafe fn destroy_unchecked(&self) -> Result<(), HipError> {
         unsafe { try_err!(hipEventDestroy(self.raw), Ok(())) }
     }

@@ -25,6 +25,26 @@ macro_rules! log_if_err {
 }
 
 #[allow(unused_macros)]
+macro_rules! log_lock_if_err {
+    ($msg:literal: $expr:expr) => {{
+        if let Err(err) = $expr {
+            err.log($msg);
+            loop {}
+        }
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! sync_ret_if_err {
+    ($stream:expr, $expr:expr) => {{
+        if let Err(err) = $expr {
+            log_lock_if_err!("failed to synchronize stream": ($stream).sync());
+            return Err(err.into());
+        }
+    }};
+}
+
+#[allow(unused_macros)]
 macro_rules! err_ty {
     (type $err:ident = $sys_err:ident is !$success:ident from $err_cvt:path;) => {
         impl ::core::fmt::Display for $err {
@@ -75,6 +95,38 @@ macro_rules! err_ty {
                 #[cfg(feature = "log")]
                 {
                     ::log::error!("{msg}: {self}");
+                }
+            }
+        }
+    };
+}
+
+macro_rules! cvt_hip_err {
+    (
+        $err:ident {
+            $(
+                $self_err:ident => [$($hip_err:ident),+ $(,)?]
+            ),+$(,)?
+        }
+        reverse {
+            $(
+                $reverse_err:ident => $reverse_hip_err:ident
+            ),+$(,)?
+        }
+        fallback $fallback:ident
+    ) => {
+        impl From<$crate::hip::HipError> for $err {
+            fn from(err: $crate::hip::HipError) -> Self {
+                match err {
+                    $($($crate::hip::HipError::$hip_err)|+ => Self::$self_err,)+
+                    _ => Self::$fallback,
+                }
+            }
+        }
+        impl From<$err> for $crate::hip::HipError {
+            fn from(err: $err) -> Self {
+                match err {
+                    $($err::$reverse_err => $crate::hip::HipError::$reverse_hip_err,)+
                 }
             }
         }
