@@ -47,7 +47,7 @@ impl rocfft_status_e {
 #[repr(transparent)]
 /// rocFFT status/error codes
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub struct rocfft_status_e(pub ::core::ffi::c_int);
+pub struct rocfft_status_e(::core::ffi::c_int);
 /// rocFFT status/error codes
 pub use self::rocfft_status_e as rocfft_status;
 impl rocfft_transform_type_e {

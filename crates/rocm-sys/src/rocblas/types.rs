@@ -181,7 +181,7 @@ impl rocblas_status_ {
 #[repr(transparent)]
 ///   rocBLAS status codes definition.
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub struct rocblas_status_(pub ::core::ffi::c_int);
+pub struct rocblas_status_(::core::ffi::c_int);
 ///   rocBLAS status codes definition.
 pub use self::rocblas_status_ as rocblas_status;
 impl rocblas_pointer_mode_ {

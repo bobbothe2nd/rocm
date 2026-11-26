@@ -1524,7 +1524,7 @@ impl hipError_t {
 #[repr(transparent)]
 /// HIP error type
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub struct hipError_t(pub u32);
+pub struct hipError_t(u32);
 impl hipMemoryType {
     /// Unregistered memory
     pub const hipMemoryTypeUnregistered: hipMemoryType = hipMemoryType(0);

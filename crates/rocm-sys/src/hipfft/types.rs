@@ -35,7 +35,7 @@ impl hipfftResult_t {
 #[repr(transparent)]
 /// Result/status/error codes
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub struct hipfftResult_t(pub ::core::ffi::c_int);
+pub struct hipfftResult_t(::core::ffi::c_int);
 /// Result/status/error codes
 pub use self::hipfftResult_t as hipfftResult;
 impl hipfftType_t {

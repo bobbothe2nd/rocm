@@ -27,7 +27,7 @@ impl hipblasStatus_t {
 #[repr(transparent)]
 /// \\brief hipblas status codes definition
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub struct hipblasStatus_t(pub ::core::ffi::c_int);
+pub struct hipblasStatus_t(::core::ffi::c_int);
 impl hipblasOperation_t {
     ///  Operate with the matrix.
     pub const HIPBLAS_OP_N: hipblasOperation_t = hipblasOperation_t(111);
