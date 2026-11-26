@@ -1,3 +1,5 @@
+#![allow(clippy::partialeq_ne_impl)]
+
 use core::{
     cell::{Cell, UnsafeCell}, fmt::{Debug, Display}, mem::MaybeUninit, ops::{Deref, DerefMut},
 };
@@ -16,10 +18,19 @@ pub struct Sord<T: DevRepr> {
     pub(crate) inner: Box<SordInner<T>>,
 }
 
+impl<T: DevRepr + Default> Default for Sord<T> {
+    fn default() -> Self {
+        Self::new(T::default())
+    }
+}
+
 impl<T: PartialEq + DevRepr> PartialEq for Sord<T> {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
-        Self::get(self) == Self::get(other)
+        Self::get(self).eq(Self::get(other))
+    }
+    fn ne(&self, other: &Self) -> bool {
+        Self::get(self).ne(Self::get(other))
     }
 }
 
@@ -28,7 +39,10 @@ impl<T: Eq + DevRepr> Eq for Sord<T> {}
 impl<T: PartialEq + DevRepr> PartialEq<T> for Sord<T> {
     #[inline]
     fn eq(&self, other: &T) -> bool {
-        Self::get(self) == other
+        Self::get(self).eq(other)
+    }
+    fn ne(&self, other: &T) -> bool {
+        Self::get(self).ne(other)
     }
 }
 
@@ -133,8 +147,8 @@ impl<T: DevRepr> Sord<T> {
         if !this.inner.mapped.get() {
             try_err!(unsafe {
                 hipHostRegister(
-                    Box::as_ptr(&this.inner) as *mut _,
-                    size_of::<SordInner<T>>(),
+                    this.inner.inner.get().cast(),
+                    size_of::<T>(),
                     0,
                 )
             });
@@ -201,6 +215,17 @@ impl<T: DevRepr> Sord<T> {
         Self::sync(&this)?;
         Ok(unsafe { Self::into_inner_unchecked(this) })
     }
+
+    pub fn dbg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result
+    where 
+        T: Debug,
+    {
+        f.debug_struct("Sord")
+            .field("inner", &Self::get(self))
+            .field("synced", &self.inner.synced.get())
+            .field("mapped", &self.inner.mapped.get())
+            .finish()
+    }
 }
 
 impl<T: DevRepr> Deref for Sord<T> {
@@ -219,13 +244,19 @@ impl<T: DevRepr> DerefMut for Sord<T> {
 
 impl<T: DevRepr> AsRef<T> for Sord<T> {
     fn as_ref(&self) -> &T {
-        &*self
+        self
     }
 }
 
 impl<T: DevRepr> AsMut<T> for Sord<T> {
     fn as_mut(&mut self) -> &mut T {
-        &mut *self
+        self
+    }
+}
+
+impl<T: DevRepr> From<T> for Sord<T> {
+    fn from(value: T) -> Self {
+        Self::new(value)
     }
 }
 
@@ -234,14 +265,14 @@ impl<T: DevRepr> Drop for Sord<T> {
         log_if_err!("failed to synchronize value": Self::sync(self));
 
         if self.inner.mapped.get() {
-            unsafe {
-                hipHostUnregister(Box::as_mut_ptr(&mut self.inner).cast());
-            }
+            log_if_err!("failed to unregister Sord memory": unsafe {
+                hipHostUnregister(self.inner.inner.get().cast())
+            });
         }
     }
 }
 
-#[repr(C)]
+#[repr(align(16))]
 pub(crate) struct SordInner<T> {
     inner: UnsafeCell<MaybeUninit<T>>,
     pub(crate) event: HipEvent,
@@ -249,4 +280,4 @@ pub(crate) struct SordInner<T> {
     mapped: Cell<bool>,
 }
 
-unsafe impl<T> Send for SordInner<T> {}
+unsafe impl<T: Send> Send for SordInner<T> {}

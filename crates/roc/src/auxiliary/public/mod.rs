@@ -2,6 +2,12 @@ pub trait MapToErr<E> {
     fn map_to_err(self) -> Result<(), E>;
 }
 
+impl<E> MapToErr<E> for Result<(), E> {
+    fn map_to_err(self) -> Self {
+        self
+    }
+}
+
 pub trait RocHandle {
     type Error;
 }

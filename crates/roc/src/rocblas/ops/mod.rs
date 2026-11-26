@@ -1,15 +1,9 @@
 use core::{cell::UnsafeCell, mem::MaybeUninit};
 
 use crate::{
-    aux::BUF_MAX,
-    blas::Asum,
-    hip::{
-        DevRepr, DevWrRepr,
-        event::HipEvent,
-        sord::Sord,
-        memory::{DevPtr, EventSync},
-    },
-    rocblas::{RocblasError, RocblasHandle},
+    aux::BUF_MAX, blas::Asum, hip::{
+        DevRepr, DevWrRepr, event::HipEvent, memory::{DevPtr, EventSync}, sord::Sord,
+    }, rocblas::{RocblasError, RocblasHandle, RocblasPtrMode},
 };
 
 mod asum;
@@ -29,6 +23,10 @@ impl RocblasHandle {
 
         let event = HipEvent::create(None)?;
         let mut sord = unsafe { Sord::new_async(UnsafeCell::new(MaybeUninit::<Y>::uninit()), event) };
+
+        if self.get_pointer_mode()? == RocblasPtrMode::Dev {
+            Sord::map(&sord)?;
+        }
 
         unsafe {
             self.blas_asum(x.len() as u32, x.as_ptr(), 1, Sord::as_mut_ptr(&mut sord))?;

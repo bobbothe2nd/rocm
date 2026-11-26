@@ -1,7 +1,6 @@
 use alloc::sync::Arc;
 use rocm_sys::rocblas::{
-    rocblas_create_handle, rocblas_handle, rocblas_pointer_mode, rocblas_set_pointer_mode,
-    rocblas_set_stream, rocblas_status,
+    rocblas_create_handle, rocblas_get_pointer_mode, rocblas_handle, rocblas_pointer_mode, rocblas_set_pointer_mode, rocblas_set_stream, rocblas_status,
 };
 
 use crate::{aux::RocHandle, hip::stream::HipStream};
@@ -57,13 +56,36 @@ impl RocblasHandle {
     }
 
     #[inline(always)]
-    pub fn set_pointer_mode(&self, pointer_mode: rocblas_pointer_mode) -> Result<(), RocblasError> {
-        unsafe { try_err!(rocblas_set_pointer_mode(self.raw, pointer_mode), Ok(())) }
+    pub fn set_pointer_mode(&self, ptr_mode: RocblasPtrMode) -> Result<(), RocblasError> {
+        unsafe { try_err!(rocblas_set_pointer_mode(self.raw, ptr_mode.as_raw()), Ok(())) }
+    }
+
+    #[inline(always)]
+    pub fn get_pointer_mode(&self) -> Result<RocblasPtrMode, RocblasError> {
+        unsafe { wrap_sys_res!(|ptr_mode: RocblasPtrMode| rocblas_get_pointer_mode(self.raw, ptr_mode.as_mut_ptr().cast())) }
     }
 }
 
 impl RocHandle for RocblasHandle {
     type Error = RocblasError;
+}
+
+#[repr(i32)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RocblasPtrMode {
+    /// Scalar values affected by this variable are located on the host.
+    Host = 0,
+    /// Scalar values affected by this variable are located on the device.
+    Dev = 1,
+}
+
+impl RocblasPtrMode {
+    pub const fn as_raw(self) -> rocblas_pointer_mode {
+        match self {
+            Self::Host => rocblas_pointer_mode::rocblas_pointer_mode_host,
+            Self::Dev => rocblas_pointer_mode::rocblas_pointer_mode_device,
+        }
+    }
 }
 
 #[repr(i32)]

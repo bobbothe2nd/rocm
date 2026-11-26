@@ -18,7 +18,7 @@ macro_rules! wrap_sys_res {
 #[allow(unused_macros)]
 macro_rules! log_if_err {
     ($msg:literal: $expr:expr) => {{
-        if let Err(err) = $expr {
+        if let Err(err) = $crate::aux::MapToErr::map_to_err($expr) {
             err.log($msg);
         }
     }};
