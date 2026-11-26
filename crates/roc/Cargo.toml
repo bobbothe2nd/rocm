@@ -10,7 +10,7 @@ keywords = ["gpu", "hip", "rocm", "rocfft", "rocblas"]
 categories = ["hardware-support"]
 
 [dependencies]
-bitflags = "2"
+bitflags = { version = "2", optional = true }
 log = { version = "0.4", optional = true }
 rocm-sys = { path = "../rocm-sys", version = "0.7" }
 rocm-include = { path = "../rocm-include", version = "0.3" }
@@ -28,10 +28,8 @@ windows-sys = { version = "0.61.2", features = ["Win32_Foundation"] }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
-default = ["dynamic-loading", "rocblas", "half", "lowp"]
-
 # ROCm libraries
-hip = ["rocm-sys/hip"]
+hip = ["rocm-sys/hip", "dep:bitflags"]
 hiprtc = ["rocm-sys/hiprtc"]
 
 hipblas = ["rocm-sys/hipblas", "hip", "blas"]
@@ -59,6 +57,7 @@ fft = []
 
 # internal crate features
 dynamic-loading = ["rocm-sys/dynamic-loading", "std"]
+ilp64 = []
 
 # external libraries
 std = ["rocm-include/std", "stable_auto?/std"]

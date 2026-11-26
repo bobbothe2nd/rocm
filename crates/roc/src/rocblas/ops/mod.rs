@@ -17,6 +17,7 @@ impl RocblasHandle {
         Self: Asum<X, Y>,
     {
         let n = x.len();
+        #[cfg(not(feature = "ilp64"))]
         if n > BUF_MAX {
             return Err(RocblasError::InvalidSize);
         }
@@ -28,8 +29,15 @@ impl RocblasHandle {
             Sord::map(&sord)?;
         }
 
-        unsafe {
-            self.blas_asum(x.len() as u32, x.as_ptr(), 1, Sord::as_mut_ptr(&mut sord))?;
+        if n > BUF_MAX {
+            #[cfg(feature = "ilp64")]
+            unsafe {
+                self.blas_asum_64(x.len() as u64, x.as_ptr(), 1, Sord::as_mut_ptr(&mut sord))?;
+            }
+        } else {
+            unsafe {
+                self.blas_asum(x.len() as u32, x.as_ptr(), 1, Sord::as_mut_ptr(&mut sord))?;
+            }
         }
 
         sync_ret_if_err!(self.stream, sord.inner.event.record(&self.stream, None));

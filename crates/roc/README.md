@@ -14,7 +14,8 @@ This API is very limited and only covers a small subset of HIP and hipRTC, but n
 
 The example shown below compiles and launches a simple program:
 
-```rustuse roc::{
+```rust
+use roc::{
     hip::{
         device::Device,
         module::LaunchShape,

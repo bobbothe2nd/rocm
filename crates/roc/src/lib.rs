@@ -101,6 +101,7 @@ macro_rules! err_ty {
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! cvt_hip_err {
     (
         $err:ident {

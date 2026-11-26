@@ -272,12 +272,18 @@ impl<T: DevRepr> Drop for Sord<T> {
     }
 }
 
-#[repr(align(16))]
-pub(crate) struct SordInner<T> {
-    inner: UnsafeCell<MaybeUninit<T>>,
-    pub(crate) event: HipEvent,
-    synced: Cell<bool>,
-    mapped: Cell<bool>,
+mod private {
+    use super::*;
+
+    #[repr(align(16))]
+    pub struct SordInner<T> {
+        pub(super) inner: UnsafeCell<MaybeUninit<T>>,
+        pub(crate) event: HipEvent,
+        pub(super) synced: Cell<bool>,
+        pub(super) mapped: Cell<bool>,
+    }
+
+    unsafe impl<T: Send> Send for SordInner<T> {}
 }
 
-unsafe impl<T: Send> Send for SordInner<T> {}
+use private::SordInner;
