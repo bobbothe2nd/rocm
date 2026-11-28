@@ -1,7 +1,7 @@
 [package]
 name = "roc"
 description = "ROCm abstraction runtime core"
-version = "0.4.0-alpha.1"
+version = "0.4.0-alpha.2"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/bobbothe2nd/rocm"
@@ -28,9 +28,10 @@ windows-sys = { version = "0.61.2", features = ["Win32_Foundation"] }
 rocm-build = { path = "../rocm-build", version = "0.3.1" }
 
 [features]
+default = ["hiprtc", "dynamic-loading"]
 # ROCm libraries
 hip = ["rocm-sys/hip", "dep:bitflags"]
-hiprtc = ["rocm-sys/hiprtc"]
+hiprtc = ["rocm-sys/hiprtc", "hip"]
 
 hipblas = ["rocm-sys/hipblas", "hip", "blas"]
 hipblaslt = ["rocm-sys/hipblaslt", "hipblas"]

@@ -37,20 +37,17 @@ fn main() {
     let func = {
         let hsaco = Hsaco::compile(SRC, &opts).unwrap();
         let module = hsaco.load().unwrap();
-        module.get_func_c(c"vec_add").unwrap()
+        module.get_func("vec_add").unwrap()
     };
 
     let stream = HipStream::create(StreamKind::Default).unwrap();
 
     let mut out = stream.alloc_unified::<f32>(LEN, true).unwrap();
-    let mut a = stream.alloc(LEN).unwrap();
-    let mut b = stream.alloc(LEN).unwrap();
+    let mut a = stream.alloc::<f32>(LEN).unwrap();
+    let mut b = stream.alloc::<f32>(LEN).unwrap();
 
-    let a_host = stream.map_slice(&[A_VAL; LEN]).unwrap();
-    let b_host = stream.map_slice(&[B_VAL; LEN]).unwrap();
-
-    a.copy_from_async(&a_host, 0, 0, LEN).unwrap();
-    b.copy_from_async(&b_host, 0, 0, LEN).unwrap();
+    a.memset_async(A_VAL).unwrap();
+    b.memset_async(B_VAL).unwrap();
 
     let mut n = LEN as i32;
 
