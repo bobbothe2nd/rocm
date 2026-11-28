@@ -238,6 +238,14 @@ rocm_include::link! {
         hipEvent_t stopEvent,
     );
 
+    #[since = 10 .2, "10.2"]
+    hipError_t hipKernelSetAttributeForDevice(
+        hipKernel_t kernel,
+        hipFuncAttribute attr,
+        int value,
+        int device,
+    );
+
     hipError_t hipFuncSetAttribute(
         *const void func,
         hipFuncAttribute attr,
@@ -2092,6 +2100,13 @@ rocm_include::link! {
         hipModule_t module,
     );
 
+    #[since = 10 .2, "10.2"]
+    hipError_t hipModuleEnumerateFunctions(
+        *mut hipFunction_t functions,
+        uint numFunctions,
+        hipModule_t mod_,
+    );
+
     #[since = 7 .2, "7.2"]
     hipError_t hipKernelGetAttribute(
         *mut int pi,
@@ -2154,6 +2169,13 @@ rocm_include::link! {
         *mut size_t bytes,
         hipLibrary_t library,
         *const char name,
+    );
+
+    /// The returned module is owned by library and stays valid until hipLibraryUnload(). Do not release it with hipModuleUnload(), which returns hipErrorNotPermitted for such a handle.
+    #[since = 10 .2, "10.2"]
+    hipError_t hipLibraryGetModule(
+        *mut hipModule_t pMod,
+        hipLibrary_t library,
     );
 
     #[since = 7 .2, "7.2"]
